@@ -1,0 +1,10 @@
+﻿global using System;
+global using System.Text;
+global using System.Windows;
+global using System.Text.Json;
+global using System.Windows.Data;
+global using AlphaPersonel.Models;
+global using AlphaPersonel.ViewModels;
+global using AlphaPersonel.Services;
+global using System.Text.Json.Serialization;
+global using System.Threading.Tasks;
