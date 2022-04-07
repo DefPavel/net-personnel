@@ -1,7 +1,33 @@
 ﻿using System.Net.Http;
-using System.Net.Http.Json;
-
 namespace AlphaPersonel.Services;
+
+
+/*
+    Вообще лучше конечно работать через httpClient
+    Нужно потом переделать с WebRequest на httpClient
+
+// Пример использования POST
+using ServiceClient? client = new("http://localhost:8080");
+string encryptedPass = CustomAes256.Encrypt("root", "8UHjPgXZzXDgkhqV2QCnooyJyxUzfJrO");
+Users user = new()
+{
+    UserName = "1497",
+    Password = encryptedPass,
+    IdModules = ModulesProject.Personel
+};
+try
+{
+    var userResponse = await client.PostAsync<Users>("api/auth", user);
+    MessageBox.Show(userResponse.Token);
+}
+catch (HttpRequestException ex)
+{
+    MessageBox.Show(ex.Message);
+            
+}
+
+ 
+ */
 internal class ServiceClient : IDisposable
 {
     private readonly TimeSpan _timeout;
@@ -31,8 +57,8 @@ internal class ServiceClient : IDisposable
     {
         var strResponse = await PostAsync(url, input);
 
-        return JsonSerializer.Deserialize<TResult>(strResponse);
-
+        return JsonSerializer.Deserialize<TResult>(strResponse) 
+            ?? throw new NullReferenceException();
     }
 
 
@@ -40,7 +66,8 @@ internal class ServiceClient : IDisposable
     {
         var strResponse = await GetAsync(url);
 
-        return JsonSerializer.Deserialize<TResult>(strResponse);
+        return JsonSerializer.Deserialize<TResult>(strResponse) 
+            ?? throw new NullReferenceException();
     }
 
     public async Task<string> GetAsync(string url)

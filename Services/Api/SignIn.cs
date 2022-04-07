@@ -1,32 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System.Configuration;
 using System.IO;
 using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-
-namespace AlphaPersonel.Services.Api;
-
+namespace AlphaPersonel.Services;
 internal class SignIn
 {
-   
-
-    private static readonly string _ApiBaseUrl = @"http://localhost:8080/api";
+    private static readonly string _ApiUrl = ConfigurationManager.AppSettings["api"]
+        ?? throw new NullReferenceException("Uninitialized property: " + nameof(_ApiUrl));
     public static async Task<Users> Authentication(string username, string password)
     {
-        /*Users users = new();
-
-        using var client = new HttpClient();
-        users.IdModules = ModulesProject.Personel;
-        users.UserName = username;
-        users.Password = CustomAes256.Encrypt(password, "8UHjPgXZzXDgkhqV2QCnooyJyxUzfJrO");
-
-        var response = client.PostAsJsonAsync(_ApiBaseUrl+"/auth", users).Result;
-
-        return await response.Content.ReadFromJsonAsync<Users>();
-        */
-
-        HttpWebRequest req = (HttpWebRequest)WebRequest.Create(_ApiBaseUrl + "/auth");// Создаём запрос
+        #pragma warning disable SYSLIB0014 // Тип или член устарел
+        HttpWebRequest req = (HttpWebRequest)WebRequest.Create(_ApiUrl + "/auth");// Создаём запрос
+        #pragma warning restore SYSLIB0014 // Тип или член устарел
         req.Method = "Post";
         req.Accept = "application/json";
 
@@ -49,10 +33,10 @@ internal class SignIn
         using WebResponse response = await req.GetResponseAsync();
         await using Stream responseStream = response.GetResponseStream();
         using StreamReader reader = new(responseStream, Encoding.UTF8);
-#pragma warning disable CS8603 // Возможно, возврат ссылки, допускающей значение NULL.
-        return JsonSerializer.Deserialize<Users>(await reader.ReadToEndAsync());
-#pragma warning restore CS8603 // Возможно, возврат ссылки, допускающей значение NULL.
 
+        return JsonSerializer.Deserialize<Users>(await reader.ReadToEndAsync())
+            ?? throw new NullReferenceException();
     }
+
 }
 

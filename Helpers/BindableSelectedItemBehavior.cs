@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xaml.Behaviors;
 using System.Windows.Controls;
 
-namespace AlphaPersonel.Services;
+namespace AlphaPersonel.Helpers;
 internal class BindableSelectedItemBehavior : Behavior<TreeView>
 {
     #region Переменные

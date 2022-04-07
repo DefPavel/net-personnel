@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace AlphaPersonel.Services;
+namespace AlphaPersonel.Helpers;
 internal static class CustomAes256
 {
     #region Конвертация из Byte в Hex String
@@ -55,7 +55,9 @@ internal static class CustomAes256
         // Создайте объект RijndaelManaged
         // с указанным ключом и IV. 
         //using var AES = Aes.Create("AesManaged");
+#pragma warning disable SYSLIB0022 // Тип или член устарел
         using (RijndaelManaged rijAlg = new())
+#pragma warning restore SYSLIB0022 // Тип или член устарел
         {
             //Записываем ключ в байтах
             rijAlg.Key = Encoding.UTF8.GetBytes(key);
@@ -106,7 +108,9 @@ internal static class CustomAes256
 
         // Создайте объект RijndaelManaged
         // с указанным ключом и IV. 
+#pragma warning disable SYSLIB0022 // Тип или член устарел
         using RijndaelManaged rijAlg = new();
+#pragma warning restore SYSLIB0022 // Тип или член устарел
         rijAlg.Key = Encoding.UTF8.GetBytes(key);
         rijAlg.GenerateIV();
 

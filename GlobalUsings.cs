@@ -6,5 +6,7 @@ global using System.Windows.Data;
 global using AlphaPersonel.Models;
 global using AlphaPersonel.ViewModels;
 global using AlphaPersonel.Services;
+global using AlphaPersonel.Commands;
+global using AlphaPersonel.Helpers;
 global using System.Text.Json.Serialization;
 global using System.Threading.Tasks;

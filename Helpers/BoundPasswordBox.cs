@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace AlphaPersonel.Services;
+namespace AlphaPersonel.Helpers;
 internal class BoundPasswordBox
 {
     private static bool _updating;

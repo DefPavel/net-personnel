@@ -1,16 +1,13 @@
-﻿using System.Text.Json.Serialization;
-
-namespace AlphaPersonel.Models.PersonCard
+﻿namespace AlphaPersonel.Models.PersonCard;
+internal class FullAge
 {
-    internal class FullAge
-    {
-        [JsonPropertyName("years")]
-        public int Years { get; set; } = 0;
+    [JsonPropertyName("years")]
+    public int Years { get; set; }
 
-        [JsonPropertyName("months")]
-        public int Months { get; set; } = 0;
+    [JsonPropertyName("months")]
+    public int Months { get; set; } 
 
-        [JsonPropertyName("days")]
-        public int Days { get; set; } = 0;
-    }
+    [JsonPropertyName("days")]
+    public int Days { get; set; }
 }
+

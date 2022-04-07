@@ -1,4 +1,4 @@
-﻿namespace AlphaPersonel.Services;
+﻿namespace AlphaPersonel.Helpers;
 
 internal class VisualBoolean
 {
