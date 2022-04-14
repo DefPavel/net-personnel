@@ -29,5 +29,8 @@ namespace AlphaPersonel.Models.Home
         [JsonPropertyName("date_end")]
         public DateTime? DateEnd { get; set;}
 
+        [JsonPropertyName("id_person")]
+        public int IdPerson { get; set; } = 0;
+
     }
 }

@@ -18,7 +18,6 @@ namespace AlphaPersonel.Models.Home
         public string Group { get; set; } = string.Empty;
         [JsonPropertyName("for_life")]
         public bool IsForLife { get; set; }
-
-
+        public int IdPerson { get; internal set; }
     }
 }

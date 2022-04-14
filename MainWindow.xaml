@@ -20,10 +20,53 @@
             <DataTemplate DataType="{x:Type viewmodels:LoginViewModel}">
                 <views:LoginView />
             </DataTemplate>
+            <!--Ссылка на HomeViewModel-->
             <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
                 <views:HomeView />
             </DataTemplate>
-            
+            <!--Ссылка на PeriodViewModel-->
+            <DataTemplate DataType="{x:Type viewmodels:PeriodVacationViewModel}">
+                <views:PeriodVacationView />
+            </DataTemplate>
+            <!--Ссылка на TypeVacationViewModel-->
+            <DataTemplate DataType="{x:Type viewmodels:TypeVacationViewModel}">
+                <views:TypeVacation />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:TypeRewardingViewModel}">
+                <views:TypeRewardingView />
+            </DataTemplate>
+            <!--Ссылка на DepartmentViewModel-->
+            <DataTemplate DataType="{x:Type viewmodels:DepartmentViewModel}">
+                <views:DepartmentView />
+            </DataTemplate>
+            <!--Ссылка на PositionViewModel-->
+            <DataTemplate DataType="{x:Type viewmodels:PositionViewModel}">
+                <views:PositionView />
+            </DataTemplate>
+            <!--Ссылка на PersonCardViewModel-->
+            <DataTemplate DataType="{x:Type viewmodels:PersonCardViewModel}">
+                <views:PersonCard />
+            </DataTemplate>
+            <!--Ссылка на SearchViewModel-->
+            <DataTemplate DataType="{x:Type viewmodels:SearchViewModel}">
+                <views:SearchView />
+            </DataTemplate>
+            <!--Ссылка на TyperRankViewModel-->
+            <DataTemplate DataType="{x:Type viewmodels:TypeRanksViewModel}">
+                <views:TypeRanks />
+            </DataTemplate>
+            <!--Ссылка на TypeOrderViewModel-->
+            <DataTemplate DataType="{x:Type viewmodels:TypeOrderViewModel}">
+                <views:TypeOrderView />
+            </DataTemplate>
+            <!--Ссылка на OrderViewModel-->
+            <DataTemplate DataType="{x:Type viewmodels:OrderViewModel}">
+                <views:OrderView />
+            </DataTemplate>
+            <!--Ссылка на Отчеты -->
+            <DataTemplate DataType="{x:Type viewmodels:ReportsViewModel}">
+                <views:ReportsView />
+            </DataTemplate>
         </ContentControl.Resources>
     </ContentControl>
 </Window>

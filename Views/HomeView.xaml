@@ -3,10 +3,765 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:AlphaPersonel.Views"
+             xmlns:viewmodels="clr-namespace:AlphaPersonel.ViewModels"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:behaviours="clr-namespace:AlphaPersonel.Helpers"
+             xmlns:fa="http://schemas.fontawesome.com/icons/svg"
+             d:DataContext="{d:DesignInstance Type=viewmodels:HomeViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <!--Загрузка всех отделов -->
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{ Binding GetTreeView }"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <!--#region COLUMNS MAIN GRID -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="400" MinWidth="250"/>
+            <!-- Left Navigate -->
+            <ColumnDefinition/>
+            <!-- Content -->
+        </Grid.ColumnDefinitions>
+        <!--#endregion-->
+        <!--#region MENU -->
+        <Menu 
+            Grid.Row="0" 
+            VerticalAlignment="Center"
+            Grid.ColumnSpan="2">
+            <MenuItem>
+                <MenuItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <fa:ImageAwesome
+                            PrimaryColor="#444444"
+                            Height="12"
+                            Margin="3 0 3 0"
+                            Icon="Regular_File"
+                         />
+                        <TextBlock>Файл</TextBlock>
+                    </StackPanel>
+                </MenuItem.Header>
+
+                <MenuItem Header="Поиск" Command="{Binding OpenSearch}"/>
+                <MenuItem Header="Настройки">
+
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="Выход из аккаунта" Command="{Binding Logout}"/>
+            </MenuItem>
+            <MenuItem 
+                IsEnabled="{Binding IsAdministrator}">
+                <MenuItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <fa:ImageAwesome
+                            PrimaryColor="#444444"
+                            Height="12"
+                            Margin="3 0 3 0"
+                            Icon="Solid_Pen"
+                         />
+                        <TextBlock>Справочники</TextBlock>
+                    </StackPanel>
+                </MenuItem.Header>
+                <MenuItem Header="Список отделов"
+                          Command="{Binding OpenDepartment}" />
+                <MenuItem Header="Список приказов" 
+                          Command="{Binding OpenOrder}"/>
+                <MenuItem Header="Виды приказов"
+                          Command="{Binding OpenTypeOrder}"/>
+                <MenuItem Header="Список должностей"
+                          Command="{Binding OpenPosition}"/>
+                <MenuItem Header="Виды отпусков"
+                          Command="{Binding OpenVacation}"/>
+                <MenuItem Header="Периоды отпусков"
+                          Command="{Binding OpenPeriod}"/>
+                <MenuItem Header="Награды"
+                          Command="{Binding OpenRewarding}"/>
+                <MenuItem Header="Звания"
+                          Command="{Binding OpenTypeRanks}"/>
+                <!--<MenuItem Header="Календарь праздников"
+                          Command="{Binding }"/>-->
+                <MenuItem Header="Отправка в отпуск..."/>
+                <MenuItem Header="Мастер увольнения"/>
+            </MenuItem>
+            <MenuItem
+                Command="{Binding OpenReport}"
+                IsEnabled="{Binding IsAdministrator}">
+                <MenuItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <fa:ImageAwesome
+                            Height="12"
+                            Margin="3 0 3 0"
+                            Icon="Solid_Book"
+                            PrimaryColor="#444444"
+                         />
+                        <TextBlock>Отчеты</TextBlock>
+                    </StackPanel>
+                </MenuItem.Header>
+            </MenuItem>
+        </Menu>
+        <Separator 
+            Grid.Row="1" 
+            Grid.Column="0" 
+            Grid.ColumnSpan="2"
+            VerticalAlignment="Top"
+            Background="{StaticResource BorderBrush}" Margin="0"/>
+        <!--#endregion-->
+        <!--#region SideBar -->
+        <Grid 
+            Grid.Row="2" Grid.Column="0"
+            Margin="5 0 5 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="28"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <!--#region Древо отдела -->
+            <StackPanel 
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+                <Button Command="{Binding GetTreeView}">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            Обновить структуру древа
+                        </ToolTip>
+                    </Button.ToolTip>
+                    <fa:ImageAwesome
+                        PrimaryColor="#444444"
+                        Height="12"
+                        Margin="0 0 0 0"
+                        Icon="Solid_ArrowsUpDownLeftRight"
+                         />
+                </Button>
+                <Button Command="{Binding OpenSearch}" >
+                    <Button.ToolTip>
+                        <ToolTip>
+                            Поиск
+                        </ToolTip>
+                    </Button.ToolTip>
+                    <fa:ImageAwesome
+                        PrimaryColor="#444444"
+                        Height="12"
+                        Margin="0"
+                        Icon="Brands_Searchengin"
+                         />
+                </Button>
+            </StackPanel>
+            <TreeView 
+                VirtualizingStackPanel.IsVirtualizing="True"
+                Grid.Row="1"
+                Margin="0 0 5 5"
+                x:Name="TreeDepartment"
+                FontSize="12"
+                ItemsSource="{Binding Departments}">
+                <!-- Получить выбранный элемент из TreeView -->
+                <i:Interaction.Behaviors>
+                    <behaviours:BindableSelectedItemBehavior
+                        SelectedItem="{Binding SelectedItem, Mode=TwoWay}" />
+                </i:Interaction.Behaviors>
+                <!-- Делаем запрос на получение всех сотрдуников которые находятся в данном отделе -->
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectedItemChanged">
+                        <i:InvokeCommandAction 
+                            Command="{Binding GetPersonsToDepartment}" 
+                            CommandParameter="{Binding Path=SelectedItem}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate  
+                        ItemsSource = "{Binding Child }">
+                        <TextBlock 
+                            Tag  = "{Binding Id}"  
+                            Text = "{Binding Name}">
+                        </TextBlock>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+                <TreeView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem 
+                          Header="Обновить"
+                          Command="{Binding GetTreeView}"/>
+                    </ContextMenu>
+                </TreeView.ContextMenu>
+            </TreeView>
+            <!--#endregion-->
+        </Grid>
+        <!--#endregion-->
+        <GridSplitter 
+            Grid.Row="2"
+            Width="2"
+            Grid.Column="0"/>
+        <!--#region Content -->
+        <Grid 
+            Grid.Row="2"
+            Grid.Column="1">
+            <Grid Margin="0">
+                <Grid.RowDefinitions>
+
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <TextBlock
+                        Style="{StaticResource Header20}"
+                        Margin="20 5 5 5"
+                        Text="{Binding SelectedItem.Name}"/>
+                </Grid>
+                <Grid
+                    Margin="5 0 0 0"
+                    Grid.Row="1">
+                    <TabControl>
+                        <TabItem Header="Общая информация">
+                            <Grid Margin="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock
+                                    Grid.Column="0"
+                                    Grid.Row="0"
+                                    Margin="2"
+                                    Padding="3"
+                                    Text="Наименование:"/>
+                                <TextBox
+                                    Grid.Column="1"
+                                    Grid.Row="0"
+                                    Padding="3"
+                                    Margin="2"
+                                    Text="{Binding SelectedItem.Name, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock
+                                    Grid.Column="0"
+                                    Grid.Row="1"
+                                    Margin="2"
+                                    Padding="3"
+                                    Text="Сокращение:"/>
+                                <TextBox
+                                    Grid.Column="1"
+                                    Grid.Row="1"
+                                    Text="{Binding SelectedItem.Short , UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock
+                                    Grid.Column="0"
+                                    Grid.Row="2"
+                                    Margin="2"
+                                    Padding="3"
+                                    Text="Внут.телефон:"/>
+                                <TextBox
+                                 
+                                    Grid.Column="1"
+                                    Grid.Row="2"
+                                    Text="{Binding SelectedItem.Phone , UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock
+                                    Grid.Column="0"
+                                    Grid.Row="3"
+                                    Margin="2"
+                                    Padding="3"
+                                    Text="Итого:"/>
+                                <StackPanel 
+                                    Grid.Column="1"
+                                    Grid.Row="3"
+                                    Orientation="Horizontal">
+                                    <TextBlock
+                                        Padding="3"
+                                        Margin="2"
+                                        Text="бюджет:"/>
+                                    <TextBlock
+                                        Padding="3"
+                                        Margin="2"
+                                        Text="{Binding CountBudget}"
+                                        />
+                                    <TextBlock 
+                                        Padding="3"
+                                        Margin="2"
+                                        Text="внебюджет:"/>
+                                    <TextBlock
+                                        Padding="3"
+                                        Margin="2"
+                                        Text="{Binding CountNotBudget}"
+                                        />
+                                </StackPanel>
+                                <TextBlock
+                                    Grid.Column="0"
+                                    Grid.Row="4"
+                                    Margin="2"
+                                    Padding="3"
+                                    Text="Свободно:"/>
+                                <StackPanel 
+                                    Grid.Column="1"
+                                    Grid.Row="4"
+                                    Orientation="Horizontal">
+                                    <TextBlock
+                                        Padding="3"
+                                        Margin="2"
+                                        Text="бюджет:"/>
+                                    <TextBlock
+                                        Padding="3"
+                                        Margin="2"
+                                        Text="{Binding CountFreeBudget}"
+                                        />
+                                    <TextBlock
+                                        Padding="3"
+                                        Margin="2"
+                                        Text="внебюджет:"/>
+                                    <TextBlock
+                                        Padding="3"
+                                        Margin="2"
+                                        Text="{Binding CountFreeNotBudget}"
+                                        />
+                                </StackPanel>
+                                <Button 
+                                    Background="White"
+                                    Grid.Column="1"
+                                    Grid.Row="5"
+                                    Margin="2"
+                                    HorizontalAlignment="Right"
+                                    Command="{Binding RenameToDepartment}"
+                                    Width="110"
+                                    Content="Изменить данные"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem 
+                             Header="Должности">
+                            <Grid Margin="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid 
+                                    Margin="5"
+                                    Grid.Column="0">
+                                    <DataGrid  
+                                              Margin="5"
+                                              ItemsSource="{Binding Positions}"
+                                              SelectedValue="{Binding SelectedPosition , UpdateSourceTrigger=PropertyChanged }"
+                                              IsReadOnly="True"
+                                              AutoGenerateColumns="False">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn
+                                            Header="Должность"
+                                            Binding="{Binding Name}"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </Grid>
+                                <GridSplitter Grid.Column="0" Width="3"/>
+                                <Grid 
+                                    Margin="5"
+                                    Grid.Column="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="35"/>
+                                        <RowDefinition Height="35"/>
+                                        <RowDefinition Height="35"/>
+                                        <RowDefinition Height="35"/>
+                                        <RowDefinition Height="50"/>
+                                        <RowDefinition Height="35"/>
+                                        <RowDefinition Height="35"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock 
+                                        Grid.Column="0"
+                                        Grid.Row="0"
+                                       
+                                        Text="Наименование:"/>
+                                    <TextBox 
+                                       
+                                        Grid.Column="1"
+                                        Grid.Row="0"
+                                       
+                                        Text="{Binding SelectedPosition.Name}"/>
+                                    <TextBlock 
+                                        Grid.Column="0"
+                                        Grid.Row="1"
+                                        
+                                        Text="Количество:"/>
+                                    <StackPanel
+                                        Orientation="Horizontal"
+                                         Grid.Column="1"
+                                        Grid.Row="1"
+                                        >
+                                        <TextBox  
+                                            Margin="0 0 5 0"
+                                            Text="{Binding SelectedPosition.CountAllBudget}"/>
+                                        <TextBlock
+                                         Padding="3"
+                                         Margin="2"
+                                            Text="бюджет:"/>
+                                        <TextBox 
+                                            Margin="0 0 5 0" 
+                                            Text="{Binding SelectedPosition.Count_B}"/>
+                                        <TextBlock
+                                         Padding="3"
+                                         Margin="2"
+                                            Text="внебюджет:"/>
+                                        <TextBox  
+                                            Margin="0 0 5 0" 
+                                            Text="{Binding SelectedPosition.Count_NB}"/>
+                                    </StackPanel>
+                                    <TextBlock 
+                                        Grid.Column="0"
+                                        Grid.Row="2"
+                                        Text="Свободно:"/>
+                                    <StackPanel
+                                        Orientation="Horizontal"
+                                         Grid.Column="1"
+                                        Grid.Row="2">
+                                        <TextBox 
+                                            Margin="0 0 5 0" 
+                                            Text="{Binding SelectedPosition.CountAllFreeBudget}"/>
+                                        <TextBlock
+                                         Padding="3"
+                                         Margin="2"
+                                            Text="бюджет:"/>
+                                        <TextBox  Margin="0 0 5 0" Text="{Binding SelectedPosition.Free_B}"/>
+                                        <TextBlock
+                                            Text="внебюджет:"/>
+                                        <TextBox  Margin="0 0 5 0"  Text="{Binding SelectedPosition.Free_NB}"/>
+                                    </StackPanel>
+                                    <TextBlock 
+                                        Grid.Column="0"
+                                        Grid.Row="3"
+                                        Text="Оклад:"/>
+                                    <StackPanel  
+                                        Orientation="Horizontal"
+                                         Grid.Column="1"
+                                        Grid.Row="3">
+                                        <TextBox 
+                                            Margin="0 0 5 0" 
+                                            Text="{Binding SelectedPosition.CountOklad}"/>
+                                        <TextBlock
+                                         Padding="3"
+                                         Margin="2"
+                                            Text="бюджет:"/>
+                                        <TextBox  
+                                            Margin="0 0 5 0" 
+                                            Text="{Binding SelectedPosition.Oklad_B}"/>
+                                        <TextBlock
+                                            Text="внебюджет:"/>
+                                        <TextBox  
+                                            Margin="0 0 5 0"  
+                                            Text="{Binding SelectedPosition.Oklad_NB}"/>
+                                    </StackPanel>
+                                    <StackPanel
+                                        Grid.ColumnSpan="2" Grid.Column="0"
+                                        Grid.Row="4">
+
+                                        <RadioButton
+                                            IsChecked="{Binding RadioIsPed}"
+                                            Content="Педагогическая должность"/>
+                                        <RadioButton
+                                
+                                            IsChecked="{Binding RadioIsNoPed}"
+                                            Content="Ремонто строительная и обслуживающая"/>
+                                    </StackPanel>
+                                    <TextBlock 
+                                        Grid.Column="0"
+                                        Grid.Row="5"
+                                        Text=" Дней отпуска:"/>
+                                    <TextBox 
+                                        Grid.Column="1"
+                                        Grid.Row="5"
+                                        Text="{Binding SelectedPosition.HolidayLimit}"/>
+                                    <Button 
+                                        Background="White"
+                                        Width="120"
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Right"
+                                        Grid.Row="6"
+                                        Command="{Binding RenameToDepartmentPosition}"
+                                        Content="Изменить данные"/>
+                                </Grid>
+                            </Grid>
+                        </TabItem>
+                        <TabItem 
+                            IsSelected="True"
+                            BorderThickness="0"
+                            Header="Сотрудники">
+                            <Grid Margin="5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="80"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="20"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel>
+                                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                        <Button  Command="{Binding OpenAddPerson}">
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    Создать новую персону
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                            <fa:ImageAwesome
+                                                PrimaryColor="#444444"
+                                                Height="12"
+                                                Margin="0 0 0 0"
+                                                Icon="Regular_User"
+                                                 />
+                                        </Button>
+                                        <Button  Command="{Binding OpenPersonCard}">
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    Личная карта сотрудника
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                            <fa:ImageAwesome
+                                                PrimaryColor="#444444"
+                                                Height="12"
+                                                Margin="0 0 0 0"
+                                                Icon="Regular_AddressCard"
+                                                 />
+                                        </Button>
+                                        <Button  Command="{Binding GetPersonsToDepartment}">
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    Уволить персону
+                                                </ToolTip>
+                                            </Button.ToolTip>
+
+                                            <fa:ImageAwesome
+                                                PrimaryColor="#444444"
+                                                Height="12"
+                                                Margin="0 0 0 0"
+                                                Icon="Solid_Trash"
+                                                 />
+                                        </Button>
+                                    </StackPanel>
+                                    <TextBlock 
+                                        Margin="5 0 0 0"
+                                        Text="Введите фамилию для поиска"/>
+                                    <TextBox 
+                                        Text="{Binding FilterPerson, UpdateSourceTrigger=PropertyChanged}"/>
+                                </StackPanel>
+                                <DataGrid
+                                    SelectionMode="Single"
+                                    IsReadOnly="True"
+                                    ScrollViewer.IsDeferredScrollingEnabled="True"
+                                    VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                    AlternatingRowBackground="#e1eff9"
+                                    FontSize="13"
+                                    AutoGenerateColumns="False"
+                                    CanUserAddRows="False"
+                                    Margin="5"
+                                    Grid.Row="1"
+                                    ItemsSource="{Binding CollectionPerson}"
+                                    SelectedItem="{Binding SelectedPerson}" 
+                                    >
+                                    <DataGrid.Resources>
+
+                                        <Style TargetType="{x:Type DataGridCell}">
+                                            <Style.Triggers>
+                                                <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                                    <Setter Property="Background" Value="#87CEFA" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+
+                                        <CollectionViewSource x:Key="ItemsPosition" Source="{Binding Positions}" />
+                                    </DataGrid.Resources>
+
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDoubleClick">
+                                            <i:InvokeCommandAction Command="{ Binding OpenPersonCard }"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+
+                                    <DataGrid.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem  
+                                                 Command="{Binding OpenPersonCard}"
+                                                 CommandParameter="{Binding SelectedPerson}"
+                                                Header="Личная карта"/>
+                                            <MenuItem  Header="Удалить"/>
+                                        </ContextMenu>
+                                    </DataGrid.ContextMenu>
+                                    <DataGrid.Columns>
+                                        <DataGridCheckBoxColumn
+                                            Header="НПП"
+                                            Binding="{Binding IsPed ,TargetNullValue={x:Null}}"/>
+                                        <DataGridCheckBoxColumn
+                                            Header="Студент"
+                                            Binding="{Binding IsStudent ,TargetNullValue={x:Null}}"/>
+                                        <DataGridCheckBoxColumn
+                                            Header="Аспирант"
+                                            Binding="{Binding IsGraduate ,TargetNullValue={x:Null}}"/>
+                                        <DataGridCheckBoxColumn
+                                            Header="Доктор"
+                                            Binding="{Binding IsDoctor ,TargetNullValue={x:Null}}"/>
+                                        <DataGridCheckBoxColumn
+                                            Header="Совместитель"
+                                            Binding="{Binding IsPluralismInner ,TargetNullValue={x:Null}}"/>
+                                        <DataGridCheckBoxColumn
+                                            Header="Внешний Совместитель"
+                                            Binding="{Binding IsPluralismOter ,TargetNullValue={x:Null}}"/>
+                                        <DataGridTextColumn 
+                                            Header="Фамилия"
+                                            Binding="{Binding FirstName}"/>
+                                        <DataGridTextColumn 
+                                            Header="Имя"
+                                            Binding="{Binding MidlleName}"/>
+                                        <DataGridTextColumn 
+                                            Header="Отчество"
+                                            Binding="{Binding LastName}"/>
+                                        <!--Дата рождения -->
+                                        <DataGridTemplateColumn Header="Дата рождения">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Birthday, StringFormat='dd.MM.yyyy'}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+
+                                            <DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate>
+                                                    <DatePicker 
+                                                        Margin="4 2" 
+                                                        Padding="4 2"
+                                                        SelectedDate="{Binding Birthday}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellEditingTemplate>
+
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridComboBoxColumn 
+                                            Header="Должность"
+                                            SelectedValueBinding="{Binding PersonPosition}"
+                                            SelectedValuePath="Name"
+                                            DisplayMemberPath="Name"
+                                            ItemsSource="{Binding Source={StaticResource ItemsPosition}}"/>
+
+                                        <DataGridTextColumn 
+                                            Header="Бюджет"
+                                            Binding="{Binding StavkaBudget}"/>
+                                        <DataGridTextColumn 
+                                            Header="Внебюджет"
+                                            Binding="{Binding StavkaNoBudget}"/>
+                                        <DataGridTextColumn 
+                                            Header="№ Приказ"
+                                            Binding="{Binding OrderName}"/>
+
+                                        <DataGridTemplateColumn
+                                            Header="Дата приказа">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding DateOrder,StringFormat='dd.MM.yyyy'}"/>
+
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                            <DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate>
+                                                    <DatePicker
+                                                        Margin="4 2"
+                                                        Padding="4 2"
+                                                        SelectedDate="{Binding DateOrder}">
+                                                    </DatePicker>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellEditingTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTemplateColumn
+                                            Header="Дата начачала раб.">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding DateWorking, StringFormat='dd.MM.yyyy'}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                            <DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate>
+                                                    <DatePicker
+                                                        Margin="4 2"
+                                                        Padding="4 2"
+                                                        SelectedDate="{Binding DateWorking}">
+                                                    </DatePicker>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellEditingTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTextColumn
+                                            Header="Телефон МТС"
+                                            Binding="{Binding PhoneUkraine}"/>
+                                        <DataGridTextColumn
+                                            Header="Телефон Луг."
+                                            Binding="{Binding PhoneLugakom}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <StackPanel 
+                                    Grid.Row="2"
+                                    Orientation="Horizontal">
+                                    <TextBlock
+                   
+                                        Margin="2"
+                                        Text="{Binding StringFormat=Штат:{0} сотр., Path=Persons.Count }"/>
+                                    <TextBlock
+                                        Margin="2"
+                                        Text="{Binding StringFormat=НПП:{0} сотр., Path=CountIsPedPerson }"/>
+                                    <TextBlock
+                                        Margin="2"
+                                        Text="{Binding StringFormat=не НПП:{0} сотр., Path=CountNotIsPedPerson }"/>
+
+                                    <TextBlock
+                                        Margin="2"
+                                        Text="{Binding StringFormat=Cовместители: НПП:{0} сотр., Path=CountIsPluralismInnerIsPed }"/>
+
+                                    <TextBlock
+                                        Margin="2"
+                                        Text="{Binding StringFormat=не НПП:{0} сотр., Path=CountIsPluralismInnerNotIsPed }"/>
+
+                                </StackPanel>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </Grid>
+        </Grid>
+        <!--#endregion-->
+        <!--#region Status Bar -->
+        <StatusBar 
+            Grid.Row="3" 
+            Grid.Column="0"
+            Grid.ColumnSpan="2">
+            <StatusBarItem>
+                <!--<ProgressBar 
+                    MinHeight="20"
+                    MinWidth="100"
+                    
+                    Visibility="{Binding IsLoading.IsTrueVisibility}"
+                   />-->
+                <TextBlock 
+                    Margin="0 0 5 0"
+                    FontSize="12"
+                    Foreground="#2196F3"
+                    Text="Загрузка данных..."
+                    Visibility="{Binding IsLoading.IsTrueVisibility}"/>
+            </StatusBarItem>
+            <StatusBarItem 
+                HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        Margin="0 0 5 0" 
+                         FontSize="12"
+                        Text="Пользователь:"/>
+                    <TextBlock 
+                        Margin="0 0 5 0"
+                        FontSize="12"
+                        Foreground="#2196F3"
+                        Text="{Binding User.FullName}"/>
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
+        <!--#endregion-->
     </Grid>
 </UserControl>

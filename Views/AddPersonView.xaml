@@ -1,0 +1,197 @@
+﻿<Window x:Class="AlphaPersonel.Views.AddPersonView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
+        xmlns:viewmodels="clr-namespace:AlphaPersonel.ViewModels"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
+        xmlns:fa="http://schemas.fontawesome.com/icons/svg"
+        d:DataContext="{d:DesignInstance Type=viewmodels:AddPersonVeiwModel}"
+        mc:Ignorable="d"
+        Title="Добавить новую запись сотрудника" 
+        Height="705" Width="450">
+    
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{ Binding GetData }"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid>
+        <StackPanel Margin="5">
+            <TextBlock 
+                  Style="{StaticResource Header30}"
+                Text="Добавить сотрудника"/>
+
+            <Label
+                Content="Выбрать должность"
+                FontWeight="Bold"/>
+            <ComboBox
+                   
+                    ItemsSource="{Binding Positions}"
+                    DisplayMemberPath="Name"
+                    SelectedValuePath="Name"
+                    SelectedItem="{Binding SelectedPositions}"
+                    SelectedValue="{Binding SelectedPositions.Name , Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"
+            />
+            <Label
+                FontWeight="Bold"
+                Content="Фамилия"/>
+            <TextBox SpellCheck.IsEnabled="True" Language="ru-ru" 
+                     Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label 
+                FontWeight="Bold"
+                Content="Имя"/>
+            <TextBox SpellCheck.IsEnabled="True" Language="ru-ru" 
+                     Text="{Binding MidlleName, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label 
+                FontWeight="Bold"
+                Content="Отчество"/>
+            <TextBox SpellCheck.IsEnabled="True" Language="ru-ru" 
+                     Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label 
+                FontWeight="Bold"
+                Content="Дата рождения"/>
+            <DatePicker Margin="4 2 4 2" 
+                        SelectedDate="{Binding Birthday ,
+                        UpdateSourceTrigger=PropertyChanged}" />
+            <Label 
+                FontWeight="Bold"
+                Content="Пол"/>
+            <StackPanel Orientation="Horizontal">
+                <RadioButton
+                    IsChecked="{Binding Gender}"
+                    Padding="2"
+                    Content="Мужской"/>
+                <RadioButton
+                     Padding="2"
+                    Content="Женский"/>
+            </StackPanel>
+            <Separator 
+                Margin="5"
+                Height="1"/>
+            <Label 
+                FontWeight="Bold"
+                Content="Телефон"/>
+            <StackPanel 
+                Margin="5 0 0 0"
+                Orientation="Horizontal">
+                <TextBlock 
+                    Text="Лугаком:"/>
+                <xctk:MaskedTextBox 
+                     Foreground="#444444"
+                    Background="#FFFFFF"
+                    Padding="4 2"
+                    Margin="4 2"
+                    Height="22"
+                    BorderThickness="1"
+                    Text="{Binding LugPhone , UpdateSourceTrigger=PropertyChanged}"
+                    Mask="(000) 000-0000"
+                    />
+                <TextBlock Text="МТС:"/>
+                <xctk:MaskedTextBox 
+                    Foreground="#444444"
+                    Background="#FFFFFF"
+                    Padding="4 2"
+                    Margin="4 2"
+                    Height="22"
+                    BorderThickness="1"
+                    Text="{Binding MTCPhone , UpdateSourceTrigger=PropertyChanged}"
+                    Mask="(000) 000-0000"
+                    />
+            </StackPanel>
+            <Separator 
+                Margin="5"
+                Height="1"/>
+            <Label 
+                FontWeight="Bold"
+                Content="Ставка"/>
+            <StackPanel
+                Margin="5 0 0 0"
+                Orientation="Horizontal">
+                <TextBlock Text="Бюджет:"/>
+
+                <xctk:DecimalUpDown
+                    Foreground="#444444"
+                    Background="#FFFFFF"
+                    Padding="4 2"
+                    Margin="4 2"
+                    Height="22"
+                    BorderThickness="1"
+                    
+                    FormatString="F2"
+                    Value="{ Binding CountBudget , UpdateSourceTrigger=PropertyChanged}" 
+                    Increment="0.1" 
+                    Maximum="1.9"
+                    Minimum="0.0"
+                    />
+
+                <TextBlock Text="Не Бюджет:"/>
+                <xctk:DecimalUpDown
+                     Foreground="#444444"
+                    Background="#FFFFFF"
+                    Padding="4 2"
+                    Margin="4 2"
+                    Height="22"
+                    BorderThickness="1"
+                    
+                    FormatString="F2"
+                    Value="{Binding CountNoBudget , UpdateSourceTrigger=PropertyChanged}" 
+                    Increment="0.1" 
+                    Maximum="1.9"
+                    Minimum="0.0"
+                   
+                    />
+
+            </StackPanel>
+            <Separator 
+                Margin="5"
+                Height="1"/>
+            <Label 
+                FontWeight="Bold"
+                Content="Дата приёма на работу"/>
+            <DatePicker Margin="4 2 4 2" 
+                        SelectedDate="{Binding DateWorking ,
+                        UpdateSourceTrigger=PropertyChanged}"/>
+            <Label 
+                FontWeight="Bold"
+                Content="Тип контракта"/>
+            <ComboBox 
+                    IsEditable="True"
+                    ItemsSource="{Binding Contracts}"
+                    DisplayMemberPath="Name"
+                    SelectedValuePath="Name"
+                    SelectedItem="{Binding SelectedContract}"
+                    SelectedValue="{Binding SelectedContract.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+                    />
+            <Label 
+                FontWeight="Bold"
+                Content="Выбрать приказ (приёма на работу)"/>
+            <ComboBox 
+                    IsEditable="True"
+                    ItemsSource="{Binding Orders}"
+                    DisplayMemberPath="Name"
+                    SelectedValuePath="Name"
+                    SelectedItem="{Binding SelectedOrders}"
+                    SelectedValue="{Binding SelectedOrders.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+                    />
+            <Button
+                Margin="5"
+                HorizontalAlignment="Right"
+                Width="80"
+                Command="{Binding CloseWin}"
+                CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome
+                                Height="12"
+                                Margin="0 0 5 0"
+                                Icon="Solid_Plus"
+                                />
+                    <TextBlock Text="Создать"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
+    </Grid>
+</Window>

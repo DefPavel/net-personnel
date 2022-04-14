@@ -1,8 +1,4 @@
-﻿using System.IO;
-using System.Net;
-using System.Windows.Input;
-
-namespace AlphaPersonel.ViewModels;
+﻿namespace AlphaPersonel.ViewModels;
 
 internal class LoginViewModel : BaseViewModel
 {
@@ -78,10 +74,7 @@ internal class LoginViewModel : BaseViewModel
                     using StreamReader reader = new(response.GetResponseStream());
                     if (reader != null)
                     {
-                        account = JsonSerializer.Deserialize<Users>(await reader.ReadToEndAsync())
-                            ?? throw new NullReferenceException();
-
-                        ErrorMessage = account!.Error!.Ru;
+                        ErrorMessage = await reader.ReadToEndAsync();
                     }
                 }
             }
