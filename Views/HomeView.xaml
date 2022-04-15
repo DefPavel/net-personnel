@@ -509,7 +509,8 @@
                                             <fa:ImageAwesome
                                                 PrimaryColor="#444444"
                                                 Height="12"
-                                                Margin="0 0 0 0"
+                                                 Width="12"
+                                                Margin="1 0 1 1"
                                                 Icon="Regular_User"
                                                  />
                                         </Button>
@@ -522,11 +523,12 @@
                                             <fa:ImageAwesome
                                                 PrimaryColor="#444444"
                                                 Height="12"
-                                                Margin="0 0 0 0"
+                                                Width="12"
+                                                Margin="1 0 1 1"
                                                 Icon="Regular_AddressCard"
                                                  />
                                         </Button>
-                                        <Button  Command="{Binding GetPersonsToDepartment}">
+                                        <Button  Command="{Binding OpenDeletePerson}">
                                             <Button.ToolTip>
                                                 <ToolTip>
                                                     Уволить персону
@@ -536,7 +538,8 @@
                                             <fa:ImageAwesome
                                                 PrimaryColor="#444444"
                                                 Height="12"
-                                                Margin="0 0 0 0"
+                                                Width="12"
+                                                Margin="1 0 1 1"
                                                 Icon="Solid_Trash"
                                                  />
                                         </Button>
@@ -593,6 +596,9 @@
                                         <DataGridCheckBoxColumn
                                             Header="НПП"
                                             Binding="{Binding IsPed ,TargetNullValue={x:Null}}"/>
+                                        <DataGridCheckBoxColumn
+                                            Header="Осн.место"
+                                            Binding="{Binding IsMain ,TargetNullValue={x:Null}}"/>
                                         <DataGridCheckBoxColumn
                                             Header="Студент"
                                             Binding="{Binding IsStudent ,TargetNullValue={x:Null}}"/>

@@ -1,11 +1,5 @@
-﻿
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO;
+﻿using AlphaPersonel.Views.Models;
 using System.Linq;
-using System.Net;
-using System.Windows.Input;
-
 namespace AlphaPersonel.ViewModels;
 
 internal class HomeViewModel : BaseViewModel
@@ -21,7 +15,7 @@ internal class HomeViewModel : BaseViewModel
         _User = account;
         this.navigationStore = navigationStore;
         _SelectedItem = departments;
-        //ApiGetPersons(departments);
+        ApiGetPersons(departments);
     }
 
     #region Свойства
@@ -291,6 +285,9 @@ internal class HomeViewModel : BaseViewModel
     private ICommand? _OpenAddPerson;
     public ICommand OpenAddPerson => _OpenAddPerson ??= new LambdaCommand(AddPerson, _ => SelectedItem is not null);
 
+    private ICommand? _OpenDeletePerson;
+    public ICommand OpenDeletePerson => _OpenDeletePerson ??= new LambdaCommand(DeletePerson, _ => SelectedItem is not null);
+
     #endregion
 
     #region Логика
@@ -301,6 +298,17 @@ internal class HomeViewModel : BaseViewModel
         AddPersonVeiwModel viewModel = new(_User, _SelectedItem!.Id);
         AddPersonView view = new() { DataContext = viewModel };
         view.ShowDialog();
+        // Обновить данные
+        ApiGetPersons(p);
+    }
+    // Открыть модальное окно на удаление человека
+    private void DeletePerson(object p)
+    {
+        DeletePersonViewModel viewModel = new(_User, _SelectedPerson!, SelectedItem!);
+        DeleteView view = new() { DataContext = viewModel };
+        view.ShowDialog();
+        // Обновить данные
+        ApiGetPersons(p);
     }
     private void OpenTypeVacationView(object p)
     {

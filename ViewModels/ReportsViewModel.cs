@@ -1,4 +1,6 @@
-﻿namespace AlphaPersonel.ViewModels;
+﻿using System.Linq;
+
+namespace AlphaPersonel.ViewModels;
 public enum TypeReport
 {
     IsPed = 1,
@@ -199,7 +201,102 @@ internal class ReportsViewModel : BaseViewModel
                 {
                     Name = "Список всех сотрудников",
                     Url = "/reports/pers/persons/"
-                }
+                },
+                new Report
+                {
+                    Name = "Список всех сотрудников(Только Мужчины)",
+                    Url = "/reports/pers/persons/male/"
+                },
+                new Report
+                {
+                    Name = "Список всех сотрудников(Только Женщины)",
+                    Url = "/reports/pers/persons/female/"
+                },
+                new Report
+                {
+                    Name = "Список всех сотрудников(Студенты)",
+                    Url = "/reports/pers/persons/student/"
+                },
+                new Report
+                {
+                    Name = "Список всех сотрудников(Аспиранты)",
+                    Url = "/reports/pers/persons/graduate/"
+                },
+                new Report
+                {
+                    Name = "Список всех сотрудников(Пенсионеры)",
+                    Url = "/reports/pers/persons/persioner"
+                },
+                new Report
+                {
+                    Name = "Список сотрудников-инвалидов",
+                    Url = "/reports/pers/persons/invalids/"
+                },
+                new Report
+                {
+                    Name = "Список всех сотрудников(Не ЛГПУ)",
+                    Url = "/reports/pers/persons/no_lgpu/"
+                },
+                new Report
+                {
+                    Name = "Список академиков и членов корреспондентов",
+                    Url = "/reports/pers/persons/academic/"
+                },
+                new Report
+                {
+                    Name = "Список Принятых Сотрудников",
+                    Url = "/reports/pers/persons/insert/"
+                },
+                new Report
+                {
+                    Name = "Список Сотрудников(Юбиляров)",
+                    Url = "/reports/pers/persons/jubilee/"
+                },
+                new Report
+                {
+                    Name = "Список всех сотрудников(Имеющих русский паспорт)",
+                    Url = "/reports/pers/persons/passport_rus/"
+                },
+                new Report
+                {
+                    Name = "Список всех сотрудников(Не имеющих паспорт ЛНР)",
+                    Url = "/reports/pers/persons/passport_no_lnr/"
+                },
+                new Report
+                {
+                    Name = "Список всех сотрудников(Имеющие паспорт ЛНР)",
+                    Url = "/reports/pers/persons/passport_lnr/"
+                },
+                new Report
+                {
+                    Name = "Список всех сотрудников(У которорых отсутствует справка о несудимости)",
+                    Url = "/reports/pers/persons/passport_lnr/"
+                },
+                new Report
+                {
+                    Name = "Список Награжденных",
+                    Url = "/reports/pers/persons/rewarding/"
+                },
+                new Report
+                {
+                    Name = "Список деканов и директоров",
+                    Url = "/reports/pers/persons/director/"
+                },
+                 new Report
+                {
+                    Name = "Повышение квалификации(Методистов)",
+                    Url = "/reports/pers/persons/metodist/"
+                },
+                  new Report
+                {
+                    Name = "Список Профессоров и Докторов",
+                    Url = "/reports/pers/persons/doc_prof/"
+                },
+                  new Report
+                {
+                    Name = "Дни рождения руководства",
+                    Url = "/reports/pers/persons/birthdays/"
+                },
             };
     }
 

@@ -38,6 +38,11 @@ internal class Persons
     [JsonPropertyName("adress")]
     public string Adress { get; set; } = string.Empty;
 
+    [JsonPropertyName("data_start_contract")]
+    public DateTime? StartDateContract { get; set; } 
+    [JsonPropertyName("data_end_contract")]
+    public DateTime? EndDateContract { get; set; } 
+
     private string? _Photo;
     [JsonPropertyName("photo")]
     public string Photo
@@ -191,6 +196,15 @@ internal class Persons
 
     [JsonPropertyName("name_depart")]
     public string DepartmentName { get; set; } = string.Empty;
+
+    [JsonPropertyName("id_contract")]
+    public int IdContract { get; set; }
+
+    [JsonPropertyName("id_person_position")]
+    public int IdPersonPosition { get; set; }
+
+    [JsonPropertyName("type_contract")]
+    public string Contract { get; set; } = string.Empty;
 
     private readonly string _UrlStorage = ConfigurationManager.AppSettings["storage"] 
         ?? throw new NullReferenceException("Uninitialized property: " + nameof(_UrlStorage));
