@@ -411,6 +411,7 @@
                                     AlternatingRowBackground="#e1eff9"
                                     IsReadOnly="True"    
                                     AutoGenerateColumns="False"
+                                     SelectedItem="{Binding SelectedPosition}"
                                     ItemsSource="{Binding SelectedPerson.ArrayPosition}"
                                     Margin="5">
                                     <DataGrid.Columns>
@@ -2371,6 +2372,7 @@
                     Content="Личная карта"/>
                 <Button 
                     Margin="5 0 0 5"
+                    Command="{Binding OpenreportSpravka}"
                     Content="Справка с места работы"/>
             </StackPanel>
 

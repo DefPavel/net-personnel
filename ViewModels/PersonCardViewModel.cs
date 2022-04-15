@@ -104,6 +104,14 @@ internal class PersonCardViewModel : BaseViewModel
         set => Set(ref _SelectedFamily, value);
 
     }
+
+    private Position? _SelectedPosition;
+    public Position? SelectedPosition
+    {
+        get => _SelectedPosition;
+        set => Set(ref _SelectedPosition, value);
+
+    }
     private Invalid? _SelectedInvalid;
     public Invalid? SelectedInvalid
     {
@@ -352,6 +360,9 @@ internal class PersonCardViewModel : BaseViewModel
     private ICommand? _OpenreportCard;
     public ICommand OpenReportCard => _OpenreportCard ??= new LambdaCommand(ReportPersonCard);
 
+    private ICommand? _OpenreportSpravka;
+    public ICommand OpenreportSpravka => _OpenreportSpravka ??= new LambdaCommand(ReportSpravkaCard, _ => SelectedPosition != null);
+
     private ICommand? _LoadedListPerson;
     public ICommand LoadedListPerson => _LoadedListPerson ??= new LambdaCommand(ApiGetListPersons);
 
@@ -491,6 +502,53 @@ internal class PersonCardViewModel : BaseViewModel
 
     #region Основная Логика
 
+    // Распечатать Справку с места работы
+    private async void ReportSpravkaCard(object p)
+    {
+        try
+        {
+            if (_User!.Token == null) return;
+
+            IsLoading = true;
+
+            object payload = new
+            {
+                id_person = _SelectedPerson!.Id,
+                id_person_position = _SelectedPosition!.Id,
+
+            };
+            await ReportService.JsonPostWithToken(
+                    payload,
+                    token: _User!.Token,
+                    queryUrl: "/reports/pers/persons/spravka/",
+                    HttpMethod: "POST",
+                    ReportName: "Справка с места роботы");
+
+            IsLoading = false;
+
+        }
+        catch (WebException ex)
+        {
+
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    if (reader != null)
+                    {
+                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                    }
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+
     // Распечатать личную карту
     private async void ReportPersonCard(object p)
     {
@@ -502,7 +560,7 @@ internal class PersonCardViewModel : BaseViewModel
 
             await ReportService.JsonDeserializeWithToken(
                     token: _User!.Token,
-                    queryUrl: "/reports/pers/card/" + _SelectedPerson!.Id,
+                    queryUrl: "/reports/pers/persons/card/" + _SelectedPerson!.Id,
                     HttpMethod: "GET",
                     ReportName: "Личная карта");
 

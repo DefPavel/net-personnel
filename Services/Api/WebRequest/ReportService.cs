@@ -36,6 +36,31 @@ internal static class ReportService
             inputStream.CopyTo(outputFileStream);
         }
     }
+    public static async Task JsonPostWithToken(object obj, string token, string queryUrl, string HttpMethod, string ReportName)
+    {
+        HttpWebRequest req = (HttpWebRequest)WebRequest.Create(_ApiUrl + queryUrl);     // Создаём запрос
+        req.Method = HttpMethod;                                                        // Выбираем метод запроса
+        req.Headers.Add("auth-token", token);
+        req.Accept = "application/json";
+
+        await using (StreamWriter streamWriter = new(req.GetRequestStream()))
+        {
+            req.ContentType = "application/json";
+            string json = JsonSerializer.Serialize(obj);
+            await streamWriter.WriteAsync(json);
+            // Записывает тело
+            streamWriter.Close();
+        }
+
+        using WebResponse response = await req.GetResponseAsync();
+
+        await using Stream responseStream = response.GetResponseStream();
+
+        // Записываем файл в выбранный путь пользователем
+        SaveReport(responseStream, ReportName);
+        // Записываем файл
+        //SaveStreamAsFile("reports", responseStream, "228.docx");
+    }
     public static async Task JsonDeserializeWithToken(string token, string queryUrl, string HttpMethod, string ReportName)
     {
         HttpWebRequest req = (HttpWebRequest)WebRequest.Create(_ApiUrl + queryUrl);     // Создаём запрос
