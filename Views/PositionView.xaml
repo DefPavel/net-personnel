@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
              xmlns:viewmodels="clr-namespace:AlphaPersonel.ViewModels"
-             xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" xmlns:fa="http://schemas.fontawesome.com/icons/svg"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
+             xmlns:fa="http://schemas.fontawesome.com/icons/svg"
              d:DataContext="{d:DesignInstance Type=viewmodels:PositionViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
@@ -129,20 +130,83 @@
                 </StackPanel>
 
                 <Label Content="Лимит отпуска"/>
-                <TextBox Text="{Binding SelectedPosition.HolidayLimit}"/>
+                <xctk:DecimalUpDown
+                    Foreground="#444444"
+                    Background="#FFFFFF"
+                    Padding="4 2"
+                    Margin="4 2"
+                    Height="22"
+                    BorderThickness="1"
+                    Increment="28" 
+                    Minimum="0"
+                    Value="{ Binding  SelectedPosition.HolidayLimit , UpdateSourceTrigger=PropertyChanged}" 
+                    />
+               
                 <Label Content="Оклад Бюджет"/>
-                <TextBox Text="{Binding SelectedPosition.Oklad_B}"/>
+                <xctk:DecimalUpDown
+                    Foreground="#444444"
+                    Background="#FFFFFF"
+                    Padding="4 2"
+                    Margin="4 2"
+                    Height="22"
+                    BorderThickness="1"
+                    
+                    FormatString="F2"
+                    Value="{Binding SelectedPosition.Oklad_B , UpdateSourceTrigger=PropertyChanged}" 
+                    Increment="0.1" 
+                    
+                    Minimum="0.0"
+                    />
                 <Label Content="Оклад Внебюджет"/>
-                <TextBox Text="{Binding SelectedPosition.Oklad_NB}"/>
+                <xctk:DecimalUpDown
+                    Foreground="#444444"
+                    Background="#FFFFFF"
+                    Padding="4 2"
+                    Margin="4 2"
+                    Height="22"
+                    BorderThickness="1"
+                    
+                    FormatString="F2"
+                    Value="{Binding SelectedPosition.Oklad_NB , UpdateSourceTrigger=PropertyChanged}" 
+                    Increment="0.1" 
+                    
+                    Minimum="0.0"
+                    />
+                
                 <Label Content="Количество Бюджет"/>
-                <TextBox Text="{Binding SelectedPosition.Count_B}"/>
+                <xctk:DecimalUpDown
+                    Foreground="#444444"
+                    Background="#FFFFFF"
+                    Padding="4 2"
+                    Margin="4 2"
+                    Height="22"
+                    BorderThickness="1"
+                    
+                    FormatString="F2"
+                    Value="{Binding SelectedPosition.Count_B , UpdateSourceTrigger=PropertyChanged}" 
+                    Increment="0.1" 
+                    
+                    Minimum="0.0"
+                    />
                 <Label Content="Количество Внебюджет"/>
-                <TextBox Text="{Binding SelectedPosition.Count_NB}"/>
-
+                <xctk:DecimalUpDown
+                    Foreground="#444444"
+                    Background="#FFFFFF"
+                    Padding="4 2"
+                    Margin="4 2"
+                    Height="22"
+                    BorderThickness="1"
+                    
+                    FormatString="F2"
+                    Value="{Binding SelectedPosition.Count_NB , UpdateSourceTrigger=PropertyChanged}" 
+                    Increment="0.1" 
+                    
+                    Minimum="0.0"
+                    />
                 <StackPanel Margin="0 5 5 5" Orientation="Horizontal">
                     <Button Command="{Binding AddNew}" CommandParameter="{Binding SelectedPosition}" Content="Создать"/>
                     <Button Command="{Binding Save}" CommandParameter="{Binding SelectedPosition}"  Content="Сохранить"/>
-                    <Button Command="{Binding }" CommandParameter="{Binding SelectedPosition}" Content="Удалить"/>
+                    <Button Command="{Binding Delete }" CommandParameter="{Binding SelectedPosition}" Content="Удалить"/>
                 </StackPanel>
             </StackPanel>
         </GroupBox>

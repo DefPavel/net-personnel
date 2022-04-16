@@ -138,6 +138,13 @@ internal class PersonCardViewModel : BaseViewModel
 
     }
 
+    private OldSurname? _SelectedOldSurname;
+    public OldSurname? SelectedOldSurname
+    {
+        get => _SelectedOldSurname;
+        set => Set(ref _SelectedOldSurname, value);
+    }
+
     private Rewarding? _SelectedRewarding;
     public Rewarding? SelectedRewarding
     {
@@ -257,6 +264,13 @@ internal class PersonCardViewModel : BaseViewModel
     {
         get => _OrderRewarding;
         set => Set(ref _OrderRewarding, value);
+    }
+    // Приказы для смены фамилии
+    private IEnumerable<OldSurname>? _OrderOldSurname;
+    public IEnumerable<OldSurname>? OrderOldSurname
+    {
+        get => _OrderOldSurname;
+        set => Set(ref _OrderOldSurname, value);
     }
     // мед.категории
     private IEnumerable<MedicalCategory>? _MedicalCategory;
@@ -846,6 +860,8 @@ internal class PersonCardViewModel : BaseViewModel
             TypeRewarding = await QueryService.JsonDeserializeWithToken<Rewarding>(token: _User!.Token, "/pers/rewarding/type/get", "GET");
             // Приказы для награждения
             OrderRewarding = await QueryService.JsonDeserializeWithToken<Rewarding>(token: _User!.Token, "/pers/order/get/9", "GET");
+            // Приказы для награждения
+            OrderOldSurname = await QueryService.JsonDeserializeWithToken<OldSurname>(token: _User!.Token, "/pers/order/get/5", "GET");
             // Мед.категория 
             MedicalCategory = await QueryService.JsonDeserializeWithToken<MedicalCategory>(token: _User!.Token, "/pers/medical/type/get", "GET");
             // Ученая степень

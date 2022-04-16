@@ -9,6 +9,8 @@ internal class Position
     //TODO: Потом поменяй на объект в API чтобы можно было через combobox выбирать отдел
     [JsonPropertyName("name_depart")] public string DepartmentName { get; set; } = string.Empty;
 
+    [JsonPropertyName("id_depart")] public int IdDepartment { get; set; } = 0;
+
     // Является ли должность педагогической
     [JsonPropertyName("is_ped")] public bool IsPed { get; set; }
 

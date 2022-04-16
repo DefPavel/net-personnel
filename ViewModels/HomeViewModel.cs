@@ -285,6 +285,15 @@ internal class HomeViewModel : BaseViewModel
     private ICommand? _OpenAddPerson;
     public ICommand OpenAddPerson => _OpenAddPerson ??= new LambdaCommand(AddPerson, _ => SelectedItem is not null);
 
+    private ICommand? _AddPosition;
+    public ICommand AddPosition => _AddPosition ??= new LambdaCommand(AddPositionToDepartmentAsync);
+
+    private ICommand? _SavePosition;
+    public ICommand SavePosition => _SavePosition ??= new LambdaCommand(UpdatePosition , _ => SelectedPosition is not null);
+
+    private ICommand? _DeletePosition;
+    public ICommand DeletePosition => _DeletePosition ??= new LambdaCommand(DeletePositionApi, _ => SelectedPosition is not null);
+
     private ICommand? _OpenDeletePerson;
     public ICommand OpenDeletePerson => _OpenDeletePerson ??= new LambdaCommand(DeletePerson, _ => SelectedItem is not null);
 
@@ -421,6 +430,119 @@ internal class HomeViewModel : BaseViewModel
 
             //Departments = new ObservableCollection<Departments>(Departments.OrderBy(x => x.ParentId));
 
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    if (reader != null)
+                    {
+                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                    }
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+    // Создать должность на Отделе
+    private async void AddPositionToDepartmentAsync(object p)
+    {
+        try
+        {
+            Position dep = new()
+            {
+                Name = "Новая должность",
+                IsPed = true,
+                HolidayLimit = 28,
+                DepartmentName = SelectedItem.Name,
+                IdDepartment = SelectedItem.Id,
+                Phone = "Не указано",
+            };
+            Positions.Insert(0 , dep);
+            SelectedPosition = dep;
+            //SelectedPerson.ArrayPosition.Insert(0, dep);
+            //SelectedPosition = dep;
+
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    if (reader != null)
+                    {
+                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                    }
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+    }
+    private async void UpdatePosition(object p)
+    {
+        try
+        {
+            if (_User.Token == null)
+            {
+                return;
+            }
+
+
+            if (SelectedPosition!.Id > 0)
+            {
+                SelectedPosition.IsPed = RadioIsPed;
+                //Изменить уже текущие данные
+                await QueryService.JsonSerializeWithToken(token: _User!.Token, "/pers/position/rename", "POST", SelectedPosition);
+            }
+            else
+            {
+                SelectedPosition.IsPed = RadioIsPed;
+                // Создать новую запись  
+                await QueryService.JsonSerializeWithToken(token: _User!.Token, "/pers/position/add", "POST", SelectedPosition);
+                // Обновить данные
+                Positions = await QueryService.JsonDeserializeWithToken<Position>(token: _User!.Token, "/pers/position/get/" + SelectedItem!.Id, "GET");
+            }
+            _ = MessageBox.Show("Данные успешно сохраненны");
+        }
+        catch (System.Net.WebException ex)
+        {
+            if (ex.Response != null)
+            {
+                using StreamReader reader = new(ex.Response.GetResponseStream());
+                _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+            }
+        }
+    }
+    private async void DeletePositionApi(object p)
+    {
+        try
+        {
+            if (_User.Token == null)
+            {
+                return;
+            }
+
+            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/position/del/" + SelectedPosition!.Id, "DELETE", SelectedPosition);
+                //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
+
+                _ = _Positions!.Remove(SelectedPosition);
+            }
         }
         catch (WebException ex)
         {

@@ -179,6 +179,9 @@ internal class Persons
     [JsonPropertyName("accademic")]
     public ObservableCollection<MemberAcademic>? ArrayMeberAcademic { get; set; }
 
+    [JsonPropertyName("changeSurname")]
+    public ObservableCollection<OldSurname>? ArrayChangeSurname { get; set; }
+
 
 
 

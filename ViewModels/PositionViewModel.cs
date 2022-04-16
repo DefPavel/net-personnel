@@ -111,7 +111,7 @@ internal class PositionViewModel : BaseViewModel
     public ICommand AddNew => _AddNew ??= new LambdaCommand(AddPosition);
 
     private ICommand? _Delete;
-    public ICommand Delete => _Delete ??= new LambdaCommand(UpdatePosition, CanUpdate);
+    public ICommand Delete => _Delete ??= new LambdaCommand(DeletePosition, CanUpdate);
 
     private ICommand? _Save;
 
@@ -145,6 +145,8 @@ internal class PositionViewModel : BaseViewModel
             Position position = new()
             {
                 Name = "Новая Должность",
+                HolidayLimit = 28,
+                IsPed = true,
 
             };
             Positions!.Insert(0, position);
@@ -166,15 +168,25 @@ internal class PositionViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null) return;
+            if (_User.Token == null)
+            {
+                return;
+            }
+
+
             if (SelectedPosition!.Id > 0)
             {
-                //await _Api.UpdatePosition(_User.Token, SelectedPosition);
+                SelectedPosition.IsPed = RadioIsPed;
+                //Изменить уже текущие данные
+                await QueryService.JsonSerializeWithToken(token: _User!.Token, "/pers/position/rename", "POST", SelectedPosition);
             }
             else
             {
-                // Создать новую запись отдела 
-                //await _Api.AddPosition(_User.Token, SelectedPosition);
+                SelectedPosition.IsPed = RadioIsPed;
+                // Создать новую запись  
+                await QueryService.JsonSerializeWithToken(token: _User!.Token, "/pers/position/add", "POST", SelectedPosition);
+                // Обновить данные
+                Positions = await QueryService.JsonDeserializeWithToken<Position>(_User!.Token, "/pers/position/all", "GET");
             }
             _ = MessageBox.Show("Данные успешно сохраненны");
         }
@@ -184,6 +196,44 @@ internal class PositionViewModel : BaseViewModel
             {
                 using StreamReader reader = new(ex.Response.GetResponseStream());
                 _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+            }
+        }
+    }
+
+    private async void DeletePosition(object p)
+    {
+        try
+        {
+            if (_User.Token == null)
+            {
+                return;
+            }
+
+            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/position/del/" + SelectedPosition!.Id, "DELETE", SelectedPosition);
+                //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
+
+                _ = _Position!.Remove(SelectedPosition);
+            }
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    if (reader != null)
+                    {
+                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                    }
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

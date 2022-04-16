@@ -9,6 +9,7 @@
         xmlns:fa="http://schemas.fontawesome.com/icons/svg"
         d:DataContext="{d:DesignInstance Type=viewmodels:AddPersonVeiwModel}"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="Добавить новую запись сотрудника" 
         Height="705" Width="450">
     
