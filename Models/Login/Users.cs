@@ -16,18 +16,12 @@ internal class Users
     [JsonPropertyName("id_module")]
     public ModulesProject IdModules { get; set; } // Модуль программы
 
-    [JsonPropertyName("group_name")]
-    public string GroupName { get; set; } = string.Empty; // К какой группе пользователей относиться пользователь
+    [JsonPropertyName("groups")]
+    public Groups[]? GroupName { get; set; } // К какой группе пользователей относиться пользователь
 
     [JsonPropertyName("grants")]
     public Grants[]? Grants { get; set; }// Права доступа пользователя
 
-    [JsonPropertyName("code")]
-    public System.Net.HttpStatusCode StatusCode { get; set; } // Статус запроса
-
-    [JsonPropertyName("resp")]
-    public ErrorLanguage? Error { get; set; } // Вывод об ошибки 
-
-    public string FullName => $"{UserName}@{GroupName}";
+    public string FullName => $"{UserName}@root";
 }
 

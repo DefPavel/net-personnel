@@ -81,6 +81,16 @@ internal class PersonCardViewModel : BaseViewModel
 
     private readonly NavigationStore _NavigationStore;
 
+
+   /* private BitmapImage? _Avatar = new();
+    public BitmapImage? Avatar
+    {
+        get => _Avatar;
+        set => Set(ref _Avatar, value);
+
+    }
+   */
+
     private Users? _User;
     public Users? User
     {
@@ -704,6 +714,14 @@ internal class PersonCardViewModel : BaseViewModel
 
                 // Делаем повторный запрос GET
                 SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(_User!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
+
+                /*Avatar.BeginInit();
+                Avatar.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                Avatar.CacheOption = BitmapCacheOption.OnLoad;
+                Avatar.UriSource = new Uri(SelectedPerson.Photo);
+                Avatar.EndInit();
+                */
+                
 
                 IsLoading = false;
             }

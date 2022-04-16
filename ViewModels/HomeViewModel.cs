@@ -50,8 +50,8 @@ internal class HomeViewModel : BaseViewModel
         get => _User;
         set => Set(ref _User, value);
     }
-    // Блокировать некоторые возмости если пользователь не имеет права администратора
-    public bool IsAdministrator => _User.Grants!.Contains(Grants.Administrator);  // Будет работать если дать права на God
+    // Права на изменение данных 
+    public bool IsAdministrator => _User.Grants!.FirstOrDefault(x => x.Name.Contains("изменение"))?.Id == 2; 
     public bool IsReadeOnly => !IsAdministrator; // Маленький костыль для свойства только чтения
                                                  // Массив Отделов
     private ObservableCollection<Departments>? _Departments;

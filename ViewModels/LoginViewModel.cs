@@ -59,7 +59,7 @@ internal class LoginViewModel : BaseViewModel
         {
             account = await SignIn.Authentication(username: UserName!, password: Password!);
 
-            if (account.StatusCode == HttpStatusCode.OK)
+            if (account.Token != null)
             {
                 navigationStore.CurrentViewModel = new HomeViewModel(account, navigationStore);
             }
