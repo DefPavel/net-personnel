@@ -1,0 +1,95 @@
+﻿<Window x:Class="AlphaPersonel.Views.AddPositionView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Создать новую должность" 
+        Height="300"
+        Width="350">
+    <Grid>
+        <StackPanel Margin="5">
+            <TextBlock 
+                Style="{StaticResource Header30}"
+                Text="Добавить должность"/>
+            <Label
+                Content="Выбрать отдел"
+                FontWeight="Bold"/>
+            <ComboBox
+                   
+                    ItemsSource="{Binding Positions}"
+                    DisplayMemberPath="Name"
+                    SelectedValuePath="Name"
+                    SelectedItem="{Binding SelectedPositions}"
+                    SelectedValue="{Binding SelectedPositions.Name , Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"
+            />
+            <Label
+                Content="Выбрать должность"
+                FontWeight="Bold"/>
+            <ComboBox
+                   
+                    ItemsSource="{Binding Positions}"
+                    DisplayMemberPath="Name"
+                    SelectedValuePath="Name"
+                    SelectedItem="{Binding SelectedPositions}"
+                    SelectedValue="{Binding SelectedPositions.Name , Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"
+            />
+            <Separator 
+                Margin="5"
+                Height="1"/>
+            <Label 
+                FontWeight="Bold"
+                Content="Ставка"/>
+            <StackPanel
+                Margin="5 0 0 0"
+                Orientation="Horizontal">
+                <TextBlock Text="Бюджет:"/>
+
+                <xctk:DecimalUpDown
+                    Foreground="#444444"
+                    Background="#FFFFFF"
+                    Padding="4 2"
+                    Margin="4 2"
+                    Height="22"
+                    BorderThickness="1"
+                    
+                    FormatString="F2"
+                    Value="{ Binding CountBudget , UpdateSourceTrigger=PropertyChanged}" 
+                    Increment="0.1" 
+                    Maximum="1.9"
+                    Minimum="0.0"
+                    />
+
+                <TextBlock Text="Не Бюджет:"/>
+                <xctk:DecimalUpDown
+                     Foreground="#444444"
+                    Background="#FFFFFF"
+                    Padding="4 2"
+                    Margin="4 2"
+                    Height="22"
+                    BorderThickness="1"
+                    
+                    FormatString="F2"
+                    Value="{Binding CountNoBudget , UpdateSourceTrigger=PropertyChanged}" 
+                    Increment="0.1" 
+                    Maximum="1.9"
+                    Minimum="0.0"
+                   
+                    />
+            </StackPanel>
+            <Separator 
+                Margin="5"
+                Height="1"/>
+            <Button  
+                Margin="5"
+                Width="70"
+                HorizontalAlignment="Right"
+                Command="{Binding CloseWin}"
+                CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                Content="Ок"/>
+        </StackPanel>
+        
+    </Grid>
+</Window>

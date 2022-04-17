@@ -475,7 +475,7 @@
                                         Margin="0 0 2 0"
                                         HorizontalAlignment="Right"
                                         Orientation="Horizontal">
-                                        <Button>
+                                        <Button Command="{Binding OpenAddPosition}">
                                             <Button.ToolTip>
                                                 <ToolTip>
                                                     Создать новую должность
@@ -1981,6 +1981,8 @@
                                             Margin="5"
                                             Grid.Column="1">
 
+                                                <Label Content="Серия и номер документа"/>
+                                                <TextBox Text="{Binding SeletedDegree.Document , UpdateSourceTrigger=PropertyChanged}"/>
                                                 <Label Content="Степень "/>
                                                 <ComboBox 
                                                 ItemsSource="{Binding TypeDegree}"
@@ -2011,9 +2013,9 @@
                                                 <TextBox Text="{Binding SeletedDegree.CountScientific}"/>
 
                                                 <StackPanel Orientation="Horizontal">
-                                                    <Button Content="Создать"/>
-                                                    <Button Content="Сохранить"/>
-                                                    <Button Content="Удалить"/>
+                                                    <Button Command="{Binding AddScience}" Content="Создать"/>
+                                                    <Button Command="{Binding SaveScience}" Content="Сохранить"/>
+                                                    <Button Command="{Binding DeleteScience}" Content="Удалить"/>
                                                 </StackPanel>
                                             </StackPanel>
                                         </Grid>

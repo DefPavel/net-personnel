@@ -385,6 +385,9 @@ internal class PersonCardViewModel : BaseViewModel
     private ICommand? _OpenreportCard;
     public ICommand OpenReportCard => _OpenreportCard ??= new LambdaCommand(ReportPersonCard);
 
+    private ICommand? _OpenAddPosition;
+    public ICommand OpenAddPosition => _OpenAddPosition ??= new LambdaCommand(AddPosition , _ => SelectedPerson != null);
+
     private ICommand? _OpenChangeSurname;
     public ICommand OpenChangeSurname => _OpenChangeSurname ??= new LambdaCommand(ChangeSurname , _ => SelectedPerson != null);
 
@@ -488,6 +491,17 @@ internal class PersonCardViewModel : BaseViewModel
     private ICommand? _DeleteQualification;
     public ICommand DeleteQualification => _DeleteQualification ??= new LambdaCommand(DeletealificationEducation, _ => SelectedQualification != null);
 
+
+    // Научная степень
+    private ICommand? _AddScience;
+    public ICommand AddScience => _AddScience ??= new LambdaCommand(AddScienceDegree);
+
+    private ICommand? _SaveScience;
+    public ICommand SaveScience => _SaveScience ??= new LambdaCommand(SaveScienceDegree, _ => SeletedDegree != null);
+
+    private ICommand? _DeleteScience;
+    public ICommand DeleteScience => _DeleteScience ??= new LambdaCommand(DeleteScienceDegree, _ => SeletedDegree != null);
+
     // Ученое звание
     private ICommand? _AddTitle;
     public ICommand AddTile => _AddTitle ??= new LambdaCommand(AddAcademicTitle);
@@ -580,6 +594,15 @@ internal class PersonCardViewModel : BaseViewModel
         }
     }
 
+
+    private void AddPosition(object p)
+    {
+        AddPositionViewModel viewModel = new(_User);
+        AddPositionView view = new() { DataContext = viewModel };
+        view.ShowDialog();
+        // Обновить данные
+        //ApiGetPersons(p);
+    }
     // Распечатать личную карту
     private async void ReportPersonCard(object p)
     {
@@ -1540,6 +1563,45 @@ internal class PersonCardViewModel : BaseViewModel
         }
     }
 
+    private async void AddScienceDegree(object p)
+    {
+        try
+        {
+            ScientificDegree order = new()
+            {
+               DateOfIssue = DateTime.Now,
+               Document = "№ 0000",
+               City = "Город",
+               Place = "Место",
+               ScientificBranch = "Отрасль",
+               ScientificSpecialty = "Специальность"
+
+            };
+            _SelectedPerson!.ArrayScientificDegree?.Insert(0, order);
+            SeletedDegree = order;
+
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    if (reader != null)
+                    {
+                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                    }
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+
     /* Ученое звание */
     private async void AddAcademicTitle(object p)
     {
@@ -1577,6 +1639,53 @@ internal class PersonCardViewModel : BaseViewModel
             }
         }
     }
+    private async void SaveScienceDegree(object p)
+    {
+        try
+        {
+            if (_User!.Token == null) return;
+
+            SeletedDegree!.IdPerson = SelectedPerson!.Id;
+
+            //SelectedRewarding!.IdOrder = 
+
+            if (SeletedDegree!.Id > 0)
+            {
+                // Изменить
+                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/scientific/rename", "POST", SeletedDegree);
+            }
+            else
+            {
+                // Создать
+                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/scientific/add", "POST", SeletedDegree);
+            }
+            // Информация о сотруднике
+            SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _User!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
+            _ = MessageBox.Show("Данные успешно сохраненны");
+
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    if (reader != null)
+                    {
+                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                    }
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+    }
+
     private async void SaveAcademicTitle(object p)
     {
         try
@@ -1623,6 +1732,45 @@ internal class PersonCardViewModel : BaseViewModel
         }
 
     }
+
+    private async void DeleteScienceDegree(object p)
+    {
+        try
+        {
+            if (_User!.Token == null)
+            {
+                return;
+            }
+
+            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/scientific/del/" + SeletedDegree!.Id, "DELETE", SeletedDegree);
+                //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
+
+                _ = _SelectedPerson!.ArrayScientificDegree!.Remove(SeletedDegree);
+            }
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    if (reader != null)
+                    {
+                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                    }
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+
     private async void DeleteAcademicTitle(object p)
     {
         try
