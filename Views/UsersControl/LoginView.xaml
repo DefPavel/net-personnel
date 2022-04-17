@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:viewmodels="clr-namespace:AlphaPersonel.ViewModels"
              xmlns:pwbx="clr-namespace:AlphaPersonel.Helpers"
-             xmlns:fa="http://schemas.fontawesome.com/icons/svg"
              d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -93,7 +92,7 @@
                     Content="{Binding ErrorMessage}"
                     HorizontalAlignment="Center"/>
 
-            <Button 
+            <!--<Button 
                 FontSize="12"
                 HorizontalAlignment="Right"
                 Width="80"
@@ -110,7 +109,33 @@
                         />
                     <TextBlock Text="Ввойти"/>
                 </StackPanel>
+            </Button>-->
+            <Button  
+                FontSize="13"
+                HorizontalAlignment="Right"
+                Width="80"
+                Grid.Column="1"
+                Command="{Binding Auth}"
+                Grid.Row="6">
+                <StackPanel 
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <Canvas 
+                        Height="13"
+                        Width="13">
+                        <Path
+                    Stretch="Uniform"
+                    Fill="#444444"
+                    Data="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"
+                    Width="13" 
+                    Height="13" />
+                    </Canvas>
+                    <TextBlock Text="Ввойти"/>
+
+                </StackPanel>
+                
             </Button>
+           
         </Grid>
     </Border>
 </UserControl>

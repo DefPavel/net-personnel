@@ -57,6 +57,14 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="SelectedIsEnabled" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding SelectedItem}" Value="{x:Null}">
+                <Setter Property="IsEnabled" Value="False" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="AccentTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
         <Setter Property="BorderBrush" Value="{StaticResource Accent.BackgroundBrush}"/>
         <Setter Property="Template">

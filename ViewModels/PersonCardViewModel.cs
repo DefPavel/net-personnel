@@ -1,5 +1,6 @@
 ﻿
 using AlphaPersonel.Models.Home;
+using AlphaPersonel.Views.Models;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -384,6 +385,9 @@ internal class PersonCardViewModel : BaseViewModel
     private ICommand? _OpenreportCard;
     public ICommand OpenReportCard => _OpenreportCard ??= new LambdaCommand(ReportPersonCard);
 
+    private ICommand? _OpenChangeSurname;
+    public ICommand OpenChangeSurname => _OpenChangeSurname ??= new LambdaCommand(ChangeSurname , _ => SelectedPerson != null);
+
     private ICommand? _OpenreportSpravka;
     public ICommand OpenreportSpravka => _OpenreportSpravka ??= new LambdaCommand(ReportSpravkaCard, _ => SelectedPosition != null);
 
@@ -401,6 +405,9 @@ internal class PersonCardViewModel : BaseViewModel
 
     private ICommand? _GetInfo;
     public ICommand GetInfo => _GetInfo ??= new LambdaCommand(ApiGetInformationToPerson, CanCommandExecute);
+
+    private ICommand? _GetPersonsToNppAll;
+    public ICommand GetPersonsToNppAll => _GetPersonsToNppAll ??= new LambdaCommand(GetNppPersonsAll);
 
     private ICommand? _GetPersonsToNpp;
     public ICommand GetPersonsToNpp => _GetPersonsToNpp ??= new LambdaCommand(GetNppPersons);
@@ -698,6 +705,27 @@ internal class PersonCardViewModel : BaseViewModel
             CollectionPerson.Filter = FilterIsNoNpp;
             CollectionPerson.Refresh();
         }
+    }
+    private void GetNppPersonsAll(object p)
+    {
+        if (CollectionPerson != null)
+        {
+            CollectionPerson.Filter = null;
+            CollectionPerson.Refresh();
+        }
+    }
+
+    private void ChangeSurname(object p)
+    {
+        ChangeSurnameViewModel viewModel = new(_User!, SelectedPerson!);
+        ChangeSurnameView view = new() { DataContext = viewModel };
+        view.ShowDialog();
+        ApiGetInformationToPerson(p);
+        ApiGetListAllPersonsAsync(p);
+        //SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _User!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
+        //PersonsList = await QueryService.JsonDeserializeWithToken<Persons>(token: _User!.Token, "/pers/person/get/all", "GET");
+
+
     }
 
     // Загрузка изображений на человека

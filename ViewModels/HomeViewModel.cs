@@ -297,6 +297,9 @@ internal class HomeViewModel : BaseViewModel
     private ICommand? _OpenDeletePerson;
     public ICommand OpenDeletePerson => _OpenDeletePerson ??= new LambdaCommand(DeletePerson, _ => SelectedItem is not null);
 
+    private ICommand? _RenameDepartment;
+    public ICommand RenameDepartment => _RenameDepartment ??= new LambdaCommand(UpdateDataDepartment, _ => SelectedItem is not null);
+
     #endregion
 
     #region Логика
@@ -427,6 +430,10 @@ internal class HomeViewModel : BaseViewModel
             }
 
             Departments = await QueryService.JsonDeserializeWithToken<Departments>(_User.Token, "/pers/tree/get", "GET");
+            if(SelectedItem != null)
+            {
+                ApiGetPersons(p);
+            }
 
             //Departments = new ObservableCollection<Departments>(Departments.OrderBy(x => x.ParentId));
 
@@ -456,17 +463,25 @@ internal class HomeViewModel : BaseViewModel
     {
         try
         {
-            Position dep = new()
+            if(SelectedItem != null)
             {
-                Name = "Новая должность",
-                IsPed = true,
-                HolidayLimit = 28,
-                DepartmentName = SelectedItem.Name,
-                IdDepartment = SelectedItem.Id,
-                Phone = "Не указано",
-            };
-            Positions.Insert(0 , dep);
-            SelectedPosition = dep;
+                Position dep = new()
+                {
+                    Name = "Новая должность",
+                    IsPed = true,
+                    HolidayLimit = 28,
+                    DepartmentName = SelectedItem.Name,
+                    IdDepartment = SelectedItem.Id,
+                    Phone = "Не указано",
+                };
+                Positions.Insert(0, dep);
+                SelectedPosition = dep;
+            }
+            else
+            {
+                _ = MessageBox.Show("Чтобы создать должность,необходимо выбрать отдел!","Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+           
             //SelectedPerson.ArrayPosition.Insert(0, dep);
             //SelectedPosition = dep;
 
@@ -492,6 +507,35 @@ internal class HomeViewModel : BaseViewModel
         }
 
     }
+
+    private async void UpdateDataDepartment(object p)
+    {
+        try
+        {
+            if (_User.Token == null)
+            {
+                return;
+            }
+
+            if (SelectedItem!.Id > 0)
+            {
+
+                //Изменить уже текущие данные
+                await QueryService.JsonSerializeWithToken(token: _User!.Token, "/pers/tree/rename/short/" + SelectedItem.Id, "POST", SelectedItem);
+            }
+           
+            _ = MessageBox.Show("Данные успешно сохраненны");
+           
+        }
+        catch (System.Net.WebException ex)
+        {
+            if (ex.Response != null)
+            {
+                using StreamReader reader = new(ex.Response.GetResponseStream());
+                _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+            }
+        }
+    }
     private async void UpdatePosition(object p)
     {
         try
@@ -513,9 +557,13 @@ internal class HomeViewModel : BaseViewModel
                 SelectedPosition.IsPed = RadioIsPed;
                 // Создать новую запись  
                 await QueryService.JsonSerializeWithToken(token: _User!.Token, "/pers/position/add", "POST", SelectedPosition);
-                // Обновить данные
-                Positions = await QueryService.JsonDeserializeWithToken<Position>(token: _User!.Token, "/pers/position/get/" + SelectedItem!.Id, "GET");
+                
             }
+            // Обновить данные
+            Positions = await QueryService.JsonDeserializeWithToken<Position>(token: _User!.Token, "/pers/position/get/" + SelectedItem!.Id, "GET");
+            // Вывести сотрудников данного отдела
+            Persons = await QueryService.JsonDeserializeWithToken<Persons>(token: _User!.Token, "/pers/person/get/department/" + SelectedItem.Id, "GET");
+
             _ = MessageBox.Show("Данные успешно сохраненны");
         }
         catch (System.Net.WebException ex)

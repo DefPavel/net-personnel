@@ -55,7 +55,13 @@
                 Margin="5 0 5 0"
                 Orientation="Horizontal"
                 Grid.Row="1">
-                <RadioButton Margin="5 0 5 0" IsChecked="True" Content="Обе категории"/>
+                <RadioButton Margin="5 0 5 0" IsChecked="True" Content="Обе категории">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Checked">
+                            <i:InvokeCommandAction Command="{ Binding GetPersonsToNppAll }"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </RadioButton>
                 <RadioButton Margin="5 0 5 0"  Content="НПП">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Checked">
@@ -164,8 +170,8 @@
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="120"/>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <StackPanel Grid.Column="0">
 
@@ -192,9 +198,27 @@
                                         </Border>
 
                                         <Button 
-                                    Margin="5"
-                                 Command="{Binding UploadPhoto}"   
-                                Content="Загрузить фото"/>
+                                            Margin="5"
+                                            Command="{Binding UploadPhoto}"   
+                                            >
+                                            <StackPanel 
+                                                HorizontalAlignment="Center"
+                                                Orientation="Horizontal"
+                                                >
+                                                <Canvas 
+                                                    Height="13"
+                                                    Width="13">
+                                                    <Path
+                                                Stretch="Uniform"
+                                                Fill="#444444"
+                                                Data="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z"
+                                                Width="13" 
+                                                Height="13" />
+                                                </Canvas>
+                                                <TextBlock Text="Загрузить фото"/>
+                                            </StackPanel>
+
+                                        </Button>
                                     </StackPanel>
 
                                     <Grid 
@@ -216,14 +240,43 @@
                                         <Label 
                                         Grid.Row="0"
                                         Content="Фамилия"/>
-                                        <TextBox
-                                        Grid.Row="1"
-                                        Text="{Binding SelectedPerson.FirstName , UpdateSourceTrigger=PropertyChanged}"
-                                        />
+                                        <Grid Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <TextBox  
+                                                Grid.Column="0"
+                                            IsEnabled="False"
+                                            Text="{Binding SelectedPerson.FirstName , UpdateSourceTrigger=PropertyChanged}"
+                                            />
+                                            <Button 
+                                                Command="{Binding OpenChangeSurname}"
+                                                Grid.Column="1">
+                                                <Button.ToolTip>
+                                                    <ToolTip>
+                                                        Изменить фамилию
+                                                    </ToolTip>
+                                                </Button.ToolTip>
+                                                <Canvas 
+                                                        Height="13"
+                                                        Width="13">
+                                                    <Path
+                                                        Stretch="Uniform"
+                                                        Fill="#444444"
+                                                        Data="M21.7,13.35L20.7,14.35L18.65,12.3L19.65,11.3C19.86,11.09 20.21,11.09 20.42,11.3L21.7,12.58C21.91,12.79 21.91,13.14 21.7,13.35M12,18.94L18.06,12.88L20.11,14.93L14.06,21H12V18.94M12,14C7.58,14 4,15.79 4,18V20H10V18.11L14,14.11C13.34,14.03 12.67,14 12,14M12,4A4,4 0 0,0 8,8A4,4 0 0,0 12,12A4,4 0 0,0 16,8A4,4 0 0,0 12,4Z"
+                                                        Width="13" 
+                                                        Height="13" />
+                                                </Canvas>
+
+                                            </Button>
+                                        </Grid>
                                         <Label 
                                         Grid.Row="2"
                                         Content="Имя"/>
                                         <TextBox
+                                        
                                         Grid.Row="3"
                                         Text="{Binding SelectedPerson.MidlleName , UpdateSourceTrigger=PropertyChanged}"
                                         />
@@ -413,7 +466,52 @@
                                 Margin="2"
                                 Grid.Row="2"
                                 Header="Текущая должность">
-                                <DataGrid 
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition  Height="30"/>
+                                        <RowDefinition  Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel 
+                                        Margin="0 0 2 0"
+                                        HorizontalAlignment="Right"
+                                        Orientation="Horizontal">
+                                        <Button>
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    Создать новую должность
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                            <Canvas 
+                                                        Height="13"
+                                                        Width="13">
+                                                <Path
+                                                        Stretch="Uniform"
+                                                        Fill="#444444"
+                                                        Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"
+                                                        Width="13" 
+                                                        Height="13" />
+                                            </Canvas>
+                                        </Button>
+                                        <Button>
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    Удалить должность
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                            <Canvas 
+                                                        Height="13"
+                                                        Width="13">
+                                                <Path
+                                                        Stretch="Uniform"
+                                                        Fill="#444444"
+                                                        Data="M19,13H5V11H19V13Z"
+                                                        Width="13" 
+                                                        Height="13" />
+                                            </Canvas>
+                                        </Button>
+                                    </StackPanel>
+                                    <DataGrid 
+                                        Grid.Row="1"
                                     FontSize="13"
                                     ScrollViewer.IsDeferredScrollingEnabled="True"
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
@@ -423,28 +521,30 @@
                                      SelectedItem="{Binding SelectedPosition}"
                                     ItemsSource="{Binding SelectedPerson.ArrayPosition}"
                                     Margin="5">
-                                    <DataGrid.Columns>
-                                        <DataGridCheckBoxColumn 
+                                        <DataGrid.Columns>
+                                            <DataGridCheckBoxColumn 
                                         Binding="{Binding IsMain ,TargetNullValue={x:Null}}"
                                         Header="Основное место"/>
-                                        <DataGridTextColumn
+                                            <DataGridTextColumn
                                         Header="Отдел"
                                         Binding="{Binding DepartmentName}"/>
-                                        <DataGridTextColumn 
+                                            <DataGridTextColumn 
                                         Binding="{Binding Name}"
                                         Header="Должность"/>
-                                        <DataGridTextColumn 
+                                            <DataGridTextColumn 
                                         Binding="{Binding StavkaBudget}"
                                         Header="Число бюджет"/>
-                                        <DataGridTextColumn 
+                                            <DataGridTextColumn 
                                         Binding="{Binding StavkaNoBudget}"
                                         Header="Число внебюджет"/>
-                                        <DataGridTextColumn 
+                                            <DataGridTextColumn 
                                         Binding="{Binding Phone}"
                                         Header="Рабочий телефон"/>
-                                    </DataGrid.Columns>
+                                        </DataGrid.Columns>
 
-                                </DataGrid>
+                                    </DataGrid>
+                                </Grid>
+                              
                             </GroupBox>
 
                         </Grid>
@@ -1460,12 +1560,15 @@
                                     <StackPanel Orientation="Horizontal">
                                         <Button 
                                             Command="{Binding AddFamily}"
-                                            Content="Создать"/>
+                                            Content="Создать" 
+                                            IsEnabled="False"/>
                                         <Button 
                                             Command="{Binding SaveFamily}"
+                                            IsEnabled="False"
                                             Content="Сохранить"/>
                                         <Button 
                                             Command="{Binding DeleteFamily}"
+                                            IsEnabled="False"
                                             Content="Удалить"/>
                                     </StackPanel>
                                 </StackPanel>
