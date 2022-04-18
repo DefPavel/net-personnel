@@ -152,6 +152,7 @@ internal class ReportsViewModel : BaseViewModel
             }
             else
             {
+
                 await ReportService.JsonDeserializeWithToken(
                    token: _User!.Token,
                    queryUrl: SelectedReport!.Url + TypeReport.IsAll.ToString(),
@@ -270,7 +271,7 @@ internal class ReportsViewModel : BaseViewModel
                 new Report
                 {
                     Name = "Список всех сотрудников(У которорых отсутствует справка о несудимости)",
-                    Url = "/reports/pers/persons/passport_lnr/"
+                    Url = "/reports/pers/persons/reference_no/"
                 },
                 new Report
                 {
@@ -282,20 +283,50 @@ internal class ReportsViewModel : BaseViewModel
                     Name = "Список деканов и директоров",
                     Url = "/reports/pers/persons/director/"
                 },
-                 new Report
+                new Report
                 {
                     Name = "Повышение квалификации(Методистов)",
                     Url = "/reports/pers/persons/metodist/"
                 },
-                  new Report
+                new Report
                 {
                     Name = "Список Профессоров и Докторов",
                     Url = "/reports/pers/persons/doc_prof/"
                 },
-                  new Report
+                new Report
                 {
                     Name = "Дни рождения руководства",
                     Url = "/reports/pers/persons/birthdays/"
+                },
+                new Report
+                {
+                    Name = "Список всех сотрудников(Мать одиночка)",
+                    Url = "/reports/pers/persons/mother_is_one/"
+                },
+                new Report
+                {
+                    Name = "Список всех сотрудников(Мать двоих и более детей)",
+                    Url = "/reports/pers/persons/mother_is_two/"
+                },
+                new Report
+                {
+                    Name = "Список всех сотрудников(Материально ответственные)",
+                    Url = "/reports/pers/persons/is_responsible/"
+                },
+                new Report
+                {
+                    Name = "Список всех сотрудников(больше 1 ставки)",
+                    Url = "/reports/pers/persons/responsible/"
+                },
+                new Report
+                {
+                    Name = "Список всех сотрудников(Внешние совместители)",
+                    Url = "/reports/pers/persons/is_pluralism_ot/"
+                },
+                new Report
+                {
+                    Name = "Список всех сотрудников(Внутренние совместители)",
+                    Url = "/reports/pers/persons/is_pluralism_in/"
                 },
             };
     }

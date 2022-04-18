@@ -1,11 +1,17 @@
-﻿namespace AlphaPersonel.ViewModels;
-internal class DeletePersonViewModel : BaseViewModel
-{
-    #region Свойства
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
+namespace AlphaPersonel.ViewModels;
+
+internal class DeletePositionViewModel : BaseViewModel
+{
     private readonly Persons _Person;
     private readonly Users _User;
     private readonly Departments _Department;
+    private readonly Position _Position;
 
     // Массив Приказов
     private ObservableCollection<Order>? _Orders;
@@ -21,11 +27,11 @@ internal class DeletePersonViewModel : BaseViewModel
         get => _SelectedOrders;
         set => Set(ref _SelectedOrders, value);
     }
-    private DateTime? _DeleteWorking;
-    public DateTime? DaleteWorking
+    private DateTime? _Date_Delete;
+    public DateTime? DateDelete
     {
-        get => _DeleteWorking;
-        set => Set(ref _DeleteWorking, value);
+        get => _Date_Delete;
+        set => Set(ref _Date_Delete, value);
     }
 
     private string? _Title;
@@ -35,25 +41,20 @@ internal class DeletePersonViewModel : BaseViewModel
         set => Set(ref _Title, value);
     }
 
-    #endregion
-
-    public DeletePersonViewModel(string title ,Users users, Persons persons ,Departments department)
+    public DeletePositionViewModel(string title, Users users, Persons persons, Position position)
     {
         _Title = title;
-        _Person = persons;
         _User = users;
-        _Department = department;
+        _Person = persons;
+        _Position = position;
     }
 
-    #region Команды
+
     private ICommand? _GetData;
     public ICommand GetData => _GetData ??= new LambdaCommand(LoadedApi);
 
     private ICommand? _CloseWin;
     public ICommand CloseWin => _CloseWin ??= new LambdaCommand(CloseWindow);
-
-    #endregion
-    #region логика
 
     private async void CloseWindow(object win)
     {
@@ -63,17 +64,18 @@ internal class DeletePersonViewModel : BaseViewModel
             {
                 object personMove = new
                 {
+                    id = _Position.Id,
                     id_person = _Person.Id,
-                    created_at = DaleteWorking,
-                    name_departament = _Department.Name,
-                    name_position = _Person.PersonPosition,
+                    created_at = DateDelete,
+                    name_departament = _Position.DepartmentName,
+                    name_position = _Position.Name,
                     id_order = SelectedOrders!.Id,
                     order_drop = SelectedOrders!.Name,
                     date_drop = _SelectedOrders!.DateOrder,
                     is_main = _Person.IsMain,
                     kolvo_b = _Person.StavkaBudget,
                     kolvo_nb = _Person.StavkaNoBudget,
-                    id_type_contract = _Person.IdContract,
+                    id_contract = _Position.IdContract,
                     date_begin = _Person.StartDateContract,
                     date_end = _Person.EndDateContract,
                     id_person_position = _Person.IdPersonPosition
@@ -81,7 +83,7 @@ internal class DeletePersonViewModel : BaseViewModel
                 };
 
                 // Удалить персону
-                await QueryService.JsonSerializeWithToken(_User!.Token, "/pers/person/drop", "POST", personMove);
+                await QueryService.JsonSerializeWithToken(_User!.Token, "/pers/position/dropByPerson", "POST", personMove);
 
                 w.DialogResult = true;
                 w.Close();
@@ -107,6 +109,7 @@ internal class DeletePersonViewModel : BaseViewModel
             }
         }
     }
+
 
     private async void LoadedApi(object p)
     {
@@ -141,6 +144,8 @@ internal class DeletePersonViewModel : BaseViewModel
             }
         }
     }
-    #endregion
+
+
+
 }
 

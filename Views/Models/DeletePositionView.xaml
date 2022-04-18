@@ -1,11 +1,14 @@
-﻿<Window x:Class="AlphaPersonel.Views.Models.DeleteView"
+﻿<Window x:Class="AlphaPersonel.Views.DeletePositionView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodels="clr-namespace:AlphaPersonel.ViewModels" xmlns:i="http://schemas.microsoft.com/xaml/behaviors" d:DataContext="{d:DesignInstance Type=viewmodels:DeletePersonViewModel}"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewmodels="clr-namespace:AlphaPersonel.ViewModels" 
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        d:DataContext="{d:DesignInstance Type=viewmodels:DeletePositionViewModel}"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Увольнение" Height="250" Width="350">
+        Title="DeletePositionView" Height="250" Width="350">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -18,7 +21,9 @@
             <TextBlock 
                   Style="{StaticResource Header30}"
                 Text="Увольнение"/>
-            <Label  FontWeight="Bold" Content="{Binding Title}"/>
+           <Label
+                Content="{Binding Title}"
+                FontWeight="Bold"/>
             <Label
                 Content="Выбрать приказ увольнения"
                 FontWeight="Bold"/>
@@ -34,7 +39,7 @@
                 FontWeight="Bold"
                 Content="Дата назначения"/>
             <DatePicker Margin="4 2 4 2" 
-                        SelectedDate="{Binding DaleteWorking ,
+                        SelectedDate="{Binding DateDelete ,
                         UpdateSourceTrigger=PropertyChanged}"/>
             <Button  
                 Margin="5"
@@ -45,6 +50,5 @@
                 Content="Ок"/>
 
         </StackPanel>
-        
     </Grid>
 </Window>

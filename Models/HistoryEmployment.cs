@@ -42,7 +42,7 @@ namespace AlphaPersonel.Models
         [JsonPropertyName("created_at")]
         public DateTime CreateAt { get; set; }
 
-
-
+        [JsonPropertyName("id_person")]
+        public int IdPerson { get; internal set; }
     }
 }

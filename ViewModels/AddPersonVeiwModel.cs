@@ -68,6 +68,18 @@ internal class AddPersonVeiwModel : BaseViewModel
         get => _DateWorking;
         set => Set(ref _DateWorking, value);
     }
+    private bool _IsMain = false;
+    public bool IsMain
+    {
+        get => _IsMain;
+        set => Set(ref _IsMain, value);
+    }
+    private DateTime? _DateContract;
+    public DateTime? DateContract
+    {
+        get => _DateContract;
+        set => Set(ref _DateContract, value);
+    }
 
     private bool _Gender;
     public bool Gender
@@ -81,6 +93,21 @@ internal class AddPersonVeiwModel : BaseViewModel
     {
         get => _Positions;
         private set => Set(ref _Positions, value);
+    }
+
+    // Место работы
+    private ObservableCollection<PlaceOfWork>? _Places;
+    public ObservableCollection<PlaceOfWork>? Places
+    {
+        get => _Places;
+        private set => Set(ref _Places, value);
+    }
+
+    private PlaceOfWork? _SelectedPlace;
+    public PlaceOfWork? SelectedPlace
+    {
+        get => _SelectedPlace;
+        set => Set(ref _SelectedPlace, value);
     }
 
     // Тип контракта
@@ -166,12 +193,14 @@ internal class AddPersonVeiwModel : BaseViewModel
                     count_budget = CountBudget,
                     count_nobudget = CountNoBudget,
                     date_to_working = DateWorking!.Value.ToString("yyyy-MM-dd"),
+                    data_start_contract = DateContract!.Value.ToString("yyyy-MM-dd"),
                     id_position = SelectedPositions!.Id,
                     id_order = SelectedOrders!.Id,
                     id_contract = SelectedContract!.Id,
                     phone_ua = MTCPhone,
                     phone_lug = LugPhone,
-                    gender = Gender == true ? "male" : "female"
+                    gender = Gender == true ? "male" : "female",
+                    is_main = IsMain,
                 };
 
                 // Создать персону
@@ -212,7 +241,8 @@ internal class AddPersonVeiwModel : BaseViewModel
             {
                 return;
             }
-
+            // Загрузка место работы
+            Places = await QueryService.JsonDeserializeWithToken<PlaceOfWork>(_User.Token, "/pers/position/type/place", "GET");
             // Загрузка приказов
             TypeOrder idTypeOrder = await QueryService.JsonDeserializeWithObjectAndParam(_User.Token, "/pers/order/type/name", "POST", new TypeOrder { Name = "Приём" });
             Orders = await QueryService.JsonDeserializeWithToken<Order>(_User.Token, "/pers/order/get/" + idTypeOrder.Id, "GET");

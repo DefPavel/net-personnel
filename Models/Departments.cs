@@ -12,7 +12,7 @@ namespace AlphaPersonel.Models
         }*/
 
         [JsonPropertyName("id")]
-        public int Id { get; set; }
+        public int Id { get; set; } = 0;
 
         [JsonPropertyName("name_depart")]
         public string Name { get; set; } = string.Empty;

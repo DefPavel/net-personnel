@@ -492,7 +492,8 @@
                                                         Height="13" />
                                             </Canvas>
                                         </Button>
-                                        <Button>
+                                        <Button 
+                                            Command="{Binding OpenDropPosition}">
                                             <Button.ToolTip>
                                                 <ToolTip>
                                                     Удалить должность
@@ -540,6 +541,9 @@
                                             <DataGridTextColumn 
                                         Binding="{Binding Phone}"
                                         Header="Рабочий телефон"/>
+                                            <DataGridTextColumn 
+                                        Binding="{Binding Place}"
+                                        Header="Место работы"/>
                                         </DataGrid.Columns>
 
                                     </DataGrid>
@@ -576,6 +580,9 @@
                                     ItemsSource="{Binding SelectedPerson.ArrayMove}"
                                     Margin="10">
                                     <DataGrid.Columns>
+                                        <DataGridCheckBoxColumn 
+                                            Binding="{Binding IsMain}"
+                                            Header="Осн.место"/>
                                         <!--Дата назначения -->
                                         <DataGridTemplateColumn Header="Дата назначения">
                                             <DataGridTemplateColumn.CellTemplate>
@@ -613,7 +620,7 @@
                                             />
                                         <DataGridTextColumn
                                             Header="№ Прикааз"
-                                            Binding="{Binding CountBudget}"
+                                            Binding="{Binding Order}"
                                             />
                                         <DataGridTextColumn
                                             Header="Контракт"
@@ -655,15 +662,6 @@
                                             </DataGridTemplateColumn.CellEditingTemplate>
 
                                         </DataGridTemplateColumn>
-
-                                        <DataGridCheckBoxColumn 
-                                            Binding="{Binding IsMain}"
-                                            Header="Осн.место"/>
-
-                                        <DataGridTextColumn
-                                            Binding="{Binding Contract}"
-                                            Header="Тип контракта"
-                                            />
                                         <DataGridTextColumn
                                             Header="Дней отпуска"
                                             Binding="{Binding Holiday}"
@@ -1044,7 +1042,7 @@
                                             Command="{Binding AddHistory}"
                                             Content="Создать"/>
                                         <Button 
-                                            Command="{Binding SaveEducation}"
+                                            Command="{Binding SaveHistory}"
                                             Content="Сохранить"/>
                                         <Button 
                                             Command="{Binding DeleteEducation}"

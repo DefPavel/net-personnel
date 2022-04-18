@@ -316,7 +316,7 @@ internal class HomeViewModel : BaseViewModel
     // Открыть модальное окно на удаление человека
     private void DeletePerson(object p)
     {
-        DeletePersonViewModel viewModel = new(_User, _SelectedPerson!, SelectedItem!);
+        DeletePersonViewModel viewModel = new($"С должности:'{_SelectedPerson.PersonPosition}'", _User, _SelectedPerson!, SelectedItem!);
         DeleteView view = new() { DataContext = viewModel };
         view.ShowDialog();
         // Обновить данные

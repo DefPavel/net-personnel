@@ -61,5 +61,9 @@ internal class Position
     [JsonPropertyName("oklad_nobudget")] public decimal Oklad_NB { get; set; }
 
     [JsonPropertyName("priority")] public short Priority { get; set; }
+
+    [JsonPropertyName("name_city_job")] public string Place { get; set; } = string.Empty;
+
+    [JsonPropertyName("id_contract")] public int IdContract { get; set; }
 }
 

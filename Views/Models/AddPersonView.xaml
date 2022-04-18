@@ -11,7 +11,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="Добавить новую запись сотрудника" 
-        Height="705" Width="450">
+        Height="850" Width="450">
     
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -155,6 +155,18 @@
             <DatePicker Margin="4 2 4 2" 
                         SelectedDate="{Binding DateWorking ,
                         UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label 
+                FontWeight="Bold"
+                Content="Выбрать место работы"/>
+            <ComboBox 
+                    IsEditable="True"
+                    ItemsSource="{Binding Places}"
+                    DisplayMemberPath="Name"
+                    SelectedValuePath="Name"
+                    SelectedItem="{Binding SelectedPlace}"
+                    SelectedValue="{Binding SelectedPlace.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+                    />
             <Label 
                 FontWeight="Bold"
                 Content="Тип контракта"/>
@@ -166,6 +178,19 @@
                     SelectedItem="{Binding SelectedContract}"
                     SelectedValue="{Binding SelectedContract.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
                     />
+            <Label 
+                FontWeight="Bold"
+                Content="Дата заключения контракта"/>
+            <DatePicker Margin="4 2 4 2" 
+                        SelectedDate="{Binding DateContract ,
+                        UpdateSourceTrigger=PropertyChanged}"/>
+            <Label 
+                FontWeight="Bold"
+                Content="Основное место работы"/>
+            <CheckBox 
+                IsChecked="{Binding IsMain , UpdateSourceTrigger=PropertyChanged}"
+                Content="Основное"
+                />
             <Label 
                 FontWeight="Bold"
                 Content="Выбрать приказ (приёма на работу)"/>

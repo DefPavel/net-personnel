@@ -388,6 +388,9 @@ internal class PersonCardViewModel : BaseViewModel
     private ICommand? _OpenAddPosition;
     public ICommand OpenAddPosition => _OpenAddPosition ??= new LambdaCommand(AddPosition , _ => SelectedPerson != null);
 
+    private ICommand? _OpenDropPosition;
+    public ICommand OpenDropPosition => _OpenDropPosition ??= new LambdaCommand(DeletePosition, _ => SelectedPerson != null && SelectedPosition != null && SelectedPosition.IsMain != true);
+
     private ICommand? _OpenChangeSurname;
     public ICommand OpenChangeSurname => _OpenChangeSurname ??= new LambdaCommand(ChangeSurname , _ => SelectedPerson != null);
 
@@ -541,6 +544,10 @@ internal class PersonCardViewModel : BaseViewModel
     private ICommand? _AddHistory;
     public ICommand AddHistory => _AddHistory ??= new LambdaCommand(AddHistoryAsync);
 
+    // Изменить трудовую
+    private ICommand? _SaveHistory;
+    public ICommand SaveHistory => _SaveHistory ??= new LambdaCommand(SaveHistoryAsync, _ => SelectedHistory != null);
+
 
 
     #endregion
@@ -597,11 +604,19 @@ internal class PersonCardViewModel : BaseViewModel
 
     private void AddPosition(object p)
     {
-        AddPositionViewModel viewModel = new(_User);
+        AddPositionViewModel viewModel = new(_User! , SelectedPerson!);
         AddPositionView view = new() { DataContext = viewModel };
         view.ShowDialog();
         // Обновить данные
-        //ApiGetPersons(p);
+        ApiGetInformationToPerson(p);
+    }
+    private void DeletePosition(object p)
+    {
+        DeletePositionViewModel viewModel = new($"С должности: '{SelectedPosition!.Name}'", _User!, SelectedPerson! , SelectedPosition!);
+        DeletePositionView view = new() { DataContext = viewModel };
+        view.ShowDialog();
+        // Обновить данные
+        ApiGetInformationToPerson(p);
     }
     // Распечатать личную карту
     private async void ReportPersonCard(object p)
@@ -929,7 +944,7 @@ internal class PersonCardViewModel : BaseViewModel
             // PersonsList = await _Api.GetListPersonsToDepartment(_User!.Token, _Department!.Id);
             // Маленький костыль , для того чтобы находить на каком item я должен стоять при загрузке личной карты
             (Persons Value, int Index) IndeArray = PersonsList.Select((Value, Index) => (Value, Index))
-             .Single(p => p.Value.Id == SelectedPerson!.Id);
+             .FirstOrDefault(p => p.Value.Id == SelectedPerson!.Id);
             // Выбрать текущего человека при загрузке Window
             SelectedPerson = IndeArray.Value;
 
@@ -2340,6 +2355,51 @@ internal class PersonCardViewModel : BaseViewModel
                 _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+    }
+
+    private async void SaveHistoryAsync(object p)
+    {
+        try
+        {
+            if (_User!.Token == null) return;
+
+            SelectedHistory!.IdPerson = SelectedPerson!.Id;
+
+            if (SelectedHistory!.Id > 0)
+            {
+                // Изменить
+                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/person/history/rename/" + SelectedHistory.Id, "POST", SelectedHistory);
+            }
+            else
+            {
+                // Создать
+                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/person/history/add", "POST", SelectedHistory);
+            }
+            // Информация о сотруднике
+            SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _User!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
+            _ = MessageBox.Show("Данные успешно сохраненны");
+
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    if (reader != null)
+                    {
+                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                    }
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
     }
 
     #endregion

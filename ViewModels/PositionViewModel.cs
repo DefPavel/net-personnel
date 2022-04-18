@@ -130,11 +130,23 @@ internal class PositionViewModel : BaseViewModel
 
     private async void ApiGetPosition(object p)
     {
-        if (_User.Token == null) return;
+        try
+        {
+            if (_User.Token == null) return;
 
-        Positions = await QueryService.JsonDeserializeWithToken<Position>(_User!.Token, "/pers/position/all", "GET");
+            Positions = await QueryService.JsonDeserializeWithToken<Position>(_User!.Token, "/pers/position/all", "GET");
 
-        Department = await QueryService.JsonDeserializeWithToken<Departments>(_User!.Token, "/pers/tree/all", "GET");
+            Department = await QueryService.JsonDeserializeWithToken<Departments>(_User!.Token, "/pers/tree/all", "GET");
+        }
+        catch (System.Net.WebException ex)
+        {
+            if (ex.Response != null)
+            {
+                using StreamReader reader = new(ex.Response.GetResponseStream());
+                _ = MessageBox.Show(reader.ReadToEnd(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+            }
+        }
+       
     }
 
 
