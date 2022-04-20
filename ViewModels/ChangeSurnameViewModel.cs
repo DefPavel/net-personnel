@@ -8,32 +8,32 @@ internal class ChangeSurnameViewModel : BaseViewModel
     private readonly Persons _person;
 
     // Массив Приказов
-    private ObservableCollection<Order>? _Orders;
+    private ObservableCollection<Order>? _orders;
     public ObservableCollection<Order>? Orders
     {
-        get => _Orders;
-        private set => Set(ref _Orders, value);
+        get => _orders;
+        private set => Set(ref _orders, value);
     }
     // Выбранный приказ
-    private Order? _SelectedOrders;
+    private Order? _selectedOrders;
     public Order? SelectedOrders
     {
-        get => _SelectedOrders;
-        set => Set(ref _SelectedOrders, value);
+        get => _selectedOrders;
+        set => Set(ref _selectedOrders, value);
     }
     // Дата изменения
-    private DateTime? _DateChange;
+    private DateTime? _dateChange;
     public DateTime? DateChange
     {
-        get => _DateChange;
-        set => Set(ref _DateChange, value);
+        get => _dateChange;
+        set => Set(ref _dateChange, value);
     }
     // Новая фамилия
-    private string? _NewSurname;
+    private string? _newSurname;
     public string? NewSurname
     {
-        get => _NewSurname;
-        set => Set(ref _NewSurname, value);
+        get => _newSurname;
+        set => Set(ref _newSurname, value);
     }
 
     #endregion
@@ -46,53 +46,48 @@ internal class ChangeSurnameViewModel : BaseViewModel
 
     #region Команды
 
-    private ICommand? _GetData;
-    public ICommand GetData => _GetData ??= new LambdaCommand(LoadedApi);
+    private ICommand? _getData;
+    public ICommand GetData => _getData ??= new LambdaCommand(LoadedApi);
 
-    private ICommand? _CloseWin;
-    public ICommand CloseWin => _CloseWin ??= new LambdaCommand(CloseWindow , _ => NewSurname != null);
+    private ICommand? _closeWin;
+    public ICommand CloseWin => _closeWin ??= new LambdaCommand(CloseWindow , _ => NewSurname != null);
     #endregion
 
     #region Логика
     private async void CloseWindow(object win)
     {
-        if (win is Window w)
+        if (win is not Window w) return;
+        try
         {
-            try
+            object paylod = new
             {
-                object paylod = new
+                id_person = _person.Id,
+                created_at = DateChange,
+                id_order = SelectedOrders!.Id,
+                old_surname = _person.FirstName.Trim(),
+                new_surname = NewSurname!.Trim(),
+            };
+
+            // Удалить персону
+            await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/person/rename/firstname", "POST", paylod);
+
+            w.DialogResult = true;
+            w.Close();
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
                 {
-                    id_person = _person.Id,
-                    created_at = DateChange,
-                    id_order = SelectedOrders!.Id,
-                    old_surname = _person.FirstName.Trim(),
-                    new_surname = NewSurname!.Trim(),
-                };
+                    using StreamReader reader = new(response.GetResponseStream());
 
-                // Удалить персону
-                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/person/rename/firstname", "POST", paylod);
-
-                w.DialogResult = true;
-                w.Close();
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                }
             }
-            catch (WebException ex)
+            else
             {
-                if (ex.Status == WebExceptionStatus.ProtocolError)
-                {
-                    if (ex.Response is HttpWebResponse response)
-                    {
-                        using StreamReader reader = new(response.GetResponseStream());
-
-                        if (reader != null)
-                        {
-                            _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                        }
-                    }
-                }
-                else
-                {
-                    _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }
@@ -101,10 +96,6 @@ internal class ChangeSurnameViewModel : BaseViewModel
     {
         try
         {
-            if (_user.Token == null)
-            {
-                return;
-            }
             // Загрузка приказов смены фамилии
             TypeOrder idTypeOrder = await QueryService.JsonDeserializeWithObjectAndParam(_user.Token, "/pers/order/type/name", "POST", new TypeOrder { Name = "Смена фамилии" });
             Orders = await QueryService.JsonDeserializeWithToken<Order>(_user.Token, "/pers/order/get/" + idTypeOrder.Id, "GET");
@@ -118,11 +109,8 @@ internal class ChangeSurnameViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        // Получаем всю информацию которая пришла с response
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    // Получаем всю информацию которая пришла с response
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else

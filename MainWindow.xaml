@@ -59,6 +59,10 @@
             <DataTemplate DataType="{x:Type viewmodels:TypeOrderViewModel}">
                 <views:TypeOrderView />
             </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:TypePositionViewModel}">
+            <views:TypePositionView />
+            </DataTemplate>
             <!--Ссылка на OrderViewModel-->
             <DataTemplate DataType="{x:Type viewmodels:OrderViewModel}">
                 <views:OrderView />

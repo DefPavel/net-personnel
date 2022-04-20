@@ -17,7 +17,7 @@ internal class BindableSelectedItemBehavior : Behavior<TreeView>
 
     private static void OnSelectedItemChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
     {
-        TreeViewItem? item = e.NewValue as TreeViewItem;
+        var item = e.NewValue as TreeViewItem;
         item?.SetValue(TreeViewItem.IsSelectedProperty, true);
     }
     #endregion

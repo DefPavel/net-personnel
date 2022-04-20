@@ -2,35 +2,35 @@
 
 internal class TypeRewardingViewModel : BaseViewModel 
 {
-    private readonly NavigationStore navigationStore;
-    private readonly Users _User;
+    private readonly NavigationStore _navigationStore;
+    private readonly Users _user;
 
     public TypeRewardingViewModel(NavigationStore navigationStore, Users user)
     {
-        this.navigationStore = navigationStore;
-        _User = user;
+        this._navigationStore = navigationStore;
+        _user = user;
     }
 
-    private string? _Filter;
+    private string? _filter;
     public string? Filter
     {
-        get => _Filter;
+        get => _filter;
         set
         {
-            _ = Set(ref _Filter, value);
+            _ = Set(ref _filter, value);
             if (TypeRewardings != null)
             {
-                _CollectionDepart!.Refresh();
+                _collectionDepart!.Refresh();
             }
 
         }
     }
     // Специальная колекция для фильтров
-    private ICollectionView? _CollectionDepart;
+    private ICollectionView? _collectionDepart;
     public ICollectionView? CollectionDepart
     {
-        get => _CollectionDepart;
-        private set => Set(ref _CollectionDepart, value);
+        get => _collectionDepart;
+        private set => Set(ref _collectionDepart, value);
     }
     private bool FilterToType(object emp)
     {
@@ -38,44 +38,43 @@ internal class TypeRewardingViewModel : BaseViewModel
     }
 
 
-    private ObservableCollection<TypeRewarding>? _TypeRewardings;
+    private ObservableCollection<TypeRewarding>? _typeRewardings;
     public ObservableCollection<TypeRewarding>? TypeRewardings
     {
-        get => _TypeRewardings;
+        get => _typeRewardings;
         private set
         {
-            _ = Set(ref _TypeRewardings, value);
-            CollectionDepart = CollectionViewSource.GetDefaultView(TypeRewardings);
-            CollectionDepart.Filter = FilterToType;
-
+            _ = Set(ref _typeRewardings, value);
+            if (TypeRewardings != null) CollectionDepart = CollectionViewSource.GetDefaultView(TypeRewardings);
+            if (CollectionDepart != null) CollectionDepart.Filter = FilterToType;
         }
     }
 
     // Выбранные отдел
-    private TypeRewarding? _SelectedType;
+    private TypeRewarding? _selectedType;
     public TypeRewarding? SelectedType
     {
-        get => _SelectedType;
-        set => Set(ref _SelectedType, value);
+        get => _selectedType;
+        set => Set(ref _selectedType, value);
     }
 
     #region Команды
 
 
-    private ICommand? _GetToMain;
-    public ICommand GetToMain => _GetToMain ??= new LambdaCommand(GetBack);
+    private ICommand? _getToMain;
+    public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack);
 
-    private ICommand? _LoadedType;
-    public ICommand? LoadedType => _LoadedType ??= new LambdaCommand(ApiGetTypeRewarding);
+    private ICommand? _loadedType;
+    public ICommand? LoadedType => _loadedType ??= new LambdaCommand(ApiGetTypeRewarding);
 
-    private ICommand? _Add;
-    public ICommand? Add => _Add ??= new LambdaCommand(AddTypeRewardingAsync);
+    private ICommand? _add;
+    public ICommand? Add => _add ??= new LambdaCommand(AddTypeRewardingAsync);
 
-    private ICommand? _Save;
-    public ICommand? Save => _Save ??= new LambdaCommand(SaveTypeRewarding);
+    private ICommand? _save;
+    public ICommand? Save => _save ??= new LambdaCommand(SaveTypeRewarding);
 
-    private ICommand? _Delete;
-    public ICommand? Delete => _Delete ??= new LambdaCommand(DeleteTypeRewarding);
+    private ICommand? _delete;
+    public ICommand? Delete => _delete ??= new LambdaCommand(DeleteTypeRewarding);
 
     #endregion
 
@@ -83,10 +82,10 @@ internal class TypeRewardingViewModel : BaseViewModel
 
     private void GetBack(object p)
     {
-        navigationStore.CurrentViewModel = new HomeViewModel(_User, navigationStore);
+        _navigationStore.CurrentViewModel = new HomeViewModel(_user, _navigationStore);
     }
 
-    private async void AddTypeRewardingAsync(object p)
+    private void AddTypeRewardingAsync(object p)
     {
         try
         {
@@ -94,28 +93,13 @@ internal class TypeRewardingViewModel : BaseViewModel
             {
                 Name = "Новый тип награждения"
             };
-            _TypeRewardings!.Insert(0, type);
+            _typeRewardings!.Insert(0, type);
             SelectedType = type;
 
         }
-        catch (WebException ex)
+        catch (Exception ex)
         {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
-
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            throw;
         }
 
     }
@@ -124,20 +108,18 @@ internal class TypeRewardingViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null) return;
-
             if (SelectedType!.Id > 0)
             {
                 // Изменить
-                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/rewarding/type/update/", "POST", SelectedType);
+                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/rewarding/type/update/", "POST", SelectedType);
                 // MessageBox.Show("Изменить");
             }
             else
             {
                 // Создать
-                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/rewarding/type/add", "POST", SelectedType);
+                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/rewarding/type/add", "POST", SelectedType);
             }
-            TypeRewardings = await QueryService.JsonDeserializeWithToken<TypeRewarding>(_User.Token, "/pers/rewarding/type/get", "GET");
+            TypeRewardings = await QueryService.JsonDeserializeWithToken<TypeRewarding>(_user.Token, "/pers/rewarding/type/get", "GET");
             _ = MessageBox.Show("Данные успешно сохраненны");
 
         }
@@ -149,10 +131,7 @@ internal class TypeRewardingViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -167,13 +146,11 @@ internal class TypeRewardingViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null) return;
-            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            {
-                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/rewarding/type/del/" + SelectedType!.Id, "DELETE", SelectedType);
+            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
+            await QueryService.JsonSerializeWithToken(_user.Token, "/pers/rewarding/type/del/" + SelectedType!.Id, "DELETE", SelectedType);
 
-                _ = _TypeRewardings!.Remove(SelectedType);
-            }
+            _ = _typeRewardings!.Remove(SelectedType);
 
         }
         catch (WebException ex)
@@ -184,10 +161,7 @@ internal class TypeRewardingViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -202,9 +176,8 @@ internal class TypeRewardingViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null) return;
             // Загрузить сами приказы
-            TypeRewardings = await QueryService.JsonDeserializeWithToken<TypeRewarding>(_User!.Token, "/pers/rewarding/type/get", "GET");
+            TypeRewardings = await QueryService.JsonDeserializeWithToken<TypeRewarding>(_user!.Token, "/pers/rewarding/type/get", "GET");
         }
         catch (WebException ex)
         {
@@ -214,10 +187,7 @@ internal class TypeRewardingViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else

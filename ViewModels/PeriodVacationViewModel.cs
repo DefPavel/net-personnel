@@ -7,58 +7,58 @@ internal class PeriodVacationViewModel : BaseViewModel
     #region Переменные
 
     // Ссылка на User для того чтобы забрать token
-    private readonly Users _User;
+    private readonly Users _user;
 
-    private readonly NavigationStore navigationStore;
+    private readonly NavigationStore _navigationStore;
     public PeriodVacationViewModel(NavigationStore navigationStore, Users user)
     {
-        _User = user;
-        this.navigationStore = navigationStore;
+        _user = user;
+        this._navigationStore = navigationStore;
 
     }
 
-    private ObservableCollection<PeriodVacation>? _PeriodVacation;
+    private ObservableCollection<PeriodVacation>? _periodVacation;
     public ObservableCollection<PeriodVacation>? PeriodVacations
     {
-        get => _PeriodVacation;
+        get => _periodVacation;
         private set
         {
-            Set(ref _PeriodVacation, value);
-            CollectionDepart = CollectionViewSource.GetDefaultView(PeriodVacations);
-            CollectionDepart.Filter = FilterToDepart;
+            Set(ref _periodVacation, value);
+            if (PeriodVacations != null) CollectionDepart = CollectionViewSource.GetDefaultView(PeriodVacations);
+            if (CollectionDepart != null) CollectionDepart.Filter = FilterToDepart;
         }
     }
 
     // Выбранные отдел
-    private PeriodVacation? _SelectedPeriod;
+    private PeriodVacation? _selectedPeriod;
     public PeriodVacation? SelectedPeriod
     {
-        get => _SelectedPeriod;
-        set => Set(ref _SelectedPeriod, value);
+        get => _selectedPeriod;
+        set => Set(ref _selectedPeriod, value);
     }
 
 
     // Поисковая строка для поиска по ФИО сотрудника
-    private string? _Filter;
+    private string? _filter;
     public string? Filter
     {
-        get => _Filter;
+        get => _filter;
         set
         {
-            _ = Set(ref _Filter, value);
+            _ = Set(ref _filter, value);
             if (PeriodVacations != null)
             {
-                _CollectionDepart!.Refresh();
+                _collectionDepart!.Refresh();
             }
 
         }
     }
     // Специальная колекция для фильтров
-    private ICollectionView? _CollectionDepart;
+    private ICollectionView? _collectionDepart;
     public ICollectionView? CollectionDepart
     {
-        get => _CollectionDepart;
-        set => Set(ref _CollectionDepart, value);
+        get => _collectionDepart;
+        private set => Set(ref _collectionDepart, value);
     }
 
     private bool FilterToDepart(object emp)
@@ -70,38 +70,34 @@ internal class PeriodVacationViewModel : BaseViewModel
 
     #region Команды
 
-    private ICommand? _GetToMain;
-    public ICommand GetToMain => _GetToMain ??= new LambdaCommand(GetBack);
+    private ICommand? _getToMain;
+    public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack);
 
-    private ICommand? _LoadedPeriod;
-    public ICommand LoadedPeriod => _LoadedPeriod ??= new LambdaCommand(ApiGetPeriod);
+    private ICommand? _loadedPeriod;
+    public ICommand LoadedPeriod => _loadedPeriod ??= new LambdaCommand(ApiGetPeriod);
 
-    private ICommand? _AddNew;
-    public ICommand AddNew => _AddNew ??= new LambdaCommand(AddPeriod);
+    private ICommand? _addNew;
+    public ICommand AddNew => _addNew ??= new LambdaCommand(AddPeriod);
 
-    private ICommand? _Save;
-    public ICommand Save => _Save ??= new LambdaCommand(SavePeriod);
+    private ICommand? _save;
+    public ICommand Save => _save ??= new LambdaCommand(SavePeriod);
 
-    private ICommand? _Delete;
-    public ICommand Delete => _Delete ??= new LambdaCommand(DeletePeriod);
+    private ICommand? _delete;
+    public ICommand Delete => _delete ??= new LambdaCommand(DeletePeriod);
 
     #endregion
 
     #region Логика
     private void GetBack(object p)
     {
-        navigationStore.CurrentViewModel = new HomeViewModel(_User, navigationStore);
+        _navigationStore.CurrentViewModel = new HomeViewModel(_user, _navigationStore);
     }
 
     private async void ApiGetPeriod(object p)
     {
         try
         {
-            if (_User.Token != null)
-            {
-
-                PeriodVacations = await QueryService.JsonDeserializeWithToken<PeriodVacation>(_User!.Token, "/pers/vacation/period/get", "GET");
-            }
+            PeriodVacations = await QueryService.JsonDeserializeWithToken<PeriodVacation>(_user!.Token, "/pers/vacation/period/get", "GET");
         }
         catch (WebException ex)
         {
@@ -111,10 +107,7 @@ internal class PeriodVacationViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -129,13 +122,13 @@ internal class PeriodVacationViewModel : BaseViewModel
     {
         try
         {
-            DateTime toDay = DateTime.Now;
+            var toDay = DateTime.Now;
 
             PeriodVacation dep = new()
             {
                 Name = $"{toDay.Year}-{toDay.AddYears(1).Year}",
             };
-            _PeriodVacation!.Insert(0, dep);
+            _periodVacation!.Insert(0, dep);
             SelectedPeriod = dep;
 
         }
@@ -150,13 +143,11 @@ internal class PeriodVacationViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null) return;
-            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            {
-                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/vacation/period/del/" + SelectedPeriod!.Id, "DELETE", SelectedPeriod);
+            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
+            await QueryService.JsonSerializeWithToken(_user.Token, "/pers/vacation/period/del/" + SelectedPeriod!.Id, "DELETE", SelectedPeriod);
 
-                _ = _PeriodVacation!.Remove(SelectedPeriod);
-            }
+            _ = _periodVacation!.Remove(SelectedPeriod);
 
         }
         catch (WebException ex)
@@ -167,10 +158,7 @@ internal class PeriodVacationViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -184,20 +172,18 @@ internal class PeriodVacationViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null) return;
-
             if (SelectedPeriod!.Id > 0)
             {
                 // Изменить
-                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/vacation/period/rename/", "POST", SelectedPeriod);
+                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/vacation/period/rename/", "POST", SelectedPeriod);
                 // MessageBox.Show("Изменить");
             }
             else
             {
                 // Создать
-                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/vacation/period/add", "POST", SelectedPeriod);
+                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/vacation/period/add", "POST", SelectedPeriod);
             }
-            PeriodVacations = await QueryService.JsonDeserializeWithToken<PeriodVacation>(_User.Token, "/pers/vacation/period/get", "GET");
+            PeriodVacations = await QueryService.JsonDeserializeWithToken<PeriodVacation>(_user.Token, "/pers/vacation/period/get", "GET");
             _ = MessageBox.Show("Данные успешно сохраненны");
 
         }
@@ -209,10 +195,7 @@ internal class PeriodVacationViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else

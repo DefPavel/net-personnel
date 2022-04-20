@@ -8,64 +8,64 @@ namespace AlphaPersonel.ViewModels;
 
 internal class OrderViewModel : BaseViewModel
 {
-    private readonly NavigationStore navigationStore;
-    private readonly Users _User;
+    private readonly NavigationStore _navigationStore;
+    private readonly Users _user;
 
     public OrderViewModel(NavigationStore navigationStore, Users user)
     {
-        this.navigationStore = navigationStore;
-        _User = user;
+        this._navigationStore = navigationStore;
+        _user = user;
     }
 
     // Массив отделов
-    private ObservableCollection<Order>? _Orders;
+    private ObservableCollection<Order>? _orders;
     public ObservableCollection<Order>? Orders
     {
-        get => _Orders;
+        get => _orders;
         set
         {
-            _ = Set(ref _Orders, value);
-            CollectionOrder = CollectionViewSource.GetDefaultView(Orders);
-            CollectionOrder.Filter = FilterToOrder;
+            _ = Set(ref _orders, value);
+            if (Orders != null) CollectionOrder = CollectionViewSource.GetDefaultView(Orders);
+            if (CollectionOrder != null) CollectionOrder.Filter = FilterToOrder;
         }
     }
 
-    private ObservableCollection<TypeOrder>? _TypeOrders;
+    private ObservableCollection<TypeOrder>? _typeOrders;
     public ObservableCollection<TypeOrder>? TypeOrders
     {
-        get => _TypeOrders;
-        private set => Set(ref _TypeOrders, value);
+        get => _typeOrders;
+        private set => Set(ref _typeOrders, value);
     }
 
     // Выбранные отдел
-    private Order? _SelectedOrder;
+    private Order? _selectedOrder;
     public Order? SelectedOrder
     {
-        get => _SelectedOrder;
-        set => Set(ref _SelectedOrder, value);
+        get => _selectedOrder;
+        set => Set(ref _selectedOrder, value);
     }
 
     // Поисковая строка для поиска по ФИО сотрудника
-    private string? _Filter;
+    private string? _filter;
     public string? Filter
     {
-        get => _Filter;
+        get => _filter;
         set
         {
-            _ = Set(ref _Filter, value);
+            _ = Set(ref _filter, value);
             if (Orders != null)
             {
-                _CollectionOrder!.Refresh();
+                _collectionOrder!.Refresh();
             }
 
         }
     }
     // Специальная колекция для фильтров
-    private ICollectionView? _CollectionOrder;
+    private ICollectionView? _collectionOrder;
     public ICollectionView? CollectionOrder
     {
-        get => _CollectionOrder;
-        set => Set(ref _CollectionOrder, value);
+        get => _collectionOrder;
+        private set => Set(ref _collectionOrder, value);
     }
 
     private bool FilterToOrder(object emp) => string.IsNullOrEmpty(Filter) || (emp is Order dep && dep.Name!.ToUpper().Contains(value: Filter.ToUpper()));
@@ -73,20 +73,20 @@ internal class OrderViewModel : BaseViewModel
 
     #region Команды
 
-    private ICommand? _GetToMain;
-    public ICommand GetToMain => _GetToMain ??= new LambdaCommand(GetBack);
+    private ICommand? _getToMain;
+    public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack);
 
-    private ICommand? _LoadedOrder;
-    public ICommand? LoadedOrder => _LoadedOrder ??= new LambdaCommand(ApiGetOrders);
+    private ICommand? _loadedOrder;
+    public ICommand? LoadedOrder => _loadedOrder ??= new LambdaCommand(ApiGetOrders);
 
-    private ICommand? _AddNew;
-    public ICommand? AddNew => _AddNew ??= new LambdaCommand(AddOrderAsync);
+    private ICommand? _addNew;
+    public ICommand? AddNew => _addNew ??= new LambdaCommand(AddOrderAsync);
 
-    private ICommand? _Delete;
-    public ICommand? Delete => _Delete ??= new LambdaCommand(DeleteOrder, _ => SelectedOrder != null);
+    private ICommand? _delete;
+    public ICommand? Delete => _delete ??= new LambdaCommand(DeleteOrder, _ => SelectedOrder is not null && Orders!.Count > 0);
 
-    private ICommand? _Save;
-    public ICommand? Save => _Save ??= new LambdaCommand(UpdateOrder, _ => SelectedOrder != null);
+    private ICommand? _save;
+    public ICommand? Save => _save ??= new LambdaCommand(UpdateOrder, _ => SelectedOrder is not null && string.IsNullOrWhiteSpace(SelectedOrder.Name));
 
     #endregion
 
@@ -94,18 +94,17 @@ internal class OrderViewModel : BaseViewModel
 
     private void GetBack(object p)
     {
-        navigationStore.CurrentViewModel = new HomeViewModel(_User, navigationStore);
+        _navigationStore.CurrentViewModel = new HomeViewModel(_user, _navigationStore);
     }
 
     private async void ApiGetOrders(object p)
     {
         try
         {
-            if (_User.Token == null) return;
             // Загрузить сами приказы
-            Orders = await QueryService.JsonDeserializeWithToken<Order>(_User!.Token, "/pers/order/get", "GET");
+            Orders = await QueryService.JsonDeserializeWithToken<Order>(_user!.Token, "/pers/order/get", "GET");
             // Загрузить массив типов приказов
-            TypeOrders = await QueryService.JsonDeserializeWithToken<TypeOrder>(_User!.Token, "/pers/order/type/get", "GET");
+            TypeOrders = await QueryService.JsonDeserializeWithToken<TypeOrder>(_user!.Token, "/pers/order/type/get", "GET");
         }
         catch (WebException ex)
         {
@@ -115,10 +114,7 @@ internal class OrderViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -133,22 +129,17 @@ internal class OrderViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null)
-            {
-                return;
-            }
-
             if (SelectedOrder!.Id > 0)
             {
                 //Изменить уже текущие данные
-                await QueryService.JsonSerializeWithToken(token: _User!.Token, "/pers/order/add", "POST", SelectedOrder);
+                await QueryService.JsonSerializeWithToken(token: _user!.Token, "/pers/order/add", "POST", SelectedOrder);
             }
             else
             {
                 // Создать новую запись отдела 
-                await QueryService.JsonSerializeWithToken(token: _User!.Token, "/pers/order/add", "POST", SelectedOrder);
+                await QueryService.JsonSerializeWithToken(token: _user!.Token, "/pers/order/add", "POST", SelectedOrder);
                 // Обновить данные
-                Orders = await QueryService.JsonDeserializeWithToken<Order>(_User.Token, "/pers/order/get", "GET");
+                Orders = await QueryService.JsonDeserializeWithToken<Order>(_user.Token, "/pers/order/get", "GET");
             }
             _ = MessageBox.Show("Данные успешно сохраненны");
         }
@@ -160,10 +151,7 @@ internal class OrderViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -184,7 +172,7 @@ internal class OrderViewModel : BaseViewModel
                 DateOrder = DateTime.Now.Date
 
             };
-            _Orders?.Insert(0, order);
+            _orders?.Insert(0, order);
             SelectedOrder = order;
 
         }
@@ -196,10 +184,7 @@ internal class OrderViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -213,18 +198,12 @@ internal class OrderViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null)
-            {
-                return;
-            }
+            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
+            await QueryService.JsonSerializeWithToken(_user.Token, "/pers/order/del/" + SelectedOrder!.Id, "DELETE", SelectedOrder);
+            //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
 
-            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            {
-                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/order/del/" + SelectedOrder!.Id, "DELETE", SelectedOrder);
-                //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
-
-                _ = Orders!.Remove(SelectedOrder);
-            }
+            _ = Orders!.Remove(SelectedOrder);
         }
         catch (WebException ex)
         {
@@ -234,10 +213,7 @@ internal class OrderViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else

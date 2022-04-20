@@ -2,58 +2,58 @@
 
 internal class TypeRanksViewModel : BaseViewModel
 {
-    private readonly NavigationStore navigationStore;
-    private readonly Users _User;
+    private readonly NavigationStore _navigationStore;
+    private readonly Users _user;
 
     public TypeRanksViewModel(NavigationStore navigationStore, Users user)
     {
-        this.navigationStore = navigationStore;
-        _User = user;
+        this._navigationStore = navigationStore;
+        _user = user;
     }
 
     #region Переменные
 
-    private ObservableCollection<TypeRank>? _TypeRank;
+    private ObservableCollection<TypeRank>? _typeRank;
     public ObservableCollection<TypeRank>? TypeRank
     {
-        get => _TypeRank;
+        get => _typeRank;
         set
         {
-            _ = Set(ref _TypeRank, value);
-            CollectionDepart = CollectionViewSource.GetDefaultView(TypeRank);
-            CollectionDepart.Filter = FilterToDepart;
+            _ = Set(ref _typeRank, value);
+            if (TypeRank != null) CollectionDepart = CollectionViewSource.GetDefaultView(TypeRank);
+            if (CollectionDepart != null) CollectionDepart.Filter = FilterToDepart;
         }
     }
 
     // Выбранные отдел
-    private TypeRank? _SelectedRank;
+    private TypeRank? _selectedRank;
     public TypeRank? SelectedRank
     {
-        get => _SelectedRank;
-        set => Set(ref _SelectedRank, value);
+        get => _selectedRank;
+        set => Set(ref _selectedRank, value);
     }
 
     // Поисковая строка для поиска по ФИО сотрудника
-    private string? _Filter;
+    private string? _filter;
     public string? Filter
     {
-        get => _Filter;
+        get => _filter;
         set
         {
-            _ = Set(ref _Filter, value);
+            _ = Set(ref _filter, value);
             if (TypeRank != null)
             {
-                _CollectionDepart!.Refresh();
+                _collectionDepart!.Refresh();
             }
 
         }
     }
     // Специальная колекция для фильтров
-    private ICollectionView? _CollectionDepart;
+    private ICollectionView? _collectionDepart;
     public ICollectionView? CollectionDepart
     {
-        get => _CollectionDepart;
-        set => Set(ref _CollectionDepart, value);
+        get => _collectionDepart;
+        private set => Set(ref _collectionDepart, value);
     }
 
     private bool FilterToDepart(object emp)
@@ -86,7 +86,7 @@ internal class TypeRanksViewModel : BaseViewModel
     private void GetBack(object p)
     {
 
-        navigationStore.CurrentViewModel = new HomeViewModel(_User, navigationStore);
+        _navigationStore.CurrentViewModel = new HomeViewModel(_user, _navigationStore);
     }
 
 
@@ -98,7 +98,7 @@ internal class TypeRanksViewModel : BaseViewModel
             {
                 Name = "Новое звание"
             };
-            _TypeRank!.Insert(0, type);
+            _typeRank!.Insert(0, type);
             SelectedRank = type;
 
         }
@@ -110,10 +110,7 @@ internal class TypeRanksViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -128,13 +125,11 @@ internal class TypeRanksViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null) return;
-            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            {
-                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/rank/type/del/" + SelectedRank!.Id, "DELETE", SelectedRank);
+            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
+            await QueryService.JsonSerializeWithToken(_user.Token, "/pers/rank/type/del/" + SelectedRank!.Id, "DELETE", SelectedRank);
 
-                _ = _TypeRank!.Remove(SelectedRank);
-            }
+            _ = _typeRank!.Remove(SelectedRank);
 
         }
         catch (WebException ex)
@@ -145,10 +140,7 @@ internal class TypeRanksViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -161,20 +153,18 @@ internal class TypeRanksViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null) return;
-
             if (SelectedRank!.Id > 0)
             {
                 // Изменить
-                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/rank/type/rename/", "POST", SelectedRank);
+                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/rank/type/rename/", "POST", SelectedRank);
                 // MessageBox.Show("Изменить");
             }
             else
             {
                 // Создать
-                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/rank/type/add", "POST", SelectedRank);
+                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/rank/type/add", "POST", SelectedRank);
             }
-            TypeRank = await QueryService.JsonDeserializeWithToken<TypeRank>(_User.Token, "/pers/rank/type/all", "GET");
+            TypeRank = await QueryService.JsonDeserializeWithToken<TypeRank>(_user.Token, "/pers/rank/type/all", "GET");
             _ = MessageBox.Show("Данные успешно сохраненны");
 
         }
@@ -186,10 +176,7 @@ internal class TypeRanksViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -204,11 +191,7 @@ internal class TypeRanksViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token != null)
-            {
-                TypeRank = await QueryService.JsonDeserializeWithToken<TypeRank>(_User!.Token, "/pers/rank/type/all", "GET");
-
-            }
+            TypeRank = await QueryService.JsonDeserializeWithToken<TypeRank>(_user!.Token, "/pers/rank/type/all", "GET");
         }
         catch (WebException ex)
         {
@@ -218,10 +201,7 @@ internal class TypeRanksViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else

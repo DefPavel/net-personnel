@@ -11,16 +11,14 @@ internal static class ServiceWorkingExperience
         long totalTicks = 0;
 
         // Проходимся по списку стажа
-        for (int i = 0; i < histories.Count; i++)
+        foreach (var t in histories)
         {
-            if (trigger != histories[i].IsOver)
-            {
-                // Если стаж прирывался 
-                if (trigger) totalTicks += ServiceDate.ItervalDate(currentDate, histories[i].CreateAt);
+            if (trigger == t.IsOver) continue;
+            // Если стаж прирывался 
+            if (trigger) totalTicks += ServiceDate.ItervalDate(currentDate, t.CreateAt);
 
-                currentDate = histories[i].CreateAt;
-                trigger = histories[i].IsOver;
-            }
+            currentDate = t.CreateAt;
+            trigger = t.IsOver;
         }
         // В случае если стаж не прирывный
         totalTicks += ServiceDate.ItervalDate(currentDate, DateTime.Now.Date);
@@ -36,16 +34,14 @@ internal static class ServiceWorkingExperience
         long totalTicks = 0;
 
         // Проходимся по списку стажа
-        for (int i = 0; i < histories.Count; i++)
+        foreach (var t in histories)
         {
-            if (trigger != histories[i].IsPedagogical)
-            {
-                // Если стаж прирывался 
-                if (trigger) totalTicks += ServiceDate.ItervalDate(currentDate, histories[i].CreateAt);
+            if (trigger == t.IsPedagogical) continue;
+            // Если стаж прирывался 
+            if (trigger) totalTicks += ServiceDate.ItervalDate(currentDate, t.CreateAt);
 
-                currentDate = histories[i].CreateAt;
-                trigger = histories[i].IsPedagogical;
-            }
+            currentDate = t.CreateAt;
+            trigger = t.IsPedagogical;
         }
         // В случае если стаж не прирывный
         totalTicks += ServiceDate.ItervalDate(currentDate, DateTime.Now.Date);
@@ -61,16 +57,14 @@ internal static class ServiceWorkingExperience
         long totalTicks = 0;
 
         // Проходимся по списку стажа
-        for (int i = 0; i < histories.Count; i++)
+        foreach (var t in histories)
         {
-            if (trigger != histories[i].IsUniver)
-            {
-                // Если стаж прирывался 
-                if (trigger) totalTicks += ServiceDate.ItervalDate(currentDate, histories[i].CreateAt);
+            if (trigger == t.IsUniver) continue;
+            // Если стаж прирывался 
+            if (trigger) totalTicks += ServiceDate.ItervalDate(currentDate, t.CreateAt);
 
-                currentDate = histories[i].CreateAt;
-                trigger = histories[i].IsUniver;
-            }
+            currentDate = t.CreateAt;
+            trigger = t.IsUniver;
         }
         // В случае если стаж не прирывный
         totalTicks += ServiceDate.ItervalDate(currentDate, DateTime.Now.Date);

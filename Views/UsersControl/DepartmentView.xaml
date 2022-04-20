@@ -109,17 +109,19 @@
                 <TextBox SpellCheck.IsEnabled="True" Language="ru-ru" Text="{Binding SelectedDepartment.Short}"/>
                 <Label Content="Выбрать Тип отдела"/>
                 <ComboBox 
+                    MinWidth="100"
                     IsEditable="True"
                     ItemsSource="{Binding TypeDepartments}"
                     DisplayMemberPath="TypeName"
                     SelectedValuePath="IdType"
-                    SelectedValue="{Binding SelectedDepartment.IdType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+                    SelectedValue="{Binding SelectedDepartment.IdType, UpdateSourceTrigger=PropertyChanged }"
                     />
                 <Label Content="{Binding SelectedDepartment.IdType}"/>
                 <ComboBox 
+                    MinWidth="100"
                     IsEditable="True"
                     ItemsSource="{Binding Departments}"
-                    SelectedValue="{Binding SelectedDepartment.RootTree, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+                    SelectedValue="{Binding SelectedDepartment.RootTree, UpdateSourceTrigger=PropertyChanged }"
                     DisplayMemberPath="Name"
                     SelectedValuePath="Name"
                     />

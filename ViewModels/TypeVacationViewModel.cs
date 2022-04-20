@@ -2,59 +2,58 @@
 
 internal class TypeVacationViewModel : BaseViewModel 
 {
-    private readonly NavigationStore navigationStore;
-    private readonly Users _User;
+    private readonly NavigationStore _navigationStore;
+    private readonly Users _user;
 
     public TypeVacationViewModel(NavigationStore navigationStore, Users user)
     {
-        this.navigationStore = navigationStore;
-        _User = user;
+        this._navigationStore = navigationStore;
+        _user = user;
     }
 
 
-    private ObservableCollection<Models.TypeVacation>? _TypeVacation;
+    private ObservableCollection<Models.TypeVacation>? _typeVacation;
     public ObservableCollection<Models.TypeVacation>? TypeVacations
     {
-        get => _TypeVacation;
+        get => _typeVacation;
         private set
         {
-            _ = Set(ref _TypeVacation, value);
-            CollectionDepart = CollectionViewSource.GetDefaultView(TypeVacations);
-            CollectionDepart.Filter = FilterToType;
-
+            _ = Set(ref _typeVacation, value);
+            if (TypeVacations != null) CollectionDepart = CollectionViewSource.GetDefaultView(TypeVacations);
+            if (CollectionDepart != null) CollectionDepart.Filter = FilterToType;
         }
     }
 
     // Выбранные отдел
-    private Models.TypeVacation? _SelectedTypeVacation;
+    private Models.TypeVacation? _selectedTypeVacation;
     public Models.TypeVacation? SelectedTypeVacation
     {
-        get => _SelectedTypeVacation;
-        set => Set(ref _SelectedTypeVacation, value);
+        get => _selectedTypeVacation;
+        set => Set(ref _selectedTypeVacation, value);
     }
 
 
     // Поисковая строка для поиска по ФИО сотрудника
-    private string? _Filter;
+    private string? _filter;
     public string? Filter
     {
-        get => _Filter;
+        get => _filter;
         set
         {
-            _ = Set(ref _Filter, value);
+            _ = Set(ref _filter, value);
             if (TypeVacations != null)
             {
-                _CollectionDepart!.Refresh();
+                _collectionDepart!.Refresh();
             }
 
         }
     }
     // Специальная колекция для фильтров
-    private ICollectionView? _CollectionDepart;
+    private ICollectionView? _collectionDepart;
     public ICollectionView? CollectionDepart
     {
-        get => _CollectionDepart;
-        private set => Set(ref _CollectionDepart, value);
+        get => _collectionDepart;
+        private set => Set(ref _collectionDepart, value);
     }
 
     private bool FilterToType(object emp)
@@ -63,20 +62,20 @@ internal class TypeVacationViewModel : BaseViewModel
     }
 
     #region Команды
-    private ICommand? _GetToMain;
-    public ICommand GetToMain => _GetToMain ??= new LambdaCommand(GetBack);
+    private ICommand? _getToMain;
+    public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack);
 
-    private ICommand? _LoadedType;
-    public ICommand LoadedType => _LoadedType ??= new LambdaCommand(ApiGetType);
+    private ICommand? _loadedType;
+    public ICommand LoadedType => _loadedType ??= new LambdaCommand(ApiGetType);
 
-    private ICommand? _Add;
-    public ICommand Add => _Add ??= new LambdaCommand(AddTypeVacationAsync);
+    private ICommand? _add;
+    public ICommand Add => _add ??= new LambdaCommand(AddTypeVacationAsync);
 
-    private ICommand? _Save;
-    public ICommand Save => _Save ??= new LambdaCommand(SaveTypeVacation, _ => SelectedTypeVacation != null);
+    private ICommand? _save;
+    public ICommand Save => _save ??= new LambdaCommand(SaveTypeVacation, _ => SelectedTypeVacation != null);
 
-    private ICommand? _Delete;
-    public ICommand Delete => _Delete ??= new LambdaCommand(DeleteTypeVacation, _ => SelectedTypeVacation != null);
+    private ICommand? _delete;
+    public ICommand Delete => _delete ??= new LambdaCommand(DeleteTypeVacation, _ => SelectedTypeVacation != null);
 
     #endregion
 
@@ -84,7 +83,7 @@ internal class TypeVacationViewModel : BaseViewModel
 
     private void GetBack(object p)
     {
-        navigationStore.CurrentViewModel = new HomeViewModel(_User, navigationStore);
+        _navigationStore.CurrentViewModel = new HomeViewModel(_user, _navigationStore);
     }
 
 
@@ -96,7 +95,7 @@ internal class TypeVacationViewModel : BaseViewModel
             {
                 Name = "Новый тип отпуска"
             };
-            _TypeVacation!.Insert(0, type);
+            _typeVacation!.Insert(0, type);
             SelectedTypeVacation = type;
 
         }
@@ -108,10 +107,7 @@ internal class TypeVacationViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -126,20 +122,18 @@ internal class TypeVacationViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null) return;
-
             if (SelectedTypeVacation!.Id > 0)
             {
                 // Изменить
-                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/vacation/type/rename", "POST", SelectedTypeVacation);
+                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/vacation/type/rename", "POST", SelectedTypeVacation);
                 // MessageBox.Show("Изменить");
             }
             else
             {
                 // Создать
-                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/vacation/type/add", "POST", SelectedTypeVacation);
+                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/vacation/type/add", "POST", SelectedTypeVacation);
             }
-            TypeVacations = await QueryService.JsonDeserializeWithToken<Models.TypeVacation>(_User.Token, "/pers/vacation/type/get", "GET");
+            TypeVacations = await QueryService.JsonDeserializeWithToken<Models.TypeVacation>(_user.Token, "/pers/vacation/type/get", "GET");
             _ = MessageBox.Show("Данные успешно сохраненны");
 
         }
@@ -151,10 +145,7 @@ internal class TypeVacationViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -169,13 +160,11 @@ internal class TypeVacationViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null) return;
-            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            {
-                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/vacation/type/del/" + SelectedTypeVacation!.Id, "DELETE", SelectedTypeVacation);
+            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
+            await QueryService.JsonSerializeWithToken(_user.Token, "/pers/vacation/type/del/" + SelectedTypeVacation!.Id, "DELETE", SelectedTypeVacation);
 
-                _ = TypeVacations!.Remove(SelectedTypeVacation);
-            }
+            _ = TypeVacations!.Remove(SelectedTypeVacation);
 
         }
         catch (WebException ex)
@@ -186,10 +175,7 @@ internal class TypeVacationViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -203,9 +189,8 @@ internal class TypeVacationViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null) return;
             // Загрузить массив типов приказов
-            TypeVacations = await QueryService.JsonDeserializeWithToken<Models.TypeVacation>(_User.Token, "/pers/vacation/type/get", "GET");
+            TypeVacations = await QueryService.JsonDeserializeWithToken<Models.TypeVacation>(_user.Token, "/pers/vacation/type/get", "GET");
 
 
         }
@@ -217,10 +202,7 @@ internal class TypeVacationViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else

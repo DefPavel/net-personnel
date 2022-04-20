@@ -2,33 +2,33 @@
 
 internal class SearchViewModel : BaseViewModel
 {
-    private readonly NavigationStore navigationStore;
-    private Users? _User;
+    private readonly NavigationStore _navigationStore;
+    private Users? _user;
     public Users? User
     {
-        get => _User;
-        set => Set(ref _User, value);
+        get => _user;
+        set => Set(ref _user, value);
     }
 
     public SearchViewModel(NavigationStore navigationStore, Users user)
     {
-        this.navigationStore = navigationStore;
+        this._navigationStore = navigationStore;
         User = user;
     }
     // Выбранный сотрудник 
-    private Persons? _SelectedPerson;
+    private Persons? _selectedPerson;
     public Persons? SelectedPerson
     {
-        get => _SelectedPerson;
-        set => Set(ref _SelectedPerson, value);
+        get => _selectedPerson;
+        set => Set(ref _selectedPerson, value);
     }
 
     // Процесс загрузки
-    private VisualBoolean? _IsLoading;
+    private VisualBoolean? _isLoading;
     public VisualBoolean? IsLoading
     {
-        get => _IsLoading;
-        set => Set(ref _IsLoading, value);
+        get => _isLoading;
+        private set => Set(ref _isLoading, value);
     }
 
     private string? _queryPerson;
@@ -48,36 +48,36 @@ internal class SearchViewModel : BaseViewModel
     }
 
     // Массив отделов
-    private ObservableCollection<Departments>? _Departments;
+    private ObservableCollection<Departments>? _departments;
     public ObservableCollection<Departments>? Departments
     {
-        get => _Departments;
-        set => Set(ref _Departments, value);
+        get => _departments;
+        private set => Set(ref _departments, value);
     }
     // Массив Персон
-    private ObservableCollection<Persons>? _Persons;
+    private ObservableCollection<Persons>? _persons;
     public ObservableCollection<Persons>? Persons
     {
-        get => _Persons;
-        set => Set(ref _Persons, value);
+        get => _persons;
+        private set => Set(ref _persons, value);
     }
 
     #region Команды
 
     // Команда поиска сотрудника
-    private ICommand? _SearchPerson;
+    private ICommand? _searchPerson;
     // Лямбда Команда 
-    public ICommand SearchPerson => _SearchPerson ??= new LambdaCommand(SearchItemPersonAsync, CanSearchPerson);
+    public ICommand SearchPerson => _searchPerson ??= new LambdaCommand(SearchItemPersonAsync, CanSearchPerson);
     // Команда поиска сотрудника
-    private ICommand? _SearchDepartment;
+    private ICommand? _searchDepartment;
     // Лямбда Команда 
-    public ICommand SearchDepartment => _SearchDepartment ??= new LambdaCommand(SearchItemDepartment, CanSearchDepartment);
+    public ICommand SearchDepartment => _searchDepartment ??= new LambdaCommand(SearchItemDepartment, CanSearchDepartment);
 
-    private ICommand? _GetToMain;
-    public ICommand GetToMain => _GetToMain ??= new LambdaCommand(GetBack);
+    private ICommand? _getToMain;
+    public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack);
 
-    private ICommand? _OpenPersonCard;
-    public ICommand OpenPersonCard => _OpenPersonCard ??= new LambdaCommand(OpenPersonCardView);
+    private ICommand? _openPersonCard;
+    public ICommand OpenPersonCard => _openPersonCard ??= new LambdaCommand(OpenPersonCardView);
 
     #endregion
 
@@ -88,18 +88,16 @@ internal class SearchViewModel : BaseViewModel
 
     private void OpenPersonCardView(object p)
     {
-        navigationStore.CurrentViewModel = new PersonCardViewModel(_User!, navigationStore, SelectedPerson!, SelectedPerson!.IdDepartment);
+        _navigationStore.CurrentViewModel = new PersonCardViewModel(_user!, _navigationStore, SelectedPerson!, SelectedPerson!.IdDepartment);
     }
 
     private async void SearchItemDepartment(object obj)
     {
         try
         {
-            if (_User!.Token == null) return;
-
             IsLoading = true;
 
-            Departments = await QueryService.JsonDeserializeWithTokenAndParam(_User!.Token, "/pers/tree/find/", "POST", new Departments
+            Departments = await QueryService.JsonDeserializeWithTokenAndParam(_user!.Token, "/pers/tree/find/", "POST", new Departments
             {
                 Name = QueryDepartment!.Trim(),
             });
@@ -114,10 +112,7 @@ internal class SearchViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -129,18 +124,16 @@ internal class SearchViewModel : BaseViewModel
 
     private void GetBack(object p)
     {
-        navigationStore.CurrentViewModel = new HomeViewModel(_User!, navigationStore);
+        _navigationStore.CurrentViewModel = new HomeViewModel(_user!, _navigationStore);
     }
 
     private async void SearchItemPersonAsync(object obj)
     {
         try
         {
-            if (_User!.Token == null) return;
-
             IsLoading = true;
 
-            Persons = await QueryService.JsonDeserializeWithTokenAndParam(_User!.Token, "/pers/person/find/", "POST",
+            Persons = await QueryService.JsonDeserializeWithTokenAndParam(_user!.Token, "/pers/person/find/", "POST",
             new Persons
             {
                 FirstName = QueryPerson!.Trim(),
@@ -157,10 +150,7 @@ internal class SearchViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else

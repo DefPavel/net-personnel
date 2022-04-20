@@ -1,14 +1,14 @@
 ﻿namespace AlphaPersonel.ViewModels;
 internal class MainViewModel : BaseViewModel
 {
-    private readonly NavigationStore _NavigationStore;
-    public BaseViewModel CurrentViewModel => _NavigationStore!.CurrentViewModel!;
+    private readonly NavigationStore _navigationStore;
+    public BaseViewModel CurrentViewModel => _navigationStore!.CurrentViewModel!;
 
     public MainViewModel(NavigationStore navigationStore)
     {
-        _NavigationStore = navigationStore;
+        _navigationStore = navigationStore;
 
-        _NavigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
+        _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
     }
     private void OnCurrentViewModelChanged()
     {

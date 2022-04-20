@@ -1,4 +1,6 @@
-﻿namespace AlphaPersonel.ViewModels;
+﻿using System.Linq;
+
+namespace AlphaPersonel.ViewModels;
 
 internal class TypeOrderViewModel : BaseViewModel 
 {
@@ -69,10 +71,10 @@ internal class TypeOrderViewModel : BaseViewModel
     public ICommand AddType => _AddType ??= new LambdaCommand(AddTypeOrderAsync);
 
     private ICommand? _SaveType;
-    public ICommand SaveType => _SaveType ??= new LambdaCommand(SaveTypeOrder, CanUpdateType);
+    public ICommand SaveType => _SaveType ??= new LambdaCommand(SaveTypeOrder, _ => SelectedOrder is not null && !string.IsNullOrWhiteSpace(SelectedOrder.Name));
 
     private ICommand? _DeleteType;
-    public ICommand DeleteType => _DeleteType ??= new LambdaCommand(DeleteTypeOrder, CanUpdateType);
+    public ICommand DeleteType => _DeleteType ??= new LambdaCommand(DeleteTypeOrder, _ => SelectedOrder is not null && TypeOrders!.Count > 0);
 
     private ICommand? _LoadedOrder;
 
@@ -81,7 +83,6 @@ internal class TypeOrderViewModel : BaseViewModel
 
 
     #region Логика
-    private bool CanUpdateType(object p) => SelectedOrder != null;
 
     private void GetBack(object p)
     {
@@ -163,7 +164,7 @@ internal class TypeOrderViewModel : BaseViewModel
         try
         {
             if (_User.Token == null) return;
-
+            var newSlectedItem = SelectedOrder;
             if (SelectedOrder!.Id > 0)
             {
                 // Изменить
@@ -176,7 +177,7 @@ internal class TypeOrderViewModel : BaseViewModel
                 await QueryService.JsonSerializeWithToken(_User.Token, "/pers/order/add/type", "POST", SelectedOrder);
             }
             TypeOrders = await QueryService.JsonDeserializeWithToken<TypeOrder>(_User.Token, "/pers/order/type/get", "GET");
-            _ = MessageBox.Show("Данные успешно сохраненны");
+            SelectedOrder = TypeOrders.FirstOrDefault(x => x.Name == newSlectedItem!.Name);
 
         }
         catch (WebException ex)

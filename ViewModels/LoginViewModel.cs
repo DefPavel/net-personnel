@@ -2,35 +2,35 @@
 
 internal class LoginViewModel : BaseViewModel
 {
-    private readonly NavigationStore navigationStore;
+    private readonly NavigationStore _navigationStore;
 
     public LoginViewModel(NavigationStore navigationStore)
     {
-        this.navigationStore = navigationStore;
+        this._navigationStore = navigationStore;
     }
 
     #region Свойства
-    private string? _UserName;
+    private string? _userName;
     public string? UserName
     {
-        get => _UserName;
-        set => Set(ref _UserName, value);
+        get => _userName;
+        set => Set(ref _userName, value);
     }
     // Введённый Пароль
-    private string? _Password;
+    private string? _password;
     public string? Password
     {
-        get => _Password;
-        set => Set(ref _Password, value);
+        get => _password;
+        set => Set(ref _password, value);
     }
     // Сообщение ошибки
-    private string? _ErrorMessage;
+    private string? _errorMessage;
     public string? ErrorMessage
     {
-        get => _ErrorMessage;
+        get => _errorMessage;
         private set
         {
-            _ = Set(ref _ErrorMessage, value);
+            _ = Set(ref _errorMessage, value);
             OnPropertyChanged(nameof(IsErrorVisible));
         }
     }
@@ -45,24 +45,20 @@ internal class LoginViewModel : BaseViewModel
 
     #region Команды
     // Команда Авторизации
-    private ICommand? _Auth;
+    private ICommand? _auth;
     // Лямбда Команда 
-    public ICommand Auth => _Auth ??= new LambdaCommand(OnSignInAsync, CanSignIn);
+    public ICommand Auth => _auth ??= new LambdaCommand(OnSignInAsync, CanSignIn);
     #endregion
 
     #region Логика
 
     private async void OnSignInAsync(object p)
     {
-        Users account;
         try
         {
-            account = await SignIn.Authentication(username: UserName!, password: Password!);
+            var account = await SignIn.Authentication(username: UserName!, password: Password!);
 
-            if (account.Token != null)
-            {
-                navigationStore.CurrentViewModel = new HomeViewModel(account, navigationStore);
-            }
+            _navigationStore.CurrentViewModel = new HomeViewModel(account, _navigationStore);
         }
         catch (WebException ex)
         {
@@ -72,10 +68,7 @@ internal class LoginViewModel : BaseViewModel
                 if (ex.Response is HttpWebResponse response)
                 {
                     using StreamReader reader = new(response.GetResponseStream());
-                    if (reader != null)
-                    {
-                        ErrorMessage = await reader.ReadToEndAsync();
-                    }
+                    ErrorMessage = await reader.ReadToEndAsync();
                 }
             }
             else

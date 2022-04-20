@@ -3,8 +3,8 @@
 internal class VisualBoolean
 {
     // Основная переменная
-    public bool IsTrue { get; private set; }
-    public bool IsFalse => !IsTrue;
+    private bool IsTrue { get; set; }
+    private bool IsFalse => !IsTrue;
 
     // Переобразуем структуру
     private static readonly VisualBoolean True = new() { IsTrue = true };

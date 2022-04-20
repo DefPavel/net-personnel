@@ -28,7 +28,7 @@ internal class BoundPasswordBox
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        PasswordBox? password = d as PasswordBox;
+        var password = d as PasswordBox;
         if (password != null)
         {
             // Disconnect the handler while we're updating.
@@ -59,7 +59,7 @@ internal class BoundPasswordBox
         }
     }
 
-    static void PasswordChanged(object sender, RoutedEventArgs e)
+    private static void PasswordChanged(object sender, RoutedEventArgs e)
     {
         _updating = true;
         if (sender is PasswordBox password)

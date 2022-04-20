@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Windows.Input;
 
@@ -11,64 +12,64 @@ internal class DepartmentViewModel : BaseViewModel
 {
     #region Переменные
     // Ссылка на User для того чтобы забрать token
-    private readonly Users _User;
+    private readonly Users _user;
 
-    private readonly NavigationStore navigationStore;
+    private readonly NavigationStore _navigationStore;
     public DepartmentViewModel(NavigationStore navigationStore, Users user)
     {
-        _User = user;
-        this.navigationStore = navigationStore;
+        _user = user;
+        this._navigationStore = navigationStore;
 
     }
 
     // Массив отделов
-    private ObservableCollection<Departments>? _Departments;
+    private ObservableCollection<Departments>? _departments;
     public ObservableCollection<Departments>? Departments
     {
-        get => _Departments;
+        get => _departments;
         set
         {
-            _ = Set(ref _Departments, value);
-            CollectionDepart = CollectionViewSource.GetDefaultView(Departments);
-            CollectionDepart.Filter = FilterToDepart;
+            _ = Set(ref _departments, value);
+            if (Departments != null) CollectionDepart = CollectionViewSource.GetDefaultView(Departments);
+            if (CollectionDepart != null) CollectionDepart.Filter = FilterToDepart;
         }
     }
     // Тип отдела
-    private ObservableCollection<TypeDepartments>? _TypeDepartments;
+    private ObservableCollection<TypeDepartments>? _typeDepartments;
     public ObservableCollection<TypeDepartments>? TypeDepartments
     {
-        get => _TypeDepartments;
-        set => Set(ref _TypeDepartments, value);
+        get => _typeDepartments;
+        set => Set(ref _typeDepartments, value);
     }
     // Выбранные отдел
-    private Departments? _SelectedDepartment;
+    private Departments? _selectedDepartment;
     public Departments? SelectedDepartment
     {
-        get => _SelectedDepartment;
-        set => Set(ref _SelectedDepartment, value);
+        get => _selectedDepartment;
+        set => Set(ref _selectedDepartment, value);
     }
 
     // Поисковая строка для поиска по ФИО сотрудника
-    private string? _Filter;
+    private string? _filter;
     public string? Filter
     {
-        get => _Filter;
+        get => _filter;
         set
         {
-            _ = Set(ref _Filter, value);
+            _ = Set(ref _filter, value);
             if (Departments != null)
             {
-                _CollectionDepart!.Refresh();
+                _collectionDepart!.Refresh();
             }
 
         }
     }
     // Специальная колекция для фильтров
-    private ICollectionView? _CollectionDepart;
+    private ICollectionView? _collectionDepart;
     public ICollectionView? CollectionDepart
     {
-        get => _CollectionDepart;
-        set => Set(ref _CollectionDepart, value);
+        get => _collectionDepart;
+        private set => Set(ref _collectionDepart, value);
     }
 
     private bool FilterToDepart(object emp)
@@ -80,33 +81,28 @@ internal class DepartmentViewModel : BaseViewModel
 
     #region Комадны
 
-    private ICommand? _GetToMain;
-    public ICommand GetToMain => _GetToMain ??= new LambdaCommand(GetBack);
+    private ICommand? _getToMain;
+    public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack);
 
-    private ICommand? _LoadedDepartment;
-    public ICommand LoadedDepartment => _LoadedDepartment ??= new LambdaCommand(ApiGetDepartments);
+    private ICommand? _loadedDepartment;
+    public ICommand LoadedDepartment => _loadedDepartment ??= new LambdaCommand(ApiGetDepartments);
 
-    private ICommand? _AddNewDepartment;
-    public ICommand AddNewDepartment => _AddNewDepartment ??= new LambdaCommand(AddDepartmentAsync);
+    private ICommand? _addNewDepartment;
+    public ICommand AddNewDepartment => _addNewDepartment ??= new LambdaCommand(AddDepartmentAsync);
 
-    private ICommand? _DeleteDepartment;
-    public ICommand DeleteDepartment => _DeleteDepartment ??= new LambdaCommand(DeleteDepartments, CanUpdateDepartmentCommandExecute);
+    private ICommand? _deleteDepartment;
+    public ICommand DeleteDepartment => _deleteDepartment ??= new LambdaCommand(DeleteDepartments, _ => SelectedDepartment is not null);
 
-    private ICommand? _SaveDepartment;
-    public ICommand SaveDepartment => _SaveDepartment ??= new LambdaCommand(UpdateDepartment, CanUpdateDepartmentCommandExecute);
+    private ICommand? _saveDepartment;
+    public ICommand SaveDepartment => _saveDepartment ??= new LambdaCommand(UpdateDepartment, _ => SelectedDepartment is not null && Departments!.Count > 0 && !string.IsNullOrWhiteSpace(SelectedDepartment.Name));
     #endregion
 
     #region Логика
 
-    private bool CanUpdateDepartmentCommandExecute(object p)
-    {
-        return p is Departments && p is not null;
-    }
-
     private void GetBack(object p)
     {
 
-        navigationStore.CurrentViewModel = new HomeViewModel(_User, navigationStore);
+        _navigationStore.CurrentViewModel = new HomeViewModel(_user, _navigationStore);
     }
 
     // Выгрузить данные отделов ввиде списка
@@ -114,12 +110,9 @@ internal class DepartmentViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token != null)
-            {
-                TypeDepartments = await QueryService.JsonDeserializeWithToken<TypeDepartments>(_User!.Token, "/pers/tree/type/get", "GET");
+            TypeDepartments = await QueryService.JsonDeserializeWithToken<TypeDepartments>(_user!.Token, "/pers/tree/type/get", "GET");
 
-                Departments = await QueryService.JsonDeserializeWithToken<Departments>(_User!.Token, "/pers/tree/all", "GET");
-            }
+            Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user!.Token, "/pers/tree/all", "GET");
         }
         catch (WebException ex)
         {
@@ -129,10 +122,7 @@ internal class DepartmentViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -155,7 +145,7 @@ internal class DepartmentViewModel : BaseViewModel
                 TypeName = "Не указано",
                 ParentId = 0,
             };
-            _Departments!.Insert(0, dep);
+            _departments!.Insert(0, dep);
             SelectedDepartment = dep;
 
         }
@@ -167,10 +157,7 @@ internal class DepartmentViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -185,24 +172,24 @@ internal class DepartmentViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null)
-            {
-                return;
-            }
-
+            var newSelectedDepartment = SelectedDepartment!;
             if (SelectedDepartment!.Id > 0)
             {
                 //Изменить уже текущие данные
-                await QueryService.JsonSerializeWithToken(token: _User!.Token, "/pers/tree/rename/" + SelectedDepartment.Id, "POST", SelectedDepartment);
+                await QueryService.JsonSerializeWithToken(token: _user!.Token, "/pers/tree/rename/" + SelectedDepartment.Id, "POST", SelectedDepartment);
             }
             else
             {
                 // Создать новую запись отдела 
-                await QueryService.JsonSerializeWithToken(token: _User!.Token, "/pers/tree/add", "POST", SelectedDepartment);
+                await QueryService.JsonSerializeWithToken(token: _user!.Token, "/pers/tree/add", "POST", SelectedDepartment);
                 // Обновить данные
-                Departments = await QueryService.JsonDeserializeWithToken<Departments>(_User.Token, "/pers/tree/all", "GET");
+                Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user.Token, "/pers/tree/all", "GET");
             }
-            _ = MessageBox.Show("Данные успешно сохраненны");
+            //ApiGetDepartments(p);
+            Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user!.Token, "/pers/tree/all", "GET");
+            SelectedDepartment = Departments.FirstOrDefault(x => x.Name == newSelectedDepartment!.Name);
+
+            //_ = MessageBox.Show("Данные успешно сохраненны");
         }
         catch (WebException ex)
         {
@@ -212,10 +199,7 @@ internal class DepartmentViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -229,18 +213,15 @@ internal class DepartmentViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null)
-            {
-                return;
-            }
-
-            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            {
-                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/tree/del/" + SelectedDepartment!.Id, "DELETE", SelectedDepartment);
-                //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
-
-                _ = _Departments!.Remove(SelectedDepartment);
-            }
+            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
+            await QueryService.JsonSerializeWithToken(_user.Token, "/pers/tree/del/" + SelectedDepartment!.Id, "DELETE", SelectedDepartment);
+            // Удаляем из массива
+            _ = _departments!.Remove(SelectedDepartment);
+            // Очищаем фильтр
+            Filter = string.Empty;
+            // Выбираем первый элемент из списка
+            SelectedDepartment = Departments!.FirstOrDefault();
         }
         catch (WebException ex)
         {
@@ -250,10 +231,7 @@ internal class DepartmentViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else

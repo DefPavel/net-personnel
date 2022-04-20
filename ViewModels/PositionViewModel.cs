@@ -2,120 +2,118 @@
 
 internal class PositionViewModel : BaseViewModel
 {
-    private readonly NavigationStore navigationStore;
+    private readonly NavigationStore _navigationStore;
 
-    private readonly Users _User;
+    private readonly Users _user;
 
     public PositionViewModel(NavigationStore navigationStore, Users user)
     {
-        this.navigationStore = navigationStore;
-        _User = user;
+        this._navigationStore = navigationStore;
+        _user = user;
     }
 
     #region Переменные
 
     // Поисковая строка для поиска по ФИО сотрудника
-    private string? _Filter;
+    private string? _filter;
     public string? Filter
     {
-        get => _Filter;
+        get => _filter;
         set
         {
-            _ = Set(ref _Filter, value);
+            _ = Set(ref _filter, value);
             if (Positions != null)
             {
-                _CollectionDepart!.Refresh();
+                _collectionDepart!.Refresh();
             }
 
         }
     }
     // Специальная колекция для фильтров
-    private ICollectionView? _CollectionDepart;
+    private ICollectionView? _collectionDepart;
     public ICollectionView? CollectionDepart
     {
-        get => _CollectionDepart;
-        set => Set(ref _CollectionDepart, value);
+        get => _collectionDepart;
+        private set => Set(ref _collectionDepart, value);
     }
 
     private bool FilterToPos(object emp) => string.IsNullOrEmpty(Filter) || (emp is Position pos && pos.Name!.ToUpper().Contains(value: Filter.ToUpper()));
 
 
-    private bool _RadioIsPed;
+    private bool _radioIsPed;
     public bool RadioIsPed
     {
-        get => _RadioIsPed;
-        set => Set(ref _RadioIsPed, value);
+        get => _radioIsPed;
+        set => Set(ref _radioIsPed, value);
     }
 
-    private bool _RadioIsNoPed;
+    private bool _radioIsNoPed;
     public bool RadioIsNoPed
     {
-        get => _RadioIsNoPed;
-        set => Set(ref _RadioIsNoPed, value);
+        get => _radioIsNoPed;
+        set => Set(ref _radioIsNoPed, value);
     }
 
 
-    private ObservableCollection<Position>? _Position;
+    private ObservableCollection<Position>? _position;
     public ObservableCollection<Position>? Positions
     {
-        get => _Position;
+        get => _position;
         set
         {
-            _ = Set(ref _Position, value);
-            CollectionDepart = CollectionViewSource.GetDefaultView(Positions);
-            CollectionDepart.Filter = FilterToPos;
+            _ = Set(ref _position, value);
+            if (Positions != null) CollectionDepart = CollectionViewSource.GetDefaultView(Positions);
+            if (CollectionDepart != null) CollectionDepart.Filter = FilterToPos;
         }
     }
     // Выбранные отдел
-    private Position? _SelectedPosition;
+    private Position? _selectedPosition;
     public Position? SelectedPosition
     {
-        get => _SelectedPosition;
+        get => _selectedPosition;
         set
         {
-            _ = Set(ref _SelectedPosition, value);
+            _ = Set(ref _selectedPosition, value);
 
-            if (_SelectedPosition != null)
+            if (_selectedPosition == null) return;
+            if (_selectedPosition.IsPed)
             {
-                if (_SelectedPosition.IsPed)
-                {
-                    RadioIsPed = true;
-                }
-                else
-                {
-                    RadioIsNoPed = true;
-                }
+                RadioIsPed = true;
+            }
+            else
+            {
+                RadioIsNoPed = true;
             }
 
         }
     }
 
-    private ObservableCollection<Departments>? _Department;
+    private ObservableCollection<Departments>? _department;
     public ObservableCollection<Departments>? Department
     {
-        get => _Department;
-        set => Set(ref _Department, value);
+        get => _department;
+        set => Set(ref _department, value);
     }
 
     #endregion
 
     #region Команды
 
-    private ICommand? _GetToMain;
-    public ICommand GetToMain => _GetToMain ??= new LambdaCommand(GetBack);
+    private ICommand? _getToMain;
+    public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack);
 
-    private ICommand? _LoadedPosition;
-    public ICommand LoadedPosition => _LoadedPosition ??= new LambdaCommand(ApiGetPosition);
+    private ICommand? _loadedPosition;
+    public ICommand LoadedPosition => _loadedPosition ??= new LambdaCommand(ApiGetPosition);
 
-    private ICommand? _AddNew;
-    public ICommand AddNew => _AddNew ??= new LambdaCommand(AddPosition);
+    private ICommand? _addNew;
+    public ICommand AddNew => _addNew ??= new LambdaCommand(AddPosition);
 
-    private ICommand? _Delete;
-    public ICommand Delete => _Delete ??= new LambdaCommand(DeletePosition, CanUpdate);
+    private ICommand? _delete;
+    public ICommand Delete => _delete ??= new LambdaCommand(DeletePosition, CanUpdate);
 
-    private ICommand? _Save;
+    private ICommand? _save;
 
-    public ICommand Save => _Save ??= new LambdaCommand(UpdatePosition, CanUpdate);
+    public ICommand Save => _save ??= new LambdaCommand(UpdatePosition, CanUpdate);
 
 
     #endregion
@@ -124,7 +122,7 @@ internal class PositionViewModel : BaseViewModel
     #region Логика
     private void GetBack(object p)
     {
-        navigationStore.CurrentViewModel = new HomeViewModel(_User, navigationStore);
+        _navigationStore.CurrentViewModel = new HomeViewModel(_user, _navigationStore);
     }
     private bool CanUpdate(object p) => SelectedPosition != null;
 
@@ -132,18 +130,16 @@ internal class PositionViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null) return;
+            Positions = await QueryService.JsonDeserializeWithToken<Position>(_user!.Token, "/pers/position/all", "GET");
 
-            Positions = await QueryService.JsonDeserializeWithToken<Position>(_User!.Token, "/pers/position/all", "GET");
-
-            Department = await QueryService.JsonDeserializeWithToken<Departments>(_User!.Token, "/pers/tree/all", "GET");
+            Department = await QueryService.JsonDeserializeWithToken<Departments>(_user!.Token, "/pers/tree/all", "GET");
         }
         catch (System.Net.WebException ex)
         {
             if (ex.Response != null)
             {
                 using StreamReader reader = new(ex.Response.GetResponseStream());
-                _ = MessageBox.Show(reader.ReadToEnd(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
             }
         }
        
@@ -180,25 +176,19 @@ internal class PositionViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null)
-            {
-                return;
-            }
-
-
             if (SelectedPosition!.Id > 0)
             {
                 SelectedPosition.IsPed = RadioIsPed;
                 //Изменить уже текущие данные
-                await QueryService.JsonSerializeWithToken(token: _User!.Token, "/pers/position/rename", "POST", SelectedPosition);
+                await QueryService.JsonSerializeWithToken(token: _user!.Token, "/pers/position/rename", "POST", SelectedPosition);
             }
             else
             {
                 SelectedPosition.IsPed = RadioIsPed;
                 // Создать новую запись  
-                await QueryService.JsonSerializeWithToken(token: _User!.Token, "/pers/position/add", "POST", SelectedPosition);
+                await QueryService.JsonSerializeWithToken(token: _user!.Token, "/pers/position/add", "POST", SelectedPosition);
                 // Обновить данные
-                Positions = await QueryService.JsonDeserializeWithToken<Position>(_User!.Token, "/pers/position/all", "GET");
+                Positions = await QueryService.JsonDeserializeWithToken<Position>(_user!.Token, "/pers/position/all", "GET");
             }
             _ = MessageBox.Show("Данные успешно сохраненны");
         }
@@ -216,18 +206,17 @@ internal class PositionViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null)
+            if (_user.Token == null)
             {
                 return;
             }
 
-            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            {
-                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/position/del/" + SelectedPosition!.Id, "DELETE", SelectedPosition);
-                //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
+            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
+            await QueryService.JsonSerializeWithToken(_user.Token, "/pers/position/del/" + SelectedPosition!.Id, "DELETE", SelectedPosition);
+            //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
 
-                _ = _Position!.Remove(SelectedPosition);
-            }
+            _ = _position!.Remove(SelectedPosition);
         }
         catch (WebException ex)
         {
@@ -237,10 +226,7 @@ internal class PositionViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else

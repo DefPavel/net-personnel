@@ -86,20 +86,23 @@
                 </MenuItem.Header>
                 <MenuItem Header="Список отделов"
                           Command="{Binding OpenDepartment}" />
-                <MenuItem Header="Список приказов" 
-                          Command="{Binding OpenOrder}"/>
-                <MenuItem Header="Виды приказов"
-                          Command="{Binding OpenTypeOrder}"/>
-                <MenuItem Header="Список должностей"
-                          Command="{Binding OpenPosition}"/>
+                <MenuItem Header="Виды должностей"
+                          Command="{Binding OpenTypePosition}"/>
                 <MenuItem Header="Виды отпусков"
                           Command="{Binding OpenVacation}"/>
+                <MenuItem Header="Виды приказов"
+                          Command="{Binding OpenTypeOrder}"/>
+                <MenuItem Header="Виды награждений"
+                          Command="{Binding OpenRewarding}"/>
+                <MenuItem Header="Виды званий"
+                          Command="{Binding OpenTypeRanks}"/>
                 <MenuItem Header="Периоды отпусков"
                           Command="{Binding OpenPeriod}"/>
-                <MenuItem Header="Награды"
-                          Command="{Binding OpenRewarding}"/>
-                <MenuItem Header="Звания"
-                          Command="{Binding OpenTypeRanks}"/>
+                <MenuItem Header="Список приказов" 
+                          Command="{Binding OpenOrder}"/>
+                <MenuItem Header="Список штатных должностей"
+                          Command="{Binding OpenPosition}"/>
+                
                 <!--<MenuItem Header="Календарь праздников"
                           Command="{Binding }"/>-->
                 <MenuItem Header="Отправка в отпуск..."/>
@@ -377,7 +380,8 @@
                                 <Grid 
                                     Margin="5"
                                     Grid.Column="0">
-                                    <DataGrid  
+                                    <DataGrid 
+                                              SelectionMode="Single"
                                               Margin="5"
                                               ItemsSource="{Binding Positions}"
                                               SelectedValue="{Binding SelectedPosition , UpdateSourceTrigger=PropertyChanged }"
@@ -411,12 +415,28 @@
                                     <TextBlock 
                                         Grid.Column="0"
                                         Grid.Row="0"
-                                        Text="Наименование:"/>
-                                    <TextBox 
-                                        Grid.Column="1"
+                                        Text="Должность:"/>
+
+                                    <!-- <ComboBox
                                         Grid.Row="0"
-                                        Style="{StaticResource SelectedIsEnabled}"
-                                        Text="{Binding SelectedPosition.Name}"/>
+                                        Grid.Column="1"
+                                        IsEditable="True"
+                                        ItemsSource="{Binding TypePosition}"
+                                        DisplayMemberPath="Name"
+                                        SelectedValuePath="Name"
+                                        SelectedItem="{Binding SelectedTypePosition.Name}"
+                                    /> -->
+                                    <ComboBox 
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        MinWidth="100"
+                                        IsEditable="True"
+                                        ItemsSource="{Binding TypePosition}"
+                                        SelectedValue="{Binding SelectedPosition.Name, UpdateSourceTrigger=PropertyChanged }"
+                                        DisplayMemberPath="Name"
+                                        SelectedValuePath="Name"
+                                    />
+
                                     <TextBlock 
                                         Grid.Column="0"
                                         Grid.Row="1"
@@ -540,30 +560,23 @@
                                         Grid.Row="4">
 
                                         <RadioButton
+                                            IsEnabled="False"
                                             IsChecked="{Binding RadioIsPed}"
                                             Content="Педагогическая должность"/>
                                         <RadioButton
-                                
+                                            IsEnabled="False"
                                             IsChecked="{Binding RadioIsNoPed}"
                                             Content="Ремонто строительная и обслуживающая"/>
                                     </StackPanel>
                                     <TextBlock 
                                         Grid.Column="0"
                                         Grid.Row="5"
-                                        Text=" Дней отпуска:"/>
-                                    <xctk:DecimalUpDown
-                                        Grid.Column="1"
+                                        Text="Лимит отпуска:"/>
+                                    <TextBox 
+                                        IsEnabled="False"
                                         Grid.Row="5"
-                                        Foreground="#444444"
-                                        Background="#FFFFFF"
-                                        Padding="4 2"
-                                        Margin="4 2"
-                                        Height="22"
-                                        BorderThickness="1"
-                                        Value="{ Binding  SelectedPosition.HolidayLimit , UpdateSourceTrigger=PropertyChanged}"
-                                        Increment="28" 
-                                        
-                                        Minimum="0"
+                                        Grid.Column="1"
+                                        Text="{Binding SelectedPosition.HolidayLimit}"
                                         />
                                     <StackPanel 
                                         Grid.Column="1"

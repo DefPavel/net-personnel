@@ -1,4 +1,5 @@
 ﻿using AlphaPersonel.Views.Models;
+using System.Collections.Generic;
 using System.Linq;
 namespace AlphaPersonel.ViewModels;
 
@@ -6,104 +7,110 @@ internal class HomeViewModel : BaseViewModel
 {
     public HomeViewModel(Users account, NavigationStore navigationStore)
     {
-        _User = account;
-        this.navigationStore = navigationStore;
+        _user = account;
+        this._navigationStore = navigationStore;
     }
     // При возврате с личной карты,чтобы оставались на том же отделе 
     public HomeViewModel(Users account, NavigationStore navigationStore, Departments departments)
     {
-        _User = account;
-        this.navigationStore = navigationStore;
-        _SelectedItem = departments;
+        _user = account;
+        this._navigationStore = navigationStore;
+        _selectedItem = departments;
         ApiGetPersons(departments);
     }
 
     #region Свойства
 
-    private readonly NavigationStore navigationStore;
+    private readonly NavigationStore _navigationStore;
 
-    private bool _RadioIsPed;
+    private bool _radioIsPed;
     public bool RadioIsPed
     {
-        get => _RadioIsPed;
-        set => Set(ref _RadioIsPed, value);
+        get => _radioIsPed;
+        set => Set(ref _radioIsPed, value);
     }
 
-    private bool _RadioIsNoPed;
+    private bool _radioIsNoPed;
     public bool RadioIsNoPed
     {
-        get => _RadioIsNoPed;
-        set => Set(ref _RadioIsNoPed, value);
+        get => _radioIsNoPed;
+        set => Set(ref _radioIsNoPed, value);
     }
 
     // Процесс загрузки
-    private VisualBoolean? _IsLoading = false;
+    private VisualBoolean? _isLoading = false;
     public VisualBoolean? IsLoading
     {
-        get => _IsLoading;
-        set => Set(ref _IsLoading, value);
+        get => _isLoading;
+        set => Set(ref _isLoading, value);
     }
     // Вывести информацию о пользователе который авторизировался 
-    private Users _User;
+    private Users _user;
     public Users User
     {
-        get => _User;
-        set => Set(ref _User, value);
+        get => _user;
+        set => Set(ref _user, value);
     }
     // Права на изменение данных 
-    public bool IsAdministrator => _User.Grants!.FirstOrDefault(x => x.Name.Contains("изменение"))?.Id == 2; 
+    public bool IsAdministrator => _user.Grants!.FirstOrDefault(x => x.Name.Contains("изменение"))?.Id == 2; 
     public bool IsReadeOnly => !IsAdministrator; // Маленький костыль для свойства только чтения
                                                  // Массив Отделов
-    private ObservableCollection<Departments>? _Departments;
+    private ObservableCollection<Departments>? _departments;
     public ObservableCollection<Departments>? Departments
     {
-        get => _Departments;
-        private set => Set(ref _Departments, value);
+        get => _departments;
+        private set => Set(ref _departments, value);
     }
     // Массив Должностей
-    private ObservableCollection<Position>? _Positions;
+    private ObservableCollection<Position>? _positions;
     public ObservableCollection<Position>? Positions
     {
-        get => _Positions;
-        private set => Set(ref _Positions, value);
+        get => _positions;
+        private set => Set(ref _positions, value);
+    }
+    // Список всех должностей
+    private ObservableCollection<TypePosition>? _typePosition;
+    public ObservableCollection<TypePosition>? TypePosition
+    {
+        get => _typePosition;
+        private set => Set(ref _typePosition, value);
     }
     // Выбранный элемент из TreeView
-    private Position? _SelectedPosition;
+    private Position? _selectedPosition;
     public Position? SelectedPosition
     {
-        get => _SelectedPosition;
+        get => _selectedPosition;
         set
         {
-            _ = Set(ref _SelectedPosition, value);
-            if (_SelectedPosition != null)
+            _ = Set(ref _selectedPosition, value);
+            if (_selectedPosition == null) return;
+            if (_selectedPosition.IsPed)
             {
-                if (_SelectedPosition.IsPed)
-                {
-                    RadioIsPed = true;
-                }
-                else
-                {
-                    RadioIsNoPed = true;
-                }
+                RadioIsPed = true;
+            }
+            else
+            {
+                RadioIsNoPed = true;
             }
         }
     }
     // Выбранный элемент из TreeView
-    private Departments? _SelectedItem;
+    private Departments? _selectedItem;
     public Departments? SelectedItem
     {
-        get => _SelectedItem;
-        set => Set(ref _SelectedItem, value);
+        get => _selectedItem;
+        set => Set(ref _selectedItem, value);
     }
     // Массив Сотрудников
-    private ObservableCollection<Persons>? _Persons;
+    private ObservableCollection<Persons>? _persons;
     public ObservableCollection<Persons>? Persons
     {
-        get => _Persons;
+        get => _persons;
         private set
         {
-            _ = Set(ref _Persons, value);
+            _ = Set(ref _persons, value);
             // Для фильтрации полей 
+            if (Persons == null) return;
             CollectionPerson = CollectionViewSource.GetDefaultView(Persons);
             CollectionPerson.Filter = FilterToPerson;
 
@@ -131,94 +138,101 @@ internal class HomeViewModel : BaseViewModel
             CountBudget = Persons!.Sum(x => x.StavkaBudget);
             // итоги внебюджетных ставок
             CountNotBudget = Persons!.Sum(x => x.StavkaNoBudget);
-
         }
     }
     // расчет совместителей Внутренних НПП
-    private int _CountIsPluralismInnerIsPed;
+    private int _countIsPluralismInnerIsPed;
     public int CountIsPluralismInnerIsPed
     {
-        get => _CountIsPluralismInnerIsPed;
-        private set => Set(ref _CountIsPluralismInnerIsPed, value);
+        get => _countIsPluralismInnerIsPed;
+        private set => Set(ref _countIsPluralismInnerIsPed, value);
     }
 
     // расчет совместителей Внутренних не НПП
-    private int _CountIsPluralismInnerNotIsPed;
+    private int _countIsPluralismInnerNotIsPed;
     public int CountIsPluralismInnerNotIsPed
     {
-        get => _CountIsPluralismInnerNotIsPed;
-        private set => Set(ref _CountIsPluralismInnerNotIsPed, value);
+        get => _countIsPluralismInnerNotIsPed;
+        private set => Set(ref _countIsPluralismInnerNotIsPed, value);
     }
 
 
     // расчет совместителей Внешних 
-    private int _CountIsPluralismOterIsPed;
+    private int _countIsPluralismOterIsPed;
     public int CountIsPluralismOterIsPed
     {
-        get => _CountIsPluralismOterIsPed;
-        private set => Set(ref _CountIsPluralismOterIsPed, value);
+        get => _countIsPluralismOterIsPed;
+        private set => Set(ref _countIsPluralismOterIsPed, value);
     }
 
     // Подсчет количества людей имеющие педагогическую должность
-    private int _CountIsPedPerson;
+    private int _countIsPedPerson;
     public int CountIsPedPerson
     {
-        get => _CountIsPedPerson;
-        private set => Set(ref _CountIsPedPerson, value);
+        get => _countIsPedPerson;
+        private set => Set(ref _countIsPedPerson, value);
     }
     // Подсчет количества людей имеющие не педагогическую должность
-    private int _CountNotIsPedPerson;
+    private int _countNotIsPedPerson;
     public int CountNotIsPedPerson
     {
-        get => _CountNotIsPedPerson;
-        private set => Set(ref _CountNotIsPedPerson, value);
+        get => _countNotIsPedPerson;
+        private set => Set(ref _countNotIsPedPerson, value);
     }
 
     // Подсчет количество свободных бюджетных ставок 
-    private decimal _CountFreeBudget;
+    private decimal _countFreeBudget;
     public decimal CountFreeBudget
     {
-        get => _CountFreeBudget;
-        private set => Set(ref _CountFreeBudget, value);
+        get => _countFreeBudget;
+        private set => Set(ref _countFreeBudget, value);
     }
     // Подсчет количество свободных внебюджетных ставок 
-    private decimal _CountFreeNotBudget;
+    private decimal _countFreeNotBudget;
     public decimal CountFreeNotBudget
     {
-        get => _CountFreeBudget;
-        private set => Set(ref _CountFreeNotBudget, value);
+        get => _countFreeBudget;
+        private set => Set(ref _countFreeNotBudget, value);
     }
 
     // Подсчет количество  бюджетных ставок 
-    private decimal _CountBudget;
+    private decimal _countBudget;
     public decimal CountBudget
     {
-        get => _CountBudget;
-        private set => Set(ref _CountBudget, value);
+        get => _countBudget;
+        private set => Set(ref _countBudget, value);
     }
     // Подсчет количество  внебюджетных ставок 
-    private decimal _CountNotBudget;
+    private decimal _countNotBudget;
     public decimal CountNotBudget
     {
-        get => _CountFreeBudget;
-        private set => Set(ref _CountNotBudget, value);
+        get => _countFreeBudget;
+        private set => Set(ref _countNotBudget, value);
+    }
+
+    // Выбранный должность 
+    private TypePosition? _selectedTypePosition;
+    public TypePosition? SelectedTypePosition
+    {
+        get => _selectedTypePosition;
+        set => Set(ref _selectedTypePosition, value);
     }
 
     // Выбранный сотрудник 
-    private Persons? _SelectedPerson;
+    private Persons? _selectedPerson;
     public Persons? SelectedPerson
     {
-        get => _SelectedPerson;
-        set => Set(ref _SelectedPerson, value);
+        get => _selectedPerson;
+        set => Set(ref _selectedPerson, value);
     }
     // Поисковая строка для поиска по ФИО сотрудника
-    private string? _FilterPerson;
+    private string? _filterPerson;
     public string? FilterPerson
     {
-        get => _FilterPerson;
+        get => _filterPerson;
         set
         {
-            _ = Set(ref _FilterPerson, value);
+            _ = Set(ref _filterPerson, value);
             if (Persons != null)
             {
                 CollectionPerson!.Refresh();
@@ -226,79 +240,82 @@ internal class HomeViewModel : BaseViewModel
         }
     }
     // Специальная колекция для фильтров
-    private ICollectionView? _CollectionPerson;
+    private ICollectionView? _collectionPerson;
     public ICollectionView? CollectionPerson
     {
-        get => _CollectionPerson;
-        private set => Set(ref _CollectionPerson, value);
+        get => _collectionPerson;
+        private set => Set(ref _collectionPerson, value);
     }
     #endregion
 
     #region Команды
     // Команда для отображения всех отделов для TreeView
-    private ICommand? _GetTreeView;
-    public ICommand GetTreeView => _GetTreeView ??= new LambdaCommand(ApiGetDepartments);
+    private ICommand? _getTreeView;
+    public ICommand GetTreeView => _getTreeView ??= new LambdaCommand(ApiGetDepartments);
 
     // Команда для отображения всех сотрудников которые пренадлежат определённому отделу
-    private ICommand? _GetPersonsToDepartment;
-    public ICommand GetPersonsToDepartment => _GetPersonsToDepartment ??= new LambdaCommand(ApiGetPersons, _ => SelectedItem is not null);
+    private ICommand? _getPersonsToDepartment;
+    public ICommand GetPersonsToDepartment => _getPersonsToDepartment ??= new LambdaCommand(ApiGetPersons, _ => SelectedItem is not null);
 
     // Выход из аккаунта
-    private ICommand? _Logout;
-    public ICommand Logout => _Logout ??= new LambdaCommand(Exit);
+    private ICommand? _logout;
+    public ICommand Logout => _logout ??= new LambdaCommand(Exit);
 
 
     // UserControl
-    private ICommand? _OpenDepartment;
-    public ICommand OpenDepartment => _OpenDepartment ??= new LambdaCommand(OpenDepartmentView);
+    private ICommand? _openDepartment;
+    public ICommand OpenDepartment => _openDepartment ??= new LambdaCommand(OpenDepartmentView);
 
-    private ICommand? _OpenTypeVacation;
-    public ICommand OpenVacation => _OpenTypeVacation ??= new LambdaCommand(OpenTypeVacationView);
+    private ICommand? _openTypeVacation;
+    public ICommand OpenVacation => _openTypeVacation ??= new LambdaCommand(OpenTypeVacationView);
 
-    private ICommand? _OpenTypeRewarding;
-    public ICommand OpenRewarding => _OpenTypeRewarding ??= new LambdaCommand(OpenTypeRewardingView);
+    private ICommand? _openTypeRewarding;
+    public ICommand OpenRewarding => _openTypeRewarding ??= new LambdaCommand(OpenTypeRewardingView);
 
-    private ICommand? _OpenSearch;
-    public ICommand OpenSearch => _OpenSearch ??= new LambdaCommand(OpenSearchView);
+    private ICommand? _openSearch;
+    public ICommand OpenSearch => _openSearch ??= new LambdaCommand(OpenSearchView);
 
-    private ICommand? _OpenPosition;
-    public ICommand OpenPosition => _OpenPosition ??= new LambdaCommand(OpenPositionView);
+    private ICommand? _openPosition;
+    public ICommand OpenPosition => _openPosition ??= new LambdaCommand(OpenPositionView);
 
-    private ICommand? _OpenTypeOrder;
-    public ICommand OpenTypeOrder => _OpenTypeOrder ??= new LambdaCommand(OpenTypeOrderView);
+    private ICommand? _openTypePosition;
+    public ICommand OpenTypePosition => _openTypePosition ??= new LambdaCommand(OpenTypePositionView);
 
-    private ICommand? _OpenTypeRanks;
-    public ICommand OpenTypeRanks => _OpenTypeRanks ??= new LambdaCommand(OpenTypeRankView);
+    private ICommand? _openTypeOrder;
+    public ICommand OpenTypeOrder => _openTypeOrder ??= new LambdaCommand(OpenTypeOrderView);
 
-    private ICommand? _OpenOrder;
-    public ICommand OpenOrder => _OpenOrder ??= new LambdaCommand(OpenOrderView);
+    private ICommand? _openTypeRanks;
+    public ICommand OpenTypeRanks => _openTypeRanks ??= new LambdaCommand(OpenTypeRankView);
 
-    private ICommand? _OpenPeriod;
-    public ICommand OpenPeriod => _OpenPeriod ??= new LambdaCommand(OpenPeriodView);
+    private ICommand? _openOrder;
+    public ICommand OpenOrder => _openOrder ??= new LambdaCommand(OpenOrderView);
 
-    private ICommand? _OpenPersonCard;
-    public ICommand OpenPersonCard => _OpenPersonCard ??= new LambdaCommand(OpenPersonCardView, _ => SelectedPerson is not null);
+    private ICommand? _openPeriod;
+    public ICommand OpenPeriod => _openPeriod ??= new LambdaCommand(OpenPeriodView);
 
-    private ICommand? _OpenReport;
-    public ICommand OpenReport => _OpenReport ??= new LambdaCommand(OpenReportView);
+    private ICommand? _openPersonCard;
+    public ICommand OpenPersonCard => _openPersonCard ??= new LambdaCommand(OpenPersonCardView, _ => SelectedPerson is not null);
 
-    private ICommand? _OpenAddPerson;
-    public ICommand OpenAddPerson => _OpenAddPerson ??= new LambdaCommand(AddPerson, _ => SelectedItem is not null);
+    private ICommand? _openReport;
+    public ICommand OpenReport => _openReport ??= new LambdaCommand(OpenReportView);
 
-    private ICommand? _AddPosition;
-    public ICommand AddPosition => _AddPosition ??= new LambdaCommand(AddPositionToDepartmentAsync);
+    private ICommand? _openAddPerson;
+    public ICommand OpenAddPerson => _openAddPerson ??= new LambdaCommand(AddPerson, _ => SelectedItem is not null);
 
-    private ICommand? _SavePosition;
-    public ICommand SavePosition => _SavePosition ??= new LambdaCommand(UpdatePosition , _ => SelectedPosition is not null);
+    private ICommand? _addPosition;
+    public ICommand AddPosition => _addPosition ??= new LambdaCommand(AddPositionToDepartmentAsync);
 
-    private ICommand? _DeletePosition;
-    public ICommand DeletePosition => _DeletePosition ??= new LambdaCommand(DeletePositionApi, _ => SelectedPosition is not null);
+    private ICommand? _savePosition;
+    public ICommand SavePosition => _savePosition ??= new LambdaCommand(UpdatePosition , _ => SelectedPosition is not null);
 
-    private ICommand? _OpenDeletePerson;
-    public ICommand OpenDeletePerson => _OpenDeletePerson ??= new LambdaCommand(DeletePerson, _ => SelectedItem is not null);
+    private ICommand? _deletePosition;
+    public ICommand DeletePosition => _deletePosition ??= new LambdaCommand(DeletePositionApi, _ => SelectedPosition is not null);
 
-    private ICommand? _RenameDepartment;
-    public ICommand RenameDepartment => _RenameDepartment ??= new LambdaCommand(UpdateDataDepartment, _ => SelectedItem is not null);
+    private ICommand? _openDeletePerson;
+    public ICommand OpenDeletePerson => _openDeletePerson ??= new LambdaCommand(DeletePerson, _ => SelectedItem is not null);
+
+    private ICommand? _renameDepartment;
+    public ICommand RenameDepartment => _renameDepartment ??= new LambdaCommand(UpdateDataDepartment, _ => SelectedItem is not null);
 
     #endregion
 
@@ -307,7 +324,7 @@ internal class HomeViewModel : BaseViewModel
     // Открыть модальное окно на созадние человека
     private void AddPerson(object p)
     {
-        AddPersonVeiwModel viewModel = new(_User, _SelectedItem!.Id);
+        AddPersonVeiwModel viewModel = new(_user, _selectedItem!.Id);
         AddPersonView view = new() { DataContext = viewModel };
         view.ShowDialog();
         // Обновить данные
@@ -316,7 +333,7 @@ internal class HomeViewModel : BaseViewModel
     // Открыть модальное окно на удаление человека
     private void DeletePerson(object p)
     {
-        DeletePersonViewModel viewModel = new($"С должности:'{_SelectedPerson.PersonPosition}'", _User, _SelectedPerson!, SelectedItem!);
+        DeletePersonViewModel viewModel = new($"С должности:'{_selectedPerson!.PersonPosition}'", _user, _selectedPerson!, SelectedItem!);
         DeleteView view = new() { DataContext = viewModel };
         view.ShowDialog();
         // Обновить данные
@@ -324,77 +341,78 @@ internal class HomeViewModel : BaseViewModel
     }
     private void OpenTypeVacationView(object p)
     {
-        navigationStore.CurrentViewModel = new TypeVacationViewModel(navigationStore, _User);
+        _navigationStore.CurrentViewModel = new TypeVacationViewModel(_navigationStore, _user);
     }
 
     private void OpenTypeRewardingView(object p)
     {
-        navigationStore.CurrentViewModel = new TypeRewardingViewModel(navigationStore, _User);
+        _navigationStore.CurrentViewModel = new TypeRewardingViewModel(_navigationStore, _user);
     }
 
     private void OpenPeriodView(object p)
     {
-        navigationStore.CurrentViewModel = new PeriodVacationViewModel(navigationStore, _User);
+        _navigationStore.CurrentViewModel = new PeriodVacationViewModel(_navigationStore, _user);
     }
     // Отчеты
     private void OpenReportView(object p)
     {
-        navigationStore.CurrentViewModel = new ReportsViewModel(navigationStore, _User);
+        _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
     }
 
     // Отделы
     private void OpenDepartmentView(object p)
     {
-        navigationStore.CurrentViewModel = new DepartmentViewModel(navigationStore, _User);
+        _navigationStore.CurrentViewModel = new DepartmentViewModel(_navigationStore, _user);
     }
     // Типы приказов
     private void OpenTypeOrderView(object p)
     {
-        navigationStore.CurrentViewModel = new TypeOrderViewModel(navigationStore, _User);
+        _navigationStore.CurrentViewModel = new TypeOrderViewModel(_navigationStore, _user);
     }
     // Тип Званий
     private void OpenTypeRankView(object p)
     {
-        navigationStore.CurrentViewModel = new TypeRanksViewModel(navigationStore, _User);
+        _navigationStore.CurrentViewModel = new TypeRanksViewModel(_navigationStore, _user);
     }
     // Приказы
     private void OpenOrderView(object p)
     {
-        navigationStore.CurrentViewModel = new OrderViewModel(navigationStore, _User);
+        _navigationStore.CurrentViewModel = new OrderViewModel(_navigationStore, _user);
     }
 
     // Поиск
     private void OpenSearchView(object p)
     {
-        navigationStore.CurrentViewModel = new SearchViewModel(navigationStore, _User);
+        _navigationStore.CurrentViewModel = new SearchViewModel(_navigationStore, _user);
     }
 
     private void OpenPositionView(object p)
     {
-        navigationStore.CurrentViewModel = new PositionViewModel(navigationStore, _User);
+        _navigationStore.CurrentViewModel = new PositionViewModel(_navigationStore, _user);
+    }
+
+    private void OpenTypePositionView(object p)
+    {
+        _navigationStore.CurrentViewModel = new TypePositionViewModel(_navigationStore, _user);
     }
 
     private void OpenPersonCardView(object p)
     {
-        navigationStore.CurrentViewModel = new PersonCardViewModel(_User, navigationStore, SelectedPerson!, SelectedItem!.Id);
+        _navigationStore.CurrentViewModel = new PersonCardViewModel(_user, _navigationStore, SelectedPerson!, SelectedItem!.Id);
     }
 
     private async void ApiGetPersons(object p)
     {
         try
         {
-            if (_User.Token == null)
-            {
-                return;
-            }
             // Запуск progress bar
             IsLoading = true;
-            // Вывести список должностей данного отдела
-
-            Positions = await QueryService.JsonDeserializeWithToken<Position>(token: _User!.Token, "/pers/position/get/" + SelectedItem!.Id, "GET");
-
+            // Выдать все должности
+            TypePosition = await QueryService.JsonDeserializeWithToken<TypePosition>(token: _user!.Token, "/pers/position/type/position/", "GET");
+            // Вывести список штатных должностей данного отдела
+            Positions = await QueryService.JsonDeserializeWithToken<Position>(token: _user!.Token, "/pers/position/get/" + SelectedItem!.Id, "GET");
             // Вывести сотрудников данного отдела
-            Persons = await QueryService.JsonDeserializeWithToken<Persons>(token: _User!.Token, "/pers/person/get/department/" + SelectedItem.Id, "GET");
+            Persons = await QueryService.JsonDeserializeWithToken<Persons>(token: _user!.Token, "/pers/person/get/department/" + SelectedItem.Id, "GET");
             // Завершить progress bar
             IsLoading = false;
         }
@@ -406,10 +424,7 @@ internal class HomeViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -424,12 +439,7 @@ internal class HomeViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null)
-            {
-                return;
-            }
-
-            Departments = await QueryService.JsonDeserializeWithToken<Departments>(_User.Token, "/pers/tree/get", "GET");
+            Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user.Token, "/pers/tree/get", "GET");
             if(SelectedItem != null)
             {
                 ApiGetPersons(p);
@@ -446,10 +456,7 @@ internal class HomeViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -465,16 +472,18 @@ internal class HomeViewModel : BaseViewModel
         {
             if(SelectedItem != null)
             {
+                var name = TypePosition!.FirstOrDefault()?.Name;
+                if (name == null) return;
                 Position dep = new()
                 {
-                    Name = "Новая должность",
+                    Name = name,
                     IsPed = true,
                     HolidayLimit = 28,
                     DepartmentName = SelectedItem.Name,
                     IdDepartment = SelectedItem.Id,
                     Phone = "Не указано",
                 };
-                Positions.Insert(0, dep);
+                Positions!.Insert(0, dep);
                 SelectedPosition = dep;
             }
             else
@@ -494,10 +503,7 @@ internal class HomeViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -512,19 +518,14 @@ internal class HomeViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null)
-            {
-                return;
-            }
-
             if (SelectedItem!.Id > 0)
             {
 
                 //Изменить уже текущие данные
-                await QueryService.JsonSerializeWithToken(token: _User!.Token, "/pers/tree/rename/short/" + SelectedItem.Id, "POST", SelectedItem);
+                await QueryService.JsonSerializeWithToken(token: _user!.Token, "/pers/tree/rename/short/" + SelectedItem.Id, "POST", SelectedItem);
             }
            
-            _ = MessageBox.Show("Данные успешно сохраненны");
+           // _ = MessageBox.Show("Данные успешно сохраненны");
            
         }
         catch (System.Net.WebException ex)
@@ -540,29 +541,23 @@ internal class HomeViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null)
-            {
-                return;
-            }
-
-
             if (SelectedPosition!.Id > 0)
             {
                 SelectedPosition.IsPed = RadioIsPed;
                 //Изменить уже текущие данные
-                await QueryService.JsonSerializeWithToken(token: _User!.Token, "/pers/position/rename", "POST", SelectedPosition);
+                await QueryService.JsonSerializeWithToken(token: _user!.Token, "/pers/position/rename", "POST", SelectedPosition);
             }
             else
             {
                 SelectedPosition.IsPed = RadioIsPed;
                 // Создать новую запись  
-                await QueryService.JsonSerializeWithToken(token: _User!.Token, "/pers/position/add", "POST", SelectedPosition);
+                await QueryService.JsonSerializeWithToken(token: _user!.Token, "/pers/position/add", "POST", SelectedPosition);
                 
             }
             // Обновить данные
-            Positions = await QueryService.JsonDeserializeWithToken<Position>(token: _User!.Token, "/pers/position/get/" + SelectedItem!.Id, "GET");
+            Positions = await QueryService.JsonDeserializeWithToken<Position>(token: _user!.Token, "/pers/position/get/" + SelectedItem!.Id, "GET");
             // Вывести сотрудников данного отдела
-            Persons = await QueryService.JsonDeserializeWithToken<Persons>(token: _User!.Token, "/pers/person/get/department/" + SelectedItem.Id, "GET");
+            Persons = await QueryService.JsonDeserializeWithToken<Persons>(token: _user!.Token, "/pers/person/get/department/" + SelectedItem.Id, "GET");
 
             _ = MessageBox.Show("Данные успешно сохраненны");
         }
@@ -579,18 +574,12 @@ internal class HomeViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null)
-            {
-                return;
-            }
+            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
+            await QueryService.JsonSerializeWithToken(_user.Token, "/pers/position/del/" + SelectedPosition!.Id, "DELETE", SelectedPosition);
+            //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
 
-            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            {
-                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/position/del/" + SelectedPosition!.Id, "DELETE", SelectedPosition);
-                //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
-
-                _ = _Positions!.Remove(SelectedPosition);
-            }
+            _ = _positions!.Remove(SelectedPosition);
         }
         catch (WebException ex)
         {
@@ -600,10 +589,7 @@ internal class HomeViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -624,17 +610,12 @@ internal class HomeViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null)
-            {
-                return;
-            }
-
-            await QueryService.JsonSerializeWithToken(token: _User!.Token,
+            await QueryService.JsonSerializeWithToken(token: _user!.Token,
                                                     "/logout",
                                                     "POST",
                                                     User);
             // Вернуть на Авторизацию 
-            navigationStore.CurrentViewModel = new LoginViewModel(navigationStore);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
         }
         catch (WebException ex)
         {
@@ -644,10 +625,7 @@ internal class HomeViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else

@@ -3,14 +3,14 @@ internal class NavigationStore
 {
     public event Action? CurrentViewModelChanged;
 
-    private BaseViewModel? _CurrentViewModel;
+    private BaseViewModel? _currentViewModel;
     public BaseViewModel? CurrentViewModel
     {
-        get => _CurrentViewModel;
+        get => _currentViewModel;
         set
         {
-            _CurrentViewModel?.Dispose();
-            _CurrentViewModel = value;
+            _currentViewModel?.Dispose();
+            _currentViewModel = value;
             OnCurrentViewModelChanged();
         }
     }

@@ -140,10 +140,7 @@ internal class ServiceClient : IDisposable
 
     private static string ConvertToJsonString(object obj)
     {
-        if (obj == null)
-            return string.Empty;
-        
-        return JsonSerializer.Serialize(obj);
+        return obj == null ? string.Empty : JsonSerializer.Serialize(obj);
     }
 
     private static string NormalizeBaseUrl(string url)

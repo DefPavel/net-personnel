@@ -6,107 +6,107 @@ internal class AddPositionViewModel : BaseViewModel
     private readonly Persons _person;
 
 
-    private decimal? _CountBudget = 1;
+    private decimal? _countBudget = 1;
     public decimal? CountBudget
     {
-        get => _CountBudget;
-        set => Set(ref _CountBudget, value);
+        get => _countBudget;
+        set => Set(ref _countBudget, value);
     }
 
-    private bool _IsMain = false;
+    private bool _isMain = false;
     public bool IsMain
     {
-        get => _IsMain;
-        set => Set(ref _IsMain, value);
+        get => _isMain;
+        set => Set(ref _isMain, value);
     }
 
-    private DateTime? _DateContract;
+    private DateTime? _dateContract;
     public DateTime? DateContract
     {
-        get => _DateContract;
-        set => Set(ref _DateContract, value);
+        get => _dateContract;
+        set => Set(ref _dateContract, value);
     }
 
-    private decimal? _CountNoBudget = 0;
+    private decimal? _countNoBudget = 0;
     public decimal? CountNoBudget
     {
-        get => _CountNoBudget;
-        set => Set(ref _CountNoBudget, value);
+        get => _countNoBudget;
+        set => Set(ref _countNoBudget, value);
     }
 
     // Массив Должностей
-    private ObservableCollection<Position>? _Positions;
+    private ObservableCollection<Position>? _positions;
     public ObservableCollection<Position>? Positions
     {
-        get => _Positions;
-        private set => Set(ref _Positions, value);
+        get => _positions;
+        private set => Set(ref _positions, value);
     }
 
     // Тип контракта
-    private ObservableCollection<TypeContract>? _Contracts;
+    private ObservableCollection<TypeContract>? _contracts;
     public ObservableCollection<TypeContract>? Contracts
     {
-        get => _Contracts;
-        private set => Set(ref _Contracts, value);
+        get => _contracts;
+        private set => Set(ref _contracts, value);
     }
 
-    private ObservableCollection<Departments>? _Departments;
+    private ObservableCollection<Departments>? _departments;
     public ObservableCollection<Departments>? Departments
     {
-        get => _Departments;
-        private set => Set(ref _Departments, value);
+        get => _departments;
+        private set => Set(ref _departments, value);
     }
 
     // Массив Приказов
-    private ObservableCollection<Order>? _Orders;
+    private ObservableCollection<Order>? _orders;
     public ObservableCollection<Order>? Orders
     {
-        get => _Orders;
-        private set => Set(ref _Orders, value);
+        get => _orders;
+        private set => Set(ref _orders, value);
     }
     // Место работы
-    private ObservableCollection<PlaceOfWork>? _Places;
+    private ObservableCollection<PlaceOfWork>? _places;
     public ObservableCollection<PlaceOfWork>? Places
     {
-        get => _Places;
-        private set => Set(ref _Places, value);
+        get => _places;
+        private set => Set(ref _places, value);
     }
 
     // Выбранный приказ
-    private Order? _SelectedOrders;
+    private Order? _selectedOrders;
     public Order? SelectedOrders
     {
-        get => _SelectedOrders;
-        set => Set(ref _SelectedOrders, value);
+        get => _selectedOrders;
+        set => Set(ref _selectedOrders, value);
     }
 
     // Выбранная должность
-    private Position? _SelectedPositions;
+    private Position? _selectedPositions;
     public Position? SelectedPositions
     {
-        get => _SelectedPositions;
-        set => Set(ref _SelectedPositions, value);
+        get => _selectedPositions;
+        set => Set(ref _selectedPositions, value);
     }
     // Выбранная отдел
-    private Departments? _SelectedDepartments;
+    private Departments? _selectedDepartments;
     public Departments? SelectedDepartments
     {
-        get => _SelectedDepartments;
-        set => Set(ref _SelectedDepartments, value);
+        get => _selectedDepartments;
+        set => Set(ref _selectedDepartments, value);
     }
 
-    private PlaceOfWork? _SelectedPlace;
+    private PlaceOfWork? _selectedPlace;
     public PlaceOfWork? SelectedPlace
     {
-        get => _SelectedPlace;
-        set => Set(ref _SelectedPlace, value);
+        get => _selectedPlace;
+        set => Set(ref _selectedPlace, value);
     }
 
-    private TypeContract? _SelectedContract;
+    private TypeContract? _selectedContract;
     public TypeContract? SelectedContract
     {
-        get => _SelectedContract;
-        set => Set(ref _SelectedContract, value);
+        get => _selectedContract;
+        set => Set(ref _selectedContract, value);
     }
 
 
@@ -116,14 +116,14 @@ internal class AddPositionViewModel : BaseViewModel
         _person = person;
     }
 
-    private ICommand? _GetData;
-    public ICommand GetData => _GetData ??= new LambdaCommand(LoadedApi);
+    private ICommand? _getData;
+    public ICommand GetData => _getData ??= new LambdaCommand(LoadedApi);
 
-    private ICommand? _GetPosition;
-    public ICommand GetPosition => _GetPosition ??= new LambdaCommand(LoadedPositions);
+    private ICommand? _getPosition;
+    public ICommand GetPosition => _getPosition ??= new LambdaCommand(LoadedPositions);
 
-    private ICommand? _CloseWin;
-    public ICommand CloseWin => _CloseWin ??= new LambdaCommand(CloseWindow, _ => SelectedOrders != null);
+    private ICommand? _closeWin;
+    public ICommand CloseWin => _closeWin ??= new LambdaCommand(CloseWindow, _ => SelectedOrders != null);
 
 
     private async void LoadedPositions(object p)
@@ -146,10 +146,7 @@ internal class AddPositionViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -161,14 +158,15 @@ internal class AddPositionViewModel : BaseViewModel
 
     private async void CloseWindow(object win)
     {
-        if (win is Window w)
+        if (win is not Window w) return;
+        try
         {
-            try
+            if (SelectedDepartments != null)
             {
                 object person = new
                 {
                     id_person = _person.Id,
-                    id_place = SelectedPlace == null ? 1 : SelectedPlace.Id,
+                    id_place = SelectedPlace?.Id ?? 1,
                     id_position = SelectedPositions!.Id,
                     id_order = SelectedOrders!.Id,
                     id_contract = SelectedContract!.Id,
@@ -184,28 +182,25 @@ internal class AddPositionViewModel : BaseViewModel
 
                 // Создать персону
                 await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/position/addByPerson", "POST", person);
-
-                w.DialogResult = true;
-                w.Close();
             }
-            catch (WebException ex)
-            {
-                if (ex.Status == WebExceptionStatus.ProtocolError)
-                {
-                    if (ex.Response is HttpWebResponse response)
-                    {
-                        using StreamReader reader = new(response.GetResponseStream());
 
-                        if (reader != null)
-                        {
-                            _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                        }
-                    }
-                }
-                else
+            w.DialogResult = true;
+            w.Close();
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
                 {
-                    _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }
@@ -215,17 +210,12 @@ internal class AddPositionViewModel : BaseViewModel
     {
         try
         {
-
-            if (_user.Token == null)
-            {
-                return;
-            }
             // Загрузка место работы
             Places = await QueryService.JsonDeserializeWithToken<PlaceOfWork>(_user.Token, "/pers/position/type/place", "GET");
             // загрузка типов контракта
             Contracts = await QueryService.JsonDeserializeWithToken<TypeContract>(_user.Token, "/pers/position/type/contract", "GET");
             // Загрузка приказов
-            TypeOrder idTypeOrder = await QueryService.JsonDeserializeWithObjectAndParam(_user.Token, "/pers/order/type/name", "POST", new TypeOrder { Name = "Перевод" });
+            var idTypeOrder = await QueryService.JsonDeserializeWithObjectAndParam(_user.Token, "/pers/order/type/name", "POST", new TypeOrder { Name = "Перевод" });
             Orders = await QueryService.JsonDeserializeWithToken<Order>(_user.Token, "/pers/order/get/" + idTypeOrder.Id, "GET");
             // Загрузка отделов
             Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user.Token, "/pers/tree/all" , "GET");
@@ -238,10 +228,7 @@ internal class AddPositionViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else

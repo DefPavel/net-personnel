@@ -99,6 +99,7 @@
                 <TextBox SpellCheck.IsEnabled="True" Language="ru-ru" Text="{Binding SelectedOrder.Name}"/>
                 <Label Content="Тип Приказа"/>
                 <ComboBox 
+                    MinWidth="100"
                     ItemsSource="{Binding TypeOrders}"
                     DisplayMemberPath="Name"
                     SelectedValuePath="Name"

@@ -40,14 +40,14 @@ internal static class CustomAes256
     public static string Encrypt(string plainText, string key)
     {
         // Проверяем аргуметы 
-        if (plainText is not { Length: > 0 })
+        if (plainText is null)
         {
-            throw new ArgumentNullException("Текст кодировки является пустым");
+            throw new ArgumentNullException(nameof(plainText));
         }
 
-        if (key is not { Length: > 0 })
+        if (key is null)
         {
-            throw new ArgumentNullException("Ключ кодировки является пустым");
+            throw new ArgumentNullException(nameof(key));
         }
 
         byte[] encrypted;

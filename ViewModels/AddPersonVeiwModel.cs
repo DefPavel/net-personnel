@@ -4,156 +4,156 @@ internal class AddPersonVeiwModel : BaseViewModel
 {
     #region Свойства
     private readonly int _idDepartment = 0;
-    private readonly Users _User;
+    private readonly Users _user;
 
-    private decimal? _CountBudget = 1;
+    private decimal? _countBudget = 1;
     public decimal? CountBudget
     {
-        get => _CountBudget;
-        set => Set(ref _CountBudget, value);
+        get => _countBudget;
+        set => Set(ref _countBudget, value);
     }
 
-    private decimal? _CountNoBudget = 0;
+    private decimal? _countNoBudget = 0;
     public decimal? CountNoBudget
     {
-        get => _CountNoBudget;
-        set => Set(ref _CountNoBudget, value);
+        get => _countNoBudget;
+        set => Set(ref _countNoBudget, value);
     }
 
-    private string? _FirstName;
+    private string? _firstName;
     public string? FirstName
     {
-        get => _FirstName;
-        set => Set(ref _FirstName, value);
+        get => _firstName;
+        set => Set(ref _firstName, value);
     }
 
-    private string? _MiddleName;
+    private string? _middleName;
     public string? MidlleName
     {
-        get => _MiddleName;
-        set => Set(ref _MiddleName, value);
+        get => _middleName;
+        set => Set(ref _middleName, value);
     }
 
-    private string? _LastName;
+    private string? _lastName;
     public string? LastName
     {
-        get => _LastName;
-        set => Set(ref _LastName, value);
+        get => _lastName;
+        set => Set(ref _lastName, value);
     }
 
-    private string? _MTCPhone;
+    private string? _mtcPhone;
     public string? MTCPhone
     {
-        get => _MTCPhone;
-        set => Set(ref _MTCPhone, value);
+        get => _mtcPhone;
+        set => Set(ref _mtcPhone, value);
     }
 
-    private string? _LugPhone;
+    private string? _lugPhone;
     public string? LugPhone
     {
-        get => _LugPhone;
-        set => Set(ref _LugPhone, value);
+        get => _lugPhone;
+        set => Set(ref _lugPhone, value);
     }
 
-    private DateTime? _Birthday;
+    private DateTime? _birthday;
     public DateTime? Birthday
     {
-        get => _Birthday;
-        set => Set(ref _Birthday, value);
+        get => _birthday;
+        set => Set(ref _birthday, value);
     }
 
-    private DateTime? _DateWorking;
+    private DateTime? _dateWorking;
     public DateTime? DateWorking
     {
-        get => _DateWorking;
-        set => Set(ref _DateWorking, value);
+        get => _dateWorking;
+        set => Set(ref _dateWorking, value);
     }
-    private bool _IsMain = false;
+    private bool _isMain = false;
     public bool IsMain
     {
-        get => _IsMain;
-        set => Set(ref _IsMain, value);
+        get => _isMain;
+        set => Set(ref _isMain, value);
     }
-    private DateTime? _DateContract;
+    private DateTime? _dateContract;
     public DateTime? DateContract
     {
-        get => _DateContract;
-        set => Set(ref _DateContract, value);
+        get => _dateContract;
+        set => Set(ref _dateContract, value);
     }
 
-    private bool _Gender;
+    private bool _gender;
     public bool Gender
     {
-        get => _Gender;
-        set => Set(ref _Gender, value);
+        get => _gender;
+        set => Set(ref _gender, value);
     }
     // Массив Должностей
-    private ObservableCollection<Position>? _Positions;
+    private ObservableCollection<Position>? _positions;
     public ObservableCollection<Position>? Positions
     {
-        get => _Positions;
-        private set => Set(ref _Positions, value);
+        get => _positions;
+        private set => Set(ref _positions, value);
     }
 
     // Место работы
-    private ObservableCollection<PlaceOfWork>? _Places;
+    private ObservableCollection<PlaceOfWork>? _places;
     public ObservableCollection<PlaceOfWork>? Places
     {
-        get => _Places;
-        private set => Set(ref _Places, value);
+        get => _places;
+        private set => Set(ref _places, value);
     }
 
-    private PlaceOfWork? _SelectedPlace;
+    private PlaceOfWork? _selectedPlace;
     public PlaceOfWork? SelectedPlace
     {
-        get => _SelectedPlace;
-        set => Set(ref _SelectedPlace, value);
+        get => _selectedPlace;
+        set => Set(ref _selectedPlace, value);
     }
 
     // Тип контракта
-    private ObservableCollection<TypeContract>? _Contracts;
+    private ObservableCollection<TypeContract>? _contracts;
     public ObservableCollection<TypeContract>? Contracts
     {
-        get => _Contracts;
-        private set => Set(ref _Contracts, value);
+        get => _contracts;
+        private set => Set(ref _contracts, value);
     }
 
     // Массив Приказов
-    private ObservableCollection<Order>? _Orders;
+    private ObservableCollection<Order>? _orders;
     public ObservableCollection<Order>? Orders
     {
-        get => _Orders;
-        private set => Set(ref _Orders, value);
+        get => _orders;
+        private set => Set(ref _orders, value);
     }
 
     // Выбранный приказ
-    private Order? _SelectedOrders;
+    private Order? _selectedOrders;
     public Order? SelectedOrders
     {
-        get => _SelectedOrders;
-        set => Set(ref _SelectedOrders, value);
+        get => _selectedOrders;
+        set => Set(ref _selectedOrders, value);
     }
 
     // Выбранная должность
-    private Position? _SelectedPositions;
+    private Position? _selectedPositions;
     public Position? SelectedPositions
     {
-        get => _SelectedPositions;
-        set => Set(ref _SelectedPositions, value);
+        get => _selectedPositions;
+        set => Set(ref _selectedPositions, value);
     }
 
-    private TypeContract? _SelectedContract;
+    private TypeContract? _selectedContract;
     public TypeContract? SelectedContract
     {
-        get => _SelectedContract;
-        set => Set(ref _SelectedContract, value);
+        get => _selectedContract;
+        set => Set(ref _selectedContract, value);
     }
 
-    private Persons? _Person;
+    private Persons? _person;
     public Persons? Person
     {
-        get => _Person;
-        private set => Set(ref _Person, value);
+        get => _person;
+        private set => Set(ref _person, value);
     }
 
     #endregion
@@ -161,16 +161,16 @@ internal class AddPersonVeiwModel : BaseViewModel
     public AddPersonVeiwModel(Users user, int idDepartment)
     {
         _idDepartment = idDepartment;
-        _User = user;
+        _user = user;
     }
 
     #region Команды
 
-    private ICommand? _GetData;
-    public ICommand GetData => _GetData ??= new LambdaCommand(LoadedApi);
+    private ICommand? _getData;
+    public ICommand GetData => _getData ??= new LambdaCommand(LoadedApi);
 
-    private ICommand? _CloseWin;
-    public ICommand CloseWin => _CloseWin ??= new LambdaCommand(CloseWindow, _ => SelectedPositions != null && !string.IsNullOrEmpty(FirstName));
+    private ICommand? _closeWin;
+    public ICommand CloseWin => _closeWin ??= new LambdaCommand(CloseWindow, _ => SelectedPositions != null && !string.IsNullOrEmpty(FirstName));
 
     #endregion
 
@@ -179,54 +179,49 @@ internal class AddPersonVeiwModel : BaseViewModel
     // Закрытие окна
     private async void CloseWindow(object win)
     {
-        if (win is Window w)
+        if (win is not Window w) return;
+        try
         {
-            try
+            object person = new
             {
-                object person = new
+                firstname = FirstName,
+                name = MidlleName,
+                lastname = LastName,
+                birthday = Birthday!.Value.ToString("yyyy-MM-dd"),
+                type_passport = 1,
+                count_budget = CountBudget,
+                count_nobudget = CountNoBudget,
+                date_to_working = DateWorking!.Value.ToString("yyyy-MM-dd"),
+                data_start_contract = DateContract!.Value.ToString("yyyy-MM-dd"),
+                id_position = SelectedPositions!.Id,
+                id_order = SelectedOrders!.Id,
+                id_contract = SelectedContract!.Id,
+                phone_ua = MTCPhone,
+                phone_lug = LugPhone,
+                gender = Gender == true ? "male" : "female",
+                is_main = IsMain,
+            };
+
+            // Создать персону
+            await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/person/add", "POST", person);
+
+            w.DialogResult = true;
+            w.Close();
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
                 {
-                    firstname = FirstName,
-                    name = MidlleName,
-                    lastname = LastName,
-                    birthday = Birthday!.Value.ToString("yyyy-MM-dd"),
-                    type_passport = 1,
-                    count_budget = CountBudget,
-                    count_nobudget = CountNoBudget,
-                    date_to_working = DateWorking!.Value.ToString("yyyy-MM-dd"),
-                    data_start_contract = DateContract!.Value.ToString("yyyy-MM-dd"),
-                    id_position = SelectedPositions!.Id,
-                    id_order = SelectedOrders!.Id,
-                    id_contract = SelectedContract!.Id,
-                    phone_ua = MTCPhone,
-                    phone_lug = LugPhone,
-                    gender = Gender == true ? "male" : "female",
-                    is_main = IsMain,
-                };
+                    using StreamReader reader = new(response.GetResponseStream());
 
-                // Создать персону
-                await QueryService.JsonSerializeWithToken(_User!.Token, "/pers/person/add", "POST", person);
-
-                w.DialogResult = true;
-                w.Close();
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                }
             }
-            catch (WebException ex)
+            else
             {
-                if (ex.Status == WebExceptionStatus.ProtocolError)
-                {
-                    if (ex.Response is HttpWebResponse response)
-                    {
-                        using StreamReader reader = new(response.GetResponseStream());
-
-                        if (reader != null)
-                        {
-                            _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                        }
-                    }
-                }
-                else
-                {
-                    _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }
@@ -236,22 +231,17 @@ internal class AddPersonVeiwModel : BaseViewModel
     {
         try
         {
-
-            if (_User.Token == null)
-            {
-                return;
-            }
             // Загрузка место работы
-            Places = await QueryService.JsonDeserializeWithToken<PlaceOfWork>(_User.Token, "/pers/position/type/place", "GET");
+            Places = await QueryService.JsonDeserializeWithToken<PlaceOfWork>(_user.Token, "/pers/position/type/place", "GET");
             // Загрузка приказов
-            TypeOrder idTypeOrder = await QueryService.JsonDeserializeWithObjectAndParam(_User.Token, "/pers/order/type/name", "POST", new TypeOrder { Name = "Приём" });
-            Orders = await QueryService.JsonDeserializeWithToken<Order>(_User.Token, "/pers/order/get/" + idTypeOrder.Id, "GET");
+            var idTypeOrder = await QueryService.JsonDeserializeWithObjectAndParam(_user.Token, "/pers/order/type/name", "POST", new TypeOrder { Name = "Приём" });
+            Orders = await QueryService.JsonDeserializeWithToken<Order>(_user.Token, "/pers/order/get/" + idTypeOrder.Id, "GET");
 
             //Загрузка должностей
-            Positions = await QueryService.JsonDeserializeWithToken<Position>(_User.Token, "/pers/position/get/" + _idDepartment, "GET");
+            Positions = await QueryService.JsonDeserializeWithToken<Position>(_user.Token, "/pers/position/get/" + _idDepartment, "GET");
 
             // загрузка типов контракта
-            Contracts = await QueryService.JsonDeserializeWithToken<TypeContract>(_User.Token, "/pers/position/type/contract", "GET");
+            Contracts = await QueryService.JsonDeserializeWithToken<TypeContract>(_user.Token, "/pers/position/type/contract", "GET");
 
         }
         catch (WebException ex)
@@ -262,10 +252,7 @@ internal class AddPersonVeiwModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
