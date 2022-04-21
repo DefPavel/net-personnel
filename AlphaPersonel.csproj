@@ -29,4 +29,16 @@
     <Resource Include="Assets\mwpf_icon.ico" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="Views\UsersControl\TypePositionView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\UsersControl\TypePositionView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

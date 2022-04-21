@@ -4,20 +4,129 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewmodels="clr-namespace:AlphaPersonel.ViewModels"
+             xmlns:fa="http://schemas.fontawesome.com/icons/svg" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              d:DataContext="{d:DesignInstance Type=viewmodels:MasterReportViewModel}"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="800" d:DesignWidth="900">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{ Binding GetData }"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
-     <Grid.RowDefinitions>
-         <RowDefinition/>
-         <RowDefinition/>
-     </Grid.RowDefinitions>
-        
-        <GroupBox Margin="2" Header="Параметры отчета">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+
+        </Grid.RowDefinitions>
+        <Button 
+            Command="{Binding GetToMain}"
+            Margin="5 5 0 0"
+            Padding="3"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Left">
+            <Button.ToolTip>
+                <ToolTip>
+                    Вернуться на главную страницу
+                </ToolTip>
+            </Button.ToolTip>
+            <fa:ImageAwesome
+                Height="10"
+                Margin="0 0 0 0"
+                Icon="Solid_ArrowLeft"
+            />
+        </Button>
+        <TextBlock 
+            Margin="35 0 0 0"
+            Style="{StaticResource Header30}"
+            Grid.Column="0"
+            Grid.Row="0"
+            Text="Мастер отчет" />
+        <GroupBox
+            Margin="5"
+            Grid.Column="0"
+            Grid.Row="1"
+            Header="Параметры должности">
             <StackPanel>
-                
+                <Label 
+                Content="(Педагогическая/Не Педагогическая)"/>
+                <ComboBox 
+                ItemsSource="{Binding IsPedagogical}"
+                DisplayMemberPath="IsPed"
+                SelectedValuePath="IdPed"
+                SelectedItem="{Binding SelectedIsPed}"
+                >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction
+                            CommandParameter="{Binding SelectedIsPed}"
+                            Command="{ Binding GetPosition }"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
+                <Label 
+                Content="Выбрать должность"/>
+                <ComboBox 
+                ItemsSource="{Binding Positions}"
+                DisplayMemberPath="Name"
+                SelectedValuePath="Name"
+                SelectedItem="{Binding SelectedPosition}"
+                />
+                <Label 
+                Content="Выбрать Тип контракта"/>
+                <ComboBox 
+                ItemsSource="{Binding TypeContracts}"
+                DisplayMemberPath="Name"
+                SelectedValuePath="Id"
+                SelectedItem="{Binding SelectedContract}"
+                />
+                <Label Content="Когда был принят на работу"/>
+
+                <DatePicker 
+                    SelectedDate="{Binding DateStart}"
+                    Margin="5 0 5 0"/>
+                <DatePicker 
+                    SelectedDate="{Binding DateEnd}"
+                    Margin="5 0 5 0"/>
+
+                <Button 
+                    Command="{Binding GetReport}"
+                    Width="80"
+                    Margin="5"
+                    Padding="5"
+                    HorizontalAlignment="Left"
+                    Content="Ok"/>
             </StackPanel>
         </GroupBox>
+
+        <GroupBox
+            Margin="5"
+            Header="Параметры персоны"
+            Grid.Column="1"
+            Grid.Row="1">
+            <StackPanel>
+                <Label Content="Пол"/>
+                <ComboBox />
+                <Label Content="Статус" />
+                <ComboBox />
+                <Label Content="Возраст"/>
+                <ComboBox />
+            </StackPanel>
+        </GroupBox>
+        <DataGrid 
+            ItemsSource="{Binding Persons}"
+            Margin="10"
+            Grid.ColumnSpan="2"
+            Grid.Column="0"
+            Grid.Row="3">
+
+        </DataGrid>
         
+
     </Grid>
 </UserControl>

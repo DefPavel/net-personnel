@@ -112,7 +112,7 @@ internal static class QueryService
         await using var responseStream = response.GetResponseStream();
         using StreamReader reader = new(responseStream, Encoding.UTF8);
         return JsonSerializer.Deserialize<ObservableCollection<T>>(await reader.ReadToEndAsync())
-             ?? throw new NullReferenceException(); ;    // Возвращаем json информацию которая пришла 
+             ?? throw new NullReferenceException();     // Возвращаем json информацию которая пришла 
     }
     #endregion
 

@@ -298,6 +298,9 @@ internal class HomeViewModel : BaseViewModel
 
     private ICommand? _openReport;
     public ICommand OpenReport => _openReport ??= new LambdaCommand(OpenReportView);
+    
+    private ICommand? _openMasterReport;
+    public ICommand OpenMasterReport => _openMasterReport ??= new LambdaCommand(OpenMasterReportView);
 
     private ICommand? _openAddPerson;
     public ICommand OpenAddPerson => _openAddPerson ??= new LambdaCommand(AddPerson, _ => SelectedItem is not null);
@@ -357,6 +360,11 @@ internal class HomeViewModel : BaseViewModel
     private void OpenReportView(object p)
     {
         _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
+    }
+    
+    private void OpenMasterReportView(object p)
+    {
+        _navigationStore.CurrentViewModel = new MasterReportViewModel(_navigationStore, _user);
     }
 
     // Отделы
