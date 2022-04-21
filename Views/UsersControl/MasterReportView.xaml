@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="AlphaPersonel.Views.MasterReportView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewmodels="clr-namespace:AlphaPersonel.ViewModels"
+             d:DataContext="{d:DesignInstance Type=viewmodels:MasterReportViewModel}"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+     <Grid.RowDefinitions>
+         <RowDefinition/>
+         <RowDefinition/>
+     </Grid.RowDefinitions>
+        
+        <GroupBox Margin="2" Header="Параметры отчета">
+            <StackPanel>
+                
+            </StackPanel>
+        </GroupBox>
+        
+    </Grid>
+</UserControl>
