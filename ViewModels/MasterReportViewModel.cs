@@ -28,6 +28,34 @@ internal class MasterReportViewModel : BaseViewModel
                 Query = "",                
             },
         };
+
+        TypeGender = new ObservableCollection<string>
+        {
+            "Мужской",
+            "Женский",
+        };
+
+        TypeStatus = new ObservableCollection<string>
+        {
+            "Студент",
+            "Аспирант",
+            "Доктор наук",
+            "Мать одиночка",
+            "Мать двоих и более детей",
+            "Предоставил справку о не судимости",
+            "Имеет русский паспорт",
+            "Имеет СНИСЛ",
+            "Материально ответственный",
+            "Внутренний совместитель",
+            "Внешний совместитель"
+
+        };
+        TypeAge = new ObservableCollection<string>
+        {
+          "От 18 до 21",
+          "От 25 до 76",
+          "Старше 65"
+        };
     }
 
     #region Переменные
@@ -95,6 +123,44 @@ internal class MasterReportViewModel : BaseViewModel
         set => Set(ref _dateEnd, value);
     }
 
+    private ObservableCollection<string>? _typeGender;
+    public ObservableCollection<string>? TypeGender
+    {
+        get => _typeGender;
+        set => Set(ref _typeGender, value);
+    }
+    private string? _selectedGender;
+    public string? SelectedGender
+    {
+        get => _selectedGender;
+        set => Set(ref _selectedGender, value);
+    }
+    private ObservableCollection<string>? _typeStatus;
+    public ObservableCollection<string>? TypeStatus
+    {
+        get => _typeStatus;
+        set => Set(ref _typeStatus, value);
+    }
+    private string? _selectedStatus;
+    public string? SelectedStatus
+    {
+        get => _selectedStatus;
+        set => Set(ref _selectedStatus, value);
+    }
+
+    private ObservableCollection<string>? _typeAge;
+    public ObservableCollection<string>? TypeAge
+    {
+        get => _typeAge;
+        set => Set(ref _typeAge, value);
+    }
+    private string? _selectedAge;
+    public string? SelectedAge
+    {
+        get => _selectedAge;
+        set => Set(ref _selectedAge, value);
+    }
+
 
     #endregion
 
@@ -123,21 +189,51 @@ internal class MasterReportViewModel : BaseViewModel
 
     private async void Reports(object win)
     {
-       
         try
         {
 
-                object person = new
-                {
-                    is_ped = SelectedIsPed?.IdPed,
-                    query_ped = SelectedIsPed?.Query,
-                    query_position = SelectedPosition != null ? $"typ_pos.name_position = '{SelectedPosition?.Name}'" : null,
-                    query_contract = SelectedContract != null ? $"contract.id = {SelectedContract?.Id}" : null,
-                    query_date_start = DateStart != null ? 
-                    $"p.date_to_working >= '{DateStart.Value.ToString("yyyy-MM-dd")}' and p.date_to_working < '{DateEnd.Value.ToString("yyyy-MM-dd")}'" : null
+            var status = string.Empty;
+            var age = string.Empty;
+
+            if(SelectedStatus != null)
+            {
+                status = SelectedStatus == "Студент" ? " pp.is_main = true and p.is_student = true"
+                    : SelectedStatus == "Аспирант" ? " pp.is_main = true and p.is_graduate = true"
+                    : SelectedStatus == "Доктор наук" ? "pp.is_main = true and p.is_doctor = true"
+                    : SelectedStatus == "Мать одиночка" ? "pp.is_main = true and p.is_single_mother = true"
+                    : SelectedStatus == "Мать двоих и более детей" ? "pp.is_main = true and p.is_two_child_mother = true"
+                    : SelectedStatus == "Предоставил справку о не судимости" ? "pp.is_main = true and p.is_previos_convition = true"
+                    : SelectedStatus == "Имеет русский паспорт" ? "pp.is_main = true and p.is_rus = true"
+                    : SelectedStatus == "Имеет СНИСЛ" ? "pp.is_main = true and p.is_snils = true"
+                    : SelectedStatus == "Материально ответственный" ? "pp.is_main = true and p.is_responsible = true"
+                    : SelectedStatus == "Внутренний совместитель" ? " pp.is_main = false and pp.is_pluralism_inner = true"
+                    : SelectedStatus == "Внешний совместитель" ? " pp.is_main = false and pp.is_pluralism_oter = true"
+                    : null;
 
 
-                };
+
+            }
+            if(SelectedAge != null)
+            {
+                age = SelectedAge == "От 18 до 21" ? " (EXTRACT( YEAR FROM age(p.birthday))) >= 18 and (EXTRACT( YEAR FROM age(p.birthday))) < 22 " :
+                    SelectedAge == "От 25 до 76" ? " (EXTRACT( YEAR FROM age(p.birthday))) >= 25 and (EXTRACT( YEAR FROM age(p.birthday))) < 77 " :
+                    SelectedAge == "Старше 65" ? " (EXTRACT( YEAR FROM age(p.birthday))) >= 65 " :
+                    null;
+            }
+
+            object person = new
+            {
+                is_ped = SelectedIsPed?.IdPed,
+                query_ped = SelectedIsPed?.Query,
+                query_position = SelectedPosition != null ? $"{(SelectedStatus == "Внутренний совместитель" || SelectedStatus == "Внешний совместитель" ? " pp.is_main = false" : " pp.is_main = true")} and typ_pos.name_position = '{SelectedPosition?.Name}'" : null,
+                query_contract = SelectedContract != null ? $"{(SelectedStatus == "Внутренний совместитель" || SelectedStatus == "Внешний совместитель" ? " pp.is_main = false" : " pp.is_main = true")} and contract.id = {SelectedContract?.Id}" : null,
+                query_date_start = DateStart != null ?
+                $" pp.is_main = true and p.date_to_working >= '{DateStart.Value:yyyy-MM-dd}' and p.date_to_working < '{DateEnd.Value:yyyy-MM-dd}'" : null,
+                query_gender = SelectedGender != null ? $"{(SelectedStatus == "Внутренний совместитель" || SelectedStatus == "Внешний совместитель" ? " pp.is_main = false" : " pp.is_main = true")} and p.gender = {(SelectedGender == "Мужской" ? "'male'" : "'female'")}" : null,
+                query_status = status,
+                query_age = age
+
+            };
 
             //Persons = await QueryService.JsonDeserializeWithObjectAndParam<Persons>(_user!.Token, "reports/pers/master", "POST", person)
             // Отправить запрос

@@ -38,5 +38,14 @@ namespace AlphaPersonel.Models
         [JsonPropertyName("date_to_working")]
         public string DateWorking { get; set; } = string.Empty;
 
+        [JsonPropertyName("type_rank")]
+        public string TypeRank { get; set; } = string.Empty;
+
+        [JsonPropertyName("type_sciens")]
+        public string TypeSciens { get; set; } = string.Empty;
+
+        [JsonPropertyName("scientific_branch")]
+        public string Branch { get; set; } = string.Empty;
+
     }
 }

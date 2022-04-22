@@ -46,7 +46,7 @@
             Style="{StaticResource Header30}"
             Grid.Column="0"
             Grid.Row="0"
-            Text="Мастер отчет" />
+            Text="Отчет(новый)" />
         <GroupBox
             Margin="5"
             Grid.Column="0"
@@ -111,11 +111,19 @@
             Grid.Row="1">
             <StackPanel>
                 <Label Content="Пол"/>
-                <ComboBox />
+                <ComboBox 
+                    ItemsSource="{Binding TypeGender}"
+                    SelectedItem="{Binding SelectedGender}"
+                    />
                 <Label Content="Статус" />
-                <ComboBox />
+                <ComboBox 
+                    SelectedItem="{Binding SelectedStatus}"
+                    ItemsSource="{Binding TypeStatus}"/>
                 <Label Content="Возраст"/>
-                <ComboBox />
+                <ComboBox
+                    ItemsSource="{Binding TypeAge}"
+                    SelectedItem="{Binding SelectedAge}"
+                    />
             </StackPanel>
         </GroupBox>
         <DataGrid 
