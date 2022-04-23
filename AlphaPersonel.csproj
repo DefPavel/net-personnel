@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <Folder Include="Models\Types\" />
-    <Folder Include="Helpers\" />
 	<Folder Include="Themes\" />  
   </ItemGroup>
 
