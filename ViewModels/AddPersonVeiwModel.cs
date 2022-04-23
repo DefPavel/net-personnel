@@ -3,7 +3,7 @@
 internal class AddPersonVeiwModel : BaseViewModel
 {
     #region Свойства
-    private readonly int _idDepartment = 0;
+    private readonly int _idDepartment;
     private readonly Users _user;
 
     private decimal? _countBudget = 1;
@@ -42,7 +42,7 @@ internal class AddPersonVeiwModel : BaseViewModel
     }
 
     private string? _mtcPhone;
-    public string? MTCPhone
+    public string? MtcPhone
     {
         get => _mtcPhone;
         set => Set(ref _mtcPhone, value);
@@ -68,11 +68,17 @@ internal class AddPersonVeiwModel : BaseViewModel
         get => _dateWorking;
         set => Set(ref _dateWorking, value);
     }
-    private bool _isMain = false;
+    private bool _isMain;
     public bool IsMain
     {
         get => _isMain;
         set => Set(ref _isMain, value);
+    }
+    private bool _isOter;
+    public bool IsOter
+    {
+        get => _isOter;
+        set => Set(ref _isOter, value);
     }
     private DateTime? _dateContract;
     public DateTime? DateContract
@@ -149,13 +155,6 @@ internal class AddPersonVeiwModel : BaseViewModel
         set => Set(ref _selectedContract, value);
     }
 
-    private Persons? _person;
-    public Persons? Person
-    {
-        get => _person;
-        private set => Set(ref _person, value);
-    }
-
     #endregion
 
     public AddPersonVeiwModel(Users user, int idDepartment)
@@ -182,6 +181,7 @@ internal class AddPersonVeiwModel : BaseViewModel
         if (win is not Window w) return;
         try
         {
+            
             object person = new
             {
                 firstname = FirstName,
@@ -196,14 +196,15 @@ internal class AddPersonVeiwModel : BaseViewModel
                 id_position = SelectedPositions!.Id,
                 id_order = SelectedOrders!.Id,
                 id_contract = SelectedContract!.Id,
-                phone_ua = MTCPhone,
+                phone_ua = MtcPhone,
                 phone_lug = LugPhone,
-                gender = Gender == true ? "male" : "female",
-                is_main = IsMain,
+                gender = Gender ? "male" : "female",
+                is_main = IsOter != true && IsMain,
+                is_pluralism_oter = IsOter,
             };
 
             // Создать персону
-            await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/person/add", "POST", person);
+            await QueryService.JsonSerializeWithToken(_user.Token, "/pers/person/add", "POST", person);
 
             w.DialogResult = true;
             w.Close();

@@ -98,7 +98,7 @@
                     Margin="4 2"
                     Height="22"
                     BorderThickness="1"
-                    Text="{Binding MTCPhone , UpdateSourceTrigger=PropertyChanged}"
+                    Text="{Binding MtcPhone , UpdateSourceTrigger=PropertyChanged}"
                     Mask="(000) 000-0000"
                     />
             </StackPanel>
@@ -184,13 +184,15 @@
             <DatePicker Margin="4 2 4 2" 
                         SelectedDate="{Binding DateContract ,
                         UpdateSourceTrigger=PropertyChanged}"/>
-            <Label 
-                FontWeight="Bold"
-                Content="Основное место работы"/>
             <CheckBox 
-                IsChecked="{Binding IsMain , UpdateSourceTrigger=PropertyChanged}"
-                Content="Основное"
-                />
+                Margin="5"
+                Content="Основное место работы"
+                IsChecked="{Binding IsMain , UpdateSourceTrigger=PropertyChanged}"/>
+
+            <CheckBox 
+                Margin="5"
+                Content="Внешний совместитель"
+                IsChecked="{Binding IsOter , UpdateSourceTrigger=PropertyChanged}"/>
             <Label 
                 FontWeight="Bold"
                 Content="Выбрать приказ (приёма на работу)"/>

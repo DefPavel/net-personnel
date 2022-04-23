@@ -12,7 +12,7 @@ internal class PersonCardViewModel : BaseViewModel
     public PersonCardViewModel(Users users, NavigationStore navigationStore, Persons person, int idDepartment)
     {
         _navigationStore = navigationStore;
-        _SelectedPerson = person;
+        _selectedPerson = person;
         _idDepartment = idDepartment;
         _user = users;
     }
@@ -20,14 +20,14 @@ internal class PersonCardViewModel : BaseViewModel
     #region Стаж
 
     // Стаж общий
-    private string _stageIsOver;
+    private string _stageIsOver = string.Empty;
     public string StageIsOver
     {
         get => _stageIsOver;
         private set => Set(ref _stageIsOver, value);
     }
     // Стаж в Универе
-    private string _stageIsUniver;
+    private string _stageIsUniver = string.Empty;
     public string StageIsUniver
     {
         get => _stageIsUniver;
@@ -35,7 +35,7 @@ internal class PersonCardViewModel : BaseViewModel
     }
 
     // Стаж Научный
-    private string _stageIsScience;
+    private string _stageIsScience = string.Empty;
     public string StageIsScience
     {
         get => _stageIsScience;
@@ -43,7 +43,7 @@ internal class PersonCardViewModel : BaseViewModel
     }
 
     // Стаж Научно-Педагогический
-    private string _stageIsPedagogical;
+    private string _stageIsPedagogical = string.Empty;
     public string StageIsPedagogical
     {
         get => _stageIsPedagogical;
@@ -51,7 +51,7 @@ internal class PersonCardViewModel : BaseViewModel
     }
 
     // Стаж Медицинский
-    private string _stageIsMedical;
+    private string _stageIsMedical = string.Empty;
     public string StageIsMedical
     {
         get => _stageIsMedical;
@@ -59,7 +59,7 @@ internal class PersonCardViewModel : BaseViewModel
     }
 
     // Стаж Музея
-    private string _stageIsMuseum;
+    private string _stageIsMuseum = string.Empty;
     public string StageIsMuseum
     {
         get => _stageIsMuseum;
@@ -67,7 +67,7 @@ internal class PersonCardViewModel : BaseViewModel
     }
 
     // Стаж Библиотека
-    private string _stageIsLibrary;
+    private string _stageIsLibrary = string.Empty;
     public string StageIsLibrary
     {
         get => _stageIsLibrary;
@@ -81,16 +81,6 @@ internal class PersonCardViewModel : BaseViewModel
     private readonly int _idDepartment = 0;
 
     private readonly NavigationStore _navigationStore;
-
-
-   /* private BitmapImage? _Avatar = new();
-    public BitmapImage? Avatar
-    {
-        get => _Avatar;
-        set => Set(ref _Avatar, value);
-
-    }
-   */
 
     private Users? _user;
     public Users? User
@@ -218,7 +208,7 @@ internal class PersonCardViewModel : BaseViewModel
     public IEnumerable<PeriodVacation>? PeriodVacation
     {
         get => _periodVacation;
-        set => Set(ref _periodVacation, value);
+        private set => Set(ref _periodVacation, value);
     }
 
     // Список тип отпусков
@@ -226,7 +216,7 @@ internal class PersonCardViewModel : BaseViewModel
     public IEnumerable<Models.TypeVacation>? TypeVacation
     {
         get => _typeVacation;
-        set => Set(ref _typeVacation, value);
+        private set => Set(ref _typeVacation, value);
     }
 
     // Список тип родства
@@ -234,7 +224,7 @@ internal class PersonCardViewModel : BaseViewModel
     public IEnumerable<TypeFamily>? TypeFamily
     {
         get => _typeFamily;
-        set => Set(ref _typeFamily, value);
+        private set => Set(ref _typeFamily, value);
     }
 
     // Список тип пенсионера 
@@ -242,310 +232,310 @@ internal class PersonCardViewModel : BaseViewModel
     public IEnumerable<TypePensioner>? TypePensioner
     {
         get => _typePensioner;
-        set => Set(ref _typePensioner, value);
+        private set => Set(ref _typePensioner, value);
     }
     // Список тип образования 
     private IEnumerable<TypeEducation>? _typeEducation;
     public IEnumerable<TypeEducation>? TypeEducation
     {
         get => _typeEducation;
-        set => Set(ref _typeEducation, value);
+        private set => Set(ref _typeEducation, value);
     }
     // тип награждения
-    private IEnumerable<Rewarding>? _TypeRewarding;
+    private IEnumerable<Rewarding>? _typeRewarding;
     public IEnumerable<Rewarding>? TypeRewarding
     {
-        get => _TypeRewarding;
-        set => Set(ref _TypeRewarding, value);
+        get => _typeRewarding;
+        private set => Set(ref _typeRewarding, value);
     }
     // Приказы для награждения
-    private IEnumerable<Rewarding>? _OrderRewarding;
+    private IEnumerable<Rewarding>? _orderRewarding;
     public IEnumerable<Rewarding>? OrderRewarding
     {
-        get => _OrderRewarding;
-        set => Set(ref _OrderRewarding, value);
+        get => _orderRewarding;
+        private set => Set(ref _orderRewarding, value);
     }
     // Приказы для смены фамилии
-    private IEnumerable<OldSurname>? _OrderOldSurname;
+    private IEnumerable<OldSurname>? _orderOldSurname;
     public IEnumerable<OldSurname>? OrderOldSurname
     {
-        get => _OrderOldSurname;
-        set => Set(ref _OrderOldSurname, value);
+        get => _orderOldSurname;
+        private set => Set(ref _orderOldSurname, value);
     }
     // мед.категории
-    private IEnumerable<MedicalCategory>? _MedicalCategory;
+    private IEnumerable<MedicalCategory>? _medicalCategory;
     public IEnumerable<MedicalCategory>? MedicalCategory
     {
-        get => _MedicalCategory;
-        set => Set(ref _MedicalCategory, value);
+        get => _medicalCategory;
+        private set => Set(ref _medicalCategory, value);
     }
 
-    private IEnumerable<TypeDegree>? _TypeDegree;
+    private IEnumerable<TypeDegree>? _typeDegree;
     public IEnumerable<TypeDegree>? TypeDegree
     {
-        get => _TypeDegree;
-        set => Set(ref _TypeDegree, value);
+        get => _typeDegree;
+        private set => Set(ref _typeDegree, value);
     }
 
     // Ученая степень
-    private IEnumerable<ScientificDegree>? _ScientificDegree;
+    private IEnumerable<ScientificDegree>? _scientificDegree;
     public IEnumerable<ScientificDegree>? ScientificDegree
     {
-        get => _ScientificDegree;
-        set => Set(ref _ScientificDegree, value);
+        get => _scientificDegree;
+        set => Set(ref _scientificDegree, value);
     }
 
     // Академик- Член.корр.
-    private IEnumerable<TypeRank>? _TypeRanks;
+    private IEnumerable<TypeRank>? _typeRanks;
     public IEnumerable<TypeRank>? TypeRanks
     {
-        get => _TypeRanks;
-        set => Set(ref _TypeRanks, value);
+        get => _typeRanks;
+        private set => Set(ref _typeRanks, value);
     }
     // Справочник для ученого звания
-    private IEnumerable<TypeRank>? _TypeTitle;
+    private IEnumerable<TypeRank>? _typeTitle;
     public IEnumerable<TypeRank>? TypeTitle
     {
-        get => _TypeTitle;
-        private set => Set(ref _TypeTitle, value);
+        get => _typeTitle;
+        private set => Set(ref _typeTitle, value);
     }
 
     // Передать значение Отдела
-    private Departments? _Department;
+    private Departments? _department;
     public Departments? Department
     {
-        get => _Department;
-        set => Set(ref _Department, value);
+        get => _department;
+        set => Set(ref _department, value);
     }
 
     // Выбранный отпуск 
-    private Vacation? _SelectedVacation;
+    private Vacation? _selectedVacation;
     public Vacation? SelectedVacation
     {
-        get => _SelectedVacation;
-        set => Set(ref _SelectedVacation, value);
+        get => _selectedVacation;
+        set => Set(ref _selectedVacation, value);
     }
     // Выбранный стаж
-    private HistoryEmployment? _SelectedHistory;
+    private HistoryEmployment? _selectedHistory;
     public HistoryEmployment? SelectedHistory
     {
-        get => _SelectedHistory;
-        set => Set(ref _SelectedHistory, value);
+        get => _selectedHistory;
+        set => Set(ref _selectedHistory, value);
     }
 
-    private Qualification? _SelectedQualification;
+    private Qualification? _selectedQualification;
     public Qualification? SelectedQualification
     {
-        get => _SelectedQualification;
-        set => Set(ref _SelectedQualification, value);
+        get => _selectedQualification;
+        set => Set(ref _selectedQualification, value);
     }
 
-    private Medical? _SelectedMedical;
+    private Medical? _selectedMedical;
     public Medical? SelectedMedical
     {
-        get => _SelectedMedical;
-        set => Set(ref _SelectedMedical, value);
+        get => _selectedMedical;
+        set => Set(ref _selectedMedical, value);
     }
 
-    private MemberAcademic? _SeletedMemberAcademic;
+    private MemberAcademic? _seletedMemberAcademic;
     public MemberAcademic? SeletedMemberAcademic
     {
-        get => _SeletedMemberAcademic;
-        set => Set(ref _SeletedMemberAcademic, value);
+        get => _seletedMemberAcademic;
+        set => Set(ref _seletedMemberAcademic, value);
     }
-    private AcademicTitle? _SelectedTitle;
+    private AcademicTitle? _selectedTitle;
     public AcademicTitle? SelectedTitle
     {
-        get => _SelectedTitle;
-        set => Set(ref _SelectedTitle, value);
+        get => _selectedTitle;
+        set => Set(ref _selectedTitle, value);
     }
 
-    private ScientificDegree? _SeletedDegree;
+    private ScientificDegree? _seletedDegree;
     public ScientificDegree? SeletedDegree
     {
-        get => _SeletedDegree;
-        set => Set(ref _SeletedDegree, value);
+        get => _seletedDegree;
+        set => Set(ref _seletedDegree, value);
     }
 
 
     // Выбранная персона
-    private Persons? _SelectedPerson;
+    private Persons? _selectedPerson;
     public Persons? SelectedPerson
     {
-        get => _SelectedPerson;
-        set => Set(ref _SelectedPerson, value);
+        get => _selectedPerson;
+        set => Set(ref _selectedPerson, value);
     }
     #endregion
 
     #region Команды
-    private ICommand? _UpdateStates;
-    public ICommand UpdateStates => _UpdateStates ??= new LambdaCommand(ApiUpdateStatePersonAsync);
+    private ICommand? _updateStates;
+    public ICommand UpdateStates => _updateStates ??= new LambdaCommand(ApiUpdateStatePersonAsync);
 
-    private ICommand? _OpenreportCard;
-    public ICommand OpenReportCard => _OpenreportCard ??= new LambdaCommand(ReportPersonCard);
+    private ICommand? _openreportCard;
+    public ICommand OpenReportCard => _openreportCard ??= new LambdaCommand(ReportPersonCard);
 
-    private ICommand? _OpenAddPosition;
-    public ICommand OpenAddPosition => _OpenAddPosition ??= new LambdaCommand(AddPosition , _ => SelectedPerson != null);
+    private ICommand? _openAddPosition;
+    public ICommand OpenAddPosition => _openAddPosition ??= new LambdaCommand(AddPosition , _ => SelectedPerson != null);
 
-    private ICommand? _OpenDropPosition;
-    public ICommand OpenDropPosition => _OpenDropPosition ??= new LambdaCommand(DeletePosition, _ => SelectedPerson != null && SelectedPosition != null && SelectedPosition.IsMain != true);
+    private ICommand? _openDropPosition;
+    public ICommand OpenDropPosition => _openDropPosition ??= new LambdaCommand(DeletePosition, _ => SelectedPerson != null && SelectedPosition != null && SelectedPosition.IsMain != true);
 
-    private ICommand? _OpenChangeSurname;
-    public ICommand OpenChangeSurname => _OpenChangeSurname ??= new LambdaCommand(ChangeSurname , _ => SelectedPerson != null);
+    private ICommand? _openChangeSurname;
+    public ICommand OpenChangeSurname => _openChangeSurname ??= new LambdaCommand(ChangeSurname , _ => SelectedPerson != null);
 
-    private ICommand? _OpenreportSpravka;
-    public ICommand OpenreportSpravka => _OpenreportSpravka ??= new LambdaCommand(ReportSpravkaCard, _ => SelectedPosition != null);
+    private ICommand? _openreportSpravka;
+    public ICommand OpenreportSpravka => _openreportSpravka ??= new LambdaCommand(ReportSpravkaCard, _ => SelectedPosition != null);
 
-    private ICommand? _LoadedListPerson;
-    public ICommand LoadedListPerson => _LoadedListPerson ??= new LambdaCommand(ApiGetListPersons);
+    private ICommand? _loadedListPerson;
+    public ICommand LoadedListPerson => _loadedListPerson ??= new LambdaCommand(ApiGetListPersons);
 
-    private ICommand? _LoadedListAll;
-    public ICommand LoadedListAll => _LoadedListAll ??= new LambdaCommand(ApiGetListAllPersonsAsync);
+    private ICommand? _loadedListAll;
+    public ICommand LoadedListAll => _loadedListAll ??= new LambdaCommand(ApiGetListAllPersonsAsync);
 
-    private ICommand? _UploadPhoto;
-    public ICommand UploadPhoto => _UploadPhoto ??= new LambdaCommand(UploadFormPhoto);
+    private ICommand? _uploadPhoto;
+    public ICommand UploadPhoto => _uploadPhoto ??= new LambdaCommand(UploadFormPhoto);
 
-    private ICommand? _GetBack;
-    public ICommand GetBack => _GetBack ??= new LambdaCommand(GetBackViewAsync);
+    private ICommand? _getBack;
+    public ICommand GetBack => _getBack ??= new LambdaCommand(GetBackViewAsync);
 
-    private ICommand? _GetInfo;
-    public ICommand GetInfo => _GetInfo ??= new LambdaCommand(ApiGetInformationToPerson, CanCommandExecute);
+    private ICommand? _getInfo;
+    public ICommand GetInfo => _getInfo ??= new LambdaCommand(ApiGetInformationToPerson, CanCommandExecute);
 
-    private ICommand? _GetPersonsToNppAll;
-    public ICommand GetPersonsToNppAll => _GetPersonsToNppAll ??= new LambdaCommand(GetNppPersonsAll);
+    private ICommand? _getPersonsToNppAll;
+    public ICommand GetPersonsToNppAll => _getPersonsToNppAll ??= new LambdaCommand(GetNppPersonsAll);
 
-    private ICommand? _GetPersonsToNpp;
-    public ICommand GetPersonsToNpp => _GetPersonsToNpp ??= new LambdaCommand(GetNppPersons);
+    private ICommand? _getPersonsToNpp;
+    public ICommand GetPersonsToNpp => _getPersonsToNpp ??= new LambdaCommand(GetNppPersons);
 
-    private ICommand? _GetPersonsToNotNpp;
-    public ICommand GetPersonsToNotNpp => _GetPersonsToNotNpp ??= new LambdaCommand(GetNoNppPersons);
+    private ICommand? _getPersonsToNotNpp;
+    public ICommand GetPersonsToNotNpp => _getPersonsToNotNpp ??= new LambdaCommand(GetNoNppPersons);
     //------------------- Работа ------------------------------//
     // Отпуск
-    private ICommand? _AddVacation;
-    public ICommand AddVacation => _AddVacation ??= new LambdaCommand(AddVacationsPerson);
+    private ICommand? _addVacation;
+    public ICommand AddVacation => _addVacation ??= new LambdaCommand(AddVacationsPerson);
 
-    private ICommand? _SaveVacation;
-    public ICommand SaveVacation => _SaveVacation ??= new LambdaCommand(SaveVacationsPerson, _ => SelectedVacation != null);
+    private ICommand? _saveVacation;
+    public ICommand SaveVacation => _saveVacation ??= new LambdaCommand(SaveVacationsPerson, _ => SelectedVacation != null);
 
     /*private ICommand? _DeleteVacation;
     public ICommand DeleteVacation => _DeleteVacation ??= new LambdaCommand(DeleteFamilyPerson, _ => SelectedVacation != null);
     */
     //------------------- Паспорт ------------------------------//
     // Родственники
-    private ICommand? _AddFamily;
-    public ICommand AddFamily => _AddFamily ??= new LambdaCommand(AddFamilyPerson);
+    private ICommand? _addFamily;
+    public ICommand AddFamily => _addFamily ??= new LambdaCommand(AddFamilyPerson);
 
-    private ICommand? _SaveFamily;
-    public ICommand SaveFamily => _SaveFamily ??= new LambdaCommand(SaveFamilyPerson, _ => _selectedFamily != null);
+    private ICommand? _saveFamily;
+    public ICommand SaveFamily => _saveFamily ??= new LambdaCommand(SaveFamilyPerson, _ => _selectedFamily != null);
 
-    private ICommand? _DeleteFamily;
-    public ICommand DeleteFamily => _DeleteFamily ??= new LambdaCommand(DeleteFamilyPerson, _ => SelectedFamily != null);
+    private ICommand? _deleteFamily;
+    public ICommand DeleteFamily => _deleteFamily ??= new LambdaCommand(DeleteFamilyPerson, _ => SelectedFamily != null);
 
     //------------------- ОБРАЗОВАНИЕ ------------------------------//
 
     // Медицинское образование
-    private ICommand? _AddMedical;
-    public ICommand AddMedical => _AddMedical ??= new LambdaCommand(AddEducationMed);
+    private ICommand? _addMedical;
+    public ICommand AddMedical => _addMedical ??= new LambdaCommand(AddEducationMed);
 
-    private ICommand? _SaveMedical;
-    public ICommand SaveMedical => _SaveMedical ??= new LambdaCommand(SaveEducationMed, _ => SelectedMedical != null);
+    private ICommand? _saveMedical;
+    public ICommand SaveMedical => _saveMedical ??= new LambdaCommand(SaveEducationMed, _ => SelectedMedical != null);
 
-    private ICommand? _DeleteMedical;
-    public ICommand DeleteMedical => _DeleteMedical ??= new LambdaCommand(DeleteEducationMed, _ => SelectedMedical != null);
+    private ICommand? _deleteMedical;
+    public ICommand DeleteMedical => _deleteMedical ??= new LambdaCommand(DeleteEducationMed, _ => SelectedMedical != null);
 
     // Член-корр.
-    private ICommand? _AddMember;
-    public ICommand AddMember => _AddMember ??= new LambdaCommand(AddMemberAcademic);
+    private ICommand? _addMember;
+    public ICommand AddMember => _addMember ??= new LambdaCommand(AddMemberAcademic);
 
-    private ICommand? _SaveMember;
-    public ICommand SaveMember => _SaveMember ??= new LambdaCommand(SaveMemberAcademic, _ => SeletedMemberAcademic != null);
+    private ICommand? _saveMember;
+    public ICommand SaveMember => _saveMember ??= new LambdaCommand(SaveMemberAcademic, _ => SeletedMemberAcademic != null);
 
-    private ICommand? _DeleteMember;
-    public ICommand DeleteMember => _DeleteMember ??= new LambdaCommand(DeleteMemberAcademic, _ => SeletedMemberAcademic != null);
+    private ICommand? _deleteMember;
+    public ICommand DeleteMember => _deleteMember ??= new LambdaCommand(DeleteMemberAcademic, _ => SeletedMemberAcademic != null);
 
     // Награждения
-    private ICommand? _AddRewarding;
-    public ICommand AddRewarding => _AddRewarding ??= new LambdaCommand(AddRewardingPerson);
+    private ICommand? _addRewarding;
+    public ICommand AddRewarding => _addRewarding ??= new LambdaCommand(AddRewardingPerson);
 
-    private ICommand? _SaveRewarding;
-    public ICommand SaveRewarding => _SaveRewarding ??= new LambdaCommand(SaveRewardingPerson, _ => SelectedRewarding != null);
+    private ICommand? _saveRewarding;
+    public ICommand SaveRewarding => _saveRewarding ??= new LambdaCommand(SaveRewardingPerson, _ => SelectedRewarding != null);
 
-    private ICommand? _DeleteRewarding;
-    public ICommand DeleteRewarding => _DeleteRewarding ??= new LambdaCommand(DeleteRewardingPerson, _ => SelectedRewarding != null);
+    private ICommand? _deleteRewarding;
+    public ICommand DeleteRewarding => _deleteRewarding ??= new LambdaCommand(DeleteRewardingPerson, _ => SelectedRewarding != null);
 
     // Основное образование
-    private ICommand? _AddEducation;
-    public ICommand AddEducation => _AddEducation ??= new LambdaCommand(AddMainEducation);
+    private ICommand? _addEducation;
+    public ICommand AddEducation => _addEducation ??= new LambdaCommand(AddMainEducation);
 
-    private ICommand? _SaveEducation;
-    public ICommand SaveEducation => _SaveEducation ??= new LambdaCommand(SaveMainEducation, _ => SelectedEducation != null);
+    private ICommand? _saveEducation;
+    public ICommand SaveEducation => _saveEducation ??= new LambdaCommand(SaveMainEducation, _ => SelectedEducation != null);
 
-    private ICommand? _DeleteEducation;
-    public ICommand DeleteEducation => _DeleteEducation ??= new LambdaCommand(DeleteMainEducation, _ => SelectedEducation != null);
+    private ICommand? _deleteEducation;
+    public ICommand DeleteEducation => _deleteEducation ??= new LambdaCommand(DeleteMainEducation, _ => SelectedEducation != null);
 
     // Повышение квалификации
-    private ICommand? _AddQualification;
-    public ICommand AddQualification => _AddQualification ??= new LambdaCommand(AddQualificationEducation);
+    private ICommand? _addQualification;
+    public ICommand AddQualification => _addQualification ??= new LambdaCommand(AddQualificationEducation);
 
-    private ICommand? _SaveQualification;
-    public ICommand SaveQualification => _SaveQualification ??= new LambdaCommand(SaveQualificationEducation, _ => SelectedQualification != null);
+    private ICommand? _saveQualification;
+    public ICommand SaveQualification => _saveQualification ??= new LambdaCommand(SaveQualificationEducation, _ => SelectedQualification != null);
 
-    private ICommand? _DeleteQualification;
-    public ICommand DeleteQualification => _DeleteQualification ??= new LambdaCommand(DeletealificationEducation, _ => SelectedQualification != null);
+    private ICommand? _deleteQualification;
+    public ICommand DeleteQualification => _deleteQualification ??= new LambdaCommand(DeletealificationEducation, _ => SelectedQualification != null);
 
 
     // Научная степень
-    private ICommand? _AddScience;
-    public ICommand AddScience => _AddScience ??= new LambdaCommand(AddScienceDegree);
+    private ICommand? _addScience;
+    public ICommand AddScience => _addScience ??= new LambdaCommand(AddScienceDegree);
 
-    private ICommand? _SaveScience;
-    public ICommand SaveScience => _SaveScience ??= new LambdaCommand(SaveScienceDegree, _ => SeletedDegree != null);
+    private ICommand? _saveScience;
+    public ICommand SaveScience => _saveScience ??= new LambdaCommand(SaveScienceDegree, _ => SeletedDegree != null);
 
-    private ICommand? _DeleteScience;
-    public ICommand DeleteScience => _DeleteScience ??= new LambdaCommand(DeleteScienceDegree, _ => SeletedDegree != null);
+    private ICommand? _deleteScience;
+    public ICommand DeleteScience => _deleteScience ??= new LambdaCommand(DeleteScienceDegree, _ => SeletedDegree != null);
 
     // Ученое звание
-    private ICommand? _AddTitle;
-    public ICommand AddTile => _AddTitle ??= new LambdaCommand(AddAcademicTitle);
+    private ICommand? _addTitle;
+    public ICommand AddTile => _addTitle ??= new LambdaCommand(AddAcademicTitle);
 
-    private ICommand? _SaveTitle;
-    public ICommand SaveTile => _SaveTitle ??= new LambdaCommand(SaveAcademicTitle, _ => SelectedTitle != null);
+    private ICommand? _saveTitle;
+    public ICommand SaveTile => _saveTitle ??= new LambdaCommand(SaveAcademicTitle, _ => SelectedTitle != null);
 
-    private ICommand? _DeleteTitle;
-    public ICommand DeleteTitle => _DeleteTitle ??= new LambdaCommand(DeleteAcademicTitle, _ => SelectedTitle != null);
+    private ICommand? _deleteTitle;
+    public ICommand DeleteTitle => _deleteTitle ??= new LambdaCommand(DeleteAcademicTitle, _ => SelectedTitle != null);
 
     // изменить данные паспорта
-    private ICommand? _SaveDataPassport;
-    public ICommand SaveDataPassport => _SaveDataPassport ??= new LambdaCommand(UpdatePassport, _ => SelectedPerson != null);
+    private ICommand? _saveDataPassport;
+    public ICommand SaveDataPassport => _saveDataPassport ??= new LambdaCommand(UpdatePassport, _ => SelectedPerson != null);
 
     // Пенсионеры
-    private ICommand? _AddPensioner;
-    public ICommand AddPensioner => _AddPensioner ??= new LambdaCommand(AddPensionerAsync);
+    private ICommand? _addPensioner;
+    public ICommand AddPensioner => _addPensioner ??= new LambdaCommand(AddPensionerAsync);
 
-    private ICommand? _SavePensioner;
-    public ICommand SavePensioner => _SavePensioner ??= new LambdaCommand(SavePensionerAsync, _ => SelectedPens != null);
+    private ICommand? _savePensioner;
+    public ICommand SavePensioner => _savePensioner ??= new LambdaCommand(SavePensionerAsync, _ => SelectedPens != null);
 
-    private ICommand? _DeletePensioner;
-    public ICommand DeletePensioner => _DeletePensioner ??= new LambdaCommand(DeletePensionerAsync, _ => SelectedPens != null);
+    private ICommand? _deletePensioner;
+    public ICommand DeletePensioner => _deletePensioner ??= new LambdaCommand(DeletePensionerAsync, _ => SelectedPens != null);
 
     // Инвалиды
-    private ICommand? _AddInvalid;
-    public ICommand AddInvalid => _AddInvalid ??= new LambdaCommand(AddInvalidAsync);
+    private ICommand? _addInvalid;
+    public ICommand AddInvalid => _addInvalid ??= new LambdaCommand(AddInvalidAsync);
 
-    private ICommand? _SaveInvalid;
-    public ICommand SaveInvalid => _SaveInvalid ??= new LambdaCommand(SaveInvalidAsync, _ => SelectedInvalid != null);
+    private ICommand? _saveInvalid;
+    public ICommand SaveInvalid => _saveInvalid ??= new LambdaCommand(SaveInvalidAsync, _ => SelectedInvalid != null);
 
-    private ICommand? _DeleteInvalid;
-    public ICommand DeleteInvalid => _DeleteInvalid ??= new LambdaCommand(DeleteInvalidAsync, _ => SelectedInvalid != null);
+    private ICommand? _deleteInvalid;
+    public ICommand DeleteInvalid => _deleteInvalid ??= new LambdaCommand(DeleteInvalidAsync, _ => SelectedInvalid != null);
 
     // Трудовая книга
 
-    private ICommand? _AddHistory;
-    public ICommand AddHistory => _AddHistory ??= new LambdaCommand(AddHistoryAsync);
+    private ICommand? _addHistory;
+    public ICommand AddHistory => _addHistory ??= new LambdaCommand(AddHistoryAsync);
 
     // Изменить трудовую
-    private ICommand? _SaveHistory;
-    public ICommand SaveHistory => _SaveHistory ??= new LambdaCommand(SaveHistoryAsync, _ => SelectedHistory != null);
+    private ICommand? _saveHistory;
+    public ICommand SaveHistory => _saveHistory ??= new LambdaCommand(SaveHistoryAsync, _ => SelectedHistory != null);
 
 
 
@@ -562,7 +552,7 @@ internal class PersonCardViewModel : BaseViewModel
 
             object payload = new
             {
-                id_person = _SelectedPerson!.Id,
+                id_person = _selectedPerson!.Id,
                 id_person_position = _selectedPosition!.Id,
 
             };
@@ -570,8 +560,8 @@ internal class PersonCardViewModel : BaseViewModel
                     payload,
                     token: _user!.Token,
                     queryUrl: "/reports/pers/persons/spravka/",
-                    HttpMethod: "POST",
-                    ReportName: "Справка с места роботы");
+                    httpMethod: "POST",
+                    reportName: "Справка с места роботы");
 
             IsLoading = false;
 
@@ -621,9 +611,9 @@ internal class PersonCardViewModel : BaseViewModel
 
             await ReportService.JsonDeserializeWithToken(
                     token: _user!.Token,
-                    queryUrl: "/reports/pers/persons/card/" + _SelectedPerson!.Id,
-                    HttpMethod: "GET",
-                    ReportName: "Личная карта");
+                    queryUrl: "/reports/pers/persons/card/" + _selectedPerson!.Id,
+                    httpMethod: "GET",
+                    reportName: "Личная карта");
 
             IsLoading = false;
 
@@ -689,12 +679,12 @@ internal class PersonCardViewModel : BaseViewModel
 
 
     // Преобразование Фото в base64
-    public static string GetBase64FromImage(string path)
+    private static string GetBase64FromImage(string path)
     {
         using var image = Image.FromFile(path);
         using MemoryStream m = new();
         image.Save(m, image.RawFormat);
-        byte[] imageBytes = m.ToArray();
+        var imageBytes = m.ToArray();
 
         // Convert byte[] to Base64 String
         var base64String = Convert.ToBase64String(imageBytes);
@@ -704,10 +694,10 @@ internal class PersonCardViewModel : BaseViewModel
     // Вернуться на главную страницу
     private async void GetBackViewAsync(object p)
     {
-        _Department = await QueryService.JsonDeserializeWithObject<Departments>(token: _user!.Token,
+        _department = await QueryService.JsonDeserializeWithObject<Departments>(token: _user!.Token,
                                                                                 "/pers/tree/find/" + _idDepartment,
                                                                                 "GET");
-        _navigationStore.CurrentViewModel = new HomeViewModel(_user!, _navigationStore, _Department!);
+        _navigationStore.CurrentViewModel = new HomeViewModel(_user!, _navigationStore, _department!);
     }
 
 
@@ -738,9 +728,6 @@ internal class PersonCardViewModel : BaseViewModel
         view.ShowDialog();
         ApiGetInformationToPerson(p);
         ApiGetListAllPersonsAsync(p);
-        //SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _User!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
-        //PersonsList = await QueryService.JsonDeserializeWithToken<Persons>(token: _User!.Token, "/pers/person/get/all", "GET");
-
 
     }
 
@@ -905,8 +892,7 @@ internal class PersonCardViewModel : BaseViewModel
             PersonsList = await QueryService.JsonDeserializeWithToken<Persons>(token: _user!.Token, "/pers/person/get/short/" + _idDepartment, "GET");
             // PersonsList = await _Api.GetListPersonsToDepartment(_User!.Token, _Department!.Id);
             // Маленький костыль , для того чтобы находить на каком item я должен стоять при загрузке личной карты
-            (Persons Value, int Index) indeArray;
-            indeArray = PersonsList.Select((value, Index) => (Value: value, Index))
+            var indeArray = PersonsList.Select((value, index) => (Value: value, Index: index))
                 .FirstOrDefault(p => p.Value.Id == SelectedPerson!.Id);
             // Выбрать текущего человека при загрузке Window
             SelectedPerson = indeArray.Value;
@@ -931,10 +917,10 @@ internal class PersonCardViewModel : BaseViewModel
             }
         }
     }
-    private bool CanCommandExecute(object p) => _SelectedPerson is not null;
+    private bool CanCommandExecute(object p) => _selectedPerson is not null;
     private bool FilterToPerson(object emp) => string.IsNullOrEmpty(FilterPerson) || emp is Persons pers && pers.FirstName!.ToUpper().Contains(FilterPerson.ToUpper());
-    private static bool FilterIsNpp(object emp) => emp is Persons pers && pers.IsPed == true;
-    private static bool FilterIsNoNpp(object emp) => emp is Persons pers && pers.IsPed == false;
+    private static bool FilterIsNpp(object emp) => emp is Persons { IsPed: true };
+    private static bool FilterIsNoNpp(object emp) => emp is Persons { IsPed: false };
 
     #endregion
 
@@ -953,7 +939,7 @@ internal class PersonCardViewModel : BaseViewModel
                 Institution = "",
 
             };
-            _SelectedPerson!.ArrayEducation?.Insert(0, order);
+            _selectedPerson!.ArrayEducation?.Insert(0, order);
             SelectedEducation = order;
 
         }
@@ -978,19 +964,17 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
-            if (_user!.Token == null) return;
-
             SelectedEducation!.IdPerson = SelectedPerson!.Id;
 
             if (SelectedEducation!.Id > 0)
             {
                 // Изменить
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/education/rename/", "POST", SelectedEducation);
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/education/rename/", "POST", SelectedEducation);
             }
             else
             {
                 // Создать
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/education/add", "POST", SelectedEducation);
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/education/add", "POST", SelectedEducation);
             }
             // Информация о сотруднике
             SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
@@ -1019,17 +1003,12 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
-            if (_user!.Token == null)
-            {
-                return;
-            }
-
             if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
                     MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
-            await QueryService.JsonSerializeWithToken(_user.Token, "/pers/education/del/" + SelectedEducation!.Id, "DELETE", SelectedEducation);
+            await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/education/del/" + SelectedEducation!.Id, "DELETE", SelectedEducation);
             //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
 
-            _ = _SelectedPerson!.ArrayEducation!.Remove(SelectedEducation);
+            _ = _selectedPerson!.ArrayEducation!.Remove(SelectedEducation);
         }
         catch (WebException ex)
         {
@@ -1064,7 +1043,7 @@ internal class PersonCardViewModel : BaseViewModel
                 Place = "Место выдачи"
 
             };
-            _SelectedPerson!.ArrayQualification?.Insert(0, order);
+            _selectedPerson!.ArrayQualification?.Insert(0, order);
             SelectedQualification = order;
 
         }
@@ -1089,19 +1068,17 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
-            if (_user!.Token == null) return;
-
             SelectedQualification!.IdPerson = SelectedPerson!.Id;
 
             if (SelectedQualification!.Id > 0)
             {
                 // Изменить
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/qualification/rename/", "POST", SelectedQualification);
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/qualification/rename/", "POST", SelectedQualification);
             }
             else
             {
                 // Создать
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/qualification/add", "POST", SelectedQualification);
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/qualification/add", "POST", SelectedQualification);
             }
             // Информация о сотруднике
             SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
@@ -1130,17 +1107,12 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
-            if (_user!.Token == null)
-            {
-                return;
-            }
-
             if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
                     MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
-            await QueryService.JsonSerializeWithToken(_user.Token, "/pers/qualification/del/" + SelectedQualification!.Id, "DELETE", SelectedQualification);
+            await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/qualification/del/" + SelectedQualification!.Id, "DELETE", SelectedQualification);
             //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
 
-            _ = _SelectedPerson!.ArrayQualification!.Remove(SelectedQualification);
+            _ = _selectedPerson!.ArrayQualification!.Remove(SelectedQualification);
         }
         catch (WebException ex)
         {
@@ -1172,7 +1144,7 @@ internal class PersonCardViewModel : BaseViewModel
                 DateStart = DateTime.Now,
                 DateEnd = DateTime.Now,
             };
-            _SelectedPerson!.ArrayMedical?.Insert(0, order);
+            _selectedPerson!.ArrayMedical?.Insert(0, order);
             SelectedMedical = order;
 
         }
@@ -1197,19 +1169,17 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
-            if (_user!.Token == null) return;
-
             SelectedMedical!.IdPerson = SelectedPerson!.Id;
 
             if (SelectedMedical!.Id > 0)
             {
                 // Изменить
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/medical/rename/", "POST", SelectedMedical);
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/medical/rename/", "POST", SelectedMedical);
             }
             else
             {
                 // Создать
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/medical/add", "POST", SelectedMedical);
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/medical/add", "POST", SelectedMedical);
             }
             // Информация о сотруднике
             SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
@@ -1224,10 +1194,7 @@ internal class PersonCardViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -1241,17 +1208,12 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
-            if (_user!.Token == null)
-            {
-                return;
-            }
-
             if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
                     MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
-            await QueryService.JsonSerializeWithToken(_user.Token, "/pers/medical/del/" + SelectedMedical!.Id, "DELETE", SelectedMedical);
+            await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/medical/del/" + SelectedMedical!.Id, "DELETE", SelectedMedical);
             //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
 
-            _ = _SelectedPerson!.ArrayMedical!.Remove(SelectedMedical);
+            _ = _selectedPerson!.ArrayMedical!.Remove(SelectedMedical);
         }
         catch (WebException ex)
         {
@@ -1284,7 +1246,7 @@ internal class PersonCardViewModel : BaseViewModel
                 Name = "Академик",
 
             };
-            _SelectedPerson!.ArrayMeberAcademic?.Insert(0, order);
+            _selectedPerson!.ArrayMeberAcademic?.Insert(0, order);
             SeletedMemberAcademic = order;
 
         }
@@ -1309,19 +1271,17 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
-            if (_user!.Token == null) return;
-
             SeletedMemberAcademic!.IdPerson = SelectedPerson!.Id;
 
             if (SeletedMemberAcademic!.Id > 0)
             {
                 // Изменить
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/member/rename/", "POST", SeletedMemberAcademic);
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/member/rename/", "POST", SeletedMemberAcademic);
             }
             else
             {
                 // Создать
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/member/add", "POST", SeletedMemberAcademic);
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/member/add", "POST", SeletedMemberAcademic);
             }
             // Информация о сотруднике
             SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
@@ -1350,17 +1310,12 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
-            if (_user!.Token == null)
-            {
-                return;
-            }
-
             if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
                     MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
-            await QueryService.JsonSerializeWithToken(_user.Token, "/pers/member/del/" + SeletedMemberAcademic!.IdMember, "DELETE", SeletedMemberAcademic);
+            await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/member/del/" + SeletedMemberAcademic!.IdMember, "DELETE", SeletedMemberAcademic);
             //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
 
-            _ = _SelectedPerson!.ArrayMeberAcademic!.Remove(SeletedMemberAcademic);
+            _ = _selectedPerson!.ArrayMeberAcademic!.Remove(SeletedMemberAcademic);
         }
         catch (WebException ex)
         {
@@ -1393,7 +1348,7 @@ internal class PersonCardViewModel : BaseViewModel
 
 
             };
-            _SelectedPerson!.ArrayRewarding?.Insert(0, order);
+            _selectedPerson!.ArrayRewarding?.Insert(0, order);
             SelectedRewarding = order;
 
         }
@@ -1418,8 +1373,6 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
-            if (_user!.Token == null) return;
-
             SelectedRewarding!.IdPerson = SelectedPerson!.Id;
 
             //SelectedRewarding!.IdOrder = 
@@ -1427,12 +1380,12 @@ internal class PersonCardViewModel : BaseViewModel
             if (SelectedRewarding!.Id > 0)
             {
                 // Изменить
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/rewarding/rename/", "POST", SelectedRewarding);
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/rewarding/rename/", "POST", SelectedRewarding);
             }
             else
             {
                 // Создать
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/rewarding/add", "POST", SelectedRewarding);
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/rewarding/add", "POST", SelectedRewarding);
             }
             // Информация о сотруднике
             SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
@@ -1461,17 +1414,12 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
-            if (_user!.Token == null)
-            {
-                return;
-            }
-
             if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
                     MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
-            await QueryService.JsonSerializeWithToken(_user.Token, "/pers/rewarding/del/" + SelectedRewarding!.Id, "DELETE", SelectedRewarding);
+            await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/rewarding/del/" + SelectedRewarding!.Id, "DELETE", SelectedRewarding);
             //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
 
-            _ = _SelectedPerson!.ArrayRewarding!.Remove(SelectedRewarding);
+            _ = _selectedPerson!.ArrayRewarding!.Remove(SelectedRewarding);
         }
         catch (WebException ex)
         {
@@ -1505,7 +1453,7 @@ internal class PersonCardViewModel : BaseViewModel
                ScientificSpecialty = "Специальность"
 
             };
-            _SelectedPerson!.ArrayScientificDegree?.Insert(0, order);
+            _selectedPerson!.ArrayScientificDegree?.Insert(0, order);
             SeletedDegree = order;
 
         }
@@ -1517,10 +1465,7 @@ internal class PersonCardViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -1543,7 +1488,7 @@ internal class PersonCardViewModel : BaseViewModel
                 DateIssue = DateTime.Now,
 
             };
-            _SelectedPerson!.ArrayAcademicTitle?.Insert(0, order);
+            _selectedPerson!.ArrayAcademicTitle?.Insert(0, order);
             SelectedTitle = order;
 
         }
@@ -1555,10 +1500,7 @@ internal class PersonCardViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -1571,8 +1513,6 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
-            if (_user!.Token == null) return;
-
             SeletedDegree!.IdPerson = SelectedPerson!.Id;
 
             //SelectedRewarding!.IdOrder = 
@@ -1580,12 +1520,12 @@ internal class PersonCardViewModel : BaseViewModel
             if (SeletedDegree!.Id > 0)
             {
                 // Изменить
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/scientific/rename", "POST", SeletedDegree);
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/scientific/rename", "POST", SeletedDegree);
             }
             else
             {
                 // Создать
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/scientific/add", "POST", SeletedDegree);
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/scientific/add", "POST", SeletedDegree);
             }
             // Информация о сотруднике
             SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
@@ -1615,8 +1555,6 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
-            if (_user!.Token == null) return;
-
             SelectedTitle!.IdPerson = SelectedPerson!.Id;
 
             //SelectedRewarding!.IdOrder = 
@@ -1624,12 +1562,12 @@ internal class PersonCardViewModel : BaseViewModel
             if (SelectedTitle!.Id > 0)
             {
                 // Изменить
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/rank/rename/", "POST", SelectedTitle);
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/rank/rename/", "POST", SelectedTitle);
             }
             else
             {
                 // Создать
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/rank/add", "POST", SelectedTitle);
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/rank/add", "POST", SelectedTitle);
             }
             // Информация о сотруднике
             SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
@@ -1659,17 +1597,12 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
-            if (_user!.Token == null)
-            {
-                return;
-            }
-
             if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
                     MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
-            await QueryService.JsonSerializeWithToken(_user.Token, "/pers/scientific/del/" + SeletedDegree!.Id, "DELETE", SeletedDegree);
+            await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/scientific/del/" + SeletedDegree!.Id, "DELETE", SeletedDegree);
             //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
 
-            _ = _SelectedPerson!.ArrayScientificDegree!.Remove(SeletedDegree);
+            _ = _selectedPerson!.ArrayScientificDegree!.Remove(SeletedDegree);
         }
         catch (WebException ex)
         {
@@ -1693,17 +1626,12 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
-            if (_user!.Token == null)
-            {
-                return;
-            }
-
             if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
                     MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
-            await QueryService.JsonSerializeWithToken(_user.Token, "/pers/rank/del/" + SelectedTitle!.Id, "DELETE", SelectedTitle);
+            await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/rank/del/" + SelectedTitle!.Id, "DELETE", SelectedTitle);
             //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
 
-            _ = _SelectedPerson!.ArrayAcademicTitle!.Remove(SelectedTitle);
+            _ = _selectedPerson!.ArrayAcademicTitle!.Remove(SelectedTitle);
         }
         catch (WebException ex)
         {
@@ -1733,15 +1661,13 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
-            if (_user!.Token == null) return;
-
-            if (SelectedPerson!.SerialPassport.Length == 0 || SelectedPerson!.SerialPassport.Length > 12)
+            if (SelectedPerson!.SerialPassport.Length is 0 or > 12)
             {
                 _ = MessageBox.Show("Не допустимый размер поля 'Серия паспорта'");
                 return;
             }
 
-            if (SelectedPerson!.NumberPassport.Length == 0 || SelectedPerson!.NumberPassport.Length > 12)
+            if (SelectedPerson!.NumberPassport.Length is 0 or > 12)
             {
                 _ = MessageBox.Show("Не допустимый размер поля 'Номер паспорта'");
                 return;
@@ -1749,490 +1675,11 @@ internal class PersonCardViewModel : BaseViewModel
 
             if (SelectedPerson!.Id > 0)
                 // Изменить
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/person/rename/passport", "POST", SelectedPerson);
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/person/rename/passport", "POST", SelectedPerson);
 
             // Информация о сотруднике
             SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
             _ = MessageBox.Show("Данные успешно сохраненны");
-
-        }
-        catch (WebException ex)
-        {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
-
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-    }
-
-    // Пенсионер
-    private async void AddPensionerAsync(object p)
-    {
-        try
-        {
-            Pensioner order = new()
-            {
-                DateDocument = DateTime.Now,
-                Document = "№ 0000",
-
-            };
-            _SelectedPerson!.ArrayPensioner?.Insert(0, order);
-            SelectedPens = order;
-
-        }
-        catch (WebException ex)
-        {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
-
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-    }
-    private async void SavePensionerAsync(object p)
-    {
-        try
-        {
-            if (_user!.Token == null) return;
-
-            SelectedPens!.IdPerson = SelectedPerson!.Id;
-
-            if (SelectedPens!.Id > 0)
-            {
-                // Изменить
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/person/pensioner/rename", "POST", SelectedPens);
-            }
-            else
-            {
-                // Создать
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/person/pensioner/add", "POST", SelectedPens);
-            }
-            // Информация о сотруднике
-            SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
-            _ = MessageBox.Show("Данные успешно сохраненны");
-
-        }
-        catch (WebException ex)
-        {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
-
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-    }
-    private async void DeletePensionerAsync(object p)
-    {
-        try
-        {
-            if (_user!.Token == null)
-            {
-                return;
-            }
-
-            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            {
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/person/pensioner/del/" + SelectedPens!.Id, "DELETE", SelectedPens);
-                //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
-
-                _ = _SelectedPerson!.ArrayPensioner!.Remove(SelectedPens);
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
-
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-    }
-
-    // Инвалидность
-    private async void AddInvalidAsync(object p)
-    {
-        try
-        {
-            Invalid order = new()
-            {
-                DateStart = DateTime.Now,
-                Document = "№ 0000",
-                Group = "1"
-
-
-            };
-            _SelectedPerson!.ArrayInvalid?.Insert(0, order);
-            SelectedInvalid = order;
-
-        }
-        catch (WebException ex)
-        {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
-
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-    }
-    private async void SaveInvalidAsync(object p)
-    {
-        try
-        {
-            if (_user!.Token == null) return;
-
-            SelectedInvalid!.IdPerson = SelectedPerson!.Id;
-
-            if (SelectedInvalid!.Id > 0)
-            {
-                // Изменить
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/person/invalid/rename", "POST", SelectedInvalid);
-            }
-            else
-            {
-                // Создать
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/person/invalid/add", "POST", SelectedInvalid);
-            }
-            // Информация о сотруднике
-            SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
-            _ = MessageBox.Show("Данные успешно сохраненны");
-
-        }
-        catch (WebException ex)
-        {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
-
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-    }
-    private async void DeleteInvalidAsync(object p)
-    {
-        try
-        {
-            if (_user!.Token == null)
-            {
-                return;
-            }
-
-            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            {
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/person/invalid/" + SelectedInvalid!.Id, "DELETE", SelectedInvalid);
-                //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
-
-                _ = _SelectedPerson!.ArrayInvalid!.Remove(SelectedInvalid);
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
-
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-    }
-
-    // Отпуск
-    private async void AddVacationsPerson(object p)
-    {
-        try
-        {
-            Vacation order = new()
-            {
-                DateBegin = DateTime.Now,
-                DateEnd = DateTime.Now,
-                LengthVacation = 0,
-                Residue = 0,
-                Type = ""
-
-            };
-            _SelectedPerson!.ArrayVacation?.Insert(0, order);
-            SelectedVacation = order;
-
-        }
-        catch (WebException ex)
-        {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
-
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-    }
-
-    // Статус семьи
-    private async void AddFamilyPerson(object p)
-    {
-        try
-        {
-            Family order = new()
-            {
-                FullName = "ФИО",
-                Birthday = DateTime.Now,
-                Description = "Примечание",
-
-            };
-            _SelectedPerson!.ArrayFamily?.Insert(0, order);
-            SelectedFamily = order;
-
-        }
-        catch (WebException ex)
-        {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
-
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-    }
-
-    private async void SaveVacationsPerson(object p)
-    {
-        try
-        {
-            if (_user!.Token == null) return;
-
-            SelectedVacation!.IdPerson = SelectedPerson!.Id;
-
-            if (SelectedVacation!.Id > 0)
-            {
-                // Изменить
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/vacation/update", "POST", SelectedVacation);
-            }
-            else
-            {
-                // Создать
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/vacation/add", "POST", SelectedVacation);
-            }
-            // Информация о сотруднике
-            SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
-            _ = MessageBox.Show("Данные успешно сохраненны");
-
-        }
-        catch (WebException ex)
-        {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
-
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-    }
-
-    private async void SaveFamilyPerson(object p)
-    {
-        try
-        {
-            if (_user!.Token == null) return;
-
-            SelectedFamily!.IdPerson = SelectedPerson!.Id;
-
-            if (SelectedFamily!.Id > 0)
-            {
-                // Изменить
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/person/family/rename", "POST", SelectedFamily);
-            }
-            else
-            {
-                // Создать
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/person/family/add", "POST", SelectedFamily);
-            }
-            // Информация о сотруднике
-            SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
-            _ = MessageBox.Show("Данные успешно сохраненны");
-
-        }
-        catch (WebException ex)
-        {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
-
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-    }
-    private async void DeleteFamilyPerson(object p)
-    {
-        try
-        {
-            if (_user!.Token == null)
-            {
-                return;
-            }
-
-            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            {
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/person/family/" + SelectedFamily!.Id, "DELETE", SelectedFamily);
-                //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
-
-                _ = _SelectedPerson!.ArrayFamily!.Remove(SelectedFamily);
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
-
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-    }
-
-
-    #endregion
-
-    #region Работа
-
-    // Трудовая книга
-    private async void AddHistoryAsync(object p)
-    {
-        try
-        {
-            HistoryEmployment order = new()
-            {
-                CreateAt = DateTime.Now,
-                Name = "Наименование",
-                Record = 0
-
-            };
-            _SelectedPerson!.HistoryEmployment?.Insert(0, order);
-            SelectedHistory = order;
 
         }
         catch (WebException ex)
@@ -2253,23 +1700,346 @@ internal class PersonCardViewModel : BaseViewModel
         }
     }
 
+    // Пенсионер
+    private void AddPensionerAsync(object p)
+    {
+
+        Pensioner order = new()
+        {
+            DateDocument = DateTime.Now,
+            Document = "№ 0000",
+
+        };
+        _selectedPerson!.ArrayPensioner?.Insert(0, order);
+        SelectedPens = order;
+
+    }
+    private async void SavePensionerAsync(object p)
+    {
+        try
+        {
+            SelectedPens!.IdPerson = SelectedPerson!.Id;
+
+            if (SelectedPens!.Id > 0)
+            {
+                // Изменить
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/person/pensioner/rename", "POST", SelectedPens);
+            }
+            else
+            {
+                // Создать
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/person/pensioner/add", "POST", SelectedPens);
+            }
+            // Информация о сотруднике
+            SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
+            _ = MessageBox.Show("Данные успешно сохраненны");
+
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+    private async void DeletePensionerAsync(object p)
+    {
+        try
+        {
+            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
+            await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/person/pensioner/del/" + SelectedPens!.Id, "DELETE", SelectedPens);
+            //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
+
+            _ = _selectedPerson!.ArrayPensioner!.Remove(SelectedPens);
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+
+    // Инвалидность
+    private  void AddInvalidAsync(object p)
+    {
+
+        Invalid order = new()
+        {
+            DateStart = DateTime.Now,
+            Document = "№ 0000",
+            Group = "1"
+
+
+        };
+        _selectedPerson!.ArrayInvalid?.Insert(0, order);
+        SelectedInvalid = order;
+
+    }
+    private async void SaveInvalidAsync(object p)
+    {
+        try
+        {
+            SelectedInvalid!.IdPerson = SelectedPerson!.Id;
+
+            if (SelectedInvalid!.Id > 0)
+            {
+                // Изменить
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/person/invalid/rename", "POST", SelectedInvalid);
+            }
+            else
+            {
+                // Создать
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/person/invalid/add", "POST", SelectedInvalid);
+            }
+            // Информация о сотруднике
+            SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
+            _ = MessageBox.Show("Данные успешно сохраненны");
+
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+    private async void DeleteInvalidAsync(object p)
+    {
+        try
+        {
+            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
+            await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/person/invalid/" + SelectedInvalid!.Id, "DELETE", SelectedInvalid);
+            //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
+
+            _ = _selectedPerson!.ArrayInvalid!.Remove(SelectedInvalid);
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+
+    // Отпуск
+    private void AddVacationsPerson(object p)
+    {
+        Vacation order = new()
+            {
+                DateBegin = DateTime.Now,
+                DateEnd = DateTime.Now,
+                LengthVacation = 0,
+                Residue = 0,
+                Type = ""
+
+            };
+            _selectedPerson!.ArrayVacation?.Insert(0, order);
+            SelectedVacation = order;
+
+    }
+
+    // Статус семьи
+    private  void AddFamilyPerson(object p)
+    {
+
+        Family order = new()
+        {
+            FullName = "ФИО",
+            Birthday = DateTime.Now,
+            Description = "Примечание",
+
+        };
+        _selectedPerson!.ArrayFamily?.Insert(0, order);
+        SelectedFamily = order;
+    }
+
+    private async void SaveVacationsPerson(object p)
+    {
+        try
+        {
+            SelectedVacation!.IdPerson = SelectedPerson!.Id;
+
+            if (SelectedVacation!.Id > 0)
+            {
+                // Изменить
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/vacation/update", "POST", SelectedVacation);
+            }
+            else
+            {
+                // Создать
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/vacation/add", "POST", SelectedVacation);
+            }
+            // Информация о сотруднике
+            SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
+            _ = MessageBox.Show("Данные успешно сохраненны");
+
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+    }
+
+    private async void SaveFamilyPerson(object p)
+    {
+        try
+        {
+            SelectedFamily!.IdPerson = SelectedPerson!.Id;
+
+            if (SelectedFamily!.Id > 0)
+            {
+                // Изменить
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/person/family/rename", "POST", SelectedFamily);
+            }
+            else
+            {
+                // Создать
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/person/family/add", "POST", SelectedFamily);
+            }
+            // Информация о сотруднике
+            SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
+            _ = MessageBox.Show("Данные успешно сохраненны");
+
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+    }
+    private async void DeleteFamilyPerson(object p)
+    {
+        try
+        {
+            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
+            await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/person/family/" + SelectedFamily!.Id, "DELETE", SelectedFamily);
+            //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
+
+            _ = _selectedPerson!.ArrayFamily!.Remove(SelectedFamily);
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+
+
+    #endregion
+
+    #region Работа
+
+    // Трудовая книга
+    private  void AddHistoryAsync(object p)
+    {
+
+        HistoryEmployment order = new()
+        {
+            CreateAt = DateTime.Now,
+            Name = "Наименование",
+            Record = 0
+
+        };
+        _selectedPerson!.HistoryEmployment?.Insert(0, order);
+        SelectedHistory = order;
+
+    }
+
     private async void SaveHistoryAsync(object p)
     {
         try
         {
-            if (_user!.Token == null) return;
-
             SelectedHistory!.IdPerson = SelectedPerson!.Id;
 
             if (SelectedHistory!.Id > 0)
             {
                 // Изменить
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/person/history/rename/" + SelectedHistory.Id, "POST", SelectedHistory);
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/person/history/rename/" + SelectedHistory.Id, "POST", SelectedHistory);
             }
             else
             {
                 // Создать
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/person/history/add", "POST", SelectedHistory);
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/person/history/add", "POST", SelectedHistory);
             }
             // Информация о сотруднике
             SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");

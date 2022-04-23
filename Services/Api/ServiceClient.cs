@@ -43,7 +43,7 @@ internal class ServiceClient : IDisposable
         _timeout = timeout ?? TimeSpan.FromSeconds(90);
     }
 
-    public async Task<string> PostAsync(string url, object input)
+    private async Task<string> PostAsync(string url, object input)
     {
         EnsureHttpClientCreated();
 
@@ -70,7 +70,7 @@ internal class ServiceClient : IDisposable
             ?? throw new NullReferenceException();
     }
 
-    public async Task<string> GetAsync(string url)
+    private async Task<string> GetAsync(string url)
     {
         EnsureHttpClientCreated();
 
@@ -84,7 +84,7 @@ internal class ServiceClient : IDisposable
         return await PutAsync(url, new StringContent(JsonSerializer.Serialize(input), Encoding.UTF8, MediaTypeJson));
     }
 
-    public async Task<string> PutAsync(string url, HttpContent content)
+    private async Task<string> PutAsync(string url, HttpContent content)
     {
         EnsureHttpClientCreated();
 
@@ -104,8 +104,8 @@ internal class ServiceClient : IDisposable
 
     public void Dispose()
     {
-        _httpClientHandler?.Dispose();
-        _httpClient?.Dispose();
+        _httpClientHandler.Dispose();
+        _httpClient.Dispose();
     }
 
     private void CreateHttpClient()
@@ -140,7 +140,7 @@ internal class ServiceClient : IDisposable
 
     private static string ConvertToJsonString(object obj)
     {
-        return obj == null ? string.Empty : JsonSerializer.Serialize(obj);
+        return JsonSerializer.Serialize(obj);
     }
 
     private static string NormalizeBaseUrl(string url)

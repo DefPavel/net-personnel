@@ -177,23 +177,16 @@ internal class TypePositionViewModel : BaseViewModel
     }
     private void AddPosition(object p)
     {
-        try
-        {
-            TypePosition type = new()
-            {
-                Name = "Новая Должность",
-                LimitHoliday = 28, 
-                
-                
-            };
-            _typePosition!.Insert(0, type);
-            SelectedPosition = type;
 
-        }
-        catch (Exception ex)
+        TypePosition type = new()
         {
-            _ = MessageBox.Show(ex.Message);
-        }
+            Name = "Новая Должность",
+            LimitHoliday = 28, 
+                
+                
+        };
+        _typePosition!.Insert(0, type);
+        SelectedPosition = type;
 
     }
 

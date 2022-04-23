@@ -9,19 +9,19 @@ internal class MasterReportViewModel : BaseViewModel
 
         IsPedagogical = new ObservableCollection<PedagogicalPosition> 
         { 
-            new PedagogicalPosition
+            new()
             {
                 IdPed = 1,
                 IsPed = "Педагогическая",
                 Query = "typ_pos.is_ped = true",
             },
-            new PedagogicalPosition
+            new()
             {
                 IdPed = 2,
                 IsPed = "Не Педагогическая",
                 Query = "typ_pos.is_ped = false",
             },
-            new PedagogicalPosition
+            new()
             {
                 IdPed = -1,
                 IsPed = "Все",
@@ -67,20 +67,20 @@ internal class MasterReportViewModel : BaseViewModel
     public ObservableCollection<PedagogicalPosition>? IsPedagogical
     {
         get => _isPedagogical;
-        set => Set(ref _isPedagogical, value);
+        private set => Set(ref _isPedagogical, value);
     }
     private ObservableCollection<Position>? _positions;
     public ObservableCollection<Position>? Positions
     {
         get => _positions;
-        set => Set(ref _positions, value);
+        private set => Set(ref _positions, value);
     }
 
     private ObservableCollection<PersonReports>? _persons;
     public ObservableCollection<PersonReports>? Persons
     {
         get => _persons;
-        set => Set(ref _persons, value);
+        private set => Set(ref _persons, value);
     }
     private PedagogicalPosition? _selectedIsPed;
     public PedagogicalPosition? SelectedIsPed
@@ -93,7 +93,7 @@ internal class MasterReportViewModel : BaseViewModel
     public ObservableCollection<TypeContract>? TypeContracts
     {
         get => _typeContracts;
-        set => Set(ref _typeContracts, value);
+        private set => Set(ref _typeContracts, value);
     }
     private TypeContract? _selectedContract;
     public TypeContract? SelectedContract
@@ -127,7 +127,7 @@ internal class MasterReportViewModel : BaseViewModel
     public ObservableCollection<string>? TypeGender
     {
         get => _typeGender;
-        set => Set(ref _typeGender, value);
+        private set => Set(ref _typeGender, value);
     }
     private string? _selectedGender;
     public string? SelectedGender
@@ -139,7 +139,7 @@ internal class MasterReportViewModel : BaseViewModel
     public ObservableCollection<string>? TypeStatus
     {
         get => _typeStatus;
-        set => Set(ref _typeStatus, value);
+        private set => Set(ref _typeStatus, value);
     }
     private string? _selectedStatus;
     public string? SelectedStatus
@@ -152,7 +152,7 @@ internal class MasterReportViewModel : BaseViewModel
     public ObservableCollection<string>? TypeAge
     {
         get => _typeAge;
-        set => Set(ref _typeAge, value);
+        private set => Set(ref _typeAge, value);
     }
     private string? _selectedAge;
     public string? SelectedAge

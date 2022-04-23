@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-        xmlns:viewmodels="clr-namespace:AlphaPersonel.ViewModels" 
+        xmlns:view-models="clr-namespace:AlphaPersonel.ViewModels" 
         xmlns:views="clr-namespace:AlphaPersonel.Views"
-        d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
+        d:DataContext="{d:DesignInstance Type=view-models:MainViewModel}"
         mc:Ignorable="d"
         Title="Personnel" 
         WindowStartupLocation="CenterScreen"
@@ -17,61 +17,61 @@
         <ContentControl.Resources>
             <!-- Данная окно выступает в роли => layout -->
             <!--Ссылка на LoginViewModel-->
-            <DataTemplate DataType="{x:Type viewmodels:LoginViewModel}">
+            <DataTemplate DataType="{x:Type view-models:LoginViewModel}">
                 <views:LoginView />
             </DataTemplate>
             <!--Ссылка на HomeViewModel-->
-            <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
+            <DataTemplate DataType="{x:Type view-models:HomeViewModel}">
                 <views:HomeView />
             </DataTemplate>
             <!--Ссылка на PeriodViewModel-->
-            <DataTemplate DataType="{x:Type viewmodels:PeriodVacationViewModel}">
+            <DataTemplate DataType="{x:Type view-models:PeriodVacationViewModel}">
                 <views:PeriodVacationView />
             </DataTemplate>
             <!--Ссылка на TypeVacationViewModel-->
-            <DataTemplate DataType="{x:Type viewmodels:TypeVacationViewModel}">
+            <DataTemplate DataType="{x:Type view-models:TypeVacationViewModel}">
                 <views:TypeVacation />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:TypeRewardingViewModel}">
+            <DataTemplate DataType="{x:Type view-models:TypeRewardingViewModel}">
                 <views:TypeRewardingView />
             </DataTemplate>
             <!--Ссылка на DepartmentViewModel-->
-            <DataTemplate DataType="{x:Type viewmodels:DepartmentViewModel}">
+            <DataTemplate DataType="{x:Type view-models:DepartmentViewModel}">
                 <views:DepartmentView />
             </DataTemplate>
             <!--Ссылка на PositionViewModel-->
-            <DataTemplate DataType="{x:Type viewmodels:PositionViewModel}">
+            <DataTemplate DataType="{x:Type view-models:PositionViewModel}">
                 <views:PositionView />
             </DataTemplate>
             <!--Ссылка на PersonCardViewModel-->
-            <DataTemplate DataType="{x:Type viewmodels:PersonCardViewModel}">
+            <DataTemplate DataType="{x:Type view-models:PersonCardViewModel}">
                 <views:PersonCard />
             </DataTemplate>
             <!--Ссылка на SearchViewModel-->
-            <DataTemplate DataType="{x:Type viewmodels:SearchViewModel}">
+            <DataTemplate DataType="{x:Type view-models:SearchViewModel}">
                 <views:SearchView />
             </DataTemplate>
             <!--Ссылка на TyperRankViewModel-->
-            <DataTemplate DataType="{x:Type viewmodels:TypeRanksViewModel}">
+            <DataTemplate DataType="{x:Type view-models:TypeRanksViewModel}">
                 <views:TypeRanks />
             </DataTemplate>
             <!--Ссылка на TypeOrderViewModel-->
-            <DataTemplate DataType="{x:Type viewmodels:TypeOrderViewModel}">
+            <DataTemplate DataType="{x:Type view-models:TypeOrderViewModel}">
                 <views:TypeOrderView />
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type viewmodels:TypePositionViewModel}">
+            <DataTemplate DataType="{x:Type view-models:TypePositionViewModel}">
             <views:TypePositionView />
             </DataTemplate>
             <!--Ссылка на OrderViewModel-->
-            <DataTemplate DataType="{x:Type viewmodels:OrderViewModel}">
+            <DataTemplate DataType="{x:Type view-models:OrderViewModel}">
                 <views:OrderView />
             </DataTemplate>
             <!--Ссылка на Отчеты -->
-            <DataTemplate DataType="{x:Type viewmodels:ReportsViewModel}">
+            <DataTemplate DataType="{x:Type view-models:ReportsViewModel}">
                 <views:ReportsView />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:MasterReportViewModel}">
+            <DataTemplate DataType="{x:Type view-models:MasterReportViewModel}">
                 <views:MasterReportView />
             </DataTemplate>
         </ContentControl.Resources>

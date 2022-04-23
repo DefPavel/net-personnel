@@ -87,21 +87,12 @@ internal class TypeRewardingViewModel : BaseViewModel
 
     private void AddTypeRewardingAsync(object p)
     {
-        try
+        TypeRewarding type = new()
         {
-            TypeRewarding type = new()
-            {
-                Name = "Новый тип награждения"
-            };
-            _typeRewardings!.Insert(0, type);
-            SelectedType = type;
-
-        }
-        catch (Exception ex)
-        {
-            throw;
-        }
-
+            Name = "Новый тип награждения"
+        };
+        _typeRewardings!.Insert(0, type);
+        SelectedType = type;
     }
 
     private async void SaveTypeRewarding(object p)

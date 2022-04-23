@@ -161,37 +161,20 @@ internal class OrderViewModel : BaseViewModel
         }
     }
 
-    private async void AddOrderAsync(object p)
+    private void AddOrderAsync(object p)
     {
-        try
+
+        Order order = new()
         {
-            Order order = new()
-            {
-                Name = "000-ОК",
-                Type = "Приём",
-                DateOrder = DateTime.Now.Date
+            Name = "000-ОК",
+            Type = "Приём",
+            DateOrder = DateTime.Now.Date
 
-            };
-            _orders?.Insert(0, order);
-            SelectedOrder = order;
+        };
+        _orders?.Insert(0, order);
+        SelectedOrder = order;
 
-        }
-        catch (System.Net.WebException ex)
-        {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
-
-                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+      
     }
 
     private async void DeleteOrder(object p)

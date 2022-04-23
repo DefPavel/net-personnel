@@ -12,86 +12,86 @@ internal class ReportsViewModel : BaseViewModel
     #region Переменные
 
     // Процесс загрузки
-    private VisualBoolean? _IsLoading = false;
+    private VisualBoolean? _isLoading = false;
     public VisualBoolean? IsLoading
     {
-        get => _IsLoading;
-        set => Set(ref _IsLoading, value);
+        get => _isLoading;
+        set => Set(ref _isLoading, value);
     }
 
     // Ссылка на User для того чтобы забрать token
-    private Users _User;
+    private Users _user;
     public Users User
     {
-        get => _User;
-        set => Set(ref _User, value);
+        get => _user;
+        set => Set(ref _user, value);
     }
 
-    private readonly NavigationStore navigationStore;
+    private readonly NavigationStore _navigationStore;
 
     // Выбранные отчет
-    private Report? _SelectedReport;
+    private Report? _selectedReport;
     public Report? SelectedReport
     {
-        get => _SelectedReport;
-        set => Set(ref _SelectedReport, value);
+        get => _selectedReport;
+        set => Set(ref _selectedReport, value);
     }
 
-    private bool _SelectedIsPed;
+    private bool _selectedIsPed;
     public bool SelectedIsPed
     {
-        get => _SelectedIsPed;
-        set => Set(ref _SelectedIsPed, value);
+        get => _selectedIsPed;
+        set => Set(ref _selectedIsPed, value);
     }
 
-    private bool _SelectedIsNoPed;
+    private bool _selectedIsNoPed;
     public bool SelectedIsNoPed
     {
-        get => _SelectedIsNoPed;
-        set => Set(ref _SelectedIsNoPed, value);
+        get => _selectedIsNoPed;
+        set => Set(ref _selectedIsNoPed, value);
     }
 
-    private bool _SelectedIsAll = true;
+    private bool _selectedIsAll = true;
     public bool SelectedIsAll
     {
-        get => _SelectedIsAll;
-        set => Set(ref _SelectedIsAll, value);
+        get => _selectedIsAll;
+        set => Set(ref _selectedIsAll, value);
     }
 
     // Массив отчетов
-    private ObservableCollection<Report>? _Reports;
+    private ObservableCollection<Report>? _reports;
     public ObservableCollection<Report>? Reports
     {
-        get => _Reports;
+        get => _reports;
         set
         {
-            _ = Set(ref _Reports, value);
-            CollectionDepart = CollectionViewSource.GetDefaultView(Reports);
+            _ = Set(ref _reports, value);
+            if (Reports != null) CollectionDepart = CollectionViewSource.GetDefaultView(Reports);
             CollectionDepart.Filter = FilterToDepart;
         }
     }
 
     // Поисковая строка 
-    private string? _Filter;
+    private string? _filter;
     public string? Filter
     {
-        get => _Filter;
+        get => _filter;
         set
         {
-            _ = Set(ref _Filter, value);
+            _ = Set(ref _filter, value);
             if (Reports != null)
             {
-                _CollectionDepart!.Refresh();
+                _collectionDepart!.Refresh();
             }
 
         }
     }
     // Специальная колекция для фильтров
-    private ICollectionView? _CollectionDepart;
-    public ICollectionView? CollectionDepart
+    private ICollectionView _collectionDepart;
+    public ICollectionView CollectionDepart
     {
-        get => _CollectionDepart;
-        set => Set(ref _CollectionDepart, value);
+        get => _collectionDepart;
+        private set => Set(ref _collectionDepart, value);
     }
 
     private bool FilterToDepart(object emp)
@@ -99,19 +99,19 @@ internal class ReportsViewModel : BaseViewModel
         return string.IsNullOrEmpty(Filter) || (emp is Report dep && dep.Name!.ToUpper().Contains(value: Filter.ToUpper()));
     }
 
-    private bool CanCommandExecute(object p)
+    private static bool CanCommandExecute(object p)
     {
-        return p is Report && p is not null;
+        return p is Report;
     }
     #endregion
 
     #region Команды
 
-    private ICommand? _OpenReport;
-    public ICommand OpenReport => _OpenReport ??= new LambdaCommand(ApiGetReport, CanCommandExecute);
+    private ICommand? _openReport;
+    public ICommand OpenReport => _openReport ??= new LambdaCommand(ApiGetReport, CanCommandExecute);
 
-    private ICommand? _GetToMain;
-    public ICommand GetToMain => _GetToMain ??= new LambdaCommand(GetBack);
+    private ICommand? _getToMain;
+    public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack);
 
     #endregion
 
@@ -119,46 +119,45 @@ internal class ReportsViewModel : BaseViewModel
 
     private void GetBack(object p)
     {
-        navigationStore.CurrentViewModel = new HomeViewModel(_User, navigationStore);
+        _navigationStore.CurrentViewModel = new HomeViewModel(_user, _navigationStore);
     }
 
     private async void ApiGetReport(object obj)
     {
         try
         {
-
-            if (_User!.Token == null) return;
-
             IsLoading = true;
-
+            var reportName = SelectedReport!.Name;
             if (SelectedIsPed)
             {
-                await ReportService.JsonDeserializeWithToken(
-                    token: _User!.Token,
-                    queryUrl: SelectedReport!.Url + TypeReport.IsPed,
-                    HttpMethod: "GET",
-                    ReportName: SelectedReport!.Name
-                );
+                
+                if (reportName != null)
+                    await ReportService.JsonDeserializeWithToken(
+                        token: _user!.Token,
+                        queryUrl: SelectedReport!.Url + TypeReport.IsPed,
+                        httpMethod: "GET",
+                        reportName: reportName
+                    );
             }
             else if (SelectedIsNoPed)
             {
-                await ReportService.JsonDeserializeWithToken(
-                    token: _User!.Token,
-                    queryUrl: SelectedReport!.Url + TypeReport.IsNoPed.ToString(),
-                    HttpMethod: "GET",
-                    ReportName: SelectedReport!.Name
-                );
-
+                if (reportName != null)
+                    await ReportService.JsonDeserializeWithToken(
+                        token: _user!.Token,
+                        queryUrl: SelectedReport!.Url + TypeReport.IsNoPed.ToString(),
+                        httpMethod: "GET",
+                        reportName: reportName
+                    );
             }
             else
             {
-
-                await ReportService.JsonDeserializeWithToken(
-                   token: _User!.Token,
-                   queryUrl: SelectedReport!.Url + TypeReport.IsAll.ToString(),
-                   HttpMethod: "GET",
-                   ReportName: SelectedReport!.Name
-               );
+                if (reportName != null)
+                    await ReportService.JsonDeserializeWithToken(
+                        token: _user!.Token,
+                        queryUrl: SelectedReport!.Url + TypeReport.IsAll.ToString(),
+                        httpMethod: "GET",
+                        reportName: reportName
+                    );
             }
             IsLoading = false;
         }
@@ -171,10 +170,7 @@ internal class ReportsViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -188,142 +184,142 @@ internal class ReportsViewModel : BaseViewModel
 
     public ReportsViewModel(NavigationStore navigationStore, Users user)
     {
-        _User = user;
-        this.navigationStore = navigationStore;
+        _user = user;
+        this._navigationStore = navigationStore;
 
         Reports = new ObservableCollection<Report>
             {
-                new Report
+                new ()
                 {
                     Name = "Список отделов",
                     Url = "/reports/pers/departments/"
                 },
-                new Report
+                new ()
                 {
                     Name = "Список всех сотрудников",
                     Url = "/reports/pers/persons/"
                 },
-                new Report
+                new ()
                 {
                     Name = "Список всех сотрудников(Только Мужчины)",
                     Url = "/reports/pers/persons/male/"
                 },
-                new Report
+                new ()
                 {
                     Name = "Список всех сотрудников(Только Женщины)",
                     Url = "/reports/pers/persons/female/"
                 },
-                new Report
+                new ()
                 {
                     Name = "Список всех сотрудников(Студенты)",
                     Url = "/reports/pers/persons/student/"
                 },
-                new Report
+                new ()
                 {
                     Name = "Список всех сотрудников(Аспиранты)",
                     Url = "/reports/pers/persons/graduate/"
                 },
-                new Report
+                new ()
                 {
                     Name = "Список всех сотрудников(Пенсионеры)",
                     Url = "/reports/pers/persons/persioner"
                 },
-                new Report
+                new ()
                 {
                     Name = "Список сотрудников-инвалидов",
                     Url = "/reports/pers/persons/invalids/"
                 },
-                new Report
+                new ()
                 {
                     Name = "Список всех сотрудников(Не ЛГПУ)",
                     Url = "/reports/pers/persons/no_lgpu/"
                 },
-                new Report
+                new ()
                 {
                     Name = "Список академиков и членов корреспондентов",
                     Url = "/reports/pers/persons/academic/"
                 },
-                new Report
+                new ()
                 {
                     Name = "Список Принятых Сотрудников",
                     Url = "/reports/pers/persons/insert/"
                 },
-                new Report
+                new ()
                 {
                     Name = "Список Сотрудников(Юбиляров)",
                     Url = "/reports/pers/persons/jubilee/"
                 },
-                new Report
+                new ()
                 {
                     Name = "Список всех сотрудников(Имеющих русский паспорт)",
                     Url = "/reports/pers/persons/passport_rus/"
                 },
-                new Report
+                new ()
                 {
                     Name = "Список всех сотрудников(Не имеющих паспорт ЛНР)",
                     Url = "/reports/pers/persons/passport_no_lnr/"
                 },
-                new Report
+                new ()
                 {
                     Name = "Список всех сотрудников(Имеющие паспорт ЛНР)",
                     Url = "/reports/pers/persons/passport_lnr/"
                 },
-                new Report
+                new ()
                 {
                     Name = "Список всех сотрудников(У которорых отсутствует справка о несудимости)",
                     Url = "/reports/pers/persons/reference_no/"
                 },
-                new Report
+                new ()
                 {
                     Name = "Список Награжденных",
                     Url = "/reports/pers/persons/rewarding/"
                 },
-                new Report
+                new ()
                 {
                     Name = "Список деканов и директоров",
                     Url = "/reports/pers/persons/director/"
                 },
-                new Report
+                new()
                 {
                     Name = "Повышение квалификации(Методистов)",
                     Url = "/reports/pers/persons/metodist/"
                 },
-                new Report
+                new()
                 {
                     Name = "Список Профессоров и Докторов",
                     Url = "/reports/pers/persons/doc_prof/"
                 },
-                new Report
+                new()
                 {
                     Name = "Дни рождения руководства",
                     Url = "/reports/pers/persons/birthdays/"
                 },
-                new Report
+                new()
                 {
                     Name = "Список всех сотрудников(Мать одиночка)",
                     Url = "/reports/pers/persons/mother_is_one/"
                 },
-                new Report
+                new()
                 {
                     Name = "Список всех сотрудников(Мать двоих и более детей)",
                     Url = "/reports/pers/persons/mother_is_two/"
                 },
-                new Report
+                new()
                 {
                     Name = "Список всех сотрудников(Материально ответственные)",
                     Url = "/reports/pers/persons/is_responsible/"
                 },
-                new Report
+                new()
                 {
                     Name = "Список всех сотрудников(больше 1 ставки)",
                     Url = "/reports/pers/persons/responsible/"
                 },
-                new Report
+                new()
                 {
                     Name = "Список всех сотрудников(Внешние совместители)",
                     Url = "/reports/pers/persons/is_pluralism_ot/"
                 },
-                new Report
+                new()
                 {
                     Name = "Список всех сотрудников(Внутренние совместители)",
                     Url = "/reports/pers/persons/is_pluralism_in/"

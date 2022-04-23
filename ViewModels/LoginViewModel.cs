@@ -6,7 +6,7 @@ internal class LoginViewModel : BaseViewModel
 
     public LoginViewModel(NavigationStore navigationStore)
     {
-        this._navigationStore = navigationStore;
+        _navigationStore = navigationStore;
     }
 
     #region Свойства
@@ -56,9 +56,12 @@ internal class LoginViewModel : BaseViewModel
     {
         try
         {
-            var account = await SignIn.Authentication(username: UserName!, password: Password!);
+            var account = await SignIn.Authentication(
+                username: UserName!,
+                password: Password!);
 
-            _navigationStore.CurrentViewModel = new HomeViewModel(account, _navigationStore);
+            _navigationStore.CurrentViewModel = new HomeViewModel(account: account,
+                                                                  navigationStore: _navigationStore);
         }
         catch (WebException ex)
         {

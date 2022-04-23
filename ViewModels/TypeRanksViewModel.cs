@@ -92,32 +92,15 @@ internal class TypeRanksViewModel : BaseViewModel
 
     private async void AddTypeOrderAsync(object p)
     {
-        try
-        {
-            TypeRank type = new()
-            {
-                Name = "Новое звание"
-            };
-            _typeRank!.Insert(0, type);
-            SelectedRank = type;
 
-        }
-        catch (WebException ex)
+        TypeRank type = new()
         {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
+            Name = "Новое звание"
+        };
+        _typeRank!.Insert(0, type);
+        SelectedRank = type;
 
-                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+       
 
     }
 

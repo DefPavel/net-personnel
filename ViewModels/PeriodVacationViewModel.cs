@@ -120,22 +120,17 @@ internal class PeriodVacationViewModel : BaseViewModel
 
     private void AddPeriod(object p)
     {
-        try
-        {
-            var toDay = DateTime.Now;
 
-            PeriodVacation dep = new()
-            {
-                Name = $"{toDay.Year}-{toDay.AddYears(1).Year}",
-            };
-            _periodVacation!.Insert(0, dep);
-            SelectedPeriod = dep;
+        var toDay = DateTime.Now;
 
-        }
-        catch
+        PeriodVacation dep = new()
         {
-            throw;
-        }
+            Name = $"{toDay.Year}-{toDay.AddYears(1).Year}",
+        };
+        _periodVacation!.Insert(0, dep);
+        SelectedPeriod = dep;
+
+
 
     }
 

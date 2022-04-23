@@ -1,13 +1,5 @@
-﻿
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Windows.Input;
-
+﻿using System.Linq;
 namespace AlphaPersonel.ViewModels;
-
 internal class DepartmentViewModel : BaseViewModel
 {
     #region Переменные
@@ -27,7 +19,7 @@ internal class DepartmentViewModel : BaseViewModel
     public ObservableCollection<Departments>? Departments
     {
         get => _departments;
-        set
+        private set
         {
             _ = Set(ref _departments, value);
             if (Departments != null) CollectionDepart = CollectionViewSource.GetDefaultView(Departments);
@@ -133,38 +125,20 @@ internal class DepartmentViewModel : BaseViewModel
 
     }
     // Создать новую запись
-    private async void AddDepartmentAsync(object p)
+    private void AddDepartmentAsync(object p)
     {
-        try
-        {
-            Departments dep = new()
-            {
-                Name = "Новый отдел",
-                Short = "Новый отдел",
-                Phone = "Не указан",
-                TypeName = "Не указано",
-                ParentId = 0,
-            };
-            _departments!.Insert(0, dep);
-            SelectedDepartment = dep;
 
-        }
-        catch (WebException ex)
+        Departments dep = new()
         {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
+            Name = "Новый отдел",
+            Short = "Новый отдел",
+            Phone = "Не указан",
+            TypeName = "Не указано",
+            ParentId = 0,
+        };
+        _departments!.Insert(0, dep);
+        SelectedDepartment = dep;
 
-                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
 
     }
     // Изменить или сохранить новые данные

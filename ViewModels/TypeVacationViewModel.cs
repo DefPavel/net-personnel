@@ -87,34 +87,17 @@ internal class TypeVacationViewModel : BaseViewModel
     }
 
 
-    private async void AddTypeVacationAsync(object p)
+    private void AddTypeVacationAsync(object p)
     {
-        try
-        {
-            Models.TypeVacation type = new()
-            {
-                Name = "Новый тип отпуска"
-            };
-            _typeVacation!.Insert(0, type);
-            SelectedTypeVacation = type;
 
-        }
-        catch (WebException ex)
+        Models.TypeVacation type = new()
         {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
+            Name = "Новый тип отпуска"
+        };
+        _typeVacation!.Insert(0, type);
+        SelectedTypeVacation = type;
 
-                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+
 
     }
 

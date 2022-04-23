@@ -90,37 +90,15 @@ internal class TypeOrderViewModel : BaseViewModel
     }
 
     // Создать в коллекции новый тип приказа
-    private async void AddTypeOrderAsync(object p)
+    private  void AddTypeOrderAsync(object p)
     {
-        try
-        {
-            TypeOrder typeOrder = new()
-            {
-                Name = "Новый вид приказа"
-            };
-            _TypeOrders!.Insert(0, typeOrder);
-            SelectedOrder = typeOrder;
 
-        }
-        catch (WebException ex)
+        TypeOrder typeOrder = new()
         {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
-
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+            Name = "Новый вид приказа"
+        };
+        _TypeOrders!.Insert(0, typeOrder);
+        SelectedOrder = typeOrder;
 
     }
 

@@ -148,27 +148,16 @@ internal class PositionViewModel : BaseViewModel
 
     private void AddPosition(object p)
     {
-        try
-        {
-            Position position = new()
-            {
-                Name = "Новая Должность",
-                HolidayLimit = 28,
-                IsPed = true,
 
-            };
-            Positions!.Insert(0, position);
-            SelectedPosition = position;
-
-        }
-        catch (System.Net.WebException ex)
+        Position position = new()
         {
-            if (ex.Response != null)
-            {
-                using StreamReader reader = new(ex.Response.GetResponseStream());
-                _ = MessageBox.Show(reader.ReadToEnd(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-            }
-        }
+            Name = "Новая Должность",
+            HolidayLimit = 28,
+            IsPed = true,
+
+        };
+        Positions!.Insert(0, position);
+        SelectedPosition = position;
 
     }
 
