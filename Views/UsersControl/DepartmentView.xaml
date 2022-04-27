@@ -26,7 +26,7 @@
         <KeyBinding
             Key="Delete"
             Command="{Binding DeleteDepartment}" 
-             CommandParameter="{Binding SelectedDepartment}"
+            CommandParameter="{Binding SelectedDepartment}"
             />
     </UserControl.InputBindings>
     

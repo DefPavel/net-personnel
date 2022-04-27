@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:viewmodels="clr-namespace:AlphaPersonel.ViewModels"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:fa="http://schemas.fontawesome.com/icons/svg"
+             xmlns:heplper="clr-namespace:AlphaPersonel.Helpers"
+             heplper:InputBindingsBehavior.TakesInputBindingPrecedence="True"
              d:DataContext="{d:DesignInstance Type=viewmodels:PersonCardViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="950" d:DesignWidth="1100">
@@ -156,9 +157,9 @@
 
                 <TabItem Header="Личная карта">
                     <ScrollViewer ScrollViewer.IsDeferredScrollingEnabled="True">
-                        <Grid Margin="5">
+                        <Grid Margin="5" FocusManager.FocusedElement="{Binding ElementName=TextFilerName}">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="255"/>
+                                <RowDefinition Height="265"/>
                                 <RowDefinition Height="160"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
@@ -168,9 +169,15 @@
                             Margin="2"
                             Header="Основная информация">
                                 <Grid>
-                                    <Grid.Resources>
-                                        
-                                    </Grid.Resources>
+                                    <Grid.InputBindings>
+
+                                        <KeyBinding
+                                            Modifiers="Ctrl"
+                                            Key="S"
+                                            Command="{Binding SaveMainInfo}" 
+                                        />
+
+                                    </Grid.InputBindings>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="120"/>
                                         <ColumnDefinition Width="*"/>
@@ -201,6 +208,7 @@
                                         </Border>
 
                                         <Button 
+                                            
                                             Margin="5"
                                             Command="{Binding UploadPhoto}"   
                                             >
@@ -228,6 +236,8 @@
                                         Grid.Column="1" 
                                         Margin="2">
                                         <Grid.RowDefinitions>
+                                            <RowDefinition Height="22"/>
+                                            <RowDefinition Height="30"/>
                                             <RowDefinition Height="22"/>
                                             <RowDefinition Height="30"/>
                                             <RowDefinition Height="22"/>
@@ -292,11 +302,21 @@
                                         />
                                         <Label 
                                         Grid.Row="6"
-                                        Content="Полный возвраст"/>
+                                        Content="Пол"/>
+                                        <StackPanel
+                                            Orientation="Horizontal"
+                                            Grid.Row="7">
+                                            <RadioButton 
+                                                IsChecked="{Binding RadioIsMale}"
+                                                Padding="2" Content="Мужчина"/>
+                                            <RadioButton
+                                                IsChecked="{Binding RadioIsFemale}"
+                                                Padding="2" Content="Женщина"/>
+                                        </StackPanel>
                                         <TextBlock
                                             Foreground="#B71C1C"
                                             Margin="5 0 0 0"
-                                            Grid.Row="7" 
+                                            Grid.Row="8" 
                                             FontWeight="Bold">
                                              <Run Text="Лет:"/>
                                              <Run Text="{Binding SelectedPerson.FullAge.Years}"/>
@@ -308,6 +328,7 @@
                                              <Run Text="{Binding SelectedPerson.FullAge.Days}"/>
                                              <Run Text=";"/>
                                         </TextBlock>
+
                                     </Grid>
 
                                     <Grid 
@@ -322,14 +343,17 @@
                                             <RowDefinition Height="30"/>
                                             <RowDefinition Height="22"/>
                                             <RowDefinition Height="30"/>
+                                            <RowDefinition Height="22"/>
+                                            <RowDefinition Height="30"/>
                                         </Grid.RowDefinitions>
 
                                         <Label 
                                         Grid.Row="0"
                                         Content="Номер телефона Лугаком"/>
                                         <TextBox
-                                        Grid.Row="1"
-                                        Text="{Binding SelectedPerson.PhoneLugakom , UpdateSourceTrigger=PropertyChanged}"
+                                            x:Name="TextFilerName"
+                                            Grid.Row="1"
+                                            Text="{Binding SelectedPerson.PhoneLugakom , UpdateSourceTrigger=PropertyChanged}"
                                         />
                                         <Label 
                                         Grid.Row="2"
@@ -359,6 +383,8 @@
                                         Grid.Row="7"
                                         SelectedDate="{Binding SelectedPerson.DateWorking , UpdateSourceTrigger=PropertyChanged}"
                                         />
+
+                                        
                                     </Grid>
 
                                 </Grid>

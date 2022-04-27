@@ -89,6 +89,19 @@ internal class PersonCardViewModel : BaseViewModel
         set => Set(ref _user, value);
 
     }
+    private bool _radioIsMale;
+    public bool RadioIsMale
+    {
+        get => _radioIsMale;
+        set => Set(ref _radioIsMale, value);
+    }
+
+    private bool _radioIsFemale;
+    public bool RadioIsFemale
+    {
+        get => _radioIsFemale;
+        set => Set(ref _radioIsFemale, value);
+    }
 
     private Pensioner? _selectedPens;
     public Pensioner? SelectedPens
@@ -377,7 +390,19 @@ internal class PersonCardViewModel : BaseViewModel
     public Persons? SelectedPerson
     {
         get => _selectedPerson;
-        set => Set(ref _selectedPerson, value);
+        set
+        {
+            Set(ref _selectedPerson, value);
+            if (_selectedPerson == null) return;
+            if (_selectedPerson.Gender == "male")
+            {
+                RadioIsMale = true;
+            }
+            else
+            {
+                RadioIsFemale = true;
+            }
+        }
     }
     #endregion
 
@@ -408,6 +433,9 @@ internal class PersonCardViewModel : BaseViewModel
 
     private ICommand? _uploadPhoto;
     public ICommand UploadPhoto => _uploadPhoto ??= new LambdaCommand(UploadFormPhoto);
+
+    private ICommand? _saveMainInfo;
+    public ICommand SaveMainInfo => _saveMainInfo ??= new LambdaCommand(SaveMainInfoByPerson);
 
     private ICommand? _getBack;
     public ICommand GetBack => _getBack ??= new LambdaCommand(GetBackViewAsync);
@@ -743,6 +771,56 @@ internal class PersonCardViewModel : BaseViewModel
         ApiGetInformationToPerson(p);
         ApiGetListAllPersonsAsync(p);
 
+    }
+
+    private async void SaveMainInfoByPerson(object p)
+    {
+        try
+        {
+            IsLoading = true;
+            if (SelectedPerson == null) return;
+
+            object person = new
+            {
+                id = SelectedPerson.Id,
+                name = SelectedPerson.MidlleName,
+                lastname = SelectedPerson.LastName,
+                gender = RadioIsMale == true ? "male" : "female",
+                birthday = SelectedPerson.Birthday,
+                phone_ua = SelectedPerson.PhoneUkraine,
+                phone_lug = SelectedPerson.PhoneLugakom,
+                date_to_working = SelectedPerson.DateWorking
+            };
+
+            await QueryService.JsonSerializeWithToken(token: _user!.Token,
+                "/pers/person/save",
+                "POST"
+                ,person);
+
+            ApiGetInformationToPerson(p);
+
+            //ApiGetListAllPersonsAsync(p);
+            _ = MessageBox.Show("Данные обновлены!", "Сообщение");
+            IsLoading = false;
+
+        }
+        catch (WebException ex)
+        {
+
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
     }
 
     // Загрузка изображений на человека
