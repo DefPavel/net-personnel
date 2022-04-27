@@ -80,10 +80,10 @@ internal class PeriodVacationViewModel : BaseViewModel
     public ICommand AddNew => _addNew ??= new LambdaCommand(AddPeriod);
 
     private ICommand? _save;
-    public ICommand Save => _save ??= new LambdaCommand(SavePeriod);
+    public ICommand Save => _save ??= new LambdaCommand(SavePeriod,_ => SelectedPeriod is not null);
 
     private ICommand? _delete;
-    public ICommand Delete => _delete ??= new LambdaCommand(DeletePeriod);
+    public ICommand Delete => _delete ??= new LambdaCommand(DeletePeriod, _ => SelectedPeriod is not null && PeriodVacations.Count > 0);
 
     #endregion
 

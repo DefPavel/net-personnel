@@ -5,17 +5,38 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
              xmlns:viewmodels="clr-namespace:AlphaPersonel.ViewModels" 
-             xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" xmlns:fa="http://schemas.fontawesome.com/icons/svg"
+             xmlns:heplper="clr-namespace:AlphaPersonel.Helpers"
+             heplper:InputBindingsBehavior.TakesInputBindingPrecedence="True"
+             xmlns:fa="http://schemas.fontawesome.com/icons/svg"
              d:DataContext="{d:DesignInstance Type=viewmodels:TypeOrderViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    
+    <UserControl.InputBindings>
+        <KeyBinding
+            Modifiers="Ctrl"
+            Key="Insert"
+            Command="{Binding AddType}" 
+            />
+        <KeyBinding
+            Modifiers="Ctrl"
+            Key="S"
+            Command="{Binding SaveType}" 
+            CommandParameter="{Binding SelectedOrder}"
+            />
+        <KeyBinding
+            Key="Delete"
+            Command="{Binding DeleteType}" 
+             CommandParameter="{Binding SelectedOrder}"
+            />
+    </UserControl.InputBindings>
     <!--Загрузка всех отделов -->
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{ Binding LoadedOrder }"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Grid>
+    <Grid FocusManager.FocusedElement="{Binding ElementName=TextFilerName}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="300"/>
@@ -55,6 +76,7 @@
             Grid.Row="1">
             <TextBlock Margin="5 0 0 0" Text="Введите наименование отдела"/>
             <TextBox 
+                x:Name="TextFilerName"
                 Text="{Binding Filter , UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
         <DataGrid

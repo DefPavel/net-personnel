@@ -4,17 +4,38 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:viewmodels="clr-namespace:AlphaPersonel.ViewModels"
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors" xmlns:fa="http://schemas.fontawesome.com/icons/svg"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
+             xmlns:heplper="clr-namespace:AlphaPersonel.Helpers"
+             heplper:InputBindingsBehavior.TakesInputBindingPrecedence="True"
+             xmlns:fa="http://schemas.fontawesome.com/icons/svg"
              d:DataContext="{d:DesignInstance Type=viewmodels:DepartmentViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <!--Загрузка всех отделов -->
+    <UserControl.InputBindings>
+        <KeyBinding
+            Modifiers="Ctrl"
+            Key="Insert"
+            Command="{Binding AddNewDepartment}" 
+            />
+        <KeyBinding
+            Modifiers="Ctrl"
+            Key="S"
+            Command="{Binding SaveDepartment}" 
+            />
+        <KeyBinding
+            Key="Delete"
+            Command="{Binding DeleteDepartment}" 
+             CommandParameter="{Binding SelectedDepartment}"
+            />
+    </UserControl.InputBindings>
+    
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{ Binding LoadedDepartment }"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Grid>
+    <Grid  FocusManager.FocusedElement="{Binding ElementName=TextFilerName}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="300"/>
@@ -54,6 +75,7 @@
             Grid.Row="1">
             <TextBlock Margin="5 0 0 0" Text="Введите наименование отдела"/>
             <TextBox 
+                x:Name="TextFilerName"
                 Text="{Binding Filter , UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
         <DataGrid
@@ -116,7 +138,7 @@
                     SelectedValuePath="IdType"
                     SelectedValue="{Binding SelectedDepartment.IdType, UpdateSourceTrigger=PropertyChanged }"
                     />
-                <Label Content="{Binding SelectedDepartment.IdType}"/>
+                <Label Content="В подчинении"/>
                 <ComboBox 
                     MinWidth="100"
                     IsEditable="True"

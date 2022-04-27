@@ -86,7 +86,7 @@ internal class OrderViewModel : BaseViewModel
     public ICommand? Delete => _delete ??= new LambdaCommand(DeleteOrder, _ => SelectedOrder is not null && Orders!.Count > 0);
 
     private ICommand? _save;
-    public ICommand? Save => _save ??= new LambdaCommand(UpdateOrder, _ => SelectedOrder is not null && string.IsNullOrWhiteSpace(SelectedOrder.Name));
+    public ICommand? Save => _save ??= new LambdaCommand(UpdateOrder, _ => SelectedOrder is not null );
 
     #endregion
 
