@@ -109,7 +109,6 @@
                 <MenuItem Header="Мастер увольнения"/>
             </MenuItem>
             <MenuItem
-                Command="{Binding OpenReport}"
                 IsEnabled="{Binding IsAdministrator}">
                 <MenuItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -123,10 +122,21 @@
                             Width="13" 
                             Height="13" />
                         </Canvas>
-                        <TextBlock>Отчеты(Не актуальные)</TextBlock>
+                        <TextBlock>Отчеты</TextBlock>
                     </StackPanel>
                 </MenuItem.Header>
-            </MenuItem>
+                <MenuItem 
+                    Header="Список принятых сотрудников за период"/>
+                <MenuItem 
+                    Header="Список уволенных сотрудников за период"/>
+                <MenuItem 
+                    Header="Список награжденных сотрудников за период"/>
+                <MenuItem 
+                    Header="Список сотрудников не имеющие за период"/>
+                <MenuItem 
+                    Header="Списки..." 
+                    Command="{Binding OpenReport}"/>
+                </MenuItem>
             <MenuItem
                 Command="{Binding OpenMasterReport}"
                 IsEnabled="{Binding IsAdministrator}">
@@ -142,7 +152,7 @@
                                 Width="13" 
                                 Height="13" />
                         </Canvas>
-                        <TextBlock>Новые отчеты</TextBlock>
+                        <TextBlock>Параметрический отчет</TextBlock>
                     </StackPanel>
                 </MenuItem.Header>
             </MenuItem>

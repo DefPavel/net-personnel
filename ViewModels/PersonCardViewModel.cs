@@ -201,6 +201,13 @@ internal class PersonCardViewModel : BaseViewModel
         get => _typePassports;
         private set => Set(ref _typePassports, value);
     }
+    // Тип документов
+    private IEnumerable<TypeDocuments>? _typeDocuments;
+    public IEnumerable<TypeDocuments>? TypeDocuments
+    {
+        get => _typeDocuments;
+        private set => Set(ref _typeDocuments, value);
+    }
 
 
     // Список период отпусков
@@ -355,6 +362,13 @@ internal class PersonCardViewModel : BaseViewModel
     {
         get => _seletedDegree;
         set => Set(ref _seletedDegree, value);
+    }
+
+    private Documents? _seletedDocument;
+    public Documents? SeletedDocument
+    {
+        get => _seletedDocument;
+        set => Set(ref _seletedDocument, value);
     }
 
 
@@ -883,15 +897,16 @@ internal class PersonCardViewModel : BaseViewModel
             TypeDegree = await QueryService.JsonDeserializeWithToken<TypeDegree>(token: _user!.Token, "/pers/scientific/type/get", "GET");
             // Член.корр.
             TypeRanks = await QueryService.JsonDeserializeWithToken<TypeRank>(token: _user!.Token, "/pers/member/type/get", "GET");
+            // Тип документов (сканов)
+            TypeDocuments = await QueryService.JsonDeserializeWithToken<TypeDocuments>(token: _user!.Token, "/pers/document/type/get", "GET");
             // Тут оставляем всё как есть
             TypeTitle = TypeRanks;
             // Показываем только два элемента для Членов акдемиков
             TypeRanks = TypeRanks.Where(x => x.Name == "Академик" || x.Name == "Член-корреспондент");
-
             // Получить список людей в отделе
             PersonsList = await QueryService.JsonDeserializeWithToken<Persons>(token: _user!.Token, "/pers/person/get/short/" + _idDepartment, "GET");
             // PersonsList = await _Api.GetListPersonsToDepartment(_User!.Token, _Department!.Id);
-            // Маленький костыль , для того чтобы находить на каком item я должен стоять при загрузке личной карты
+            // Маленький костыль, для того чтобы находить на каком item я должен стоять при загрузке личной карты
             var indeArray = PersonsList.Select((value, index) => (Value: value, Index: index))
                 .FirstOrDefault(p => p.Value.Id == SelectedPerson!.Id);
             // Выбрать текущего человека при загрузке Window
@@ -1656,6 +1671,8 @@ internal class PersonCardViewModel : BaseViewModel
 
     #region Паспорт данные
 
+    // Сканы документов
+
     // Сохранить изменения паспорта
     private async void UpdatePassport(object p)
     {
@@ -1699,7 +1716,6 @@ internal class PersonCardViewModel : BaseViewModel
             }
         }
     }
-
     // Пенсионер
     private void AddPensionerAsync(object p)
     {
@@ -1780,7 +1796,6 @@ internal class PersonCardViewModel : BaseViewModel
             }
         }
     }
-
     // Инвалидность
     private  void AddInvalidAsync(object p)
     {
@@ -1863,7 +1878,6 @@ internal class PersonCardViewModel : BaseViewModel
             }
         }
     }
-
     // Отпуск
     private void AddVacationsPerson(object p)
     {
@@ -1880,7 +1894,6 @@ internal class PersonCardViewModel : BaseViewModel
             SelectedVacation = order;
 
     }
-
     // Статус семьи
     private  void AddFamilyPerson(object p)
     {
@@ -1895,7 +1908,6 @@ internal class PersonCardViewModel : BaseViewModel
         _selectedPerson!.ArrayFamily?.Insert(0, order);
         SelectedFamily = order;
     }
-
     private async void SaveVacationsPerson(object p)
     {
         try
@@ -1935,7 +1947,6 @@ internal class PersonCardViewModel : BaseViewModel
         }
 
     }
-
     private async void SaveFamilyPerson(object p)
     {
         try

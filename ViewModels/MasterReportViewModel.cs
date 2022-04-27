@@ -75,13 +75,6 @@ internal class MasterReportViewModel : BaseViewModel
         get => _positions;
         private set => Set(ref _positions, value);
     }
-
-    private ObservableCollection<PersonReports>? _persons;
-    public ObservableCollection<PersonReports>? Persons
-    {
-        get => _persons;
-        private set => Set(ref _persons, value);
-    }
     private PedagogicalPosition? _selectedIsPed;
     public PedagogicalPosition? SelectedIsPed
     {
@@ -234,34 +227,8 @@ internal class MasterReportViewModel : BaseViewModel
                 query_age = age
 
             };
-
-            //Persons = await QueryService.JsonDeserializeWithObjectAndParam<Persons>(_user!.Token, "reports/pers/master", "POST", person)
             // Отправить запрос
-            //await QueryService.JsonSerializeWithToken(_user!.Token, "reports/pers/master", "POST", person);
-
-
-
-#pragma warning disable SYSLIB0014
-            var req = (HttpWebRequest)WebRequest.Create("http://localhost:8080/api/reports/pers/master"); 
-            #pragma warning restore SYSLIB0014 
-            req.Method = "POST";   
-            req.Headers.Add("auth-token", _user!.Token);
-            req.Accept = "application/json";
-
-            await using (StreamWriter streamWriter = new(req.GetRequestStream()))
-            {
-                req.ContentType = "application/json";
-                var param = JsonSerializer.Serialize(person);
-                await streamWriter.WriteAsync(param);
-                // Записывает тело
-                streamWriter.Close();
-            }
-            using var response = await req.GetResponseAsync();
-            await using var responseStream = response.GetResponseStream();
-            using StreamReader reader = new(responseStream, Encoding.UTF8);
-            Persons = JsonSerializer.Deserialize<ObservableCollection<PersonReports>>(await reader.ReadToEndAsync());
-           
-
+            await ReportService.JsonPostWithToken(person, _user!.Token, "/reports/pers/master", "POST", "Отчет с параметрами");
 
         }
         catch (WebException ex)

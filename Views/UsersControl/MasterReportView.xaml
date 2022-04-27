@@ -21,7 +21,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="45"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
 
         </Grid.RowDefinitions>
         <Button 
@@ -126,15 +125,5 @@
                     />
             </StackPanel>
         </GroupBox>
-        <DataGrid 
-            ItemsSource="{Binding Persons}"
-            Margin="10"
-            Grid.ColumnSpan="2"
-            Grid.Column="0"
-            Grid.Row="3">
-
-        </DataGrid>
-        
-
     </Grid>
 </UserControl>

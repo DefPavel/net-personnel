@@ -1,7 +1,5 @@
 ﻿using Microsoft.Win32;
 using System.Configuration;
-using System.IO;
-using System.Net;
 
 namespace AlphaPersonel.Services.Api;
 

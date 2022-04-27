@@ -1,6 +1,5 @@
 ﻿using AlphaPersonel.Models.Home;
 using AlphaPersonel.Models.PersonCard;
-using System.Collections.ObjectModel;
 using System.Configuration;
 
 namespace AlphaPersonel.Models;
@@ -51,8 +50,8 @@ internal class Persons
         set => _Photo = value;
     }
 
-        [JsonPropertyName("searial_passport")]
-        public string SerialPassport { get; set; } = string.Empty;
+    [JsonPropertyName("searial_passport")]
+    public string SerialPassport { get; set; } = string.Empty;
 
     [JsonPropertyName("number_passport")]
         public string NumberPassport { get; set; } = string.Empty;
@@ -182,6 +181,8 @@ internal class Persons
     [JsonPropertyName("changeSurname")]
     public ObservableCollection<OldSurname>? ArrayChangeSurname { get; set; }
 
+    [JsonPropertyName("documents")]
+    public ObservableCollection<Documents>? ArrayDocuments { get; set; }
 
 
 

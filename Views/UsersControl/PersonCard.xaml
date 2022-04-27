@@ -168,6 +168,9 @@
                             Margin="2"
                             Header="Основная информация">
                                 <Grid>
+                                    <Grid.Resources>
+                                        
+                                    </Grid.Resources>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="120"/>
                                         <ColumnDefinition Width="*"/>
@@ -1588,20 +1591,17 @@
                                     AlternatingRowBackground="#e1eff9"
                                     IsReadOnly="True"    
                                     AutoGenerateColumns="False"
-                                    ItemsSource="{Binding SelectedPerson.ArrayFamily}"
+                                    ItemsSource="{Binding SelectedPerson.ArrayDocuments}"
                                     Grid.Column="0"
                                     Margin="5">
 
                                     <DataGrid.Columns>
                                         <DataGridTextColumn 
-                                            Binding="{Binding FullName}"
+                                            Binding="{Binding Type}"
                                             Header="Тип документа"/>
                                         <DataGridTextColumn 
-                                            Binding="{Binding FullName}"
+                                            Binding="{Binding Name}"
                                             Header="Наименование документа"/>
-
-                                      
-
                                     </DataGrid.Columns>
 
                                 </DataGrid>
@@ -1611,13 +1611,34 @@
                                     Grid.Column="1">
                                     <Label Content="Тип Документа"/>
                                     <ComboBox 
-                                        ItemsSource="{Binding TypeFamily}"
+                                        ItemsSource="{Binding TypeDocuments}"
                                         DisplayMemberPath="Name"
                                         SelectedValuePath="Name"
-                                        SelectedValue="{Binding SelectedFamily.Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+                                        SelectedValue="{Binding SeletedDocument.Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
                                         />
                                     <Label Content="Наименование"/>
-                                    <TextBox />
+                                    <TextBox Text="{Binding SeletedDocument.Name , UpdateSourceTrigger=PropertyChanged}"/>
+                                    <Label Content="Скан документа"/>
+                                    <StackPanel 
+                                        
+                                        Orientation="Horizontal">
+                                        <TextBox 
+                                            MinWidth="250"
+                                            Text="{Binding SeletedDocument.Url , UpdateSourceTrigger=PropertyChanged}"/>
+                                        <Button Height="22">
+                                            <Canvas 
+                                                    Height="13"
+                                                    Width="13">
+                                                <Path
+                                                Stretch="Uniform"
+                                                Fill="#444444"
+                                                Data="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z"
+                                                Width="13" 
+                                                Height="13" />
+                                            </Canvas>
+                                        </Button>
+                                    </StackPanel>
+                                    
 
                                     <StackPanel Orientation="Horizontal">
                                         <Button 
