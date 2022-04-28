@@ -90,7 +90,7 @@ internal class TypeRanksViewModel : BaseViewModel
     }
 
 
-    private async void AddTypeOrderAsync(object p)
+    private void AddTypeOrderAsync(object p)
     {
 
         TypeRank type = new()
@@ -99,9 +99,6 @@ internal class TypeRanksViewModel : BaseViewModel
         };
         _typeRank!.Insert(0, type);
         SelectedRank = type;
-
-       
-
     }
 
     private async void DeleteTypeRank(object p)

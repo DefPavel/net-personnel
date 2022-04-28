@@ -19,6 +19,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="26"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
@@ -31,11 +32,144 @@
         </Grid.ColumnDefinitions>
         <!--#endregion-->
 
+        <!--#region Menu -->
+         <Menu 
+            Grid.Row="0" 
+            VerticalAlignment="Center"
+            Grid.ColumnSpan="2">
+            <MenuItem>
+                <MenuItem.Header>
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+                        <Canvas 
+                           
+                        Height="13"
+                        Width="13">
+                            <Path
+                              
+                            Stretch="Uniform"
+                            Fill="#444444"
+                            Data="M13,9V3.5L18.5,9M6,2C4.89,2 4,2.89 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2H6Z"
+                            Width="13" 
+                            Height="13" />
+                        </Canvas>
+                        <TextBlock>Файл</TextBlock>
+                    </StackPanel>
+                </MenuItem.Header>
+
+                <MenuItem Header="Поиск" Command="{Binding OpenSearch}"/>
+                <MenuItem Header="Настройки">
+
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="Выход из аккаунта" Command="{Binding Logout}"/>
+            </MenuItem>
+            <MenuItem 
+                IsEnabled="{Binding IsAdministrator}">
+                <MenuItem.Header>
+                    <StackPanel 
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+                        <Canvas 
+                        Height="13"
+                        Width="13">
+                        <Path
+                            Stretch="Uniform"
+                            Fill="#444444"
+                            Data="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"
+                            Width="13" 
+                            Height="13" />
+                        </Canvas>
+                        <TextBlock>Справочники</TextBlock>
+                    </StackPanel>
+                </MenuItem.Header>
+                <MenuItem Header="Список отделов"
+                          Command="{Binding OpenDepartment}" />
+                <MenuItem Header="Виды должностей"
+                          Command="{Binding OpenTypePosition}"/>
+                <MenuItem Header="Виды отпусков"
+                          Command="{Binding OpenVacation}"/>
+                <MenuItem Header="Виды приказов"
+                          Command="{Binding OpenTypeOrder}"/>
+                <MenuItem Header="Виды награждений"
+                          Command="{Binding OpenRewarding}"/>
+                <MenuItem Header="Виды званий"
+                          Command="{Binding OpenTypeRanks}"/>
+                <MenuItem Header="Периоды отпусков"
+                          Command="{Binding OpenPeriod}"/>
+                <MenuItem Header="Список приказов" 
+                          Command="{Binding OpenOrder}"/>
+                <MenuItem Header="Список штатных должностей"
+                          Command="{Binding OpenPosition}"/>
+                
+                <!--<MenuItem Header="Календарь праздников"
+                          Command="{Binding }"/>-->
+                <MenuItem Header="Отправка в отпуск..."/>
+                <MenuItem Header="Мастер увольнения"/>
+            </MenuItem>
+            <MenuItem
+                IsEnabled="{Binding IsAdministrator}">
+                <MenuItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Canvas 
+                        Height="13"
+                        Width="13">
+                            <Path
+                            Stretch="Uniform"
+                            Fill="#444444"
+                            Data="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M7,20H9V14H7V20M11,20H13V12H11V20M15,20H17V16H15V20Z"
+                            Width="13" 
+                            Height="13" />
+                        </Canvas>
+                        <TextBlock>Отчеты</TextBlock>
+                    </StackPanel>
+                </MenuItem.Header>
+                <MenuItem 
+                    Header="Список принятых сотрудников за период"/>
+                <MenuItem 
+                    Header="Список уволенных сотрудников за период"/>
+                <MenuItem 
+                    Header="Список награжденных сотрудников за период"/>
+                <MenuItem 
+                    Header="Список сотрудников не имеющие за период"/>
+                <MenuItem 
+                    Header="Списки..." 
+                    Command="{Binding OpenReport}"/>
+                </MenuItem>
+            <MenuItem
+                Command="{Binding OpenMasterReport}"
+                IsEnabled="{Binding IsAdministrator}">
+                <MenuItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Canvas 
+                            Height="13"
+                            Width="13">
+                            <Path
+                                Stretch="Uniform"
+                                Fill="#444444"
+                                Data="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M7,20H9V14H7V20M11,20H13V12H11V20M15,20H17V16H15V20Z"
+                                Width="13" 
+                                Height="13" />
+                        </Canvas>
+                        <TextBlock>Параметрический отчет</TextBlock>
+                    </StackPanel>
+                </MenuItem.Header>
+            </MenuItem>
+        </Menu>
+        <!--#endregion-->
+        
+        <Separator 
+            Grid.Row="1" 
+            Grid.Column="0" 
+            Grid.ColumnSpan="2"
+            VerticalAlignment="Top"
+            Background="{StaticResource BorderBrush}" Margin="0"/>
 
         <!--#region SideBar -->
         <Grid  
             Grid.Column="0"
-            Grid.Row="0">
+            Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="55"/>
                 <RowDefinition Height="30"/>
@@ -116,12 +250,12 @@
         <!--#endregion-->
         <GridSplitter 
             Width="2"
-            Grid.Row="0" Grid.Column="0"/>
+            Grid.Row="1" Grid.Column="0"/>
 
 
         <!--#region Content -->
         <Grid 
-            Grid.Row="0"
+            Grid.Row="1"
             Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
@@ -1610,7 +1744,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <DataGrid 
-                                    SelectedItem="{Binding SelectedFamily}"
+                                    SelectedItem="{Binding SelectedDocument}"
                                     FontSize="13"
                                     ScrollViewer.IsDeferredScrollingEnabled="True"
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
@@ -1620,6 +1754,14 @@
                                     ItemsSource="{Binding SelectedPerson.ArrayDocuments}"
                                     Grid.Column="0"
                                     Margin="5">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDoubleClick">
+                                            <i:InvokeCommandAction 
+                                                CommandParameter="{Binding SelectedDocument}"
+                                                Command="{ Binding OpenPreview }"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+
 
                                     <DataGrid.Columns>
                                         <DataGridTextColumn 
@@ -1640,17 +1782,17 @@
                                         ItemsSource="{Binding TypeDocuments}"
                                         DisplayMemberPath="Name"
                                         SelectedValuePath="Name"
-                                        SelectedValue="{Binding SeletedDocument.Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+                                        SelectedValue="{Binding SelectedDocument.Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
                                         />
                                     <Label Content="Наименование"/>
-                                    <TextBox Text="{Binding SeletedDocument.Name , UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBox Text="{Binding SelectedDocument.Name , UpdateSourceTrigger=PropertyChanged}"/>
                                     <Label Content="Скан документа"/>
                                     <StackPanel 
-                                        
                                         Orientation="Horizontal">
                                         <TextBox 
+                                            MaxWidth="250"
                                             MinWidth="250"
-                                            Text="{Binding SeletedDocument.Url , UpdateSourceTrigger=PropertyChanged}"/>
+                                            Text="{Binding SelectedDocument.Url , UpdateSourceTrigger=PropertyChanged}"/>
                                         <Button Height="22">
                                             <Canvas 
                                                     Height="13"

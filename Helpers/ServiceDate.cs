@@ -12,7 +12,7 @@ internal static class ServiceDate
     public static string ConvertTicksToDateTime(long ticks)
     {
         DateTime d = new(ticks);
-        return string.Format("{0} г. {1} м. {2} д.", (d.Year - 1), (d.Month - 1), (d.Day - 1));
+        return $"{(d.Year - 1)} г. {(d.Month - 1)} м. {(d.Day - 1)} д.";
     }
 
     // 100% правильно

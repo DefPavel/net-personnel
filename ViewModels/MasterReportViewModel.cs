@@ -218,11 +218,11 @@ internal class MasterReportViewModel : BaseViewModel
             {
                 is_ped = SelectedIsPed?.IdPed,
                 query_ped = SelectedIsPed?.Query,
-                query_position = SelectedPosition != null ? $"{(SelectedStatus == "Внутренний совместитель" || SelectedStatus == "Внешний совместитель" ? " pp.is_main = false" : " pp.is_main = true")} and typ_pos.name_position = '{SelectedPosition?.Name}'" : null,
-                query_contract = SelectedContract != null ? $"{(SelectedStatus == "Внутренний совместитель" || SelectedStatus == "Внешний совместитель" ? " pp.is_main = false" : " pp.is_main = true")} and contract.id = {SelectedContract?.Id}" : null,
+                query_position = SelectedPosition != null ? $"{(SelectedStatus is "Внутренний совместитель" or "Внешний совместитель" ? " pp.is_main = false" : " pp.is_main = true")} and typ_pos.name_position = '{SelectedPosition?.Name}'" : null,
+                query_contract = SelectedContract != null ? $"{(SelectedStatus is "Внутренний совместитель" or "Внешний совместитель" ? " pp.is_main = false" : " pp.is_main = true")} and contract.id = {SelectedContract?.Id}" : null,
                 query_date_start = DateStart != null ?
                 $" pp.is_main = true and p.date_to_working >= '{DateStart.Value:yyyy-MM-dd}' and p.date_to_working < '{DateEnd.Value:yyyy-MM-dd}'" : null,
-                query_gender = SelectedGender != null ? $"{(SelectedStatus == "Внутренний совместитель" || SelectedStatus == "Внешний совместитель" ? " pp.is_main = false" : " pp.is_main = true")} and p.gender = {(SelectedGender == "Мужской" ? "'male'" : "'female'")}" : null,
+                query_gender = SelectedGender != null ? $"{(SelectedStatus is "Внутренний совместитель" or "Внешний совместитель" ? " pp.is_main = false" : " pp.is_main = true")} and p.gender = {(SelectedGender == "Мужской" ? "'male'" : "'female'")}" : null,
                 query_status = status,
                 query_age = age
 

@@ -8,7 +8,7 @@ internal class PositionViewModel : BaseViewModel
 
     public PositionViewModel(NavigationStore navigationStore, Users user)
     {
-        this._navigationStore = navigationStore;
+        _navigationStore = navigationStore;
         _user = user;
     }
 
@@ -117,8 +117,7 @@ internal class PositionViewModel : BaseViewModel
 
 
     #endregion
-
-
+    
     #region Логика
     private void GetBack(object p)
     {
@@ -134,7 +133,7 @@ internal class PositionViewModel : BaseViewModel
 
             Department = await QueryService.JsonDeserializeWithToken<Departments>(_user!.Token, "/pers/tree/all", "GET");
         }
-        catch (System.Net.WebException ex)
+        catch (WebException ex)
         {
             if (ex.Response != null)
             {

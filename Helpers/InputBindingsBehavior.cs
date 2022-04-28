@@ -24,19 +24,17 @@ namespace AlphaPersonel.Helpers
 
         private static void InputBindingsBehavior_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            var uielement = (UIElement)sender;
+            var uiElement = (UIElement)sender;
 
-            var foundBinding = uielement.InputBindings
+            var foundBinding = uiElement.InputBindings
                 .OfType<KeyBinding>()
                 .FirstOrDefault(kb => kb.Key == e.Key && kb.Modifiers == e.KeyboardDevice.Modifiers);
 
-            if (foundBinding != null)
+            if (foundBinding == null) return;
+            e.Handled = true;
+            if (foundBinding.Command.CanExecute(foundBinding.CommandParameter))
             {
-                e.Handled = true;
-                if (foundBinding.Command.CanExecute(foundBinding.CommandParameter))
-                {
-                    foundBinding.Command.Execute(foundBinding.CommandParameter);
-                }
+                foundBinding.Command.Execute(foundBinding.CommandParameter);
             }
         }
 

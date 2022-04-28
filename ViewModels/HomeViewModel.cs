@@ -253,16 +253,15 @@ internal class HomeViewModel : BaseViewModel
     private ICommand? _getTreeView;
     public ICommand GetTreeView => _getTreeView ??= new LambdaCommand(ApiGetDepartments);
 
-    // Команда для отображения всех сотрудников которые пренадлежат определённому отделу
     private ICommand? _getPersonsToDepartment;
     public ICommand GetPersonsToDepartment => _getPersonsToDepartment ??= new LambdaCommand(ApiGetPersons, _ => SelectedItem is not null);
+    
+    // UserControl
+    #region Menu Items
 
-    // Выход из аккаунта
     private ICommand? _logout;
     public ICommand Logout => _logout ??= new LambdaCommand(Exit);
 
-
-    // UserControl
     private ICommand? _openDepartment;
     public ICommand OpenDepartment => _openDepartment ??= new LambdaCommand(OpenDepartmentView);
 
@@ -292,16 +291,19 @@ internal class HomeViewModel : BaseViewModel
 
     private ICommand? _openPeriod;
     public ICommand OpenPeriod => _openPeriod ??= new LambdaCommand(OpenPeriodView);
-
-    private ICommand? _openPersonCard;
-    public ICommand OpenPersonCard => _openPersonCard ??= new LambdaCommand(OpenPersonCardView, _ => SelectedPerson is not null);
-
+    
     private ICommand? _openReport;
     public ICommand OpenReport => _openReport ??= new LambdaCommand(OpenReportView);
     
     private ICommand? _openMasterReport;
     public ICommand OpenMasterReport => _openMasterReport ??= new LambdaCommand(OpenMasterReportView);
 
+    #endregion
+    
+
+    private ICommand? _openPersonCard;
+    public ICommand OpenPersonCard => _openPersonCard ??= new LambdaCommand(OpenPersonCardView, _ => SelectedPerson is not null);
+    
     private ICommand? _openAddPerson;
     public ICommand OpenAddPerson => _openAddPerson ??= new LambdaCommand(AddPerson, _ => SelectedItem is not null);
 
@@ -342,6 +344,38 @@ internal class HomeViewModel : BaseViewModel
         // Обновить данные
         ApiGetPersons(p);
     }
+
+    #region Methods Menu Items
+
+    private async void Exit(object p)
+    {
+        try
+        {
+            await QueryService.JsonSerializeWithToken(token: _user!.Token,
+                "/logout",
+                "POST",
+                User);
+            // Вернуть на Авторизацию 
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+    
     private void OpenTypeVacationView(object p)
     {
         _navigationStore.CurrentViewModel = new TypeVacationViewModel(_navigationStore, _user);
@@ -361,7 +395,7 @@ internal class HomeViewModel : BaseViewModel
     {
         _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
     }
-    
+    // Новый отчет
     private void OpenMasterReportView(object p)
     {
         _navigationStore.CurrentViewModel = new MasterReportViewModel(_navigationStore, _user);
@@ -388,21 +422,24 @@ internal class HomeViewModel : BaseViewModel
         _navigationStore.CurrentViewModel = new OrderViewModel(_navigationStore, _user);
     }
 
+    private void OpenPositionView(object p)
+    {
+        _navigationStore.CurrentViewModel = new PositionViewModel(_navigationStore, _user);
+    }
     // Поиск
     private void OpenSearchView(object p)
     {
         _navigationStore.CurrentViewModel = new SearchViewModel(_navigationStore, _user);
     }
 
-    private void OpenPositionView(object p)
-    {
-        _navigationStore.CurrentViewModel = new PositionViewModel(_navigationStore, _user);
-    }
-
     private void OpenTypePositionView(object p)
     {
         _navigationStore.CurrentViewModel = new TypePositionViewModel(_navigationStore, _user);
     }
+
+    #endregion
+   
+
 
     private void OpenPersonCardView(object p)
     {
@@ -499,8 +536,8 @@ internal class HomeViewModel : BaseViewModel
                 _ = MessageBox.Show("Чтобы создать должность,необходимо выбрать отдел!","Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
             }
            
-            //SelectedPerson.ArrayPosition.Insert(0, dep);
-            //SelectedPosition = dep;
+            // SelectedPerson.ArrayPosition.Insert(0, dep);
+            // SelectedPosition = dep;
 
         }
         catch (WebException ex)
@@ -533,7 +570,7 @@ internal class HomeViewModel : BaseViewModel
                 await QueryService.JsonSerializeWithToken(token: _user!.Token, "/pers/tree/rename/short/" + SelectedItem.Id, "POST", SelectedItem);
             }
            
-           // _ = MessageBox.Show("Данные успешно сохраненны");
+            // _ = MessageBox.Show("Данные успешно сохраненны");
            
         }
         catch (System.Net.WebException ex)
@@ -612,36 +649,7 @@ internal class HomeViewModel : BaseViewModel
     {
         return string.IsNullOrEmpty(FilterPerson) || (emp is Persons pers && pers.FirstName!.ToUpper().Contains(value: FilterPerson.ToUpper()));
     }
-
-    // Удалить Токен
-    private async void Exit(object p)
-    {
-        try
-        {
-            await QueryService.JsonSerializeWithToken(token: _user!.Token,
-                                                    "/logout",
-                                                    "POST",
-                                                    User);
-            // Вернуть на Авторизацию 
-            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
-        }
-        catch (WebException ex)
-        {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
-
-                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-    }
+    
     #endregion
     public override void Dispose()
     {

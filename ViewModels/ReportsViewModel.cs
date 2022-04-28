@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace AlphaPersonel.ViewModels;
+﻿namespace AlphaPersonel.ViewModels;
 public enum TypeReport
 {
     IsPed = 1,
@@ -16,7 +14,7 @@ internal class ReportsViewModel : BaseViewModel
     public VisualBoolean? IsLoading
     {
         get => _isLoading;
-        set => Set(ref _isLoading, value);
+        private set => Set(ref _isLoading, value);
     }
 
     // Ссылка на User для того чтобы забрать token
@@ -81,7 +79,7 @@ internal class ReportsViewModel : BaseViewModel
             _ = Set(ref _filter, value);
             if (Reports != null)
             {
-                _collectionDepart!.Refresh();
+                _collectionDepart.Refresh();
             }
 
         }

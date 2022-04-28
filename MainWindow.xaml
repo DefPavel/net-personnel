@@ -76,4 +76,5 @@
             </DataTemplate>
         </ContentControl.Resources>
     </ContentControl>
+   
 </Window>

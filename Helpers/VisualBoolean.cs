@@ -3,7 +3,7 @@
 internal class VisualBoolean
 {
     // Основная переменная
-    private bool IsTrue { get; set; }
+    private bool IsTrue { get; init; }
     private bool IsFalse => !IsTrue;
 
     // Переобразуем структуру

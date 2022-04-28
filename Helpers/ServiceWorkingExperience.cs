@@ -4,10 +4,10 @@ namespace AlphaPersonel.Helpers;
 internal static class ServiceWorkingExperience
 {
     // Общий стаж
-    static public string GetStageIsOver(ObservableCollection<HistoryEmployment> histories)
+    public static string GetStageIsOver(ObservableCollection<HistoryEmployment> histories)
     {
-        DateTime currentDate = DateTime.Now.Date;
-        bool trigger = false;
+        var currentDate = DateTime.Now.Date;
+        var trigger = false;
         long totalTicks = 0;
 
         // Проходимся по списку стажа
@@ -27,10 +27,10 @@ internal static class ServiceWorkingExperience
 
     }
     // Нучно-Педагогический
-    static public string GetStageIsPedagogical(ObservableCollection<HistoryEmployment> histories)
+    public static string GetStageIsPedagogical(ObservableCollection<HistoryEmployment> histories)
     {
-        DateTime currentDate = DateTime.Now.Date;
-        bool trigger = false;
+        var currentDate = DateTime.Now.Date;
+        var trigger = false;
         long totalTicks = 0;
 
         // Проходимся по списку стажа
@@ -50,10 +50,10 @@ internal static class ServiceWorkingExperience
 
     }
     // В универе
-    static public string GetStageIsUniver(ObservableCollection<HistoryEmployment> histories)
+    public static string GetStageIsUniver(ObservableCollection<HistoryEmployment> histories)
     {
-        DateTime currentDate = DateTime.Now.Date;
-        bool trigger = false;
+        var currentDate = DateTime.Now.Date;
+        var trigger = false;
         long totalTicks = 0;
 
         // Проходимся по списку стажа
@@ -73,23 +73,21 @@ internal static class ServiceWorkingExperience
 
     }
     // Научный
-    static public string GetStageIsScience(ObservableCollection<HistoryEmployment> histories)
+    public static string GetStageIsScience(ObservableCollection<HistoryEmployment> histories)
     {
-        DateTime currentDate = DateTime.Now.Date;
-        bool trigger = false;
+        var currentDate = DateTime.Now.Date;
+        var trigger = false;
         long totalTicks = 0;
 
         // Проходимся по списку стажа
-        for (int i = 0; i < histories.Count; i++)
+        foreach (var t in histories)
         {
-            if (trigger != histories[i].IsScience)
-            {
-                // Если стаж прирывался 
-                if (trigger) totalTicks += ServiceDate.ItervalDate(currentDate, histories[i].CreateAt);
+            if (trigger == t.IsScience) continue;
+            // Если стаж прирывался 
+            if (trigger) totalTicks += ServiceDate.ItervalDate(currentDate, t.CreateAt);
 
-                currentDate = histories[i].CreateAt;
-                trigger = histories[i].IsScience;
-            }
+            currentDate = t.CreateAt;
+            trigger = t.IsScience;
         }
         // В случае если стаж не прирывный
         totalTicks += ServiceDate.ItervalDate(currentDate, DateTime.Now.Date);
@@ -98,23 +96,21 @@ internal static class ServiceWorkingExperience
 
     }
     // Медицинский
-    static public string GetStageIsMedical(ObservableCollection<HistoryEmployment> histories)
+    public static string GetStageIsMedical(ObservableCollection<HistoryEmployment> histories)
     {
-        DateTime currentDate = DateTime.Now.Date;
-        bool trigger = false;
+        var currentDate = DateTime.Now.Date;
+        var trigger = false;
         long totalTicks = 0;
 
         // Проходимся по списку стажа
-        for (int i = 0; i < histories.Count; i++)
+        foreach (var t in histories)
         {
-            if (trigger != histories[i].IsMedical)
-            {
-                // Если стаж прирывался 
-                if (trigger) totalTicks += ServiceDate.ItervalDate(currentDate, histories[i].CreateAt);
+            if (trigger == t.IsMedical) continue;
+            // Если стаж прирывался 
+            if (trigger) totalTicks += ServiceDate.ItervalDate(currentDate, t.CreateAt);
 
-                currentDate = histories[i].CreateAt;
-                trigger = histories[i].IsMedical;
-            }
+            currentDate = t.CreateAt;
+            trigger = t.IsMedical;
         }
         // В случае если стаж не прирывный
         totalTicks += ServiceDate.ItervalDate(currentDate, DateTime.Now.Date);
@@ -123,23 +119,21 @@ internal static class ServiceWorkingExperience
 
     }
     // Музей
-    static public string GetStageIsMuseum(ObservableCollection<HistoryEmployment> histories)
+    public static string GetStageIsMuseum(ObservableCollection<HistoryEmployment> histories)
     {
-        DateTime currentDate = DateTime.Now.Date;
-        bool trigger = false;
+        var currentDate = DateTime.Now.Date;
+        var trigger = false;
         long totalTicks = 0;
 
         // Проходимся по списку стажа
-        for (int i = 0; i < histories.Count; i++)
+        foreach (var t in histories)
         {
-            if (trigger != histories[i].IsMuseum)
-            {
-                // Если стаж прирывался 
-                if (trigger) totalTicks += ServiceDate.ItervalDate(currentDate, histories[i].CreateAt);
+            if (trigger == t.IsMuseum) continue;
+            // Если стаж прирывался 
+            if (trigger) totalTicks += ServiceDate.ItervalDate(currentDate, t.CreateAt);
 
-                currentDate = histories[i].CreateAt;
-                trigger = histories[i].IsMuseum;
-            }
+            currentDate = t.CreateAt;
+            trigger = t.IsMuseum;
         }
         // В случае если стаж не прирывный
         totalTicks += ServiceDate.ItervalDate(currentDate, DateTime.Now.Date);
@@ -148,23 +142,21 @@ internal static class ServiceWorkingExperience
 
     }
     // Библиотека
-    static public string GetStageIsLibrary(ObservableCollection<HistoryEmployment> histories)
+    public static string GetStageIsLibrary(ObservableCollection<HistoryEmployment> histories)
     {
-        DateTime currentDate = DateTime.Now.Date;
-        bool trigger = false;
+        var currentDate = DateTime.Now.Date;
+        var trigger = false;
         long totalTicks = 0;
 
         // Проходимся по списку стажа
-        for (int i = 0; i < histories.Count; i++)
+        foreach (var t in histories)
         {
-            if (trigger != histories[i].IsLibrary)
-            {
-                // Если стаж прирывался 
-                if (trigger) totalTicks += ServiceDate.ItervalDate(currentDate, histories[i].CreateAt);
+            if (trigger == t.IsLibrary) continue;
+            // Если стаж прирывался 
+            if (trigger) totalTicks += ServiceDate.ItervalDate(currentDate, t.CreateAt);
 
-                currentDate = histories[i].CreateAt;
-                trigger = histories[i].IsLibrary;
-            }
+            currentDate = t.CreateAt;
+            trigger = t.IsLibrary;
         }
         // В случае если стаж не прирывный
         totalTicks += ServiceDate.ItervalDate(currentDate, DateTime.Now.Date);

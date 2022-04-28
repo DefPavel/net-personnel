@@ -47,7 +47,7 @@ internal class PersonCardViewModel : BaseViewModel
     public string StageIsPedagogical
     {
         get => _stageIsPedagogical;
-        set => Set(ref _stageIsPedagogical, value);
+        private set => Set(ref _stageIsPedagogical, value);
     }
 
     // Стаж Медицинский
@@ -71,14 +71,14 @@ internal class PersonCardViewModel : BaseViewModel
     public string StageIsLibrary
     {
         get => _stageIsLibrary;
-        set => Set(ref _stageIsLibrary, value);
+        private set => Set(ref _stageIsLibrary, value);
     }
 
     #endregion
 
     #region Переменные
 
-    private readonly int _idDepartment = 0;
+    private readonly int _idDepartment;
 
     private readonly NavigationStore _navigationStore;
 
@@ -154,6 +154,13 @@ internal class PersonCardViewModel : BaseViewModel
     {
         get => _selectedRewarding;
         set => Set(ref _selectedRewarding, value);
+    }
+    
+    private Documents? _selectedDocument;
+    public Documents? SelectedDocument
+    {
+        get => _selectedDocument;
+        set => Set(ref _selectedDocument, value);
     }
 
     private VisualBoolean? _isLoading;
@@ -376,15 +383,7 @@ internal class PersonCardViewModel : BaseViewModel
         get => _seletedDegree;
         set => Set(ref _seletedDegree, value);
     }
-
-    private Documents? _seletedDocument;
-    public Documents? SeletedDocument
-    {
-        get => _seletedDocument;
-        set => Set(ref _seletedDocument, value);
-    }
-
-
+    
     // Выбранная персона
     private Persons? _selectedPerson;
     public Persons? SelectedPerson
@@ -407,11 +406,63 @@ internal class PersonCardViewModel : BaseViewModel
     #endregion
 
     #region Команды
+ 
+    #region Menu Items
+
+    private ICommand? _logout;
+    public ICommand Logout => _logout ??= new LambdaCommand(Exit);
+
+    private ICommand? _openDepartment;
+    public ICommand OpenDepartment => _openDepartment ??= new LambdaCommand(OpenDepartmentView);
+
+    private ICommand? _openTypeVacation;
+    public ICommand OpenVacation => _openTypeVacation ??= new LambdaCommand(OpenTypeVacationView);
+
+    private ICommand? _openTypeRewarding;
+    public ICommand OpenRewarding => _openTypeRewarding ??= new LambdaCommand(OpenTypeRewardingView);
+
+    private ICommand? _openSearch;
+    public ICommand OpenSearch => _openSearch ??= new LambdaCommand(OpenSearchView);
+
+    private ICommand? _openPosition;
+    public ICommand OpenPosition => _openPosition ??= new LambdaCommand(OpenPositionView);
+
+    private ICommand? _openTypePosition;
+    public ICommand OpenTypePosition => _openTypePosition ??= new LambdaCommand(OpenTypePositionView);
+
+    private ICommand? _openTypeOrder;
+    public ICommand OpenTypeOrder => _openTypeOrder ??= new LambdaCommand(OpenTypeOrderView);
+
+    private ICommand? _openTypeRanks;
+    public ICommand OpenTypeRanks => _openTypeRanks ??= new LambdaCommand(OpenTypeRankView);
+
+    private ICommand? _openOrder;
+    public ICommand OpenOrder => _openOrder ??= new LambdaCommand(OpenOrderView);
+
+    private ICommand? _openPeriod;
+    public ICommand OpenPeriod => _openPeriod ??= new LambdaCommand(OpenPeriodView);
+    
+    private ICommand? _openReport;
+    public ICommand OpenReport => _openReport ??= new LambdaCommand(OpenReportView);
+    
+    private ICommand? _openMasterReport;
+    public ICommand OpenMasterReport => _openMasterReport ??= new LambdaCommand(OpenMasterReportView);
+
+    #endregion
+    
     private ICommand? _updateStates;
     public ICommand UpdateStates => _updateStates ??= new LambdaCommand(ApiUpdateStatePersonAsync);
 
     private ICommand? _openreportCard;
     public ICommand OpenReportCard => _openreportCard ??= new LambdaCommand(ReportPersonCard);
+    
+    private ICommand? _openPreview;
+    public ICommand OpenPreview => _openPreview ??= new LambdaCommand(OpenPreviewModel);
+
+    private void OpenPreviewModel(object obj)
+    {
+        if (obj is Documents d) new PreviewDocument("http://localhost:8080/" + d.Url).ShowDialog();
+    }
 
     private ICommand? _openAddPosition;
     public ICommand OpenAddPosition => _openAddPosition ??= new LambdaCommand(AddPosition , _ => SelectedPerson != null);
@@ -579,10 +630,102 @@ internal class PersonCardViewModel : BaseViewModel
     private ICommand? _saveHistory;
     public ICommand SaveHistory => _saveHistory ??= new LambdaCommand(SaveHistoryAsync, _ => SelectedHistory != null);
 
-
-
     #endregion
 
+    #region Methods Menu Items
+    
+    private async void Exit(object p)
+    {
+        try
+        {
+            await QueryService.JsonSerializeWithToken(token: _user!.Token,
+                "/logout",
+                "POST",
+                User);
+            // Вернуть на Авторизацию 
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+
+    private void OpenTypeVacationView(object p)
+    {
+        _navigationStore.CurrentViewModel = new TypeVacationViewModel(_navigationStore, _user!);
+    }
+
+    private void OpenTypeRewardingView(object p)
+    {
+        _navigationStore.CurrentViewModel = new TypeRewardingViewModel(_navigationStore, _user!);
+    }
+
+    private void OpenPeriodView(object p)
+    {
+        _navigationStore.CurrentViewModel = new PeriodVacationViewModel(_navigationStore, _user!);
+    }
+    // Отчеты
+    private void OpenReportView(object p)
+    {
+        _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user!);
+    }
+    // Новый отчет
+    private void OpenMasterReportView(object p)
+    {
+        _navigationStore.CurrentViewModel = new MasterReportViewModel(_navigationStore, _user!);
+    }
+
+    // Отделы
+    private void OpenDepartmentView(object p)
+    {
+        _navigationStore.CurrentViewModel = new DepartmentViewModel(_navigationStore, _user!);
+    }
+    // Типы приказов
+    private void OpenTypeOrderView(object p)
+    {
+        _navigationStore.CurrentViewModel = new TypeOrderViewModel(_navigationStore, _user!);
+    }
+    // Тип Званий
+    private void OpenTypeRankView(object p)
+    {
+        _navigationStore.CurrentViewModel = new TypeRanksViewModel(_navigationStore, _user!);
+    }
+    // Приказы
+    private void OpenOrderView(object p)
+    {
+        _navigationStore.CurrentViewModel = new OrderViewModel(_navigationStore, _user!);
+    }
+
+    private void OpenPositionView(object p)
+    {
+        _navigationStore.CurrentViewModel = new PositionViewModel(_navigationStore, _user!);
+    }
+    // Поиск
+    private void OpenSearchView(object p)
+    {
+        _navigationStore.CurrentViewModel = new SearchViewModel(_navigationStore, _user!);
+    }
+
+    private void OpenTypePositionView(object p)
+    {
+        _navigationStore.CurrentViewModel = new TypePositionViewModel(_navigationStore, _user!);
+    }
+
+    #endregion
+    
     #region Основная Логика
 
     // Распечатать Справку с места работы
@@ -695,6 +838,7 @@ internal class PersonCardViewModel : BaseViewModel
                 StageIsPedagogical = ServiceWorkingExperience.GetStageIsPedagogical(SelectedPerson.HistoryEmployment);
                 StageIsMedical = ServiceWorkingExperience.GetStageIsMedical(SelectedPerson.HistoryEmployment);
                 StageIsMuseum = ServiceWorkingExperience.GetStageIsMuseum(SelectedPerson.HistoryEmployment);
+                StageIsLibrary = ServiceWorkingExperience.GetStageIsLibrary(SelectedPerson.HistoryEmployment);
 
             }
             IsLoading = false;
@@ -785,7 +929,7 @@ internal class PersonCardViewModel : BaseViewModel
                 id = SelectedPerson.Id,
                 name = SelectedPerson.MidlleName,
                 lastname = SelectedPerson.LastName,
-                gender = RadioIsMale == true ? "male" : "female",
+                gender = RadioIsMale ? "male" : "female",
                 birthday = SelectedPerson.Birthday,
                 phone_ua = SelectedPerson.PhoneUkraine,
                 phone_lug = SelectedPerson.PhoneLugakom,
@@ -828,17 +972,13 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
-            // Задать конфигурацию
             Microsoft.Win32.OpenFileDialog openFileDialog = new()
             {
                 DefaultExt = ".jpg", // Default file extension
-                Filter = "Image files(*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png"
+                Filter = "Image files(*.jpg, *.jpeg) | *.jpg; *.jpeg;"
             };
-            // Если выбран файл
             if (openFileDialog.ShowDialog() != true) return;
-            // Разбираем фото на base64 и отправляем на сервер
             var base64 = GetBase64FromImage(openFileDialog.FileName);
-            // отправляем base64 
             IsLoading = true;
             // Отправляем base64 image 
             await QueryService.JsonSerializeWithToken(token: _user!.Token,
@@ -846,8 +986,9 @@ internal class PersonCardViewModel : BaseViewModel
                 "PUT",
                 new { photo = base64 });
 
-            // Делаем повторный запрос GET
-            SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(_user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
+            _ = MessageBox.Show("Фотография загружена");
+            ApiGetInformationToPerson(p);
+            //SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(_user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
 
             /*Avatar.BeginInit();
                 Avatar.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
@@ -855,8 +996,6 @@ internal class PersonCardViewModel : BaseViewModel
                 Avatar.UriSource = new Uri(SelectedPerson.Photo);
                 Avatar.EndInit();
                 */
-                
-
             IsLoading = false;
         }
         catch (WebException ex)
@@ -1011,7 +1150,7 @@ internal class PersonCardViewModel : BaseViewModel
         }
     }
     private bool CanCommandExecute(object p) => _selectedPerson is not null;
-    private bool FilterToPerson(object emp) => string.IsNullOrEmpty(FilterPerson) || emp is Persons pers && pers.FirstName!.ToUpper().Contains(FilterPerson.ToUpper());
+    private bool FilterToPerson(object emp) => string.IsNullOrEmpty(FilterPerson) || emp is Persons pers && pers.FirstName.ToUpper().Contains(FilterPerson.ToUpper());
     private static bool FilterIsNpp(object emp) => emp is Persons { IsPed: true };
     private static bool FilterIsNoNpp(object emp) => emp is Persons { IsPed: false };
 
