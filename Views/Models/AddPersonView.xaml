@@ -11,7 +11,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="Добавить новую запись сотрудника" 
-        Height="850" Width="450">
+        Height="870" Width="450">
     
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">

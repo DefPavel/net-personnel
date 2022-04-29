@@ -941,6 +941,8 @@
                                     Margin="5">
                                     <Label Content="Выбрать Тип Отпуска"/>
                                     <ComboBox 
+                                        MinWidth="100"
+                                        IsEditable="True"
                                         ItemsSource="{Binding TypeVacation}"
                                         DisplayMemberPath="Name"
                                         SelectedValuePath="Name"
@@ -948,6 +950,8 @@
                                         />
                                     <Label Content="Выбрать Период Отпуска"/>
                                     <ComboBox 
+                                        MinWidth="100"
+                                        IsEditable="True"
                                         ItemsSource="{Binding PeriodVacation}"
                                         DisplayMemberPath="Name"
                                         SelectedValuePath="Name"
@@ -955,13 +959,17 @@
                                         />
                                     <Label Content="Выбрать Приказ"/>
                                     <ComboBox 
-                                        ItemsSource="{Binding OrderRewarding}"
-                                        DisplayMemberPath="Name"
-                                        SelectedValuePath="Name"
-                                        SelectedValue="{Binding SelectedVacation.Period, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+                                        MinWidth="100"
+                                        IsEditable="True"
+                                        ItemsSource="{Binding OrderVacations}"
+                                        DisplayMemberPath="Order"
+                                        SelectedValuePath="Order"
+                                        SelectedValue="{Binding SelectedVacation.Order, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
                                         />
                                     <Label Content="Дата начала Отпуска"/>
                                     <DatePicker 
+                                        Padding="4 1"
+                                        Margin="4 3"
                                         SelectedDate="{Binding SelectedVacation.DateBegin , UpdateSourceTrigger=PropertyChanged}"
                                     />
                                     <Label Content="Продолжительность Отпуска"/>

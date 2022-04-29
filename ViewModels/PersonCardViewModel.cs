@@ -283,6 +283,14 @@ internal class PersonCardViewModel : BaseViewModel
         get => _orderRewarding;
         private set => Set(ref _orderRewarding, value);
     }
+    // Приказы Отпусков
+    private IEnumerable<Vacation>? _orderVacations;
+    public IEnumerable<Vacation>? OrderVacations
+    {
+        get => _orderVacations;
+        private set => Set(ref _orderVacations, value);
+    }
+
     // Приказы для смены фамилии
     private IEnumerable<OldSurname>? _orderOldSurname;
     public IEnumerable<OldSurname>? OrderOldSurname
@@ -1121,7 +1129,9 @@ internal class PersonCardViewModel : BaseViewModel
             TypeRewarding = await QueryService.JsonDeserializeWithToken<Rewarding>(token: _user!.Token, "/pers/rewarding/type/get", "GET");
             // Приказы для награждения
             OrderRewarding = await QueryService.JsonDeserializeWithToken<Rewarding>(token: _user!.Token, "/pers/order/get/9", "GET");
-            // Приказы для награждения
+            // Приказы для отпусков
+            OrderVacations = await QueryService.JsonDeserializeWithToken<Vacation>(token: _user!.Token, "/pers/order/get/1", "GET");
+            // Приказы для смены фамилии
             OrderOldSurname = await QueryService.JsonDeserializeWithToken<OldSurname>(token: _user!.Token, "/pers/order/get/5", "GET");
             // Мед.категория 
             MedicalCategory = await QueryService.JsonDeserializeWithToken<MedicalCategory>(token: _user!.Token, "/pers/medical/type/get", "GET");
