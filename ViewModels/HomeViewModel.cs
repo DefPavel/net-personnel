@@ -125,9 +125,9 @@ internal class HomeViewModel : BaseViewModel
             CountIsPluralismInnerNotIsPed = Persons!.Count(x => x.IsPluralismInner && x.IsPed == false);
 
             // Совместителей Внешних НПП
-            CountIsPluralismInnerIsPed = Persons!.Count(x => x.IsPluralismOter && x.IsPed);
+            CountIsPluralismOterIsPed = Persons!.Count(x => x.IsPluralismOter && x.IsPed);
             // Совместителей Внешних не НПП
-            CountIsPluralismInnerNotIsPed = Persons!.Count(x => x.IsPluralismOter && x.IsPed == false);
+            CountIsPluralismOterNotIsPed = Persons!.Count(x => x.IsPluralismOter && x.IsPed == false);
 
             // Считаем свободных бюджетных ставки
             CountFreeBudget = Positions!.Sum(x => x.Free_B);
@@ -163,6 +163,12 @@ internal class HomeViewModel : BaseViewModel
     {
         get => _countIsPluralismOterIsPed;
         private set => Set(ref _countIsPluralismOterIsPed, value);
+    }
+    private int _countIsPluralismOterNotIsPed;
+    public int CountIsPluralismOterNotIsPed
+    {
+        get => _countIsPluralismOterNotIsPed;
+        private set => Set(ref _countIsPluralismOterNotIsPed, value);
     }
 
     // Подсчет количества людей имеющие педагогическую должность

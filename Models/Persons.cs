@@ -81,9 +81,10 @@ internal class Persons
     [JsonPropertyName("is_doctor")]
     public bool IsDoctor { get; set; }
 
+    
     [JsonPropertyName("is_pluralism_inner")]
     public bool IsPluralismInner { get; set; }
-
+    
     [JsonPropertyName("is_pluralism_oter")]
     public bool IsPluralismOter { get; set; }
 

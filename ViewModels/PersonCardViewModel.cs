@@ -164,6 +164,7 @@ internal class PersonCardViewModel : BaseViewModel
     }
 
     private VisualBoolean? _isLoading;
+
     public VisualBoolean? IsLoading
     {
         get => _isLoading;
@@ -459,7 +460,7 @@ internal class PersonCardViewModel : BaseViewModel
     private ICommand? _openPreview;
     public ICommand OpenPreview => _openPreview ??= new LambdaCommand(OpenPreviewModel);
 
-    private void OpenPreviewModel(object obj)
+    private static void OpenPreviewModel(object obj)
     {
         if (obj is Documents d) new PreviewDocument("http://localhost:8080/" + d.Url).ShowDialog();
     }
@@ -514,6 +515,20 @@ internal class PersonCardViewModel : BaseViewModel
     public ICommand DeleteVacation => _DeleteVacation ??= new LambdaCommand(DeleteFamilyPerson, _ => SelectedVacation != null);
     */
     //------------------- Паспорт ------------------------------//
+    
+    // Сканы документов
+    private ICommand? _addDocument;
+    public ICommand AddDocument => _addDocument ??= new LambdaCommand(AddDocumentPerson);
+
+    private ICommand? _saveDocument;
+    public ICommand SaveDocument => _saveDocument ??= new LambdaCommand(SaveDocumentPerson, _ => SelectedDocument != null);
+    
+    private ICommand? _saveUploadDocument;
+    public ICommand SaveUploadDocument => _saveUploadDocument ??= new LambdaCommand(UploadDocumentByPerson, _ => SelectedDocument != null);
+
+    private ICommand? _deleteDocument;
+    public ICommand DeleteDocument => _deleteDocument ??= new LambdaCommand(DeleteDocumentByPerson, _ => SelectedDocument != null);
+    
     // Родственники
     private ICommand? _addFamily;
     public ICommand AddFamily => _addFamily ??= new LambdaCommand(AddFamilyPerson);
@@ -2111,6 +2126,20 @@ internal class PersonCardViewModel : BaseViewModel
             SelectedVacation = order;
 
     }
+    // Документ
+    private void AddDocumentPerson(object p)
+    {
+
+        Documents order = new()
+        {
+            Name = "Наименование документа",
+            Type = "Копия паспорта",
+            Url = string.Empty,
+
+        };
+        _selectedPerson!.ArrayDocuments?.Insert(0, order);
+        SelectedDocument = order;
+    }
     // Статус семьи
     private  void AddFamilyPerson(object p)
     {
@@ -2130,6 +2159,8 @@ internal class PersonCardViewModel : BaseViewModel
         try
         {
             SelectedVacation!.IdPerson = SelectedPerson!.Id;
+            SelectedVacation!.Residue += SelectedVacation.LengthVacation;
+            SelectedVacation!.DateEnd = new DateTime().AddDays(SelectedVacation.LengthVacation);
 
             if (SelectedVacation!.Id > 0)
             {
@@ -2163,6 +2194,96 @@ internal class PersonCardViewModel : BaseViewModel
             }
         }
 
+    }
+
+    private void UploadDocumentByPerson(object p)
+    {
+        
+        Microsoft.Win32.OpenFileDialog openFileDialog = new()
+        {
+            DefaultExt = ".jpg", // Default file extension
+            Filter = "Image files(*.jpg, *.jpeg) | *.jpg; *.jpeg;"
+        };
+        if (openFileDialog.ShowDialog() != true) return;
+        var base64 = GetBase64FromImage(openFileDialog.FileName);
+        SelectedDocument!.Url = openFileDialog.FileName;
+        SelectedDocument!.Base64 = base64;
+    }
+
+    private async void SaveDocumentPerson(object p)
+    {
+        try
+        {
+            var newSelectedDocument = SelectedDocument!;
+            newSelectedDocument.IdPerson = SelectedPerson!.Id;
+  
+            if (SelectedDocument!.Id > 0)
+            {
+                // Изменить
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/document/rename", "POST", newSelectedDocument);
+            }
+            else
+            {
+                if (SelectedDocument!.Base64.Length == 0)
+                {
+                    _ = MessageBox.Show("Необходимо выбрать изображение скана!", "Ошибка", MessageBoxButton.OK , MessageBoxImage.Error);
+                    return;
+                }
+                // Создать
+                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/document/add", "POST", newSelectedDocument);
+            }
+            // Информация о сотруднике
+            SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
+            if (SelectedPerson.ArrayDocuments != null)
+                SelectedDocument =
+                    SelectedPerson.ArrayDocuments.FirstOrDefault(x => x.Name == newSelectedDocument!.Name);
+            _ = MessageBox.Show("Данные успешно сохраненны");
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+    }
+    private async void DeleteDocumentByPerson(object p)
+    {
+        try
+        {
+            if (MessageBox.Show("Вы действительно хотитет удалить данную запись?", "Вопрос", MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
+            await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/document/del/" + SelectedDocument!.Id, "DELETE", SelectedDocument);
+            //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
+
+            _ = _selectedPerson!.ArrayDocuments!.Remove(SelectedDocument);
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
     }
     private async void SaveFamilyPerson(object p)
     {

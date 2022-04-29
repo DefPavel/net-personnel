@@ -955,11 +955,15 @@
                                         />
                                     <Label Content="Выбрать Приказ"/>
                                     <ComboBox 
-                                        ItemsSource="{Binding PeriodVacation}"
+                                        ItemsSource="{Binding OrderRewarding}"
                                         DisplayMemberPath="Name"
                                         SelectedValuePath="Name"
                                         SelectedValue="{Binding SelectedVacation.Period, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
                                         />
+                                    <Label Content="Дата начала Отпуска"/>
+                                    <DatePicker 
+                                        SelectedDate="{Binding SelectedVacation.DateBegin , UpdateSourceTrigger=PropertyChanged}"
+                                    />
                                     <Label Content="Продолжительность Отпуска"/>
                                     <TextBox 
                                         Text="{Binding SelectedVacation.LengthVacation , UpdateSourceTrigger=PropertyChanged}"
@@ -1790,10 +1794,13 @@
                                     <StackPanel 
                                         Orientation="Horizontal">
                                         <TextBox 
+                                            IsEnabled="False"
                                             MaxWidth="250"
                                             MinWidth="250"
                                             Text="{Binding SelectedDocument.Url , UpdateSourceTrigger=PropertyChanged}"/>
-                                        <Button Height="22">
+                                        <Button
+                                            Command="{Binding SaveUploadDocument}"
+                                            Height="22">
                                             <Canvas 
                                                     Height="13"
                                                     Width="13">
@@ -1810,13 +1817,13 @@
 
                                     <StackPanel Orientation="Horizontal">
                                         <Button 
-                                            Command="{Binding AddFamily}"
+                                            Command="{Binding AddDocument}"
                                             Content="Создать"/>
                                         <Button 
-                                            Command="{Binding SaveFamily}"
+                                            Command="{Binding SaveDocument}"
                                             Content="Сохранить"/>
                                         <Button 
-                                            Command="{Binding DeleteFamily}"
+                                            Command="{Binding DeleteDocument}"
                                             Content="Удалить"/>
                                     </StackPanel>
                                 </StackPanel>
