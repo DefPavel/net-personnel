@@ -76,7 +76,8 @@ internal class DeletePersonViewModel : BaseViewModel
                     id_type_contract = _Person.IdContract,
                     date_begin = _Person.StartDateContract,
                     date_end = _Person.EndDateContract,
-                    id_person_position = _Person.IdPersonPosition
+                    id_person_position = _Person.IdPersonPosition,
+                    is_ped = _Person.IsPed
 
                 };
 

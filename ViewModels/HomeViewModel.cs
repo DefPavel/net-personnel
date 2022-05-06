@@ -1,5 +1,4 @@
 ﻿using AlphaPersonel.Views.Models;
-using System.Collections.Generic;
 using System.Linq;
 namespace AlphaPersonel.ViewModels;
 
@@ -8,13 +7,13 @@ internal class HomeViewModel : BaseViewModel
     public HomeViewModel(Users account, NavigationStore navigationStore)
     {
         _user = account;
-        this._navigationStore = navigationStore;
+        _navigationStore = navigationStore;
     }
     // При возврате с личной карты,чтобы оставались на том же отделе 
     public HomeViewModel(Users account, NavigationStore navigationStore, Departments departments)
     {
         _user = account;
-        this._navigationStore = navigationStore;
+        _navigationStore = navigationStore;
         _selectedItem = departments;
         ApiGetPersons(departments);
     }
@@ -255,14 +254,7 @@ internal class HomeViewModel : BaseViewModel
     #endregion
 
     #region Команды
-    // Команда для отображения всех отделов для TreeView
-    private ICommand? _getTreeView;
-    public ICommand GetTreeView => _getTreeView ??= new LambdaCommand(ApiGetDepartments);
 
-    private ICommand? _getPersonsToDepartment;
-    public ICommand GetPersonsToDepartment => _getPersonsToDepartment ??= new LambdaCommand(ApiGetPersons, _ => SelectedItem is not null);
-    
-    // UserControl
     #region Menu Items
 
     private ICommand? _logout;
@@ -300,16 +292,33 @@ internal class HomeViewModel : BaseViewModel
     
     private ICommand? _openReport;
     public ICommand OpenReport => _openReport ??= new LambdaCommand(OpenReportView);
-    
+
+    private ICommand? _openReportInsert;
+    public ICommand OpenReportInsert => _openReportInsert ??= new LambdaCommand(OpenReportInsertPerson);
+
+    private ICommand? _openReportDelete;
+    public ICommand OpenReportDelete => _openReportDelete ??= new LambdaCommand(OpenReportDropPerson);
+
+    private ICommand? _openReportRewarding;
+    public ICommand OpenReportRewarding => _openReportRewarding ??= new LambdaCommand(OpenReportRewardingPerson);
+
     private ICommand? _openMasterReport;
     public ICommand OpenMasterReport => _openMasterReport ??= new LambdaCommand(OpenMasterReportView);
 
     #endregion
-    
+
+    #region Основные Команды
+
+    // Команда для отображения всех отделов для TreeView
+    private ICommand? _getTreeView;
+    public ICommand GetTreeView => _getTreeView ??= new LambdaCommand(ApiGetDepartments);
+
+    private ICommand? _getPersonsToDepartment;
+    public ICommand GetPersonsToDepartment => _getPersonsToDepartment ??= new LambdaCommand(ApiGetPersons, _ => SelectedItem is not null);
 
     private ICommand? _openPersonCard;
     public ICommand OpenPersonCard => _openPersonCard ??= new LambdaCommand(OpenPersonCardView, _ => SelectedPerson is not null);
-    
+
     private ICommand? _openAddPerson;
     public ICommand OpenAddPerson => _openAddPerson ??= new LambdaCommand(AddPerson, _ => SelectedItem is not null);
 
@@ -317,7 +326,7 @@ internal class HomeViewModel : BaseViewModel
     public ICommand AddPosition => _addPosition ??= new LambdaCommand(AddPositionToDepartmentAsync);
 
     private ICommand? _savePosition;
-    public ICommand SavePosition => _savePosition ??= new LambdaCommand(UpdatePosition , _ => SelectedPosition is not null);
+    public ICommand SavePosition => _savePosition ??= new LambdaCommand(UpdatePosition, _ => SelectedPosition is not null);
 
     private ICommand? _deletePosition;
     public ICommand DeletePosition => _deletePosition ??= new LambdaCommand(DeletePositionApi, _ => SelectedPosition is not null);
@@ -327,32 +336,13 @@ internal class HomeViewModel : BaseViewModel
 
     private ICommand? _renameDepartment;
     public ICommand RenameDepartment => _renameDepartment ??= new LambdaCommand(UpdateDataDepartment, _ => SelectedItem is not null);
+    #endregion
 
     #endregion
 
     #region Логика
 
-    // Открыть модальное окно на созадние человека
-    private void AddPerson(object p)
-    {
-        AddPersonVeiwModel viewModel = new(_user, _selectedItem!.Id);
-        AddPersonView view = new() { DataContext = viewModel };
-        view.ShowDialog();
-        // Обновить данные
-        ApiGetPersons(p);
-    }
-    // Открыть модальное окно на удаление человека
-    private void DeletePerson(object p)
-    {
-        DeletePersonViewModel viewModel = new($"С должности:'{_selectedPerson!.PersonPosition}'", _user, _selectedPerson!, SelectedItem!);
-        DeleteView view = new() { DataContext = viewModel };
-        view.ShowDialog();
-        // Обновить данные
-        ApiGetPersons(p);
-    }
-
     #region Methods Menu Items
-
     private async void Exit(object p)
     {
         try
@@ -401,6 +391,33 @@ internal class HomeViewModel : BaseViewModel
     {
         _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
     }
+    // Отчет принятых
+    private void OpenReportInsertPerson(object p)
+    {
+        // _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
+        InsertReportViewModel viewModel = new("/reports/pers/persons/insert/","Отчет принятых", _user);
+        ReportByPersonInsert view = new() { DataContext = viewModel };
+        view.ShowDialog();
+
+    }
+    // Отчет уволенных
+    private void OpenReportDropPerson(object p)
+    {
+        // _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
+        InsertReportViewModel viewModel = new("/reports/pers/persons/drop/", "Отчет уволенных", _user);
+        ReportByPersonInsert view = new() { DataContext = viewModel };
+        view.ShowDialog();
+
+    }
+    // Отчет награжденных
+    private void OpenReportRewardingPerson(object p)
+    {
+        // _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
+        InsertReportViewModel viewModel = new("/reports/pers/persons/rewarding/", "Отчет награжденных", _user);
+        ReportByPersonInsert view = new() { DataContext = viewModel };
+        view.ShowDialog();
+
+    }
     // Новый отчет
     private void OpenMasterReportView(object p)
     {
@@ -444,14 +461,30 @@ internal class HomeViewModel : BaseViewModel
     }
 
     #endregion
-   
 
-
+    #region Основная Логика
+    // Открыть модальное окно на созадние человека
+    private void AddPerson(object p)
+    {
+        AddPersonVeiwModel viewModel = new(_user, _selectedItem!.Id);
+        AddPersonView view = new() { DataContext = viewModel };
+        view.ShowDialog();
+        // Обновить данные
+        ApiGetPersons(p);
+    }
+    // Открыть модальное окно на удаление человека
+    private void DeletePerson(object p)
+    {
+        DeletePersonViewModel viewModel = new($"С должности:'{_selectedPerson!.PersonPosition}'", _user, _selectedPerson!, SelectedItem!);
+        DeleteView view = new() { DataContext = viewModel };
+        view.ShowDialog();
+        // Обновить данные
+        ApiGetPersons(p);
+    }
     private void OpenPersonCardView(object p)
     {
         _navigationStore.CurrentViewModel = new PersonCardViewModel(_user, _navigationStore, SelectedPerson!, SelectedItem!.Id);
     }
-
     private async void ApiGetPersons(object p)
     {
         try
@@ -491,7 +524,7 @@ internal class HomeViewModel : BaseViewModel
         try
         {
             Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user.Token, "/pers/tree/get", "GET");
-            if(SelectedItem != null)
+            if (SelectedItem != null)
             {
                 ApiGetPersons(p);
             }
@@ -521,7 +554,7 @@ internal class HomeViewModel : BaseViewModel
     {
         try
         {
-            if(SelectedItem != null)
+            if (SelectedItem != null)
             {
                 var name = TypePosition!.FirstOrDefault()?.Name;
                 if (name == null) return;
@@ -539,9 +572,9 @@ internal class HomeViewModel : BaseViewModel
             }
             else
             {
-                _ = MessageBox.Show("Чтобы создать должность,необходимо выбрать отдел!","Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+                _ = MessageBox.Show("Чтобы создать должность,необходимо выбрать отдел!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-           
+
             // SelectedPerson.ArrayPosition.Insert(0, dep);
             // SelectedPosition = dep;
 
@@ -564,7 +597,6 @@ internal class HomeViewModel : BaseViewModel
         }
 
     }
-
     private async void UpdateDataDepartment(object p)
     {
         try
@@ -575,11 +607,11 @@ internal class HomeViewModel : BaseViewModel
                 //Изменить уже текущие данные
                 await QueryService.JsonSerializeWithToken(token: _user!.Token, "/pers/tree/rename/short/" + SelectedItem.Id, "POST", SelectedItem);
             }
-           
+
             // _ = MessageBox.Show("Данные успешно сохраненны");
-           
+
         }
-        catch (System.Net.WebException ex)
+        catch (WebException ex)
         {
             if (ex.Response != null)
             {
@@ -603,7 +635,7 @@ internal class HomeViewModel : BaseViewModel
                 SelectedPosition.IsPed = RadioIsPed;
                 // Создать новую запись  
                 await QueryService.JsonSerializeWithToken(token: _user!.Token, "/pers/position/add", "POST", SelectedPosition);
-                
+
             }
             // Обновить данные
             Positions = await QueryService.JsonDeserializeWithToken<Position>(token: _user!.Token, "/pers/position/get/" + SelectedItem!.Id, "GET");
@@ -649,14 +681,15 @@ internal class HomeViewModel : BaseViewModel
             }
         }
     }
-
     // Логика фильтра
     private bool FilterToPerson(object emp)
     {
         return string.IsNullOrEmpty(FilterPerson) || (emp is Persons pers && pers.FirstName!.ToUpper().Contains(value: FilterPerson.ToUpper()));
     }
-    
     #endregion
+
+    #endregion
+
     public override void Dispose()
     {
 

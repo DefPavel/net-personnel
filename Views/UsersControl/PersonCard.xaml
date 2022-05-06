@@ -334,10 +334,11 @@
                                                 </Image.Source>
                                             </Image>-->
                                             <Image 
+                                            MinHeight="140"
                                             Source="{Binding SelectedPerson.Photo}"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
-                                            Stretch="Uniform"
+                                            Stretch="Fill"
                                             StretchDirection="DownOnly"/>
                                         </Border>
 

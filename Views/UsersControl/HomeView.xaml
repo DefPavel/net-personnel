@@ -126,13 +126,16 @@
                     </StackPanel>
                 </MenuItem.Header>
                 <MenuItem 
+                    Command="{Binding OpenReportInsert}"
                     Header="Список принятых сотрудников за период"/>
                 <MenuItem 
-                    Header="Список уволенных сотрудников за период"/>
-                <MenuItem 
+                    Command="{Binding OpenReportRewarding}"
                     Header="Список награжденных сотрудников за период"/>
                 <MenuItem 
-                    Header="Список сотрудников не имеющие за период"/>
+                    Command="{Binding OpenReportDelete}"
+                    Header="Список уволенных сотрудников за период"/>
+                <MenuItem 
+                    Header="Список сотрудников не имеющие отпуск за период"/>
                 <MenuItem 
                     Header="Списки..." 
                     Command="{Binding OpenReport}"/>
