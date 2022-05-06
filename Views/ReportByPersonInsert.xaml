@@ -9,7 +9,7 @@
         FontSize="14"
         Title="Параметры для Отчета" 
         Height="200" 
-        Width="200">
+        Width="300">
     <Grid>
         <StackPanel 
             Margin="5"
