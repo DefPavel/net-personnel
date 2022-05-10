@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 namespace AlphaPersonel.ViewModels;
 internal class DepartmentViewModel : BaseViewModel
 {
@@ -27,11 +28,18 @@ internal class DepartmentViewModel : BaseViewModel
         }
     }
     // Тип отдела
-    private ObservableCollection<TypeDepartments>? _typeDepartments;
-    public ObservableCollection<TypeDepartments>? TypeDepartments
+    private IEnumerable<TypeDepartments>? _typeDepartments;
+    public IEnumerable<TypeDepartments>? TypeDepartments
     {
         get => _typeDepartments;
         set => Set(ref _typeDepartments, value);
+    }
+    // Родительские отделы
+    private IEnumerable<Departments>? _rootDepartments;
+    public IEnumerable<Departments>? RootDepartments
+    {
+        get => _rootDepartments;
+        set => Set(ref _rootDepartments, value);
     }
     // Выбранные отдел
     private Departments? _selectedDepartment;
@@ -105,6 +113,9 @@ internal class DepartmentViewModel : BaseViewModel
             TypeDepartments = await QueryService.JsonDeserializeWithToken<TypeDepartments>(_user!.Token, "/pers/tree/type/get", "GET");
 
             Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user!.Token, "/pers/tree/all", "GET");
+
+            //RootDepartments = await QueryService.JsonDeserializeWithToken<Departments>(_user!.Token, "/pers/tree/all", "GET");
+            //RootDepartments.Insert(0, new Departments { Name = "Не указано", RootTree = "Не указано" });
         }
         catch (WebException ex)
         {
@@ -157,7 +168,7 @@ internal class DepartmentViewModel : BaseViewModel
                 // Создать новую запись отдела 
                 await QueryService.JsonSerializeWithToken(token: _user!.Token, "/pers/tree/add", "POST", SelectedDepartment);
                 // Обновить данные
-                Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user.Token, "/pers/tree/all", "GET");
+                //Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user.Token, "/pers/tree/all", "GET");
             }
             //ApiGetDepartments(p);
             Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user!.Token, "/pers/tree/all", "GET");

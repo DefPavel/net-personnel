@@ -169,7 +169,7 @@ internal class AddPersonVeiwModel : BaseViewModel
     public ICommand GetData => _getData ??= new LambdaCommand(LoadedApi);
 
     private ICommand? _closeWin;
-    public ICommand CloseWin => _closeWin ??= new LambdaCommand(CloseWindow, _ => SelectedPositions != null && !string.IsNullOrEmpty(FirstName));
+    public ICommand CloseWin => _closeWin ??= new LambdaCommand(CloseWindow, _ => SelectedPositions != null && SelectedOrders != null && SelectedContract!= null && !string.IsNullOrEmpty(FirstName));
 
     #endregion
 
@@ -237,13 +237,10 @@ internal class AddPersonVeiwModel : BaseViewModel
             // Загрузка приказов
             var idTypeOrder = await QueryService.JsonDeserializeWithObjectAndParam(_user.Token, "/pers/order/type/name", "POST", new TypeOrder { Name = "Приём" });
             Orders = await QueryService.JsonDeserializeWithToken<Order>(_user.Token, "/pers/order/get/" + idTypeOrder.Id, "GET");
-
             //Загрузка должностей
             Positions = await QueryService.JsonDeserializeWithToken<Position>(_user.Token, "/pers/position/get/" + _idDepartment, "GET");
-
             // загрузка типов контракта
             Contracts = await QueryService.JsonDeserializeWithToken<TypeContract>(_user.Token, "/pers/position/type/contract", "GET");
-
         }
         catch (WebException ex)
         {
