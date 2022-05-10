@@ -735,18 +735,32 @@
                                 </Grid.ColumnDefinitions>
 
                                 <DataGrid 
+                                    SelectionMode="Single"
                                      FontSize="13"
                                     ScrollViewer.IsDeferredScrollingEnabled="True"
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
                                     AlternatingRowBackground="#e1eff9"
                                     IsReadOnly="True"    
                                     AutoGenerateColumns="False"
+                                     SelectedItem="{Binding SelectedMove}"
                                     ItemsSource="{Binding SelectedPerson.ArrayMove}"
                                     Margin="10">
+                                    <DataGrid.Resources>
+                                        <Style TargetType="{x:Type DataGridCell}">
+                                            <Style.Triggers>
+                                                <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                                    <Setter Property="Background" Value="#87CEFA" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGrid.Resources>
                                     <DataGrid.Columns>
                                         <DataGridCheckBoxColumn 
                                             Binding="{Binding IsMain}"
                                             Header="Осн.место"/>
+                                        <DataGridCheckBoxColumn 
+                                            Binding="{Binding IsPed}"
+                                            Header="Пед.должн."/>
                                         <!--Дата назначения -->
                                         <DataGridTemplateColumn Header="Дата назначения">
                                             <DataGridTemplateColumn.CellTemplate>
@@ -838,6 +852,32 @@
                                 <StackPanel 
                                     Grid.Column="1" 
                                     Margin="5">
+                                    <Label Content="Отдел"/>
+                                    <TextBox Text="{Binding SelectedMove.Department}"/>
+                                    <Label Content="Должность"/>
+                                    <TextBox Text="{Binding SelectedMove.Position}"/>
+                                    <Label Content="№ Приказа"/>
+                                    <TextBox Text="{Binding SelectedMove.Order}"/>
+                                    <Label Content="Контракт"/>
+                                    <TextBox Text="{Binding SelectedMove.Contract}"/>
+                                    <Label Content="Ставка Бюджет"/>
+                                    <TextBox Text="{Binding SelectedMove.CountBudget}"/>
+                                    <Label Content="Ставка Внебюджет"/>
+                                    <TextBox Text="{Binding SelectedMove.CountNoBudget}"/>
+                                    <Label Content="Дата нач. контракта"/>
+                                    <DatePicker 
+                                        Padding="2" 
+                                        SelectedDate="{Binding SelectedMove.DateStart}"/>
+                                    <Label Content="Дата окон. контракта"/>
+                                    <DatePicker 
+                                        Padding="2"
+                                        SelectedDate="{Binding SelectedMove.DateEnd}"/>
+                                    <CheckBox 
+                                        IsChecked="{Binding SelectedMove.IsMain}"
+                                        Content="Осн. место работы" />
+                                    <CheckBox 
+                                        IsChecked="{Binding SelectedMove.IsPed}"
+                                        Content="Педагогическая должность" />
 
                                 </StackPanel>
 
@@ -1775,7 +1815,15 @@
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
 
-
+                                    <DataGrid.Resources>
+                                        <Style TargetType="{x:Type DataGridCell}">
+                                            <Style.Triggers>
+                                                <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                                    <Setter Property="Background" Value="#87CEFA" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGrid.Resources>
                                     <DataGrid.Columns>
                                         <DataGridTextColumn 
                                             Binding="{Binding Type}"

@@ -9,6 +9,6 @@ namespace AlphaPersonel.Models.Home
         public DateTime? DateDocument { get; set; }
         [JsonPropertyName("document")] public string Document { get; set; } = string.Empty;
         [JsonPropertyName("type")] public string Type { get; set; } = string.Empty;
-        public int IdPerson { get; internal set; }
+        [JsonPropertyName("id_person")] public int IdPerson { get; internal set; }
     }
 }

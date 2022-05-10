@@ -18,6 +18,9 @@ namespace AlphaPersonel.Models.Home
 
         [JsonPropertyName("is_main")]
         public bool IsMain { get; set; }
+        
+        [JsonPropertyName("is_ped")]
+        public bool IsPed { get; set; }
 
         [JsonPropertyName("order")]
         public string Order { get; set; } = string.Empty;

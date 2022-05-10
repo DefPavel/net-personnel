@@ -155,6 +155,12 @@ internal class PersonCardViewModel : BaseViewModel
         get => _selectedRewarding;
         set => Set(ref _selectedRewarding, value);
     }
+    private Move? _selectedMove;
+    public Move? SelectedMove
+    {
+        get => _selectedMove;
+        set => Set(ref _selectedMove, value);
+    }
     
     private Documents? _selectedDocument;
     public Documents? SelectedDocument
