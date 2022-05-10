@@ -34,13 +34,6 @@ internal class DepartmentViewModel : BaseViewModel
         get => _typeDepartments;
         set => Set(ref _typeDepartments, value);
     }
-    // Родительские отделы
-    private IEnumerable<Departments>? _rootDepartments;
-    public IEnumerable<Departments>? RootDepartments
-    {
-        get => _rootDepartments;
-        set => Set(ref _rootDepartments, value);
-    }
     // Выбранные отдел
     private Departments? _selectedDepartment;
     public Departments? SelectedDepartment
@@ -115,7 +108,7 @@ internal class DepartmentViewModel : BaseViewModel
             Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user!.Token, "/pers/tree/all", "GET");
 
             //RootDepartments = await QueryService.JsonDeserializeWithToken<Departments>(_user!.Token, "/pers/tree/all", "GET");
-            //RootDepartments.Insert(0, new Departments { Name = "Не указано", RootTree = "Не указано" });
+           // RootDepartments.Insert(0, new Departments { Name = "Не указано", RootTree = "Не указано" });
         }
         catch (WebException ex)
         {

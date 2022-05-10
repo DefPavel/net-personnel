@@ -71,7 +71,7 @@
             Margin="5 5 0 0"
             Grid.Column="0"
             Grid.Row="1">
-            <TextBlock Margin="5 0 0 0" Text="Введите наименование отдела"/>
+            <TextBlock Margin="5 0 0 0" Text="Введите наименование должности"/>
             <TextBox 
                 x:Name="TextFilerName"
                 Text="{Binding Filter , UpdateSourceTrigger=PropertyChanged}"/>

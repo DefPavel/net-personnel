@@ -1,4 +1,6 @@
-﻿namespace AlphaPersonel.ViewModels;
+﻿using System.Collections.Generic;
+
+namespace AlphaPersonel.ViewModels;
 
 internal class PositionViewModel : BaseViewModel
 {
@@ -88,11 +90,17 @@ internal class PositionViewModel : BaseViewModel
         }
     }
 
-    private ObservableCollection<Departments>? _department;
-    public ObservableCollection<Departments>? Department
+    private IEnumerable<Departments>? _department;
+    public IEnumerable<Departments>? Department
     {
         get => _department;
         set => Set(ref _department, value);
+    }
+    private IEnumerable<TypePosition>? _typePosition;
+    public IEnumerable<TypePosition>? TypePosition
+    {
+        get => _typePosition;
+        set => Set(ref _typePosition, value);
     }
 
     #endregion
@@ -132,6 +140,8 @@ internal class PositionViewModel : BaseViewModel
             Positions = await QueryService.JsonDeserializeWithToken<Position>(_user!.Token, "/pers/position/all", "GET");
 
             Department = await QueryService.JsonDeserializeWithToken<Departments>(_user!.Token, "/pers/tree/all", "GET");
+
+            TypePosition = await QueryService.JsonDeserializeWithToken<TypePosition>(_user!.Token, "/pers/position/type/position", "GET");
         }
         catch (WebException ex)
         {

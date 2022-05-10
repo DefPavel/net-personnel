@@ -70,13 +70,13 @@
                 Style="{StaticResource Header30}"
                     Grid.Column="0"
                     Grid.Row="0"
-                    Text="Справочник Должностей" />
+                    Text="Список Штатных Должностей" />
 
         <StackPanel 
             Margin="5 5 0 0"
             Grid.Column="0"
             Grid.Row="1">
-            <TextBlock Margin="5 0 0 0" Text="Введите наименование отдела"/>
+            <TextBlock Margin="5 0 0 0" Text="Введите наименование должности"/>
             <TextBox 
                 x:Name="TextFilerName"
                 Text="{Binding Filter , UpdateSourceTrigger=PropertyChanged}"/>
@@ -133,9 +133,13 @@
             Grid.Column="1">
             <StackPanel
                 Margin="5">
-                <Label Content="Наименование Должности"/>
-                <TextBox SpellCheck.IsEnabled="True" Language="ru-ru" Text="{Binding SelectedPosition.Name}"/>
-
+                <Label Content="Выбрать Должность"/>
+                <ComboBox 
+                    ItemsSource="{Binding TypePosition}"
+                    DisplayMemberPath="Name"
+                    SelectedValuePath="Name"
+                    SelectedValue="{Binding SelectedPosition.Name , Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+                    />
                 <Label Content="Выбрать Отдел"/>
                 <ComboBox 
                     ItemsSource="{Binding Department}"
@@ -143,15 +147,6 @@
                     SelectedValuePath="Name"
                     SelectedValue="{Binding SelectedPosition.DepartmentName , Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
                     />
-                <StackPanel Margin="5">
-                    <RadioButton
-                        IsChecked="{Binding RadioIsPed}"
-                        Content="Педагогическая должность"/>
-                    <RadioButton      
-                        IsChecked="{Binding RadioIsNoPed}"
-                        Content="Ремонто строительная и обслуживающая"/>
-                </StackPanel>
-
                 <Label Content="Лимит отпуска"/>
                 <xctk:DecimalUpDown
                     Foreground="#444444"

@@ -98,13 +98,11 @@ internal class TypePositionViewModel : BaseViewModel
     public ICommand Add => _add ??= new LambdaCommand(AddPosition);
 
     private ICommand? _save;
-    public ICommand Save => _save ??= new LambdaCommand(SaveTypePosition , _ => SelectedPosition is not null);
+    public ICommand Save => _save ??= new LambdaCommand(SaveTypePosition , _ => SelectedPosition is not null && !string.IsNullOrEmpty(SelectedPosition.Name));
 
     private ICommand? _delete;
     public ICommand Delete => _delete ??= new LambdaCommand(DeleteTypePosition , _ => SelectedPosition is not null && TypePosition!.Count > 0);
     #endregion
-
-
 
     private async void ApiGetTypeAsync(object obj)
     {
@@ -140,6 +138,12 @@ internal class TypePositionViewModel : BaseViewModel
         var newSlectedItem = SelectedPosition!;
         try
         {
+            /*if(string.IsNullOrWhiteSpace(SelectedPosition!.Name))
+            {
+                MessageBox.Show("Введите наименование должности!", "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                return;
+            }
+            */
             if (SelectedPosition!.Id > 0)
             {
                 SelectedPosition.IsPed = RadioIsPed;
@@ -182,6 +186,7 @@ internal class TypePositionViewModel : BaseViewModel
         {
             Name = "Новая Должность",
             LimitHoliday = 28, 
+            NameGenitive = "Не указано"
                 
                 
         };
@@ -194,7 +199,7 @@ internal class TypePositionViewModel : BaseViewModel
     {
         try
         {
-            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
+            if (MessageBox.Show("Вы действительно хотитет удалить данную запись?", "Вопрос", MessageBoxButton.YesNo,
                     MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
             await QueryService.JsonSerializeWithToken(_user.Token, "/pers/position/type/del/" + SelectedPosition!.Id, "DELETE", SelectedPosition);
 
