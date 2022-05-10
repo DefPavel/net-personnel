@@ -20,13 +20,13 @@ internal class InsertReportViewModel : BaseViewModel
         get => _selectedIsPed;
         set => Set(ref _selectedIsPed, value);
     }
-    private DateTime? _dateBegin;
+    private DateTime? _dateBegin = DateTime.Now;
     public DateTime? DateBegin
     {
         get => _dateBegin;
         set => Set(ref _dateBegin, value);
     }
-    private DateTime? _dateEnd;
+    private DateTime? _dateEnd = DateTime.Now.AddDays(1);
     public DateTime? DateEnd
     {
         get => _dateEnd;
@@ -74,6 +74,11 @@ internal class InsertReportViewModel : BaseViewModel
             if(SelectedIsPed == null)
             {
                 _ = MessageBox.Show("Необходимо выбрать элемент!");
+                return;
+            }
+            if(DateBegin == null || DateEnd == null)
+            {
+                _ = MessageBox.Show("Необходимо выбрать дату!");
                 return;
             }
             object person = new
