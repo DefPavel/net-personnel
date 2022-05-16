@@ -1,4 +1,5 @@
-﻿using AlphaPersonel.Views.Models;
+﻿using System.Collections.Generic;
+using AlphaPersonel.Views.Models;
 using System.Linq;
 namespace AlphaPersonel.ViewModels;
 
@@ -41,7 +42,7 @@ internal class HomeViewModel : BaseViewModel
     public VisualBoolean? IsLoading
     {
         get => _isLoading;
-        set => Set(ref _isLoading, value);
+        private set => Set(ref _isLoading, value);
     }
     // Вывести информацию о пользователе который авторизировался 
     private Users _user;
@@ -68,8 +69,8 @@ internal class HomeViewModel : BaseViewModel
         private set => Set(ref _positions, value);
     }
     // Список всех должностей
-    private ObservableCollection<TypePosition>? _typePosition;
-    public ObservableCollection<TypePosition>? TypePosition
+    private IEnumerable<TypePosition>? _typePosition;
+    public IEnumerable<TypePosition>? TypePosition
     {
         get => _typePosition;
         private set => Set(ref _typePosition, value);
@@ -158,16 +159,18 @@ internal class HomeViewModel : BaseViewModel
 
     // расчет совместителей Внешних 
     private int _countIsPluralismOterIsPed;
-    public int CountIsPluralismOterIsPed
+
+    private int CountIsPluralismOterIsPed
     {
         get => _countIsPluralismOterIsPed;
-        private set => Set(ref _countIsPluralismOterIsPed, value);
+        set => Set(ref _countIsPluralismOterIsPed, value);
     }
     private int _countIsPluralismOterNotIsPed;
-    public int CountIsPluralismOterNotIsPed
+
+    private int CountIsPluralismOterNotIsPed
     {
         get => _countIsPluralismOterNotIsPed;
-        private set => Set(ref _countIsPluralismOterNotIsPed, value);
+        set => Set(ref _countIsPluralismOterNotIsPed, value);
     }
 
     // Подсчет количества людей имеющие педагогическую должность
@@ -323,7 +326,7 @@ internal class HomeViewModel : BaseViewModel
     public ICommand OpenAddPerson => _openAddPerson ??= new LambdaCommand(AddPerson, _ => SelectedItem is not null);
 
     private ICommand? _addPosition;
-    public ICommand AddPosition => _addPosition ??= new LambdaCommand(AddPositionToDepartmentAsync);
+    public ICommand AddPosition => _addPosition ??= new LambdaCommand(AddPositionToDepartmentAsync , _ => SelectedItem is not null);
 
     private ICommand? _savePosition;
     public ICommand SavePosition => _savePosition ??= new LambdaCommand(UpdatePosition, _ => SelectedPosition is not null);
@@ -554,30 +557,32 @@ internal class HomeViewModel : BaseViewModel
     {
         try
         {
-            if (SelectedItem != null)
+            var countPosition = Positions!.Where(x => x.Id == 0).ToList().Count;
+            if(countPosition > 0)
             {
-                var name = TypePosition!.FirstOrDefault()?.Name;
-                if (name == null) return;
-                Position dep = new()
-                {
-                    Name = name,
-                    IsPed = true,
-                    HolidayLimit = 28,
-                    DepartmentName = SelectedItem.Name,
-                    IdDepartment = SelectedItem.Id,
-                    Phone = "Не указано",
-                };
-                Positions!.Insert(0, dep);
-                SelectedPosition = dep;
+                _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
             }
-            else
+
+            if (SelectedItem == null) return;
+            var name = TypePosition!.FirstOrDefault()?.Name;
+            if (name == null) return;
+            Position dep = new()
+            {
+                Name = name,
+                IsPed = true,
+                HolidayLimit = 28,
+                DepartmentName = SelectedItem.Name,
+                IdDepartment = SelectedItem.Id,
+                Phone = "Не указано",
+            };
+            Positions!.Insert(0, dep);
+            SelectedPosition = dep;
+            /*else
             {
                 _ = MessageBox.Show("Чтобы создать должность,необходимо выбрать отдел!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-
-            // SelectedPerson.ArrayPosition.Insert(0, dep);
-            // SelectedPosition = dep;
-
+            */
         }
         catch (WebException ex)
         {
@@ -624,6 +629,8 @@ internal class HomeViewModel : BaseViewModel
     {
         try
         {
+            var newSelectedPosition = SelectedPosition!;
+
             if (SelectedPosition!.Id > 0)
             {
                 SelectedPosition.IsPed = RadioIsPed;
@@ -640,11 +647,12 @@ internal class HomeViewModel : BaseViewModel
             // Обновить данные
             Positions = await QueryService.JsonDeserializeWithToken<Position>(token: _user!.Token, "/pers/position/get/" + SelectedItem!.Id, "GET");
             // Вывести сотрудников данного отдела
-            Persons = await QueryService.JsonDeserializeWithToken<Persons>(token: _user!.Token, "/pers/person/get/department/" + SelectedItem.Id, "GET");
+            //Persons = await QueryService.JsonDeserializeWithToken<Persons>(token: _user!.Token, "/pers/person/get/department/" + SelectedItem.Id, "GET");
 
+            SelectedPosition = Positions.FirstOrDefault(x => x.Name == newSelectedPosition!.Name);
             _ = MessageBox.Show("Данные успешно сохраненны");
         }
-        catch (System.Net.WebException ex)
+        catch (WebException ex)
         {
             if (ex.Response != null)
             {

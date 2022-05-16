@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewmodels="clr-namespace:AlphaPersonel.ViewModels"
-             xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" xmlns:i="http://schemas.microsoft.com/xaml/behaviors" xmlns:fa="http://schemas.fontawesome.com/icons/svg"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:fa="http://schemas.fontawesome.com/icons/svg"
              d:DataContext="{d:DesignInstance Type=viewmodels:SearchViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -55,7 +56,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <StackPanel Margin="5">
-                        <TextBlock Text="Введите фамилию"/>
+                        <TextBlock Text="Введите Ф.И.О."/>
                         <TextBox Text="{Binding QueryPerson,
                             UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
@@ -63,7 +64,7 @@
                         Command="{Binding SearchPerson}"
                         Margin="0 12 5 0"
                         Content="Поиск"
-                        Grid.Column="1"/>
+                        Grid.Row="0" Grid.Column="1"/>
                     <DataGrid 
                         ScrollViewer.IsDeferredScrollingEnabled="True"
                         AlternatingRowBackground="#e1eff9"
@@ -74,7 +75,7 @@
                         ItemsSource="{Binding Persons}"
                         Margin="5"
                         AutoGenerateColumns="False"
-                        Grid.ColumnSpan="2"
+                        Grid.ColumnSpan="2" Grid.Column="0"
                         Grid.Row="1">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDoubleClick">
@@ -147,7 +148,7 @@
                         Command="{Binding SearchDepartment}"
                         Margin="0 12 0 0"
                         Content="Поиск"
-                        Grid.Column="1"/>
+                        Grid.Row="0" Grid.Column="1"/>
                     <DataGrid 
                          ScrollViewer.IsDeferredScrollingEnabled="True"
                         FontSize="13"
@@ -157,8 +158,8 @@
                         AutoGenerateColumns="False"
                         Margin="5"
                         ItemsSource="{Binding Departments}"
-                        Grid.ColumnSpan="2"
-                        Grid.Row="1">
+                        Grid.ColumnSpan="2" Grid.Column="0"
+                         Grid.Row="1">
                         <DataGrid.Resources>
                             <Style TargetType="{x:Type DataGridCell}">
                                 <Style.Triggers>
@@ -189,9 +190,8 @@
         </TabControl>
 
         <StatusBar 
-            Grid.Row="3" 
-            Grid.Column="0"
-            Grid.ColumnSpan="2">
+            Grid.Row="2" 
+            Grid.Column="0">
             <StatusBarItem>
                 <TextBlock Text="Загрузка данных..."
                            Visibility="{Binding IsLoading.IsTrueVisibility}"/>

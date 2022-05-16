@@ -1,4 +1,6 @@
-﻿namespace AlphaPersonel.ViewModels;
+﻿using System.Collections.Generic;
+
+namespace AlphaPersonel.ViewModels;
 internal class ChangeSurnameViewModel : BaseViewModel
 {
 
@@ -8,8 +10,8 @@ internal class ChangeSurnameViewModel : BaseViewModel
     private readonly Persons _person;
 
     // Массив Приказов
-    private ObservableCollection<Order>? _orders;
-    public ObservableCollection<Order>? Orders
+    private IEnumerable<Order>? _orders;
+    public IEnumerable<Order>? Orders
     {
         get => _orders;
         private set => Set(ref _orders, value);
@@ -97,7 +99,8 @@ internal class ChangeSurnameViewModel : BaseViewModel
         try
         {
             // Загрузка приказов смены фамилии
-            TypeOrder idTypeOrder = await QueryService.JsonDeserializeWithObjectAndParam(_user.Token, "/pers/order/type/name", "POST", new TypeOrder { Name = "Смена фамилии" });
+            var idTypeOrder = await QueryService.JsonDeserializeWithObjectAndParam(_user.Token,
+                "/pers/order/type/name", "POST", new TypeOrder { Name = "Смена фамилии" });
             Orders = await QueryService.JsonDeserializeWithToken<Order>(_user.Token, "/pers/order/get/" + idTypeOrder.Id, "GET");
 
         }

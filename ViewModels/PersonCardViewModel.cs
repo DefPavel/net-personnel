@@ -421,7 +421,7 @@ internal class PersonCardViewModel : BaseViewModel
     #endregion
 
     #region Команды
- 
+
     #region Menu Items
 
     private ICommand? _logout;
@@ -456,15 +456,24 @@ internal class PersonCardViewModel : BaseViewModel
 
     private ICommand? _openPeriod;
     public ICommand OpenPeriod => _openPeriod ??= new LambdaCommand(OpenPeriodView);
-    
+
     private ICommand? _openReport;
     public ICommand OpenReport => _openReport ??= new LambdaCommand(OpenReportView);
-    
+
+    private ICommand? _openReportInsert;
+    public ICommand OpenReportInsert => _openReportInsert ??= new LambdaCommand(OpenReportInsertPerson);
+
+    private ICommand? _openReportDelete;
+    public ICommand OpenReportDelete => _openReportDelete ??= new LambdaCommand(OpenReportDropPerson);
+
+    private ICommand? _openReportRewarding;
+    public ICommand OpenReportRewarding => _openReportRewarding ??= new LambdaCommand(OpenReportRewardingPerson);
+
     private ICommand? _openMasterReport;
     public ICommand OpenMasterReport => _openMasterReport ??= new LambdaCommand(OpenMasterReportView);
 
     #endregion
-    
+
     private ICommand? _updateStates;
     public ICommand UpdateStates => _updateStates ??= new LambdaCommand(ApiUpdateStatePersonAsync);
 
@@ -662,7 +671,6 @@ internal class PersonCardViewModel : BaseViewModel
     #endregion
 
     #region Methods Menu Items
-    
     private async void Exit(object p)
     {
         try
@@ -694,67 +702,94 @@ internal class PersonCardViewModel : BaseViewModel
 
     private void OpenTypeVacationView(object p)
     {
-        _navigationStore.CurrentViewModel = new TypeVacationViewModel(_navigationStore, _user!);
+        if (_user != null) _navigationStore.CurrentViewModel = new TypeVacationViewModel(_navigationStore, _user);
     }
 
     private void OpenTypeRewardingView(object p)
     {
-        _navigationStore.CurrentViewModel = new TypeRewardingViewModel(_navigationStore, _user!);
+        if (_user != null) _navigationStore.CurrentViewModel = new TypeRewardingViewModel(_navigationStore, _user);
     }
 
     private void OpenPeriodView(object p)
     {
-        _navigationStore.CurrentViewModel = new PeriodVacationViewModel(_navigationStore, _user!);
+        if (_user != null) _navigationStore.CurrentViewModel = new PeriodVacationViewModel(_navigationStore, _user);
     }
     // Отчеты
     private void OpenReportView(object p)
     {
-        _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user!);
+        if (_user != null) _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
+    }
+    // Отчет принятых
+    private void OpenReportInsertPerson(object p)
+    {
+        // _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
+        if (_user == null) return;
+        InsertReportViewModel viewModel = new("/reports/pers/persons/insert/", "Отчет принятых", _user);
+        ReportByPersonInsert view = new() { DataContext = viewModel };
+        view.ShowDialog();
+    }
+    // Отчет уволенных
+    private void OpenReportDropPerson(object p)
+    {
+        // _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
+        if (_user == null) return;
+        InsertReportViewModel viewModel = new("/reports/pers/persons/drop/", "Отчет уволенных", _user);
+        ReportByPersonInsert view = new() { DataContext = viewModel };
+        view.ShowDialog();
+    }
+    // Отчет награжденных
+    private void OpenReportRewardingPerson(object p)
+    {
+        // _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
+        if (_user == null) return;
+        InsertReportViewModel viewModel = new("/reports/pers/persons/rewarding/", "Отчет награжденных", _user);
+        ReportByPersonInsert view = new() { DataContext = viewModel };
+        view.ShowDialog();
     }
     // Новый отчет
     private void OpenMasterReportView(object p)
     {
-        _navigationStore.CurrentViewModel = new MasterReportViewModel(_navigationStore, _user!);
+        if (_user != null) _navigationStore.CurrentViewModel = new MasterReportViewModel(_navigationStore, _user);
     }
 
     // Отделы
     private void OpenDepartmentView(object p)
     {
-        _navigationStore.CurrentViewModel = new DepartmentViewModel(_navigationStore, _user!);
+        if (_user != null) _navigationStore.CurrentViewModel = new DepartmentViewModel(_navigationStore, _user);
     }
     // Типы приказов
     private void OpenTypeOrderView(object p)
     {
-        _navigationStore.CurrentViewModel = new TypeOrderViewModel(_navigationStore, _user!);
+        if (_user != null) _navigationStore.CurrentViewModel = new TypeOrderViewModel(_navigationStore, _user);
     }
     // Тип Званий
     private void OpenTypeRankView(object p)
     {
-        _navigationStore.CurrentViewModel = new TypeRanksViewModel(_navigationStore, _user!);
+        if (_user != null) _navigationStore.CurrentViewModel = new TypeRanksViewModel(_navigationStore, _user);
     }
     // Приказы
     private void OpenOrderView(object p)
     {
-        _navigationStore.CurrentViewModel = new OrderViewModel(_navigationStore, _user!);
+        if (_user != null) _navigationStore.CurrentViewModel = new OrderViewModel(_navigationStore, _user);
     }
 
     private void OpenPositionView(object p)
     {
-        _navigationStore.CurrentViewModel = new PositionViewModel(_navigationStore, _user!);
+        if (_user != null) _navigationStore.CurrentViewModel = new PositionViewModel(_navigationStore, _user);
     }
     // Поиск
     private void OpenSearchView(object p)
     {
-        _navigationStore.CurrentViewModel = new SearchViewModel(_navigationStore, _user!);
+        if (_user != null) _navigationStore.CurrentViewModel = new SearchViewModel(_navigationStore, _user);
     }
 
     private void OpenTypePositionView(object p)
     {
-        _navigationStore.CurrentViewModel = new TypePositionViewModel(_navigationStore, _user!);
+        if (_user != null) _navigationStore.CurrentViewModel = new TypePositionViewModel(_navigationStore, _user);
     }
 
     #endregion
-    
+
     #region Основная Логика
 
     // Распечатать Справку с места работы

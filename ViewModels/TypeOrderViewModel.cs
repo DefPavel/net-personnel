@@ -1,38 +1,38 @@
 ﻿using System.Linq;
 
 namespace AlphaPersonel.ViewModels;
-
 internal class TypeOrderViewModel : BaseViewModel 
 {
-    private readonly NavigationStore navigationStore;
-    private readonly Users _User;
+    private readonly NavigationStore _navigationStore;
+    private readonly Users _user;
 
     public TypeOrderViewModel(NavigationStore navigationStore, Users user)
     {
-        this.navigationStore = navigationStore;
-        _User = user;
+        this._navigationStore = navigationStore;
+        _user = user;
     }
 
-    private string? _Filter;
+    private string? _filter;
     public string? Filter
     {
-        get => _Filter;
+        get => _filter;
         set
         {
-            _ = Set(ref _Filter, value);
+            _ = Set(ref _filter, value);
             if (TypeOrders != null)
             {
-                _CollectionDepart!.Refresh();
+                _collectionDepart!.Refresh();
             }
 
         }
     }
     // Специальная колекция для фильтров
-    private ICollectionView? _CollectionDepart;
-    public ICollectionView? CollectionDepart
+    private ICollectionView? _collectionDepart;
+
+    private ICollectionView? CollectionDepart
     {
-        get => _CollectionDepart;
-        private set => Set(ref _CollectionDepart, value);
+        get => _collectionDepart;
+        set => Set(ref _collectionDepart, value);
     }
     private bool FilterToType(object emp)
     {
@@ -40,45 +40,44 @@ internal class TypeOrderViewModel : BaseViewModel
     }
 
 
-    private ObservableCollection<TypeOrder>? _TypeOrders;
+    private ObservableCollection<TypeOrder>? _typeOrders;
     public ObservableCollection<TypeOrder>? TypeOrders
     {
-        get => _TypeOrders;
+        get => _typeOrders;
         private set
         {
-            _ = Set(ref _TypeOrders, value);
-            CollectionDepart = CollectionViewSource.GetDefaultView(TypeOrders);
-            CollectionDepart.Filter = FilterToType;
-
+            _ = Set(ref _typeOrders, value);
+            if (TypeOrders != null) CollectionDepart = CollectionViewSource.GetDefaultView(TypeOrders);
+            if (CollectionDepart != null) CollectionDepart.Filter = FilterToType;
         }
     }
 
     // Выбранные отдел
-    private TypeOrder? _SelectedOrder;
+    private TypeOrder? _selectedOrder;
     public TypeOrder? SelectedOrder
     {
-        get => _SelectedOrder;
-        set => Set(ref _SelectedOrder, value);
+        get => _selectedOrder;
+        set => Set(ref _selectedOrder, value);
     }
 
 
     #region Команды
 
-    private ICommand? _GetToMain;
-    public ICommand GetToMain => _GetToMain ??= new LambdaCommand(GetBack);
+    private ICommand? _getToMain;
+    public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack);
 
-    private ICommand? _AddType;
-    public ICommand AddType => _AddType ??= new LambdaCommand(AddTypeOrderAsync);
+    private ICommand? _addType;
+    public ICommand AddType => _addType ??= new LambdaCommand(AddTypeOrderAsync);
 
-    private ICommand? _SaveType;
-    public ICommand SaveType => _SaveType ??= new LambdaCommand(SaveTypeOrder, _ => SelectedOrder is not null && !string.IsNullOrWhiteSpace(SelectedOrder.Name));
+    private ICommand? _saveType;
+    public ICommand SaveType => _saveType ??= new LambdaCommand(SaveTypeOrder, _ => SelectedOrder is not null && !string.IsNullOrWhiteSpace(SelectedOrder.Name));
 
-    private ICommand? _DeleteType;
-    public ICommand DeleteType => _DeleteType ??= new LambdaCommand(DeleteTypeOrder, _ => SelectedOrder is not null && TypeOrders!.Count > 0);
+    private ICommand? _deleteType;
+    public ICommand DeleteType => _deleteType ??= new LambdaCommand(DeleteTypeOrder, _ => SelectedOrder is not null && TypeOrders!.Count > 0);
 
-    private ICommand? _LoadedOrder;
+    private ICommand? _loadedOrder;
 
-    public ICommand LoadedOrder => _LoadedOrder ??= new LambdaCommand(ApiGetOrders);
+    public ICommand LoadedOrder => _loadedOrder ??= new LambdaCommand(ApiGetOrders);
     #endregion
 
 
@@ -86,18 +85,24 @@ internal class TypeOrderViewModel : BaseViewModel
 
     private void GetBack(object p)
     {
-        navigationStore.CurrentViewModel = new HomeViewModel(_User, navigationStore);
+        _navigationStore.CurrentViewModel = new HomeViewModel(_user, _navigationStore);
     }
 
     // Создать в коллекции новый тип приказа
     private  void AddTypeOrderAsync(object p)
     {
+        var count = TypeOrders!.Where(x => x.Id == 0).ToList().Count;
+        if(count > 0)
+        {
+            _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
 
         TypeOrder typeOrder = new()
         {
             Name = "Новый вид приказа"
         };
-        _TypeOrders!.Insert(0, typeOrder);
+        _typeOrders!.Insert(0, typeOrder);
         SelectedOrder = typeOrder;
 
     }
@@ -106,13 +111,11 @@ internal class TypeOrderViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null) return;
-            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            {
-                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/order/del/type/" + SelectedOrder!.Id, "DELETE", SelectedOrder);
+            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
+            await QueryService.JsonSerializeWithToken(_user.Token, "/pers/order/del/type/" + SelectedOrder!.Id, "DELETE", SelectedOrder);
 
-                _ = _TypeOrders!.Remove(SelectedOrder);
-            }
+            _ = _typeOrders!.Remove(SelectedOrder);
 
         }
         catch (WebException ex)
@@ -123,10 +126,7 @@ internal class TypeOrderViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -141,21 +141,20 @@ internal class TypeOrderViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null) return;
-            var newSlectedItem = SelectedOrder;
+            var newSelectedItem = SelectedOrder;
             if (SelectedOrder!.Id > 0)
             {
                 // Изменить
-                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/order/rename/type/" + SelectedOrder.Id, "POST", SelectedOrder);
+                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/order/rename/type/" + SelectedOrder.Id, "POST", SelectedOrder);
                 // MessageBox.Show("Изменить");
             }
             else
             {
                 // Создать
-                await QueryService.JsonSerializeWithToken(_User.Token, "/pers/order/add/type", "POST", SelectedOrder);
+                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/order/add/type", "POST", SelectedOrder);
             }
-            TypeOrders = await QueryService.JsonDeserializeWithToken<TypeOrder>(_User.Token, "/pers/order/type/get", "GET");
-            SelectedOrder = TypeOrders.FirstOrDefault(x => x.Name == newSlectedItem!.Name);
+            TypeOrders = await QueryService.JsonDeserializeWithToken<TypeOrder>(_user.Token, "/pers/order/type/get", "GET");
+            SelectedOrder = TypeOrders.FirstOrDefault(x => x.Name == newSelectedItem!.Name);
 
         }
         catch (WebException ex)
@@ -166,10 +165,7 @@ internal class TypeOrderViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else
@@ -184,9 +180,8 @@ internal class TypeOrderViewModel : BaseViewModel
     {
         try
         {
-            if (_User.Token == null) return;
             // Загрузить массив типов приказов
-            TypeOrders = await QueryService.JsonDeserializeWithToken<TypeOrder>(_User.Token, "/pers/order/type/get", "GET");
+            TypeOrders = await QueryService.JsonDeserializeWithToken<TypeOrder>(_user.Token, "/pers/order/type/get", "GET");
 
 
         }
@@ -198,10 +193,7 @@ internal class TypeOrderViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else

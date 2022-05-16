@@ -54,9 +54,10 @@ internal class LoginViewModel : BaseViewModel
 
     private async void OnSignInAsync(object p)
     {
+        Users account;
         try
         {
-            var account = await SignIn.Authentication(
+                account = await SignIn.Authentication(
                 username: UserName!,
                 password: Password!);
 
@@ -71,7 +72,8 @@ internal class LoginViewModel : BaseViewModel
                 if (ex.Response is HttpWebResponse response)
                 {
                     using StreamReader reader = new(response.GetResponseStream());
-                    ErrorMessage = await reader.ReadToEndAsync();
+                    account = JsonSerializer.Deserialize<Users>(await reader.ReadToEndAsync()) ?? throw new InvalidOperationException();
+                    ErrorMessage = account?.Error;
                 }
             }
             else

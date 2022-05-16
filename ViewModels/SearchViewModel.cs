@@ -1,4 +1,6 @@
-﻿namespace AlphaPersonel.ViewModels;
+﻿using System.Collections.Generic;
+
+namespace AlphaPersonel.ViewModels;
 
 internal class SearchViewModel : BaseViewModel
 {
@@ -48,15 +50,15 @@ internal class SearchViewModel : BaseViewModel
     }
 
     // Массив отделов
-    private ObservableCollection<Departments>? _departments;
-    public ObservableCollection<Departments>? Departments
+    private IEnumerable<Departments>? _departments;
+    public IEnumerable<Departments>? Departments
     {
         get => _departments;
         private set => Set(ref _departments, value);
     }
     // Массив Персон
-    private ObservableCollection<Persons>? _persons;
-    public ObservableCollection<Persons>? Persons
+    private IEnumerable<Persons>? _persons;
+    public IEnumerable<Persons>? Persons
     {
         get => _persons;
         private set => Set(ref _persons, value);
@@ -96,12 +98,7 @@ internal class SearchViewModel : BaseViewModel
         try
         {
             IsLoading = true;
-
-            Departments = await QueryService.JsonDeserializeWithTokenAndParam(_user!.Token, "/pers/tree/find/", "POST", new Departments
-            {
-                Name = QueryDepartment!.Trim(),
-            });
-
+            Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user!.Token, $"/pers/tree/find/?text={QueryDepartment}", "GET");
             IsLoading = false;
         }
         catch (WebException ex)
@@ -132,13 +129,7 @@ internal class SearchViewModel : BaseViewModel
         try
         {
             IsLoading = true;
-
-            Persons = await QueryService.JsonDeserializeWithTokenAndParam(_user!.Token, "/pers/person/find/", "POST",
-            new Persons
-            {
-                FirstName = QueryPerson!.Trim(),
-            });
-
+            Persons = await QueryService.JsonDeserializeWithToken<Persons>(_user!.Token, $"/pers/person/find/?text={QueryPerson}", "GET");
             IsLoading = false;
         }
         catch (WebException ex)

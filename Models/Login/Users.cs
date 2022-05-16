@@ -1,5 +1,5 @@
 ﻿namespace AlphaPersonel.Models;
-internal class Users
+internal class Users : ResponseError
 {
     [JsonPropertyName("id")]
     public int Id { get; set; } // Id пользователя

@@ -106,7 +106,7 @@
 
         <GridSplitter
             Width="2"
-            Grid.RowSpan="2"
+            Grid.RowSpan="2" Grid.Column="0"
             Grid.Row="1"/>
         <GroupBox 
             Header="Информация"

@@ -58,7 +58,8 @@ internal class ReportsViewModel : BaseViewModel
 
     // Массив отчетов
     private ObservableCollection<Report>? _reports;
-    public ObservableCollection<Report>? Reports
+
+    private ObservableCollection<Report>? Reports
     {
         get => _reports;
         set
@@ -183,7 +184,7 @@ internal class ReportsViewModel : BaseViewModel
     public ReportsViewModel(NavigationStore navigationStore, Users user)
     {
         _user = user;
-        this._navigationStore = navigationStore;
+        _navigationStore = navigationStore;
 
         Reports = new ObservableCollection<Report>
             {

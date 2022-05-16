@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Linq;
 
 namespace AlphaPersonel.ViewModels;
 
@@ -121,6 +122,12 @@ internal class PeriodVacationViewModel : BaseViewModel
     private void AddPeriod(object p)
     {
 
+        var count = PeriodVacations!.Where(x => x.Id == 0).ToList().Count;
+        if(count > 0)
+        {
+            _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
         var toDay = DateTime.Now;
 
         PeriodVacation dep = new()

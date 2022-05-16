@@ -67,7 +67,7 @@
                 Style="{StaticResource Header30}"
                     Grid.Column="0"
                     Grid.Row="0"
-                    Text="Справочник Отделов" />
+                    Text="Штатные подразделения" />
 
         <StackPanel 
             Margin="5 5 0 0"

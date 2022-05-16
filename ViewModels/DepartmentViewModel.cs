@@ -132,6 +132,12 @@ internal class DepartmentViewModel : BaseViewModel
     private void AddDepartmentAsync(object p)
     {
 
+        var count = Departments!.Where(x => x.Id == 0).ToList().Count;
+        if(count > 0)
+        {
+            _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
         Departments dep = new()
         {
             Name = "Новый отдел",

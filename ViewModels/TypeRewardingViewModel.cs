@@ -1,4 +1,6 @@
-﻿namespace AlphaPersonel.ViewModels;
+﻿using System.Linq;
+
+namespace AlphaPersonel.ViewModels;
 
 internal class TypeRewardingViewModel : BaseViewModel 
 {
@@ -39,10 +41,11 @@ internal class TypeRewardingViewModel : BaseViewModel
 
 
     private ObservableCollection<TypeRewarding>? _typeRewardings;
-    public ObservableCollection<TypeRewarding>? TypeRewardings
+
+    private ObservableCollection<TypeRewarding>? TypeRewardings
     {
         get => _typeRewardings;
-        private set
+        set
         {
             _ = Set(ref _typeRewardings, value);
             if (TypeRewardings != null) CollectionDepart = CollectionViewSource.GetDefaultView(TypeRewardings);
@@ -87,6 +90,12 @@ internal class TypeRewardingViewModel : BaseViewModel
 
     private void AddTypeRewardingAsync(object p)
     {
+        var count = TypeRewardings!.Where(x => x.Id == 0).ToList().Count;
+        if(count > 0)
+        {
+            _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
         TypeRewarding type = new()
         {
             Name = "Новый тип награждения"

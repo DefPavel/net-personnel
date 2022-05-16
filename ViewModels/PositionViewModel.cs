@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace AlphaPersonel.ViewModels;
 
@@ -157,6 +158,12 @@ internal class PositionViewModel : BaseViewModel
 
     private void AddPosition(object p)
     {
+        var count = Positions!.Where(x => x.Id == 0).ToList().Count;
+        if(count > 0)
+        {
+            _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
 
         Position position = new()
         {

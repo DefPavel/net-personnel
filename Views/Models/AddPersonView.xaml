@@ -70,7 +70,7 @@
                     Content="Женский"/>
             </StackPanel>
             <Separator 
-                Margin="5"
+                Margin="5 0 5 0"
                 Height="1"/>
             <Label 
                 FontWeight="Bold"
@@ -103,7 +103,7 @@
                     />
             </StackPanel>
             <Separator 
-                Margin="5"
+                Margin="5 0 5 0"
                 Height="1"/>
             <Label 
                 FontWeight="Bold"
@@ -147,7 +147,7 @@
 
             </StackPanel>
             <Separator 
-                Margin="5"
+                Margin="5 0 5 0"
                 Height="1"/>
             <Label 
                 FontWeight="Bold"

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Text.Json.Serialization;
-
-
-namespace AlphaPersonel.Models.Home
+﻿namespace AlphaPersonel.Models.Home
 {
     internal class Education : TypeEducation
     {

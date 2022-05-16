@@ -33,7 +33,7 @@
         <!--#endregion-->
 
         <!--#region Menu -->
-         <Menu 
+        <Menu 
             Grid.Row="0" 
             VerticalAlignment="Center"
             Grid.ColumnSpan="2">
@@ -46,12 +46,13 @@
                            
                         Height="13"
                         Width="13">
-                            <Path 
-                                Stretch="Uniform"
-                                Fill="#444444"
-                                Data="M13,9V3.5L18.5,9M6,2C4.89,2 4,2.89 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2H6Z"
-                                Width="13" 
-                                Height="13" />
+                            <Path
+                              
+                            Stretch="Uniform"
+                            Fill="#444444"
+                            Data="M13,9V3.5L18.5,9M6,2C4.89,2 4,2.89 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2H6Z"
+                            Width="13" 
+                            Height="13" />
                         </Canvas>
                         <TextBlock>Файл</TextBlock>
                     </StackPanel>
@@ -73,7 +74,7 @@
                         <Canvas 
                         Height="13"
                         Width="13">
-                        <Path
+                            <Path
                             Stretch="Uniform"
                             Fill="#444444"
                             Data="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"
@@ -83,7 +84,7 @@
                         <TextBlock>Справочники</TextBlock>
                     </StackPanel>
                 </MenuItem.Header>
-                <MenuItem Header="Список отделов"
+                <MenuItem Header="Список подразделений"
                           Command="{Binding OpenDepartment}" />
                 <MenuItem Header="Виды должностей"
                           Command="{Binding OpenTypePosition}"/>
@@ -101,11 +102,11 @@
                           Command="{Binding OpenOrder}"/>
                 <MenuItem Header="Список штатных должностей"
                           Command="{Binding OpenPosition}"/>
-                
+
                 <!--<MenuItem Header="Календарь праздников"
                           Command="{Binding }"/>-->
                 <MenuItem Header="Отправка в отпуск..."/>
-                <MenuItem Header="Мастер увольнения"/>
+               
             </MenuItem>
             <MenuItem
                 IsEnabled="{Binding IsAdministrator}">
@@ -125,17 +126,20 @@
                     </StackPanel>
                 </MenuItem.Header>
                 <MenuItem 
+                    Command="{Binding OpenReportInsert}"
                     Header="Список принятых сотрудников за период"/>
                 <MenuItem 
-                    Header="Список уволенных сотрудников за период"/>
-                <MenuItem 
+                    Command="{Binding OpenReportRewarding}"
                     Header="Список награжденных сотрудников за период"/>
                 <MenuItem 
-                    Header="Список сотрудников не имеющие за период"/>
+                    Command="{Binding OpenReportDelete}"
+                    Header="Список уволенных сотрудников за период"/>
+                <MenuItem 
+                    Header="Список сотрудников не имеющие отпуск за период"/>
                 <MenuItem 
                     Header="Списки..." 
                     Command="{Binding OpenReport}"/>
-                </MenuItem>
+            </MenuItem>
             <MenuItem
                 Command="{Binding OpenMasterReport}"
                 IsEnabled="{Binding IsAdministrator}">
@@ -275,7 +279,6 @@
             <TextBlock 
                 Margin="5 0 0 0"
                 Grid.Row="1"
-                HorizontalAlignment="Left"
                 Text="{Binding SelectedPerson.FullName}"
                 Style="{StaticResource Header20}"
                 />
@@ -289,7 +292,7 @@
                 <!--#region Личная карта -->
 
                 <TabItem Header="Личная карта">
-                    <ScrollViewer ScrollViewer.IsDeferredScrollingEnabled="True">
+                    <ScrollViewer IsDeferredScrollingEnabled="True">
                         <Grid Margin="5" FocusManager.FocusedElement="{Binding ElementName=TextFilerName}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="265"/>
@@ -1213,7 +1216,7 @@
 
                                 </DataGrid>
                                 <GridSplitter 
-                                    Grid.Row="1"
+                                    Grid.Row="1" Grid.Column="0"
                                     Width="2"/>
 
 
@@ -1284,10 +1287,6 @@
                     <TabControl>
                         <TabItem Header="Документы">
                             <Grid Margin="5">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-
-                                </Grid.RowDefinitions>
                                 <GroupBox 
                             Margin="2"
                             Grid.Row="0"

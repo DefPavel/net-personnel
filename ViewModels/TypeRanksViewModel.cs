@@ -1,5 +1,6 @@
-﻿namespace AlphaPersonel.ViewModels;
+﻿using System.Linq;
 
+namespace AlphaPersonel.ViewModels;
 internal class TypeRanksViewModel : BaseViewModel
 {
     private readonly NavigationStore _navigationStore;
@@ -7,7 +8,7 @@ internal class TypeRanksViewModel : BaseViewModel
 
     public TypeRanksViewModel(NavigationStore navigationStore, Users user)
     {
-        this._navigationStore = navigationStore;
+        _navigationStore = navigationStore;
         _user = user;
     }
 
@@ -64,20 +65,20 @@ internal class TypeRanksViewModel : BaseViewModel
 
     #region Команды
 
-    private ICommand? _GetToMain;
-    public ICommand GetToMain => _GetToMain ??= new LambdaCommand(GetBack);
+    private ICommand? _getToMain;
+    public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack);
 
-    private ICommand? _LoadedType;
-    public ICommand LoadedType => _LoadedType ??= new LambdaCommand(ApiGetType);
+    private ICommand? _loadedType;
+    public ICommand LoadedType => _loadedType ??= new LambdaCommand(ApiGetType);
 
-    private ICommand? _SaveType;
-    public ICommand SaveType => _SaveType ??= new LambdaCommand(SaveRank, _ => SelectedRank is not null);
+    private ICommand? _saveType;
+    public ICommand SaveType => _saveType ??= new LambdaCommand(SaveRank, _ => SelectedRank is not null);
 
-    private ICommand? _Add;
-    public ICommand Add => _Add ??= new LambdaCommand(AddTypeOrderAsync);
+    private ICommand? _add;
+    public ICommand Add => _add ??= new LambdaCommand(AddTypeOrderAsync);
 
-    private ICommand? _Delete;
-    public ICommand Delete => _Delete ??= new LambdaCommand(DeleteTypeRank);
+    private ICommand? _delete;
+    public ICommand Delete => _delete ??= new LambdaCommand(DeleteTypeRank);
 
     #endregion
 
@@ -93,6 +94,12 @@ internal class TypeRanksViewModel : BaseViewModel
     private void AddTypeOrderAsync(object p)
     {
 
+        var count = TypeRank!.Where(x => x.Id == 0).ToList().Count;
+        if(count > 0)
+        {
+            _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
         TypeRank type = new()
         {
             Name = "Новое звание"

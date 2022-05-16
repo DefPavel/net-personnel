@@ -1,4 +1,6 @@
-﻿namespace AlphaPersonel.ViewModels;
+﻿using System.Linq;
+
+namespace AlphaPersonel.ViewModels;
 
 internal class TypeVacationViewModel : BaseViewModel 
 {
@@ -13,10 +15,11 @@ internal class TypeVacationViewModel : BaseViewModel
 
 
     private ObservableCollection<Models.TypeVacation>? _typeVacation;
-    public ObservableCollection<Models.TypeVacation>? TypeVacations
+
+    private ObservableCollection<Models.TypeVacation>? TypeVacations
     {
         get => _typeVacation;
-        private set
+        set
         {
             _ = Set(ref _typeVacation, value);
             if (TypeVacations != null) CollectionDepart = CollectionViewSource.GetDefaultView(TypeVacations);
@@ -89,6 +92,12 @@ internal class TypeVacationViewModel : BaseViewModel
 
     private void AddTypeVacationAsync(object p)
     {
+        var count = TypeVacations!.Where(x => x.Id == 0).ToList().Count;
+        if(count > 0)
+        {
+            _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
 
         Models.TypeVacation type = new()
         {
@@ -96,9 +105,6 @@ internal class TypeVacationViewModel : BaseViewModel
         };
         _typeVacation!.Insert(0, type);
         SelectedTypeVacation = type;
-
-
-
     }
 
     private async void SaveTypeVacation(object p)

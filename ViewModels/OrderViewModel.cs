@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Windows.Input;
 
@@ -163,6 +164,12 @@ internal class OrderViewModel : BaseViewModel
 
     private void AddOrderAsync(object p)
     {
+        var count = Orders!.Where(x => x.Id == 0).ToList().Count;
+        if(count > 0)
+        {
+            _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
 
         Order order = new()
         {

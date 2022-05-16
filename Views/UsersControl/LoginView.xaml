@@ -130,7 +130,7 @@
                     Width="13" 
                     Height="13" />
                     </Canvas>
-                    <TextBlock Text="Ввойти"/>
+                    <TextBlock Text="Войти"/>
 
                 </StackPanel>
                 

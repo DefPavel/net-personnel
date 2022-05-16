@@ -76,7 +76,8 @@ internal class TypePositionViewModel : BaseViewModel
     }
 
     private ObservableCollection<TypePosition>? _typePosition;
-    public ObservableCollection<TypePosition>? TypePosition
+
+    private ObservableCollection<TypePosition>? TypePosition
     {
         get => _typePosition;
         set
@@ -181,7 +182,12 @@ internal class TypePositionViewModel : BaseViewModel
     }
     private void AddPosition(object p)
     {
-
+        var countPosition = TypePosition!.Where(x => x.Id == 0).ToList().Count;
+        if(countPosition > 0)
+        {
+            _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
         TypePosition type = new()
         {
             Name = "Новая Должность",
