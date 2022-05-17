@@ -69,8 +69,20 @@
                     </i:Interaction.Triggers>
                 </ComboBox>
                 <Label 
+                Content="Выбрать подразделение"/>
+                <ComboBox 
+                MinWidth="100"
+                IsEditable="True"
+                ItemsSource="{Binding Departments}"
+                DisplayMemberPath="Name"
+                SelectedValuePath="Name"
+                SelectedItem="{Binding SelectedDepartment}"
+                />
+                <Label 
                 Content="Выбрать должность"/>
                 <ComboBox 
+                MinWidth="100"
+                IsEditable="True"
                 ItemsSource="{Binding Positions}"
                 DisplayMemberPath="Name"
                 SelectedValuePath="Name"

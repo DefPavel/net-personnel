@@ -1,4 +1,6 @@
-﻿namespace AlphaPersonel.ViewModels;
+﻿using System.Collections.Generic;
+
+namespace AlphaPersonel.ViewModels;
 
 internal class MasterReportViewModel : BaseViewModel
 {
@@ -53,6 +55,8 @@ internal class MasterReportViewModel : BaseViewModel
         TypeAge = new ObservableCollection<string>
         {
           "От 18 до 21",
+          "От 20 до 25",
+          "От 30 до 55",
           "От 25 до 76",
           "Старше 65"
         };
@@ -69,12 +73,19 @@ internal class MasterReportViewModel : BaseViewModel
         get => _isPedagogical;
         private set => Set(ref _isPedagogical, value);
     }
-    private ObservableCollection<Position>? _positions;
-    public ObservableCollection<Position>? Positions
+    private IEnumerable<Position>? _positions;
+    public IEnumerable<Position>? Positions
     {
         get => _positions;
         private set => Set(ref _positions, value);
     }
+    private IEnumerable<Departments>? _departments;
+    public IEnumerable<Departments>? Departments
+    {
+        get => _departments;
+        private set => Set(ref _departments, value);
+    }
+
     private PedagogicalPosition? _selectedIsPed;
     public PedagogicalPosition? SelectedIsPed
     {
@@ -82,8 +93,8 @@ internal class MasterReportViewModel : BaseViewModel
         set => Set(ref _selectedIsPed, value);
     }
 
-    private ObservableCollection<TypeContract>? _typeContracts;
-    public ObservableCollection<TypeContract>? TypeContracts
+    private IEnumerable<TypeContract>? _typeContracts;
+    public IEnumerable<TypeContract>? TypeContracts
     {
         get => _typeContracts;
         private set => Set(ref _typeContracts, value);
@@ -93,6 +104,12 @@ internal class MasterReportViewModel : BaseViewModel
     {
         get => _selectedContract;
         set => Set(ref _selectedContract, value);
+    }
+    private Departments? _selectedDepartment;
+    public Departments? SelectedDepartment
+    {
+        get => _selectedDepartment;
+        set => Set(ref _selectedDepartment, value);
     }
 
     private Position? _selectedPosition;
@@ -209,6 +226,8 @@ internal class MasterReportViewModel : BaseViewModel
             if(SelectedAge != null)
             {
                 age = SelectedAge == "От 18 до 21" ? " (EXTRACT( YEAR FROM age(p.birthday))) >= 18 and (EXTRACT( YEAR FROM age(p.birthday))) < 22 " :
+                    SelectedAge == "От 20 до 25" ? " (EXTRACT( YEAR FROM age(p.birthday))) >= 20 and (EXTRACT( YEAR FROM age(p.birthday))) < 26 " :
+                    SelectedAge == "От 30 до 55" ? " (EXTRACT( YEAR FROM age(p.birthday))) >= 30 and (EXTRACT( YEAR FROM age(p.birthday))) < 56 " :
                     SelectedAge == "От 25 до 76" ? " (EXTRACT( YEAR FROM age(p.birthday))) >= 25 and (EXTRACT( YEAR FROM age(p.birthday))) < 77 " :
                     SelectedAge == "Старше 65" ? " (EXTRACT( YEAR FROM age(p.birthday))) >= 65 " :
                     null;
@@ -218,6 +237,7 @@ internal class MasterReportViewModel : BaseViewModel
             {
                 is_ped = SelectedIsPed?.IdPed,
                 query_ped = SelectedIsPed?.Query,
+                query_department = SelectedDepartment != null ? $" dep.name_department = '{SelectedDepartment.Name}'": null,
                 query_position = SelectedPosition != null ? $"{(SelectedStatus is "Внутренний совместитель" or "Внешний совместитель" ? " pp.is_main = false" : " pp.is_main = true")} and typ_pos.name_position = '{SelectedPosition?.Name}'" : null,
                 query_contract = SelectedContract != null ? $"{(SelectedStatus is "Внутренний совместитель" or "Внешний совместитель" ? " pp.is_main = false" : " pp.is_main = true")} and contract.id = {SelectedContract?.Id}" : null,
                 query_date_start = DateStart != null ?
@@ -253,7 +273,8 @@ internal class MasterReportViewModel : BaseViewModel
     {
         try
         {
-           TypeContracts = await QueryService.JsonDeserializeWithToken<TypeContract>(_user.Token, "/pers/position/type/contract/", "GET");
+            Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user.Token, "/pers/tree/all/", "GET");
+            TypeContracts = await QueryService.JsonDeserializeWithToken<TypeContract>(_user.Token, "/pers/position/type/contract/", "GET");
 
         }
         catch (WebException ex)
