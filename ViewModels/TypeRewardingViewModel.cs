@@ -123,6 +123,12 @@ internal class TypeRewardingViewModel : BaseViewModel
             _ = MessageBox.Show("Данные успешно сохраненны");
 
         }
+        // Проверка токена
+        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (WebException ex)
         {
             if (ex.Status == WebExceptionStatus.ProtocolError)
@@ -153,6 +159,12 @@ internal class TypeRewardingViewModel : BaseViewModel
             _ = _typeRewardings!.Remove(SelectedType);
 
         }
+        // Проверка токена
+        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (WebException ex)
         {
             if (ex.Status == WebExceptionStatus.ProtocolError)
@@ -178,6 +190,12 @@ internal class TypeRewardingViewModel : BaseViewModel
         {
             // Загрузить сами приказы
             TypeRewardings = await QueryService.JsonDeserializeWithToken<TypeRewarding>(_user!.Token, "/pers/rewarding/type/get", "GET");
+        }
+        // Проверка токена
+        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
         }
         catch (WebException ex)
         {

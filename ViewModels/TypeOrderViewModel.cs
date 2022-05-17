@@ -118,6 +118,12 @@ internal class TypeOrderViewModel : BaseViewModel
             _ = _typeOrders!.Remove(SelectedOrder);
 
         }
+        // Проверка токена
+        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (WebException ex)
         {
             if (ex.Status == WebExceptionStatus.ProtocolError)
@@ -157,6 +163,12 @@ internal class TypeOrderViewModel : BaseViewModel
             SelectedOrder = TypeOrders.FirstOrDefault(x => x.Name == newSelectedItem!.Name);
 
         }
+        // Проверка токена
+        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (WebException ex)
         {
             if (ex.Status == WebExceptionStatus.ProtocolError)
@@ -184,6 +196,12 @@ internal class TypeOrderViewModel : BaseViewModel
             TypeOrders = await QueryService.JsonDeserializeWithToken<TypeOrder>(_user.Token, "/pers/order/type/get", "GET");
 
 
+        }
+        // Проверка токена
+        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
         }
         catch (WebException ex)
         {

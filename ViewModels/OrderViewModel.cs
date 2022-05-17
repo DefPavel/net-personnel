@@ -107,6 +107,12 @@ internal class OrderViewModel : BaseViewModel
             // Загрузить массив типов приказов
             TypeOrders = await QueryService.JsonDeserializeWithToken<TypeOrder>(_user!.Token, "/pers/order/type/get", "GET");
         }
+        // Проверка токена
+        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (WebException ex)
         {
             if (ex.Status == WebExceptionStatus.ProtocolError)
@@ -143,6 +149,12 @@ internal class OrderViewModel : BaseViewModel
                 Orders = await QueryService.JsonDeserializeWithToken<Order>(_user.Token, "/pers/order/get", "GET");
             }
             _ = MessageBox.Show("Данные успешно сохраненны");
+        }
+        // Проверка токена
+        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
         }
         catch (WebException ex)
         {
@@ -194,6 +206,12 @@ internal class OrderViewModel : BaseViewModel
             //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
 
             _ = Orders!.Remove(SelectedOrder);
+        }
+        // Проверка токена
+        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
         }
         catch (WebException ex)
         {

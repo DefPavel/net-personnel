@@ -101,6 +101,12 @@ internal class SearchViewModel : BaseViewModel
             Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user!.Token, $"/pers/tree/find/?text={QueryDepartment}", "GET");
             IsLoading = false;
         }
+        // Проверка токена
+        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (WebException ex)
         {
             if (ex.Status == WebExceptionStatus.ProtocolError)
@@ -131,6 +137,12 @@ internal class SearchViewModel : BaseViewModel
             IsLoading = true;
             Persons = await QueryService.JsonDeserializeWithToken<Persons>(_user!.Token, $"/pers/person/find/?text={QueryPerson}", "GET");
             IsLoading = false;
+        }
+        // Проверка токена
+        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
         }
         catch (WebException ex)
         {

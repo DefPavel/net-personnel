@@ -111,6 +111,12 @@ internal class TypePositionViewModel : BaseViewModel
         {
             TypePosition = await QueryService.JsonDeserializeWithToken<TypePosition>(_user!.Token, "/pers/position/type/position", "GET");
         }
+        // Проверка токена
+        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (WebException ex)
         {
             if (ex.Status == WebExceptionStatus.ProtocolError)
@@ -139,12 +145,6 @@ internal class TypePositionViewModel : BaseViewModel
         var newSlectedItem = SelectedPosition!;
         try
         {
-            /*if(string.IsNullOrWhiteSpace(SelectedPosition!.Name))
-            {
-                MessageBox.Show("Введите наименование должности!", "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                return;
-            }
-            */
             if (SelectedPosition!.Id > 0)
             {
                 SelectedPosition.IsPed = RadioIsPed;
@@ -162,6 +162,12 @@ internal class TypePositionViewModel : BaseViewModel
            // _ = MessageBox.Show("Данные успешно сохраненны");
 
 
+        }
+        // Проверка токена
+        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
         }
         catch (WebException ex)
         {
@@ -216,6 +222,12 @@ internal class TypePositionViewModel : BaseViewModel
             Filter = string.Empty;
             // Выбираем первый элемент из списка
             if (TypePosition != null) SelectedPosition = TypePosition.FirstOrDefault();
+        }
+        // Проверка токена
+        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
         }
         catch (WebException ex)
         {

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Linq;
+﻿using System.Linq;
 
 namespace AlphaPersonel.ViewModels;
 
@@ -100,6 +99,12 @@ internal class PeriodVacationViewModel : BaseViewModel
         {
             PeriodVacations = await QueryService.JsonDeserializeWithToken<PeriodVacation>(_user!.Token, "/pers/vacation/period/get", "GET");
         }
+        // Проверка токена
+        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (WebException ex)
         {
             if (ex.Status == WebExceptionStatus.ProtocolError)
@@ -152,6 +157,12 @@ internal class PeriodVacationViewModel : BaseViewModel
             _ = _periodVacation!.Remove(SelectedPeriod);
 
         }
+        // Проверка токена
+        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (WebException ex)
         {
             if (ex.Status == WebExceptionStatus.ProtocolError)
@@ -188,6 +199,12 @@ internal class PeriodVacationViewModel : BaseViewModel
             PeriodVacations = await QueryService.JsonDeserializeWithToken<PeriodVacation>(_user.Token, "/pers/vacation/period/get", "GET");
             _ = MessageBox.Show("Данные успешно сохраненны");
 
+        }
+        // Проверка токена
+        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
         }
         catch (WebException ex)
         {

@@ -144,6 +144,12 @@ internal class PositionViewModel : BaseViewModel
 
             TypePosition = await QueryService.JsonDeserializeWithToken<TypePosition>(_user!.Token, "/pers/position/type/position", "GET");
         }
+        // Проверка токена
+        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (WebException ex)
         {
             if (ex.Response != null)
@@ -197,6 +203,12 @@ internal class PositionViewModel : BaseViewModel
             }
             _ = MessageBox.Show("Данные успешно сохраненны");
         }
+        // Проверка токена
+        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (System.Net.WebException ex)
         {
             if (ex.Response != null)
@@ -211,17 +223,18 @@ internal class PositionViewModel : BaseViewModel
     {
         try
         {
-            if (_user.Token == null)
-            {
-                return;
-            }
-
             if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
                     MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
             await QueryService.JsonSerializeWithToken(_user.Token, "/pers/position/del/" + SelectedPosition!.Id, "DELETE", SelectedPosition);
             //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
 
             _ = _position!.Remove(SelectedPosition);
+        }
+        // Проверка токена
+        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
         }
         catch (WebException ex)
         {
