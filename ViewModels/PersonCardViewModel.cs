@@ -1121,8 +1121,9 @@ internal class PersonCardViewModel : BaseViewModel
         {
             IsLoading = true;
             // Получить список людей всех отделов
-            PersonsList = await QueryService.JsonDeserializeWithToken<Persons>(token: _user!.Token, "/pers/person/get/all", "GET");
-
+            var array = await QueryService.JsonDeserializeWithToken<Persons>(token: _user!.Token, "/pers/person/get/all", "GET");
+            // TODO: Если что-то сломается (Убери!)
+            PersonsList =  array.DistinctBy(x => x.FullName);
             IsLoading = false;
 
 
