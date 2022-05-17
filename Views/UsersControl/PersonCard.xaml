@@ -1021,6 +1021,7 @@
                                         />
                                     <Label Content="Остаток Отпуска"/>
                                     <TextBox 
+                                        IsEnabled="False"
                                         Text="{Binding SelectedVacation.Residue , UpdateSourceTrigger=PropertyChanged}"
                                         />
                                     <StackPanel 
@@ -1033,7 +1034,7 @@
                                             Command="{Binding SaveVacation}"
                                             Content="Сохранить"/>
                                         <Button 
-                                            Command="{Binding DeleteEducation}"
+                                            Command="{Binding DeleteVacation}"
                                             Content="Удалить"/>
                                     </StackPanel>
 

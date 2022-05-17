@@ -534,9 +534,9 @@ internal class PersonCardViewModel : BaseViewModel
     private ICommand? _saveVacation;
     public ICommand SaveVacation => _saveVacation ??= new LambdaCommand(SaveVacationsPerson, _ => SelectedVacation != null);
 
-    /*private ICommand? _DeleteVacation;
-    public ICommand DeleteVacation => _DeleteVacation ??= new LambdaCommand(DeleteFamilyPerson, _ => SelectedVacation != null);
-    */
+    private ICommand? _DeleteVacation;
+    public ICommand DeleteVacation => _DeleteVacation ??= new LambdaCommand(DeleteVacationsAsync, _ => SelectedVacation != null);
+    
     //------------------- Паспорт ------------------------------//
     
     // Сканы документов
@@ -1228,6 +1228,12 @@ internal class PersonCardViewModel : BaseViewModel
     /* Основное образование */
     private async void AddMainEducation(object p)
     {
+        var count = _selectedPerson!.ArrayEducation?.Where(x => x.Id == 0).ToList().Count;
+        if (count > 0)
+        {
+            _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
         try
         {
             Education order = new()
@@ -1332,6 +1338,12 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
+            var count = _selectedPerson!.ArrayQualification?.Where(x => x.Id == 0).ToList().Count;
+            if (count > 0)
+            {
+                _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
             Qualification order = new()
             {
                 NameCourse = "Курс",
@@ -1436,6 +1448,12 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
+            var count = _selectedPerson!.ArrayMedical?.Where(x => x.Id == 0).ToList().Count;
+            if (count > 0)
+            {
+                _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
             Medical order = new()
             {
                 Category = "Аттестация",
@@ -1537,6 +1555,13 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
+            var count = _selectedPerson!.ArrayMeberAcademic?.Where(x => x.Id == 0).ToList().Count;
+            if (count > 0)
+            {
+                _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
             MemberAcademic order = new()
             {
                 Document = "№ 0000",
@@ -1639,6 +1664,13 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
+            var count = _selectedPerson!.ArrayRewarding?.Where(x => x.Id == 0).ToList().Count;
+            if (count > 0)
+            {
+                _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
             Rewarding order = new()
             {
                 NumberDocumet = "",
@@ -1742,6 +1774,13 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
+            var count = _selectedPerson!.ArrayScientificDegree?.Where(x => x.Id == 0).ToList().Count;
+            if (count > 0)
+            {
+                _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
             ScientificDegree order = new()
             {
                DateOfIssue = DateTime.Now,
@@ -1779,6 +1818,12 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
+            var count = _selectedPerson!.ArrayAcademicTitle?.Where(x => x.Id == 0).ToList().Count;
+            if (count > 0)
+            {
+                _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
             AcademicTitle order = new()
             {
                 Department = "Наименование подразделения",
@@ -2003,7 +2048,12 @@ internal class PersonCardViewModel : BaseViewModel
     // Пенсионер
     private void AddPensionerAsync(object p)
     {
-
+        var count = _selectedPerson!.ArrayPensioner?.Where(x => x.Id == 0).ToList().Count;
+        if (count > 0)
+        {
+            _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
         Pensioner order = new()
         {
             DateDocument = DateTime.Now,
@@ -2083,7 +2133,12 @@ internal class PersonCardViewModel : BaseViewModel
     // Инвалидность
     private  void AddInvalidAsync(object p)
     {
-
+        var count = _selectedPerson!.ArrayInvalid?.Where(x => x.Id == 0).ToList().Count;
+        if (count > 0)
+        {
+            _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
         Invalid order = new()
         {
             DateStart = DateTime.Now,
@@ -2165,6 +2220,12 @@ internal class PersonCardViewModel : BaseViewModel
     // Отпуск
     private void AddVacationsPerson(object p)
     {
+        var count = _selectedPerson!.ArrayVacation?.Where(x => x.Id == 0).ToList().Count;
+        if (count > 0)
+        {
+            _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
         Vacation order = new()
             {
                 DateBegin = DateTime.Now,
@@ -2178,9 +2239,43 @@ internal class PersonCardViewModel : BaseViewModel
             SelectedVacation = order;
 
     }
+    private async void DeleteVacationsAsync(object p)
+    {
+        try
+        {
+            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
+            await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/vacation/del/" + SelectedVacation!.Id, "DELETE", SelectedVacation);
+            //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
+
+            _ = _selectedPerson!.ArrayVacation!.Remove(SelectedVacation);
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
     // Документ
     private void AddDocumentPerson(object p)
     {
+        var count = _selectedPerson!.ArrayDocuments?.Where(x => x.Id == 0).ToList().Count;
+        if (count > 0)
+        {
+            _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
 
         Documents order = new()
         {
@@ -2195,6 +2290,12 @@ internal class PersonCardViewModel : BaseViewModel
     // Статус семьи
     private  void AddFamilyPerson(object p)
     {
+        var count = _selectedPerson!.ArrayFamily?.Where(x => x.Id == 0).ToList().Count;
+        if (count > 0)
+        {
+            _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
 
         Family order = new()
         {
@@ -2210,9 +2311,14 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
+            if (SelectedVacation!.DateBegin == null)
+            {
+                _ = MessageBox.Show("Дата не указана!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
             SelectedVacation!.IdPerson = SelectedPerson!.Id;
-            SelectedVacation!.Residue += SelectedVacation.LengthVacation;
-            SelectedVacation!.DateEnd = new DateTime().AddDays(SelectedVacation.LengthVacation);
+            //SelectedVacation!.Residue += SelectedVacation.LengthVacation;
+            SelectedVacation!.DateEnd = SelectedVacation.DateBegin.Value.AddDays(SelectedVacation.LengthVacation);
 
             if (SelectedVacation!.Id > 0)
             {
@@ -2413,7 +2519,12 @@ internal class PersonCardViewModel : BaseViewModel
     // Трудовая книга
     private  void AddHistoryAsync(object p)
     {
-
+        var count = _selectedPerson!.HistoryEmployment?.Where(x => x.Id == 0).ToList().Count;
+        if (count > 0)
+        {
+            _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
         HistoryEmployment order = new()
         {
             CreateAt = DateTime.Now,

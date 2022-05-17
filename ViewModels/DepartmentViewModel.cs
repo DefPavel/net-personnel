@@ -11,7 +11,7 @@ internal class DepartmentViewModel : BaseViewModel
     public DepartmentViewModel(NavigationStore navigationStore, Users user)
     {
         _user = user;
-        this._navigationStore = navigationStore;
+        _navigationStore = navigationStore;
 
     }
 
