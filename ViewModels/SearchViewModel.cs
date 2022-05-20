@@ -135,7 +135,7 @@ internal class SearchViewModel : BaseViewModel
         try
         {
             IsLoading = true;
-            Persons = await QueryService.JsonDeserializeWithToken<Persons>(_user!.Token, $"/pers/person/find/?text={QueryPerson}", "GET");
+            Persons = await QueryService.JsonDeserializeWithToken<Persons>(_user!.Token, queryUrl: $"/pers/person/find/?text={QueryPerson.Trim()}", "GET");
             IsLoading = false;
         }
         // Проверка токена

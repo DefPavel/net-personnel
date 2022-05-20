@@ -504,22 +504,22 @@ internal class HomeViewModel : BaseViewModel
             IsLoading = false;
         }
         // Проверка токена
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
-        {
-            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
-        }
         catch (WebException ex)
         {
             if (ex.Status == WebExceptionStatus.ProtocolError)
             {
                 if (ex.Response is HttpWebResponse response)
                 {
+                    if((int)response.StatusCode == 419)
+                    {
+                        _ = MessageBox.Show("Попал в ошибку 419", "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                    }
                     using StreamReader reader = new(response.GetResponseStream());
 
                     _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
+            // Не удалось получить response
             else
             {
                 _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);

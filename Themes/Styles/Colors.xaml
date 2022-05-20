@@ -34,6 +34,7 @@
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
     </Style>
     <Style TargetType="{x:Type Window}">
+        <Setter Property="FontFamily" Value="Arial" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
         <Setter Property="Background" Value="{StaticResource BackgroundBrush}"/>
     </Style>

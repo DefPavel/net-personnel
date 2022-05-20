@@ -99,12 +99,15 @@
                                 Binding="{Binding IsMain}"
                                 Header="Осн.м.работы"/>
                             <DataGridTextColumn 
+                               
                                 Binding="{Binding FirstName}"
                                 Header="Фамилия"/>
                             <DataGridTextColumn 
+                               
                                 Binding="{Binding MidlleName}"
                                 Header="Имя"/>
                             <DataGridTextColumn 
+                               
                                 Binding="{Binding LastName}"
                                 Header="Отчество"/>
                             <DataGridTextColumn 

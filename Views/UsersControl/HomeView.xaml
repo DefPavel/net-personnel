@@ -8,6 +8,7 @@
              xmlns:behaviours="clr-namespace:AlphaPersonel.Helpers"
              d:DataContext="{d:DesignInstance Type=viewmodels:HomeViewModel}"
              mc:Ignorable="d" 
+             FontFamily="Arial"
              d:DesignHeight="450" d:DesignWidth="1000">
     
     <!--Загрузка всех отделов -->
@@ -222,7 +223,6 @@
                 Grid.Row="1"
                 Margin="0 0 5 5"
                 x:Name="TreeDepartment"
-                FontSize="12"
                 ItemsSource="{Binding Departments}">
                 <!-- Получить выбранный элемент из TreeView -->
                 <i:Interaction.Behaviors>
@@ -412,7 +412,7 @@
                                     Margin="5"
                                     Grid.Column="0">
                                     <DataGrid 
-                                              FontSize="13"  
+                                             
                                               SelectionMode="Single"
                                               Margin="5"
                                               ItemsSource="{Binding Positions}"
@@ -731,7 +731,6 @@
                                     ScrollViewer.IsDeferredScrollingEnabled="True"
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
                                     AlternatingRowBackground="#e1eff9"
-                                    FontSize="13"
                                     AutoGenerateColumns="False"
                                     CanUserAddRows="False"
                                     Margin="5"
@@ -818,6 +817,7 @@
                                         </DataGridTemplateColumn>
 
                                         <DataGridComboBoxColumn 
+                                            Width="80"
                                             Header="Должность"
                                             SelectedValueBinding="{Binding PersonPosition}"
                                             SelectedValuePath="Name"

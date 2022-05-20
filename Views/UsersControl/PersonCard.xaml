@@ -227,15 +227,24 @@
             <!-- Пока что поставил Index Потому что не в какую не передаётся значение selectedItem из предыдущего VM -->
             <!-- По хорошему можно просто передать данный список и всё!Но пока не выходит,так что делаю через API -->
             <DataGrid
+                IsReadOnly="True"
+                x:Name="PersonGrid"
                 ScrollViewer.IsDeferredScrollingEnabled="True"
                 VirtualizingStackPanel.VirtualizationMode="Recycling"
                 ItemsSource="{Binding CollectionPerson}"
-                SelectedItem="{Binding SelectedPerson}"
-                FontSize="13"               
+                SelectedItem="{Binding SelectedPerson}"            
                 Margin="5"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
-                Grid.Row="3">
+                Grid.Row="3" 
+                >
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem 
+                          Header="Сохранить в буффер"
+                          Command="{Binding GetTreeView}"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
                 <!-- TODO: При этом методе будет постоятнно ломаться поиск (переделай на метод click cell или что-то в этом духе)-->
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
@@ -363,7 +372,8 @@
                                                 Width="13" 
                                                 Height="13" />
                                                 </Canvas>
-                                                <TextBlock Text="Загрузить фото"/>
+                                                <TextBlock 
+                                                    Text="Загрузить фото"/>
                                             </StackPanel>
 
                                         </Button>
@@ -388,8 +398,9 @@
                                         </Grid.RowDefinitions>
 
                                         <Label 
+                                           
                                         Grid.Row="0"
-                                        Content="Фамилия"/>
+                                        Content="Фамилия" FontWeight="Normal"/>
                                         <Grid Grid.Row="1">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition/>
@@ -679,7 +690,6 @@
                                     </StackPanel>
                                     <DataGrid 
                                         Grid.Row="1"
-                                    FontSize="13"
                                     ScrollViewer.IsDeferredScrollingEnabled="True"
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
                                     AlternatingRowBackground="#e1eff9"
@@ -690,9 +700,11 @@
                                     Margin="5">
                                         <DataGrid.Columns>
                                             <DataGridCheckBoxColumn 
+                                        Width="30"        
                                         Binding="{Binding IsMain ,TargetNullValue={x:Null}}"
-                                        Header="Основное место"/>
+                                        Header="Осн.место"/>
                                             <DataGridTextColumn
+                                                
                                         Header="Отдел"
                                         Binding="{Binding DepartmentName}"/>
                                             <DataGridTextColumn 
@@ -700,13 +712,28 @@
                                         Header="Должность"/>
                                             <DataGridTextColumn 
                                         Binding="{Binding StavkaBudget}"
+                                                Width="90"
                                         Header="Число бюджет"/>
                                             <DataGridTextColumn 
+                                                Width="90"
                                         Binding="{Binding StavkaNoBudget}"
                                         Header="Число внебюджет"/>
                                             <DataGridTextColumn 
                                         Binding="{Binding Phone}"
-                                        Header="Рабочий телефон"/>
+                                                Width="50"
+                                        Header="Телефон"/>
+                                            <DataGridTextColumn 
+                                        Binding="{Binding Place}"
+                                        Header="Вид контракта"/>
+                                            <DataGridTextColumn 
+                                        Binding="{Binding Place}"
+                                        Header="Дата заключения"/>
+                                            <DataGridTextColumn 
+                                        Binding="{Binding Place}"
+                                        Header="Дата окончания"/>
+                                            <DataGridTextColumn 
+                                        Binding="{Binding Place}"
+                                        Header="Вид контракта"/>
                                             <DataGridTextColumn 
                                         Binding="{Binding Place}"
                                         Header="Место работы"/>
@@ -1139,7 +1166,6 @@
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
                                     SelectedItem="{Binding SelectedHistory}"
                                     AlternatingRowBackground="#e1eff9"
-                                    FontSize="13"
                                     AutoGenerateColumns="False"
                                     ItemsSource="{Binding SelectedPerson.HistoryEmployment}"
                                     CanUserAddRows="False"
@@ -1161,12 +1187,7 @@
                                             Binding="{Binding Record}"
                                             Header="Номер записи"
                                             Width="90"/>
-                                        <DataGridTextColumn
-                                            Width="180"
-                                            Header="Информация"
-                                           Binding="{Binding Name}"
-                                            />
-                                        <DataGridTemplateColumn Header="Дата создания">
+                                        <DataGridTemplateColumn Header="Дата записи">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding CreateAt, StringFormat='dd.MM.yyyy'}"/>
@@ -1183,7 +1204,16 @@
                                             </DataGridTemplateColumn.CellEditingTemplate>
 
                                         </DataGridTemplateColumn>
-
+                                        <DataGridTextColumn
+                                            Width="100"
+                                            Header="Информация"
+                                           Binding="{Binding Name}"
+                                            />
+                                        <DataGridTextColumn
+                                            Width="100"
+                                            Header="№ Приказа"
+                                           Binding="{Binding Order}"
+                                            />
                                         <DataGridCheckBoxColumn
                                             Header="Стаж в ЛГПУ"
                                             Binding="{Binding IsUniver}"

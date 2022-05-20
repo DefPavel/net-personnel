@@ -92,7 +92,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn 
                     Width="*"
-                    Binding="{Binding (Name)}"
+                    Binding="{Binding Name}"
                     Header="Наименование"/>
             </DataGrid.Columns>
 
