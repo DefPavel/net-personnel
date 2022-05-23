@@ -477,6 +477,16 @@ internal class PersonCardViewModel : BaseViewModel
     private ICommand? _updateStates;
     public ICommand UpdateStates => _updateStates ??= new LambdaCommand(ApiUpdateStatePersonAsync);
 
+    private ICommand? _copyBuffer;
+    public ICommand CopyBuffer => _copyBuffer ??= new LambdaCommand(CopyFullNameToBuffer);
+
+    private void CopyFullNameToBuffer(object obj)
+    {
+        if( obj != null && obj is Persons person)
+            Clipboard.SetText(person.FullName);
+
+    }
+
     private ICommand? _openreportCard;
     public ICommand OpenReportCard => _openreportCard ??= new LambdaCommand(ReportPersonCard);
     

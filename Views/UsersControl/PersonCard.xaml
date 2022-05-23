@@ -242,7 +242,8 @@
                     <ContextMenu>
                         <MenuItem 
                           Header="Сохранить в буффер"
-                          Command="{Binding GetTreeView}"/>
+                            CommandParameter="{Binding SelectedPerson}"
+                          Command="{Binding CopyBuffer}"/>
                     </ContextMenu>
                 </DataGrid.ContextMenu>
                 <!-- TODO: При этом методе будет постоятнно ломаться поиск (переделай на метод click cell или что-то в этом духе)-->
