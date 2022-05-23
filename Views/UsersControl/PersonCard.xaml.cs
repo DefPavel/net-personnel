@@ -1,6 +1,5 @@
-﻿using System.Windows.Controls;
-namespace AlphaPersonel.Views;
-public partial class PersonCard : UserControl
+﻿namespace AlphaPersonel.Views;
+public partial class PersonCard 
 {
     public PersonCard()
     {

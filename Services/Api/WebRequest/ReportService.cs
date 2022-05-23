@@ -34,7 +34,9 @@ internal static class ReportService
     }
     public static async Task JsonPostWithToken(object obj, string token, string queryUrl, string httpMethod, string reportName)
     {
+#pragma warning disable SYSLIB0014
         var req = (HttpWebRequest)WebRequest.Create(ApiUrl + queryUrl);     // Создаём запрос
+#pragma warning restore SYSLIB0014
         req.Method = httpMethod;                                                        // Выбираем метод запроса
         req.Headers.Add("auth-token", token);
         req.Accept = "application/json";
@@ -59,7 +61,9 @@ internal static class ReportService
     }
     public static async Task JsonDeserializeWithToken(string token, string queryUrl, string httpMethod, string reportName)
     {
+#pragma warning disable SYSLIB0014
         var req = (HttpWebRequest)WebRequest.Create(ApiUrl + queryUrl);     // Создаём запрос
+#pragma warning restore SYSLIB0014
         req.Method = httpMethod;                                                        // Выбираем метод запроса
         req.Headers.Add("auth-token", token);
         req.Accept = "application/json";

@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 
 namespace AlphaPersonel.ViewModels;
-
 internal class PeriodVacationViewModel : BaseViewModel
 {
     #region Переменные
