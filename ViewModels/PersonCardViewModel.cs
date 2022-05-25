@@ -572,6 +572,11 @@ internal class PersonCardViewModel : BaseViewModel
     private ICommand? _deleteFamily;
     public ICommand DeleteFamily => _deleteFamily ??= new LambdaCommand(DeleteFamilyPerson, _ => SelectedFamily != null);
 
+
+
+    private ICommand? _deleteOldSurname;
+    public ICommand DeleteOldSurname => _deleteOldSurname ??= new LambdaCommand(AsyncDeleteOldSurname, _ => SelectedOldSurname != null);
+
     //------------------- ОБРАЗОВАНИЕ ------------------------------//
 
     // Медицинское образование
@@ -2492,6 +2497,36 @@ internal class PersonCardViewModel : BaseViewModel
         }
 
     }
+
+    private async void AsyncDeleteOldSurname(object p)
+    {
+        try
+        {
+            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
+            await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/person/surname/del/" + SelectedOldSurname!.Id, "DELETE", SelectedOldSurname);
+            //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
+
+            _ = _selectedPerson!.ArrayChangeSurname!.Remove(SelectedOldSurname);
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+
     private async void DeleteFamilyPerson(object p)
     {
         try

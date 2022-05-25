@@ -311,7 +311,7 @@
                         <Grid Margin="5" FocusManager.FocusedElement="{Binding ElementName=TextFilerName}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="265"/>
-                                <RowDefinition Height="160"/>
+                                <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
@@ -341,72 +341,56 @@
                                         Padding="2"
                                         Margin="5"
                                         BorderThickness="1">
-                                            <!--<Image  
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Top">
-                                                <Image.Source>
-                                                    <BitmapImage 
-                                                        BaseUri="http://localhost:8080/storage/Pers/avatars/no-photo.png" UriSource="{Binding Avatar}"
-                                                        CacheOption="None" />
-                                                </Image.Source>
-                                            </Image>-->
+
+
                                             <Image 
                                             MinHeight="140"
                                             Source="{Binding SelectedPerson.Photo}"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             Stretch="Fill"
-                                            StretchDirection="DownOnly"/>
+                                            StretchDirection="DownOnly" >
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                                                        <i:InvokeCommandAction Command="{ Binding UploadPhoto }"/>
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Image>
                                         </Border>
+                                        <Label 
+                                        Grid.Row="6"
+                                        HorizontalAlignment="Center"
+                                        Content="Дата приёма:"/>
+                                        <DatePicker
+                                        Padding="4 1"
+                                        Margin="4 3"
+                                        SelectedDate="{Binding SelectedPerson.DateWorking , UpdateSourceTrigger=PropertyChanged}"
+                                        />
 
-                                        <Button 
-                                            
-                                            Margin="5"
-                                            Command="{Binding UploadPhoto}"   
-                                            >
-                                            <StackPanel 
-                                                HorizontalAlignment="Center"
-                                                Orientation="Horizontal"
-                                                >
-                                                <Canvas 
-                                                    Height="13"
-                                                    Width="13">
-                                                    <Path
-                                                Stretch="Uniform"
-                                                Fill="#444444"
-                                                Data="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z"
-                                                Width="13" 
-                                                Height="13" />
-                                                </Canvas>
-                                                <TextBlock 
-                                                    Text="Фото"/>
-                                            </StackPanel>
-
-                                        </Button>
                                     </StackPanel>
 
                                     <Grid 
                                         Grid.Column="1" 
                                         Margin="2">
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="22"/>
+                                            <RowDefinition Height="23"/>
                                             <RowDefinition Height="30"/>
-                                            <RowDefinition Height="22"/>
+                                            <RowDefinition Height="23"/>
                                             <RowDefinition Height="30"/>
-                                            <RowDefinition Height="22"/>
+                                            <RowDefinition Height="23"/>
                                             <RowDefinition Height="30"/>
-                                            <RowDefinition Height="22"/>
+                                            <RowDefinition Height="23"/>
                                             <RowDefinition Height="30"/>
-                                            <RowDefinition Height="22"/>
+                                            <RowDefinition Height="23"/>
                                             <RowDefinition Height="30"/>
-                                            <RowDefinition Height="22"/>
+                                            <RowDefinition Height="23"/>
 
                                         </Grid.RowDefinitions>
 
                                         <Label 
                                            
                                         Grid.Row="0"
-                                        Content="Фамилия" FontWeight="Normal"/>
+                                        Content="Фамилия:" FontWeight="Normal"/>
                                         <Grid Grid.Row="1">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition/>
@@ -441,7 +425,7 @@
                                         </Grid>
                                         <Label 
                                         Grid.Row="2"
-                                        Content="Имя"/>
+                                        Content="Имя:"/>
                                         <TextBox
                                         
                                         Grid.Row="3"
@@ -449,14 +433,14 @@
                                         />
                                         <Label 
                                         Grid.Row="4"
-                                        Content="Отчество"/>
+                                        Content="Отчество:"/>
                                         <TextBox
                                         Grid.Row="5"
                                         Text="{Binding SelectedPerson.LastName , UpdateSourceTrigger=PropertyChanged}"
                                         />
                                         <Label 
                                         Grid.Row="6"
-                                        Content="Пол"/>
+                                        Content="Пол:"/>
                                         <StackPanel
                                             Orientation="Horizontal"
                                             Grid.Row="7">
@@ -467,21 +451,7 @@
                                                 IsChecked="{Binding RadioIsFemale}"
                                                 Padding="2" Content="Женщина"/>
                                         </StackPanel>
-                                        <TextBlock
-                                            Foreground="#B71C1C"
-                                            Margin="5 0 0 0"
-                                            Grid.Row="8" 
-                                            FontWeight="Bold">
-                                             <Run Text="Лет:"/>
-                                             <Run Text="{Binding SelectedPerson.FullAge.Years}"/>
-                                             <Run Text=";"/>
-                                             <Run Text="Месяцев:"/>
-                                             <Run Text="{Binding SelectedPerson.FullAge.Months}"/>
-                                             <Run Text=";"/>
-                                             <Run Text="Дней:"/>
-                                             <Run Text="{Binding SelectedPerson.FullAge.Days}"/>
-                                             <Run Text=";"/>
-                                        </TextBlock>
+                                        
 
                                     </Grid>
 
@@ -489,21 +459,21 @@
                                          Margin="2"
                                         Grid.Column="2">
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="22"/>
+                                            <RowDefinition Height="23"/>
                                             <RowDefinition Height="30"/>
-                                            <RowDefinition Height="22"/>
+                                            <RowDefinition Height="23"/>
                                             <RowDefinition Height="30"/>
-                                            <RowDefinition Height="22"/>
+                                            <RowDefinition Height="23"/>
                                             <RowDefinition Height="30"/>
-                                            <RowDefinition Height="22"/>
+                                            <RowDefinition Height="23"/>
                                             <RowDefinition Height="30"/>
-                                            <RowDefinition Height="22"/>
+                                            <RowDefinition Height="23"/>
                                             <RowDefinition Height="30"/>
                                         </Grid.RowDefinitions>
 
                                         <Label 
                                         Grid.Row="0"
-                                        Content="Номер телефона Лугаком"/>
+                                        Content="Номер телефона Лугаком:"/>
                                         <TextBox
                                             x:Name="TextFilerName"
                                             Grid.Row="1"
@@ -511,7 +481,7 @@
                                         />
                                         <Label 
                                         Grid.Row="2"
-                                        Content="Номер телефона MTC"/>
+                                        Content="Номер телефона MTC:"/>
                                         <TextBox
                                         Grid.Row="3"
                                         Text="{Binding SelectedPerson.PhoneUkraine , UpdateSourceTrigger=PropertyChanged}"
@@ -529,14 +499,26 @@
                                         />
                                         <Label 
                                         Grid.Row="6"
-                                        Content="Дата приёма на работу"/>
+                                        Content="Текущий возраст"/>
 
-                                        <DatePicker
-                                        Padding="4 1"
-                                        Margin="4 3"
-                                        Grid.Row="7"
-                                        SelectedDate="{Binding SelectedPerson.DateWorking , UpdateSourceTrigger=PropertyChanged}"
-                                        />
+                                        <TextBlock
+                                            Grid.Row="7"
+                                            Foreground="#B71C1C"
+                                            Margin="5 0 0 0"
+                                          
+                                            FontWeight="Bold">
+                                             <Run Text="Лет:"/>
+                                             <Run Text="{Binding SelectedPerson.FullAge.Years}"/>
+                                             <Run Text=";"/>
+                                             <Run Text="Месяцев:"/>
+                                             <Run Text="{Binding SelectedPerson.FullAge.Months}"/>
+                                             <Run Text=";"/>
+                                             <Run Text="Дней:"/>
+                                             <Run Text="{Binding SelectedPerson.FullAge.Days}"/>
+                                             <Run Text=";"/>
+                                        </TextBlock>
+                                        
+                                        
 
                                         
                                     </Grid>
@@ -1819,16 +1801,17 @@
                   
                                     <StackPanel Orientation="Horizontal">
                                         <Button 
-                                            Command="{Binding AddFamily}"
+                                            Command="{Binding}"
                                             Content="Создать" 
-                                            IsEnabled="False"/>
+                                            IsEnabled="False"
+                                            />
                                         <Button 
-                                            Command="{Binding SaveFamily}"
+                                            Command="{Binding }"
                                             IsEnabled="False"
                                             Content="Сохранить"/>
                                         <Button 
-                                            Command="{Binding DeleteFamily}"
-                                            IsEnabled="False"
+                                            Command="{Binding DeleteOldSurname}"
+                                            
                                             Content="Удалить"/>
                                     </StackPanel>
                                 </StackPanel>
