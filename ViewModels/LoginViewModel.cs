@@ -61,8 +61,13 @@ internal class LoginViewModel : BaseViewModel
                 username: UserName!,
                 password: Password!);
 
-            _navigationStore.CurrentViewModel = new HomeViewModel(account: account,
+                _navigationStore.CurrentViewModel = new HomeViewModel(account: account,
                                                                   navigationStore: _navigationStore);
+        }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse).StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
         }
         catch (WebException ex)
         {

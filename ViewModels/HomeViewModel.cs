@@ -504,16 +504,17 @@ internal class HomeViewModel : BaseViewModel
             IsLoading = false;
         }
         // Проверка токена
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse).StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (WebException ex)
         {
             if (ex.Status == WebExceptionStatus.ProtocolError)
             {
                 if (ex.Response is HttpWebResponse response)
                 {
-                    if((int)response.StatusCode == 419)
-                    {
-                        _ = MessageBox.Show("Попал в ошибку 419", "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
                     using StreamReader reader = new(response.GetResponseStream());
 
                     _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
@@ -542,7 +543,7 @@ internal class HomeViewModel : BaseViewModel
 
         }
         // Проверка токена
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse).StatusCode == 419)
         {
             _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
@@ -556,6 +557,11 @@ internal class HomeViewModel : BaseViewModel
                     using StreamReader reader = new(response.GetResponseStream());
 
                     _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+
+                    if ((int)response.StatusCode == 419)
+                    {
+                        _navigationStore.CurrentViewModel = new LoginViewModel(navigationStore: _navigationStore);
+                    }
                 }
             }
             else
@@ -597,7 +603,7 @@ internal class HomeViewModel : BaseViewModel
             */
         }
         // Проверка токена
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse).StatusCode == 419)
         {
             _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
@@ -635,7 +641,7 @@ internal class HomeViewModel : BaseViewModel
 
         }
         // Проверка токена
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)?.StatusCode == 419)
         {
             _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
@@ -677,7 +683,7 @@ internal class HomeViewModel : BaseViewModel
             _ = MessageBox.Show("Данные успешно сохраненны");
         }
         // Проверка токена
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse).StatusCode == 419)
         {
             _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
@@ -703,7 +709,7 @@ internal class HomeViewModel : BaseViewModel
             _ = _positions!.Remove(SelectedPosition);
         }
         // Проверка токена
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse).StatusCode == 419)
         {
             _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
@@ -728,7 +734,7 @@ internal class HomeViewModel : BaseViewModel
     // Логика фильтра
     private bool FilterToPerson(object emp)
     {
-        return string.IsNullOrEmpty(FilterPerson) || (emp is Persons pers && pers.FirstName!.ToUpper().Contains(value: FilterPerson.ToUpper()));
+        return string.IsNullOrEmpty(FilterPerson) || (emp is Persons per && per.FirstName!.ToUpper().Contains(value: FilterPerson.ToUpper()));
     }
     #endregion
 

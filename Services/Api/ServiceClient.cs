@@ -37,7 +37,9 @@ internal class ServiceClient : IDisposable
     private const string ClientUserAgent = "my-api-client-v1";
     private const string MediaTypeJson = "application/json";
 
+#pragma warning disable CS8618
     public ServiceClient(string baseUrl, TimeSpan? timeout = null)
+#pragma warning restore CS8618
     {
         _baseUrl = NormalizeBaseUrl(baseUrl);
         _timeout = timeout ?? TimeSpan.FromSeconds(90);

@@ -181,7 +181,9 @@ internal class ReportsViewModel : BaseViewModel
     #endregion
 
 
+#pragma warning disable CS8618
     public ReportsViewModel(NavigationStore navigationStore, Users user)
+#pragma warning restore CS8618
     {
         _user = user;
         _navigationStore = navigationStore;

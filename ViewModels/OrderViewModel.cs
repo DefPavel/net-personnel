@@ -1,10 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Windows.Input;
-
+﻿using System.Linq;
 namespace AlphaPersonel.ViewModels;
 
 internal class OrderViewModel : BaseViewModel
