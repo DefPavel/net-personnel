@@ -10,6 +10,7 @@
              xmlns:fa="http://schemas.fontawesome.com/icons/svg"
              d:DataContext="{d:DesignInstance Type=viewmodels:DepartmentViewModel}"
              mc:Ignorable="d" 
+              FontSize="13"
              d:DesignHeight="450" d:DesignWidth="800">
     <!--Загрузка всех отделов -->
     <UserControl.InputBindings>
@@ -81,7 +82,7 @@
         <DataGrid
             ScrollViewer.IsDeferredScrollingEnabled="True"
             AlternatingRowBackground="#e1eff9"
-            FontSize="13"
+          
             AutoGenerateColumns="False"
             CanUserAddRows="False"
             IsReadOnly="True"

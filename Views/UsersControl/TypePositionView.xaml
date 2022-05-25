@@ -20,12 +20,12 @@
             Modifiers="Ctrl"
             Key="S"
             Command="{Binding Save}" 
-            CommandParameter="{Binding SelectedOrder}"
+            CommandParameter="{Binding SelectedPosition}"
             />
         <KeyBinding
             Key="Delete"
             Command="{Binding Delete}" 
-             CommandParameter="{Binding SelectedOrder}"
+             CommandParameter="{Binding SelectedPosition}"
             />
     </UserControl.InputBindings>
     <i:Interaction.Triggers>

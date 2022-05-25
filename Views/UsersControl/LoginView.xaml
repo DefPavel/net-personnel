@@ -8,6 +8,7 @@
              d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}"
              mc:Ignorable="d" 
              FontFamily="Arial"
+             FontSize="13"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.InputBindings>
         <KeyBinding Command="{Binding Auth}" Key="Return"/>

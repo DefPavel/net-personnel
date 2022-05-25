@@ -7,6 +7,7 @@
              xmlns:fa="http://schemas.fontawesome.com/icons/svg" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              d:DataContext="{d:DesignInstance Type=viewmodels:MasterReportViewModel}"
              mc:Ignorable="d"
+              FontSize="13"
              d:DesignHeight="800" d:DesignWidth="900">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">

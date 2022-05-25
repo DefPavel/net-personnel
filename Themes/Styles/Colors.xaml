@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <!--Common colors-->
     <Color x:Key="GlyphColor">#777777</Color>
-    <Color x:Key="ForegroundColor">#444444</Color>
+    <Color x:Key="ForegroundColor">Black</Color>
     <Color x:Key="ForegroundColor.Light">#FFFFFF</Color>
     <Color x:Key="BackgroundColor">#FFFFFF</Color>
     <Color x:Key="BackgroundColor.Dark">#F0F0F0</Color>

@@ -84,7 +84,7 @@
         <DataGrid
                  ScrollViewer.IsDeferredScrollingEnabled="True"
                 AlternatingRowBackground="#e1eff9"
-                FontSize="13"
+              
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
                 IsReadOnly="True"

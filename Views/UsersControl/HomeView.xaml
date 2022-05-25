@@ -9,6 +9,7 @@
              d:DataContext="{d:DesignInstance Type=viewmodels:HomeViewModel}"
              mc:Ignorable="d" 
              FontFamily="Arial"
+             FontSize="13"
              d:DesignHeight="450" d:DesignWidth="1000">
     
     <!--Загрузка всех отделов -->
@@ -728,7 +729,7 @@
                                 <DataGrid
                                     SelectionMode="Single"
                                     IsReadOnly="True"
-                                    ScrollViewer.IsDeferredScrollingEnabled="True"
+                                    
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
                                     AlternatingRowBackground="#e1eff9"
                                     AutoGenerateColumns="False"
