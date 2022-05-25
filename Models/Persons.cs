@@ -196,6 +196,9 @@ internal class Persons
         set => _FullName = value;
     }
 
+    //[JsonPropertyName("title_department")]
+    //public string TitleDepartment { get; set; } = string.Empty;
+
     [JsonPropertyName("id_dep")]
     public int IdDepartment { get; set; }
 

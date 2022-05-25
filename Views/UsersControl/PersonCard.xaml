@@ -280,7 +280,7 @@
             <TextBlock 
                 Grid.Row="0"
                 HorizontalAlignment="Center"
-                Text="{Binding Department.Name}"
+                Text="{Binding SelectedPerson.ArrayPosition[0].DepartmentName}"
                 Style="{StaticResource Header20}"/>
             <Separator
                 VerticalAlignment="Bottom"
@@ -724,17 +724,14 @@
                                                 Width="50"
                                         Header="Телефон"/>
                                             <DataGridTextColumn 
-                                        Binding="{Binding Place}"
+                                        Binding="{Binding Contract}"
                                         Header="Вид контракта"/>
                                             <DataGridTextColumn 
-                                        Binding="{Binding Place}"
+                                        Binding="{Binding DateStartContract, StringFormat=d, ConverterCulture=ru-Ru}"
                                         Header="Дата заключения"/>
                                             <DataGridTextColumn 
-                                        Binding="{Binding Place}"
+                                        Binding="{Binding DateEndContract, StringFormat=d, ConverterCulture=ru-Ru}"
                                         Header="Дата окончания"/>
-                                            <DataGridTextColumn 
-                                        Binding="{Binding Place}"
-                                        Header="Вид контракта"/>
                                             <DataGridTextColumn 
                                         Binding="{Binding Place}"
                                         Header="Место работы"/>

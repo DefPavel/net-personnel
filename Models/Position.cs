@@ -6,6 +6,12 @@ internal class Position
     [JsonPropertyName("phone")] public string Phone { get; set; } = string.Empty;
     // Навзание должности
     [JsonPropertyName("position")] public string Name { get; set; } = string.Empty;
+
+    [JsonPropertyName("type_contract")] public string Contract { get; set; } = string.Empty;
+
+    [JsonPropertyName("data_start_contract")] public DateTime? DateStartContract { get; set; }
+
+    [JsonPropertyName("data_end_contract")] public DateTime? DateEndContract { get; set; }
     //TODO: Потом поменяй на объект в API чтобы можно было через combobox выбирать отдел
     [JsonPropertyName("name_depart")] public string DepartmentName { get; set; } = string.Empty;
 
