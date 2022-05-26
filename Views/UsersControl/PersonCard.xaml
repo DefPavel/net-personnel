@@ -235,7 +235,8 @@
                 ScrollViewer.IsDeferredScrollingEnabled="True"
                 VirtualizingStackPanel.VirtualizationMode="Recycling"
                 ItemsSource="{Binding CollectionPerson}"
-                SelectedItem="{Binding SelectedPerson}"            
+                SelectedItem="{Binding SelectedPerson}" 
+                
                 Margin="5"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
@@ -243,6 +244,10 @@
                 >
                 <DataGrid.ContextMenu>
                     <ContextMenu>
+                        <MenuItem 
+                          Header="Обновить"
+                            CommandParameter="{Binding SelectedPerson}"
+                          Command="{Binding CopyBuffer}"/>
                         <MenuItem 
                           Header="Сохранить в буффер"
                             CommandParameter="{Binding SelectedPerson}"

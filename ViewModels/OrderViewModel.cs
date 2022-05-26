@@ -179,7 +179,7 @@ internal class OrderViewModel : BaseViewModel
 
         Order order = new()
         {
-            Name = "000-ОК",
+            Name = $"000-ОК(от {DateTime.Now.ToShortDateString()})",
             Type = "Приём",
             DateOrder = DateTime.Now.Date
 

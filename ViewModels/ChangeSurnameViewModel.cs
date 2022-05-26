@@ -59,6 +59,11 @@ internal class ChangeSurnameViewModel : BaseViewModel
     private async void CloseWindow(object win)
     {
         if (win is not Window w) return;
+        if(DateChange == null)
+        {
+            _ = MessageBox.Show("Необходимо выбрать дату!");
+            return;
+        }
         try
         {
             object paylod = new
@@ -70,7 +75,6 @@ internal class ChangeSurnameViewModel : BaseViewModel
                 new_surname = NewSurname!.Trim(),
             };
 
-            // Удалить персону
             await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/person/rename/firstname", "POST", paylod);
 
             w.DialogResult = true;

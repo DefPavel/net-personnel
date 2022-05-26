@@ -218,7 +218,12 @@ internal class PersonCardViewModel : BaseViewModel
             // Для фильтрации полей 
             if (PersonsList != null) CollectionPerson = CollectionViewSource.GetDefaultView(PersonsList);
 
-            if (CollectionPerson != null) CollectionPerson.Filter = FilterToPerson;
+            if (CollectionPerson != null)
+            { 
+                CollectionPerson.Filter = FilterToPerson;
+               // CollectionPerson.MoveCurrentToFirst();
+                //SelectedPerson = CollectionPerson.SourceCollection;
+            }
         }
     }
     // Список видов паспортов
@@ -986,13 +991,27 @@ internal class PersonCardViewModel : BaseViewModel
         CollectionPerson.Refresh();
     }
 
-    private void ChangeSurname(object p)
+    private async void ChangeSurname(object p)
     {
         ChangeSurnameViewModel viewModel = new(_user!, SelectedPerson!);
         ChangeSurnameView view = new() { DataContext = viewModel };
         view.ShowDialog();
-        ApiGetInformationToPerson(p);
-        ApiGetListAllPersonsAsync(p);
+
+        SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
+
+        // var change = PersonsList?.FirstOrDefault(x => x.Id == SelectedPerson?.Id).FirstName;
+        ObservableCollection<Persons> newArray = new();
+
+        foreach (var item in PersonsList)
+        {
+            if (item.Id == SelectedPerson?.Id)
+            {
+                item.FirstName = SelectedPerson.FirstName;
+            }
+            newArray.Add(item);
+        }
+        PersonsList = newArray;
+
 
     }
 
@@ -1232,7 +1251,7 @@ internal class PersonCardViewModel : BaseViewModel
         }
     }
     private bool CanCommandExecute(object p) => _selectedPerson is not null;
-    private bool FilterToPerson(object emp) => string.IsNullOrEmpty(FilterPerson) || emp is Persons pers && pers.FirstName.ToUpper().Contains(FilterPerson.ToUpper());
+    private bool FilterToPerson(object emp) => string.IsNullOrEmpty(FilterPerson) || emp is Persons pers && pers.FullName.ToUpper().Contains(FilterPerson.ToUpper());
     private static bool FilterIsNpp(object emp) => emp is Persons { IsPed: true };
     private static bool FilterIsNoNpp(object emp) => emp is Persons { IsPed: false };
 

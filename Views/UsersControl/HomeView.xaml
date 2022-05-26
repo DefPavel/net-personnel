@@ -399,7 +399,7 @@
                                     HorizontalAlignment="Right"
                                     Command="{Binding RenameDepartment}"
                                     Width="120"
-                                    Content="Сохранить изменения"/>
+                                    Content="Сохранить"/>
                             </Grid>
                         </TabItem>
                         <TabItem 
