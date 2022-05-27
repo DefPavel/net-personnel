@@ -86,7 +86,7 @@
            
             AutoGenerateColumns="False"
             CanUserAddRows="False"
-            IsReadOnly="True"
+            FontSize="14"
             ItemsSource="{Binding CollectionDepart}"
             SelectedItem="{Binding SelectedTypeVacation}"
             Margin="10"         
@@ -94,7 +94,7 @@
             Grid.Column="0">
             <DataGrid.Columns>
                 <DataGridTextColumn 
-                    Binding="{Binding Name}"
+                    Binding="{Binding Name,UpdateSourceTrigger=PropertyChanged}"
                     Width="*"
                     Header="Наименование"/>
             </DataGrid.Columns>

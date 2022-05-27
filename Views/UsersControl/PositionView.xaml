@@ -87,7 +87,7 @@
               
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
-                IsReadOnly="True"
+                FontSize="14"
                 SelectedItem="{Binding SelectedPosition}"
                 ItemsSource="{Binding CollectionDepart}"
                 Margin="10"         

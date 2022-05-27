@@ -48,7 +48,7 @@ internal class DeletePositionViewModel : BaseViewModel
     public ICommand GetData => _getData ??= new LambdaCommand(LoadedApi);
 
     private ICommand? _closeWin;
-    public ICommand CloseWin => _closeWin ??= new LambdaCommand(CloseWindow);
+    public ICommand CloseWin => _closeWin ??= new LambdaCommand(CloseWindow , _ => SelectedOrders != null && DateDelete != null);
 
     private async void CloseWindow(object win)
     {

@@ -9,7 +9,7 @@
              heplper:InputBindingsBehavior.TakesInputBindingPrecedence="True"
              d:DataContext="{d:DesignInstance Type=viewmodels:PersonCardViewModel}"
              mc:Ignorable="d" 
-              FontSize="13"
+             FontSize="13"
             
              d:DesignHeight="950" d:DesignWidth="1100">
 
@@ -247,7 +247,7 @@
                         <MenuItem 
                           Header="Обновить"
                             CommandParameter="{Binding SelectedPerson}"
-                          Command="{Binding CopyBuffer}"/>
+                          Command="{Binding LoadedListPerson}"/>
                         <MenuItem 
                           Header="Сохранить в буффер"
                             CommandParameter="{Binding SelectedPerson}"
@@ -371,7 +371,6 @@
                                         Margin="4 3"
                                         SelectedDate="{Binding SelectedPerson.DateWorking , UpdateSourceTrigger=PropertyChanged}"
                                         />
-
                                     </StackPanel>
 
                                     <Grid 
@@ -758,7 +757,7 @@
 
                                 <DataGrid 
                                     SelectionMode="Single"
-                                     FontSize="13"
+                                     FontSize="14"
                                     ScrollViewer.IsDeferredScrollingEnabled="True"
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
                                     AlternatingRowBackground="#e1eff9"
@@ -917,7 +916,7 @@
                                     
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
                                     AlternatingRowBackground="#e1eff9"
-                                    FontSize="13"
+                                     FontSize="14"
                                     ScrollViewer.IsDeferredScrollingEnabled="True"
                                     SelectedItem="{Binding SelectedVacation}"
                                     ItemsSource="{Binding SelectedPerson.ArrayVacation}"
@@ -951,6 +950,9 @@
                                             DisplayMemberPath="Name"
                                             ItemsSource="{Binding Source={StaticResource ItemsPeriodVacations}}"
                                             Header="Период отпуска"/>
+                                        <DataGridTextColumn
+                                            Binding="{Binding LengthVacation}"
+                                            Header="Продолж.(дней)"/>
 
                                         <DataGridTemplateColumn Header="Дата начала">
                                             <DataGridTemplateColumn.CellTemplate>
@@ -986,9 +988,7 @@
                                             </DataGridTemplateColumn.CellEditingTemplate>
 
                                         </DataGridTemplateColumn>
-                                        <DataGridTextColumn
-                                            Binding="{Binding LengthVacation}"
-                                            Header="Продолжительность"/>
+                                       
                                         <DataGridTextColumn 
                                             Binding="{Binding Residue}"
                                             Header="Остаток"/>
@@ -1155,7 +1155,7 @@
                                 </StackPanel>
 
                                 <DataGrid 
-                                     FontSize="13"
+                                     FontSize="14"
                                      ScrollViewer.IsDeferredScrollingEnabled="True"
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
                                     SelectedItem="{Binding SelectedHistory}"
@@ -1179,8 +1179,8 @@
                                     <DataGrid.Columns>
                                         <DataGridTextColumn 
                                             Binding="{Binding Record}"
-                                            Header="Номер записи"
-                                            Width="90"/>
+                                            Header="№"
+                                           />
                                         <DataGridTemplateColumn Header="Дата записи">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
@@ -1443,7 +1443,7 @@
 
                                         <DataGrid 
                                             SelectedItem="{Binding SelectedPens}"
-                                            FontSize="13"
+                                             FontSize="14"
                                             ScrollViewer.IsDeferredScrollingEnabled="True"
                                             VirtualizingStackPanel.VirtualizationMode="Recycling"
                                             AlternatingRowBackground="#e1eff9"
@@ -1651,7 +1651,7 @@
 
                                 <DataGrid 
                                     SelectedItem="{Binding SelectedFamily}"
-                                    FontSize="13"
+                                     FontSize="14"
                                     ScrollViewer.IsDeferredScrollingEnabled="True"
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
                                     AlternatingRowBackground="#e1eff9"
@@ -1744,7 +1744,7 @@
 
                                 <DataGrid 
                                     SelectedItem="{Binding SelectedOldSurname}"
-                                    FontSize="13"
+                                     FontSize="14"
                                     ScrollViewer.IsDeferredScrollingEnabled="True"
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
                                     AlternatingRowBackground="#e1eff9"
@@ -1834,7 +1834,7 @@
 
                                 <DataGrid 
                                     SelectedItem="{Binding SelectedDocument}"
-                                    FontSize="13"
+                                     FontSize="14"
                                     ScrollViewer.IsDeferredScrollingEnabled="True"
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
                                     AlternatingRowBackground="#e1eff9"
@@ -1887,10 +1887,10 @@
                                     <StackPanel 
                                         Orientation="Horizontal">
                                         <TextBox 
-                                            IsEnabled="False"
+                                          
                                             MaxWidth="250"
                                             MinWidth="250"
-                                            Text="{Binding SelectedDocument.Url , UpdateSourceTrigger=PropertyChanged}"/>
+                                            Text="{Binding UrlDocument , UpdateSourceTrigger=PropertyChanged}"/>
                                         <Button
                                             Command="{Binding SaveUploadDocument}"
                                             Height="22">
@@ -1944,7 +1944,7 @@
                                 </Grid.ColumnDefinitions>
                                 <DataGrid 
                                     SelectedItem="{Binding SelectedEducation}"
-                                    FontSize="13"
+                                    FontSize="14"
                                     ScrollViewer.IsDeferredScrollingEnabled="True"
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
                                     AlternatingRowBackground="#e1eff9"
@@ -2063,7 +2063,7 @@
 
                                 <DataGrid 
                                     SelectedItem="{Binding SelectedQualification}"
-                                    FontSize="13"
+                                    FontSize="14"
                                     ScrollViewer.IsDeferredScrollingEnabled="True"
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
                                     AlternatingRowBackground="#e1eff9"
@@ -2190,24 +2190,24 @@
                             Header="Науч. степень/Уч.звание">
                             <Grid Margin="5">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="280"/>
                                 </Grid.RowDefinitions>
                                 <GroupBox
-                                    Margin="5"
+                                    Margin="3"
                                     Header="Научная степень"
                                     Grid.Row="0">
                                     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
 
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition/>
                                                 <ColumnDefinition Width="300"/>
+                                                <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
 
                                             <DataGrid 
                                             SelectedItem="{Binding SeletedDegree}"
-                                            FontSize="13"
+                                            FontSize="14"
                                             ScrollViewer.IsDeferredScrollingEnabled="True"
                                             VirtualizingStackPanel.VirtualizationMode="Recycling"
                                             AlternatingRowBackground="#e1eff9"
@@ -2219,12 +2219,9 @@
 
                                                 <DataGrid.Columns>
                                                     <DataGridTextColumn
+                                                        Width="*"
                                                     Header="Степень"
                                                     Binding="{Binding TypeScientific}"/>
-
-                                                    <DataGridTextColumn
-                                                    Header="Серия и номер диплома"
-                                                    Binding="{Binding Document}"/>
 
                                                     <DataGridTemplateColumn Header="Дата утверждения">
                                                         <DataGridTemplateColumn.CellTemplate>
@@ -2244,35 +2241,114 @@
 
                                                     </DataGridTemplateColumn>
 
-                                                    <DataGridTextColumn
-                                                    Header="Область науки"
-                                                    Binding="{Binding ScientificBranch}"/>
-                                                    <DataGridTextColumn
-                                                    Header="Специальность"
-                                                    Binding="{Binding ScientificSpecialty}"/>
-                                                    <DataGridTextColumn
-                                                    Header="Тема"
-                                                    Binding="{Binding Dissertation}"/>
-                                                    <DataGridTextColumn
-                                                    Header="Место присвоения"
-                                                    Binding="{Binding Place}"/>
-                                                    <DataGridTextColumn
-                                                    Header="Город присвоения"
-                                                    Binding="{Binding City}"/>
-                                                    <DataGridTextColumn
-                                                    Header="Работа после получения диплома"
-                                                    Binding="{Binding JobAfter}"/>
-                                                    <DataGridTextColumn
-                                                    Header="Количество науч.работ"
-                                                    Binding="{Binding CountScientific}"/>
-
-
-
                                                 </DataGrid.Columns>
 
                                             </DataGrid>
 
-                                            <StackPanel
+                                            <Grid 
+                                                 Margin="5"
+                                                Grid.Column="1">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="53"/>
+                                                    <RowDefinition Height="53"/>
+                                                    <RowDefinition Height="53"/>
+                                                    <RowDefinition Height="53"/>
+                                                    <RowDefinition Height="53"/>
+                                                    <RowDefinition Height="53"/>
+                                                    <RowDefinition Height="53"/>
+                                                    <RowDefinition Height="53"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <StackPanel 
+                                                    Grid.Row="0"
+                                                    Grid.ColumnSpan="2">
+                                                    <Label Content="Степень "/>
+                                                    <ComboBox 
+                                                    ItemsSource="{Binding TypeDegree}"
+                                                    DisplayMemberPath="Name"
+                                                    SelectedValuePath="Name"
+                                                    SelectedValue="{Binding SeletedDegree.TypeScientific, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+                                                    />
+
+                                                </StackPanel>
+                                                <StackPanel  
+                                                    Grid.Column="0"
+                                                    Grid.Row="1">
+                                                    <Label 
+                                                    Content="Серия и номер диплома"/>
+                                                    <TextBox 
+                                                    Text="{Binding SeletedDegree.Document , UpdateSourceTrigger=PropertyChanged}"/>
+                                                </StackPanel>
+                                                <StackPanel  
+                                                    Grid.Column="1"
+                                                    Grid.Row="1">
+                                                    <Label Content="Дата утверждения"/>
+                                                    <DatePicker  
+                                                SelectedDate="{Binding SeletedDegree.DateOfIssue , UpdateSourceTrigger=PropertyChanged}"
+                                                Margin="4 0" 
+                                                Padding="4 0"/>
+                                                </StackPanel>
+                                                <StackPanel 
+                                                    Grid.Row="2"
+                                                    Grid.ColumnSpan="2">
+                                                    <Label Content="Область науки, по которой присуждена научная степень"/>
+                                                    <TextBox Text="{Binding SeletedDegree.ScientificBranch}"/>
+                                                </StackPanel>
+                                                <StackPanel 
+                                                    Grid.Row="3"
+                                                    Grid.ColumnSpan="2">
+                                                    <Label Content="Специальность, по которой подготовлена диссертация"/>
+                                                    <TextBox Text="{Binding SeletedDegree.ScientificSpecialty}"/>
+                                                </StackPanel>
+                                                <StackPanel 
+                                                    Grid.Row="4"
+                                                    Grid.ColumnSpan="2">
+                                                    <Label Content="Тема диссертации"/>
+                                                    <TextBox Text="{Binding SeletedDegree.Dissertation}"/>
+                                                </StackPanel>
+                                                <StackPanel 
+                                                    Grid.Row="5"
+                                                    Grid.Column="0">
+                                                    <Label Content="Место присвоения"/>
+                                                    <TextBox Text="{Binding SeletedDegree.Place}"/>
+                                                </StackPanel>
+                                                <StackPanel 
+                                                    Grid.Row="5"
+                                                    Grid.Column="1">
+                                                    <Label Content="Город присвоения"/>
+                                                    <TextBox Text="{Binding SeletedDegree.City}"/>
+                                                </StackPanel>
+                                                <StackPanel 
+                                                    Grid.Row="6"
+                                                    Grid.ColumnSpan="2">
+                                                    <Label Content="Должность и предприятие где работал после получения диплома"/>
+                                                    <TextBox Text="{Binding SeletedDegree.JobAfter}"/>
+                                                   
+                                                </StackPanel>
+                                                <StackPanel 
+                                                    Grid.Row="7"
+                                                    Grid.Column="0">
+                                                    <Label Content="Количество научн.работ"/>
+                                                    <TextBox Text="{Binding SeletedDegree.CountScientific}"/>
+
+                                                </StackPanel>
+                                                <StackPanel 
+                                                    VerticalAlignment="Bottom"
+                                                    HorizontalAlignment="Right"
+                                                    Grid.Row="8"
+                                                    Grid.Column="1"
+                                                    Orientation="Horizontal">
+                                                    <Button Command="{Binding AddScience}" Content="Создать"/>
+                                                    <Button Command="{Binding SaveScience}" Content="Сохранить"/>
+                                                    <Button Command="{Binding DeleteScience}" Content="Удалить"/>
+                                                </StackPanel>
+                                            </Grid>
+                                            <!--<StackPanel
                                             Margin="5"
                                             Grid.Column="1">
 
@@ -2302,7 +2378,7 @@
                                                 <TextBox Text="{Binding SeletedDegree.Place}"/>
                                                 <Label Content="Город присвоения"/>
                                                 <TextBox Text="{Binding SeletedDegree.City}"/>
-                                                <Label Content="Должность и предприятие где работал после получения диплома"/>
+                                                
                                                 <TextBox Text="{Binding SeletedDegree.JobAfter}"/>
                                                 <Label Content="Количество научн.работ"/>
                                                 <TextBox Text="{Binding SeletedDegree.CountScientific}"/>
@@ -2312,19 +2388,19 @@
                                                     <Button Command="{Binding SaveScience}" Content="Сохранить"/>
                                                     <Button Command="{Binding DeleteScience}" Content="Удалить"/>
                                                 </StackPanel>
-                                            </StackPanel>
+                                            </StackPanel>-->
                                         </Grid>
                                     </ScrollViewer>
                                 </GroupBox>
 
                                 <GroupBox
-                                    Margin="5"
+                                    Margin="3"
                                     Header="Ученое звание"
                                     Grid.Row="1">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
                                             <ColumnDefinition Width="300"/>
+                                            <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
 
                                         <DataGrid 
@@ -2345,10 +2421,6 @@
                                                     Binding="{Binding TypeRank}"
                                                     Header="Звание"/>
 
-                                                <DataGridTextColumn
-                                                    Binding="{Binding Document}"
-                                                    Header="Диплом"/>
-
                                                 <DataGridTemplateColumn Header="Дата присвоения">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
@@ -2367,13 +2439,6 @@
 
                                                 </DataGridTemplateColumn>
 
-                                                <DataGridTextColumn 
-                                                    Header="Кафедра"
-                                                    Binding="{Binding Department}"/>
-
-                                                <DataGridTextColumn 
-                                                    Binding="{Binding Place}"
-                                                    Header="Место присвоения"/>
                                             </DataGrid.Columns>
 
 
@@ -2382,7 +2447,76 @@
 
                                         </DataGrid>
 
-                                        <StackPanel Grid.Column="1">
+                                        <Grid Grid.Column="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="53"/>
+                                                <RowDefinition Height="53"/>
+                                                <RowDefinition Height="53"/>
+                                                <RowDefinition Height="53"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <StackPanel 
+                                                Grid.Row="0"
+                                                Grid.ColumnSpan="2">
+                                                <Label Content="Звание"/>
+                                                <ComboBox
+                                                IsEditable="True"
+                                                ItemsSource="{Binding TypeTitle}"
+                                                DisplayMemberPath="Name"
+                                                SelectedValuePath="Name"
+                                                SelectedValue="{Binding SelectedTitle.TypeRank, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+                                            />
+                                            </StackPanel>
+                                            <StackPanel 
+                                                Grid.Row="1"
+                                                Grid.Column="0">
+                                                <Label Content="Серия и номер диплома"/>
+                                                <TextBox Text="{Binding SelectedTitle.Document , UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
+                                            <StackPanel 
+                                                Grid.Row="1"
+                                                Grid.Column="1">
+                                                <Label Content="Дата присвоения "/>
+                                                <DatePicker  
+                                                SelectedDate="{Binding SelectedTitle.DateIssue , UpdateSourceTrigger=PropertyChanged}"
+                                                Margin="4 0" 
+                                                Padding="4 0"/>
+                                            </StackPanel>
+                                            <StackPanel 
+                                                Grid.Row="2"
+                                                Grid.ColumnSpan="2">
+                                                <Label Content="Кафедра"/>
+                                                <TextBox Text="{Binding SelectedTitle.Department , UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
+                                            <StackPanel 
+                                                Grid.Row="3"
+                                                Grid.ColumnSpan="2">
+                                                <Label Content="Место присвоения"/>
+                                                <TextBox Text="{Binding SelectedTitle.Place , UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
+                                            <StackPanel 
+                                                VerticalAlignment="Bottom"
+                                                HorizontalAlignment="Right"
+                                                Grid.Column="1"
+                                                Grid.Row="4"
+                                                Orientation="Horizontal">
+                                                <Button 
+                                                    Command="{Binding AddTile}"
+                                                    Content="Создать"/>
+                                                <Button 
+                                                    Command="{Binding SaveTile}"
+                                                    Content="Сохранить"/>
+                                                <Button 
+                                                    Command="{Binding DeleteTitle}"
+                                                    Content="Удалить"/>
+                                            </StackPanel>
+                                        </Grid>
+                                        <!--<StackPanel Grid.Column="1">
                                             <Label Content="Звание"/>
                                             <ComboBox
                                                 IsEditable="True"
@@ -2414,7 +2548,7 @@
                                                     Command="{Binding DeleteTitle}"
                                                     Content="Удалить"/>
                                             </StackPanel>
-                                        </StackPanel>
+                                        </StackPanel>-->
                                     </Grid>
 
                                 </GroupBox>
@@ -2434,7 +2568,7 @@
 
                                 <DataGrid 
                                     SelectedItem="{Binding SelectedRewarding}"
-                                    FontSize="13"
+                                    FontSize="14"
                                     ScrollViewer.IsDeferredScrollingEnabled="True"
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
                                     AlternatingRowBackground="#e1eff9"
@@ -2535,7 +2669,7 @@
 
                                 <DataGrid 
                                     SelectedItem="{Binding SeletedMemberAcademic}"
-                                    FontSize="13"
+                                    FontSize="14"
                                     ScrollViewer.IsDeferredScrollingEnabled="True"
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
                                     AlternatingRowBackground="#e1eff9"
@@ -2638,7 +2772,7 @@
 
                                 <DataGrid 
                                     SelectedItem="{Binding SelectedMedical}"
-                                    FontSize="13"
+                                    FontSize="14"
                                     ScrollViewer.IsDeferredScrollingEnabled="True"
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
                                     AlternatingRowBackground="#e1eff9"

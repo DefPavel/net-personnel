@@ -79,10 +79,10 @@
         <DataGrid
             ScrollViewer.IsDeferredScrollingEnabled="True"
             AlternatingRowBackground="#e1eff9"
-         
+             FontSize="14"
             AutoGenerateColumns="False"
             CanUserAddRows="False"
-            IsReadOnly="True"
+           
             ItemsSource="{Binding CollectionDepart}"
             SelectedItem="{Binding SelectedType}"
             Margin="10"         
@@ -91,7 +91,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn 
                     Width="*"
-                    Binding="{Binding Name}"
+                    Binding="{Binding Name ,UpdateSourceTrigger=PropertyChanged}"
                     Header="Наименование"/>
             </DataGrid.Columns>
 

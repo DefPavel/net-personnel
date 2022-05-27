@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="Создать новую должность" 
-        Height="540"
+        Height="580"
         Width="350">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -15,7 +15,7 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
-        <StackPanel Margin="5">
+        <StackPanel>
             <TextBlock 
                 Style="{StaticResource Header30}"
                 Text="Добавить должность"/>
@@ -63,6 +63,12 @@
                 Content="Дата заключения контракта"/>
             <DatePicker Margin="4 2 4 2" 
                         SelectedDate="{Binding DateContract ,
+                        UpdateSourceTrigger=PropertyChanged}"/>
+            <Label 
+                FontWeight="Bold"
+                Content="Дата окончания контракта"/>
+            <DatePicker Margin="4 2 4 2" 
+                        SelectedDate="{Binding DateEndContract ,
                         UpdateSourceTrigger=PropertyChanged}"/>
             <Label 
                 FontWeight="Bold"
@@ -115,7 +121,7 @@
                     FormatString="F2"
                     Value="{ Binding CountBudget , UpdateSourceTrigger=PropertyChanged}" 
                     Increment="0.1" 
-                    Maximum="1.9"
+                    Maximum="1.5"
                     Minimum="0.0"
                     />
 
@@ -131,7 +137,7 @@
                     FormatString="F2"
                     Value="{Binding CountNoBudget , UpdateSourceTrigger=PropertyChanged}" 
                     Increment="0.1" 
-                    Maximum="1.9"
+                    Maximum="1.5"
                     Minimum="0.0"
                    
                     />

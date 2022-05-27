@@ -111,20 +111,22 @@ internal class TypeVacationViewModel : BaseViewModel
     {
         try
         {
+            var newSelectedVacation = SelectedTypeVacation!;
+
             if (SelectedTypeVacation!.Id > 0)
             {
                 // Изменить
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/vacation/type/rename", "POST", SelectedTypeVacation);
+                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/vacation/type/rename", "POST", newSelectedVacation);
                 // MessageBox.Show("Изменить");
             }
             else
             {
                 // Создать
-                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/vacation/type/add", "POST", SelectedTypeVacation);
+                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/vacation/type/add", "POST", newSelectedVacation);
             }
             TypeVacations = await QueryService.JsonDeserializeWithToken<Models.TypeVacation>(_user.Token, "/pers/vacation/type/get", "GET");
-            _ = MessageBox.Show("Данные успешно сохраненны");
-
+            //_ = MessageBox.Show("Данные успешно сохраненны");
+            SelectedTypeVacation = TypeVacations.FirstOrDefault(x => x.Name == newSelectedVacation!.Name);
         }
         // Проверка токена
         catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)

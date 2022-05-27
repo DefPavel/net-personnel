@@ -82,10 +82,9 @@
         <DataGrid
             ScrollViewer.IsDeferredScrollingEnabled="True"
             AlternatingRowBackground="#e1eff9"
-          
+            FontSize="14"
             AutoGenerateColumns="False"
             CanUserAddRows="False"
-            IsReadOnly="True"
             ItemsSource="{Binding CollectionDepart}"
             SelectedItem="{Binding SelectedDepartment}"
             Margin="10"         
@@ -103,8 +102,8 @@
                 <CollectionViewSource x:Key="ItemsTypeDep" Source="{Binding TypeDepartments}" />
             </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Наименование" Binding="{Binding Name}"/>
-                <DataGridTextColumn Header="Краткое название" Binding="{Binding Short}"/>
+                <DataGridTextColumn Header="Наименование" Binding="{Binding Name ,UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Краткое название" Binding="{Binding Short,UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridComboBoxColumn 
                     Header="Тип отдела"
                     SelectedValueBinding="{Binding IdType}"
@@ -112,7 +111,7 @@
                     DisplayMemberPath="TypeName"
                     ItemsSource="{Binding Source={StaticResource ItemsTypeDep}}"/>
 
-                <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}"/>
+                <DataGridTextColumn Header="Телефон" Binding="{Binding Phone,UpdateSourceTrigger=PropertyChanged}"/>
             </DataGrid.Columns>
         </DataGrid>
         <GridSplitter Width="2" 

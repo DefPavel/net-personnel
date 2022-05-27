@@ -82,10 +82,9 @@
         <DataGrid
              ScrollViewer.IsDeferredScrollingEnabled="True"
             AlternatingRowBackground="#e1eff9"
-          
+             FontSize="14"
             AutoGenerateColumns="False"
             CanUserAddRows="False"
-            IsReadOnly="True"
             ItemsSource="{Binding CollectionOrder}"
             SelectedItem="{Binding SelectedOrder}"
             Margin="10"         
@@ -102,9 +101,9 @@
                 </Style>
             </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Приказ" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Приказ" Binding="{Binding Name,UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Тип приказа" Binding="{Binding Type}"/>
-                <DataGridTextColumn Header="Дата приказа" Binding="{Binding DateOrder, StringFormat='dd.MM.yyyy'}"/>
+                <DataGridTextColumn Header="Дата приказа" Binding="{Binding DateOrder,UpdateSourceTrigger=PropertyChanged, StringFormat='dd.MM.yyyy'}"/>
             </DataGrid.Columns>
         </DataGrid>
         <GridSplitter Width="2" 

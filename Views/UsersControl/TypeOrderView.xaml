@@ -85,7 +85,7 @@
            
             AutoGenerateColumns="False"
             CanUserAddRows="False"
-            IsReadOnly="True"
+             FontSize="14"
             ItemsSource="{Binding TypeOrders}"
             SelectedItem="{Binding SelectedOrder}"
             Margin="10"         
@@ -102,7 +102,7 @@
                 </Style>
             </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Наименование" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Наименование" Binding="{Binding Name,UpdateSourceTrigger=PropertyChanged}"/>
             </DataGrid.Columns>
         </DataGrid>
         <GridSplitter Width="2" 

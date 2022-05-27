@@ -25,6 +25,13 @@ internal class AddPositionViewModel : BaseViewModel
     {
         get => _dateContract;
         set => Set(ref _dateContract, value);
+
+    }
+    private DateTime? _dateEndContract;
+    public DateTime? DateEndContract
+    {
+        get => _dateEndContract;
+        set => Set(ref _dateEndContract, value);
     }
 
     private decimal? _countNoBudget = 0;
@@ -123,7 +130,12 @@ internal class AddPositionViewModel : BaseViewModel
     public ICommand GetPosition => _getPosition ??= new LambdaCommand(LoadedPositions);
 
     private ICommand? _closeWin;
-    public ICommand CloseWin => _closeWin ??= new LambdaCommand(CloseWindow, _ => SelectedOrders != null);
+    public ICommand CloseWin => _closeWin ??= new LambdaCommand(CloseWindow, _ => 
+    SelectedOrders != null 
+    && SelectedDepartments != null 
+    && SelectedContract != null
+    && SelectedPositions != null
+    );
 
 
     private async void LoadedPositions(object p)
@@ -161,7 +173,7 @@ internal class AddPositionViewModel : BaseViewModel
         if (win is not Window w) return;
         try
         {
-            if (SelectedDepartments != null)
+            if (DateContract != null)
             {
                 object person = new
                 {
@@ -172,16 +184,21 @@ internal class AddPositionViewModel : BaseViewModel
                     id_contract = SelectedContract!.Id,
                     count_budget = CountBudget,
                     count_nobudget = CountNoBudget,
-                    data_start_contract = DateContract!.Value.ToString("yyyy-MM-dd"),
+                    date_start_contract = DateContract!,
+                    date_end_contract = DateEndContract,
                     is_pluralism_inner = true,
                     is_main = IsMain,
                     created_at = SelectedOrders.DateOrder,
-                    name_departament = SelectedDepartments.Name,
+                    name_departament = SelectedDepartments!.Name,
                     name_position = SelectedPositions.Name,
                 };
 
                 // Создать персону
                 await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/position/addByPerson", "POST", person);
+            }
+            else
+            {
+                _ = MessageBox.Show("Не выбрана дата контракта", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             w.DialogResult = true;

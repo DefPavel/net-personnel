@@ -26,6 +26,13 @@ internal class PersonCardViewModel : BaseViewModel
         get => _stageIsOver;
         private set => Set(ref _stageIsOver, value);
     }
+
+    private string _urlDocument = string.Empty;
+    public string UrlDocument
+    {
+        get => _urlDocument;
+        set => Set(ref _urlDocument, value);
+    }
     // Стаж в Универе
     private string _stageIsUniver = string.Empty;
     public string StageIsUniver
@@ -166,7 +173,18 @@ internal class PersonCardViewModel : BaseViewModel
     public Documents? SelectedDocument
     {
         get => _selectedDocument;
-        set => Set(ref _selectedDocument, value);
+        set
+        {
+            Set(ref _selectedDocument, value);
+            if (_selectedDocument != null)
+            {
+                UrlDocument = _selectedDocument.Url; 
+            }
+            else
+            {
+                UrlDocument = string.Empty;
+            }
+        }
     }
 
     private VisualBoolean? _isLoading;
@@ -547,7 +565,11 @@ internal class PersonCardViewModel : BaseViewModel
     public ICommand AddVacation => _addVacation ??= new LambdaCommand(AddVacationsPerson);
 
     private ICommand? _saveVacation;
-    public ICommand SaveVacation => _saveVacation ??= new LambdaCommand(SaveVacationsPerson, _ => SelectedVacation != null);
+    public ICommand SaveVacation => _saveVacation ??= new LambdaCommand(SaveVacationsPerson, _ => 
+    SelectedVacation != null
+    && SelectedVacation.Type.Length > 0 
+    && SelectedVacation.Period.Length > 0
+    && SelectedVacation.Order.Length > 0);
 
     private ICommand? _DeleteVacation;
     public ICommand DeleteVacation => _DeleteVacation ??= new LambdaCommand(DeleteVacationsAsync, _ => SelectedVacation != null);
@@ -2277,7 +2299,7 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
-            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
+            if (MessageBox.Show("Вы действительно хотитет удалить данный отпуска?", "Вопрос", MessageBoxButton.YesNo,
                     MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
             await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/vacation/del/" + SelectedVacation!.Id, "DELETE", SelectedVacation);
             //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
@@ -2345,6 +2367,11 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
+            if(SelectedVacation!.LengthVacation <= 0)
+            {
+                _ = MessageBox.Show("Длина отпуска равна меньше или равна 0", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
             if (SelectedVacation!.DateBegin == null)
             {
                 _ = MessageBox.Show("Дата не указана!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -2398,7 +2425,9 @@ internal class PersonCardViewModel : BaseViewModel
         };
         if (openFileDialog.ShowDialog() != true) return;
         var base64 = GetBase64FromImage(openFileDialog.FileName);
-        SelectedDocument!.Url = openFileDialog.FileName;
+
+        UrlDocument = openFileDialog.FileName;
+        SelectedDocument!.Url = UrlDocument;
         SelectedDocument!.Base64 = base64;
     }
 
