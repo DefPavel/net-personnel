@@ -187,7 +187,11 @@ internal class AddPersonVeiwModel : BaseViewModel
         if (win is not Window w) return;
         try
         {
-            
+            if(string.IsNullOrWhiteSpace(FirstName))
+            {
+                _ = MessageBox.Show("Неверный формат Фамилии", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             object person = new
             {
                 firstname = FirstName,

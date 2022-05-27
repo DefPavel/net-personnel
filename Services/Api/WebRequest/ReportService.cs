@@ -24,7 +24,7 @@ internal static class ReportService
     {
         SaveFileDialog sf = new()
         {
-            FileName = reportName,
+            FileName = $"{reportName}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss}",
             Filter = "DocX|*.docx",
             DefaultExt = ".docx",
         };
