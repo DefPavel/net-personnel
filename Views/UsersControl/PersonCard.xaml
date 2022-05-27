@@ -245,6 +245,7 @@
                 <DataGrid.ContextMenu>
                     <ContextMenu>
                         <MenuItem 
+                            IsEnabled="False"
                           Header="Обновить"
                             CommandParameter="{Binding SelectedPerson}"
                           Command="{Binding LoadedListPerson}"/>

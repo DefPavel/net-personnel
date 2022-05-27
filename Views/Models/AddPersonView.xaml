@@ -54,7 +54,7 @@
             <Label 
                 FontWeight="Bold"
                 Content="Дата рождения"/>
-            <DatePicker Margin="4 2 4 2" 
+            <DatePicker Margin="4 0" 
                         SelectedDate="{Binding Birthday ,
                         UpdateSourceTrigger=PropertyChanged}" />
             <Label 
@@ -152,7 +152,7 @@
             <Label 
                 FontWeight="Bold"
                 Content="Дата приёма на работу"/>
-            <DatePicker Margin="4 2 4 2" 
+            <DatePicker Margin="4 0" 
                         SelectedDate="{Binding DateWorking ,
                         UpdateSourceTrigger=PropertyChanged}"/>
 
@@ -181,8 +181,14 @@
             <Label 
                 FontWeight="Bold"
                 Content="Дата заключения контракта"/>
-            <DatePicker Margin="4 2 4 2" 
+            <DatePicker Margin="4 0" 
                         SelectedDate="{Binding DateContract ,
+                        UpdateSourceTrigger=PropertyChanged}"/>
+            <Label 
+                FontWeight="Bold"
+                Content="Дата окончания контракта"/>
+            <DatePicker Margin="4 0" 
+                        SelectedDate="{Binding DateEndContract ,
                         UpdateSourceTrigger=PropertyChanged}"/>
             <CheckBox 
                 Margin="5"

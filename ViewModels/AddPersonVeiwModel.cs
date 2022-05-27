@@ -86,6 +86,12 @@ internal class AddPersonVeiwModel : BaseViewModel
         get => _dateContract;
         set => Set(ref _dateContract, value);
     }
+    private DateTime? _dateEndContract;
+    public DateTime? DateEndContract
+    {
+        get => _dateEndContract;
+        set => Set(ref _dateEndContract, value);
+    }
 
     private bool _gender;
     public bool Gender
@@ -191,8 +197,9 @@ internal class AddPersonVeiwModel : BaseViewModel
                 type_passport = 1,
                 count_budget = CountBudget,
                 count_nobudget = CountNoBudget,
-                date_to_working = DateWorking!.Value.ToString("yyyy-MM-dd"),
-                data_start_contract = DateContract!.Value.ToString("yyyy-MM-dd"),
+                data_to_working = DateWorking!.Value.ToString("yyyy-MM-dd"),
+                data_start_contract = DateContract!,
+                date_end_contract = DateEndContract,
                 id_position = SelectedPositions!.Id,
                 id_order = SelectedOrders!.Id,
                 id_contract = SelectedContract!.Id,
