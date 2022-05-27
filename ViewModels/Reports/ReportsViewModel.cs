@@ -10,8 +10,8 @@ internal class ReportsViewModel : BaseViewModel
     #region Переменные
 
     // Процесс загрузки
-    private VisualBoolean? _isLoading = false;
-    public VisualBoolean? IsLoading
+    private VisualBoolean _isLoading = false;
+    public VisualBoolean IsLoading
     {
         get => _isLoading;
         private set => Set(ref _isLoading, value);
@@ -98,9 +98,9 @@ internal class ReportsViewModel : BaseViewModel
         return string.IsNullOrEmpty(Filter) || (emp is Report dep && dep.Name!.ToUpper().Contains(value: Filter.ToUpper()));
     }
 
-    private static bool CanCommandExecute(object p)
+    private bool CanCommandExecute(object p)
     {
-        return p is Report;
+        return p is Report && IsLoading != true;
     }
     #endregion
 
@@ -110,7 +110,7 @@ internal class ReportsViewModel : BaseViewModel
     public ICommand OpenReport => _openReport ??= new LambdaCommand(ApiGetReport, CanCommandExecute);
 
     private ICommand? _getToMain;
-    public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack);
+    public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack , _ => IsLoading != true);
 
     #endregion
 

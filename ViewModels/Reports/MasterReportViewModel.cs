@@ -67,6 +67,14 @@ internal class MasterReportViewModel : BaseViewModel
     private readonly NavigationStore _navigationStore;
     private readonly Users _user;
 
+    // Процесс загрузки
+    private VisualBoolean _isLoading = false;
+    public VisualBoolean IsLoading
+    {
+        get => _isLoading;
+        private set => Set(ref _isLoading, value);
+    }
+
     private ObservableCollection<PedagogicalPosition>? _isPedagogical;
     public ObservableCollection<PedagogicalPosition>? IsPedagogical
     {
@@ -180,13 +188,13 @@ internal class MasterReportViewModel : BaseViewModel
     public ICommand GetData => _getData ??= new LambdaCommand(LoadedContract);
 
     private ICommand? _getToMain;
-    public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack);
+    public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack , _ => IsLoading != true);
 
     private ICommand? _getPosition;
     public ICommand GetPosition => _getPosition ??= new LambdaCommand(LoadedPositions , _ => SelectedIsPed != null);
 
     private ICommand? _getReport;
-    public ICommand GetReport => _getReport ??= new LambdaCommand(Reports);
+    public ICommand GetReport => _getReport ??= new LambdaCommand(Reports , _ => IsLoading != true);
 
     #endregion
 
@@ -201,7 +209,7 @@ internal class MasterReportViewModel : BaseViewModel
     {
         try
         {
-
+            IsLoading = true;
             var status = string.Empty;
             var age = string.Empty;
 
@@ -249,7 +257,7 @@ internal class MasterReportViewModel : BaseViewModel
             };
             // Отправить запрос
             await ReportService.JsonPostWithToken(person, _user!.Token, "/reports/pers/master", "POST", "Отчет с параметрами");
-
+            IsLoading = false;
         }
         catch (WebException ex)
         {

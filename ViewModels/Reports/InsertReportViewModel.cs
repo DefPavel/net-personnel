@@ -8,6 +8,13 @@ internal class InsertReportViewModel : BaseViewModel
 
     private readonly string _Url;
 
+    private VisualBoolean _isLoading = false;
+    public VisualBoolean IsLoading
+    {
+        get => _isLoading;
+        private set => Set(ref _isLoading, value);
+    }
+
     private ObservableCollection<PedagogicalPosition>? _isPedagogical;
     public ObservableCollection<PedagogicalPosition>? IsPedagogical
     {
@@ -64,14 +71,15 @@ internal class InsertReportViewModel : BaseViewModel
     }
 
     private ICommand? _getReport;
-    public ICommand GetReport => _getReport ??= new LambdaCommand(Reports);
+    public ICommand GetReport => _getReport ??= new LambdaCommand(Reports , _ => IsLoading != true);
 
     private async void Reports(object obj)
     {
         if (obj is not Window w) return;
         try
         {
-            if(SelectedIsPed == null)
+            IsLoading = true;
+            if (SelectedIsPed == null)
             {
                 _ = MessageBox.Show("Необходимо выбрать элемент!");
                 return;
@@ -89,6 +97,7 @@ internal class InsertReportViewModel : BaseViewModel
 
             // Отправить запрос
             await ReportService.JsonPostWithToken(person, _user!.Token, _Url + SelectedIsPed.Query, "POST", _titleReport);
+            IsLoading = false;
             w.DialogResult = true;
             w.Close();
         }
