@@ -106,7 +106,7 @@
                 <DataGridTextColumn Header="Краткое название" Binding="{Binding Short,UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridComboBoxColumn 
                     Header="Тип отдела"
-                    SelectedValueBinding="{Binding IdType}"
+                    SelectedValueBinding="{Binding IdType , UpdateSourceTrigger=PropertyChanged}"
                     SelectedValuePath="IdType"
                     DisplayMemberPath="TypeName"
                     ItemsSource="{Binding Source={StaticResource ItemsTypeDep}}"/>

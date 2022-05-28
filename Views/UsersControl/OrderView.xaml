@@ -84,7 +84,7 @@
             AlternatingRowBackground="#e1eff9"
              FontSize="14"
             AutoGenerateColumns="False"
-            CanUserAddRows="False"
+             CanUserAddRows="False"
             ItemsSource="{Binding CollectionOrder}"
             SelectedItem="{Binding SelectedOrder}"
             Margin="10"         
@@ -99,11 +99,34 @@
                         </Trigger>
                     </Style.Triggers>
                 </Style>
+                <CollectionViewSource x:Key="ItemsTypeOrders" Source="{Binding TypeOrders}" />
             </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Приказ" Binding="{Binding Name,UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn Header="Тип приказа" Binding="{Binding Type}"/>
-                <DataGridTextColumn Header="Дата приказа" Binding="{Binding DateOrder,UpdateSourceTrigger=PropertyChanged, StringFormat='dd.MM.yyyy'}"/>
+                <DataGridTextColumn Header="Приказ" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridComboBoxColumn 
+                    Header="Тип приказа"
+                    SelectedValueBinding="{Binding Type , UpdateSourceTrigger=PropertyChanged}"
+                    SelectedValuePath="Name"
+                    DisplayMemberPath="Name"
+                    ItemsSource="{Binding Source={StaticResource ItemsTypeOrders}}"/>
+                
+                <DataGridTemplateColumn Header="Дата приказа">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DateOrder, UpdateSourceTrigger=PropertyChanged, StringFormat='dd.MM.yyyy'}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <DatePicker 
+                                Margin="4 2" 
+                                Padding="4 2"
+                                SelectedDate="{Binding DateOrder, UpdateSourceTrigger=PropertyChanged}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
         <GridSplitter Width="2" 

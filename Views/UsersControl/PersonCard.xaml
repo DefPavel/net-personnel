@@ -1179,13 +1179,13 @@
                                     </DataGrid.Resources>
                                     <DataGrid.Columns>
                                         <DataGridTextColumn 
-                                            Binding="{Binding Record}"
+                                            Binding="{Binding Record, UpdateSourceTrigger=PropertyChanged}"
                                             Header="№"
                                            />
                                         <DataGridTemplateColumn Header="Дата записи">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock Text="{Binding CreateAt, StringFormat='dd.MM.yyyy'}"/>
+                                                    <TextBlock Text="{Binding CreateAt, UpdateSourceTrigger=PropertyChanged, StringFormat='dd.MM.yyyy'}"/>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
 
@@ -1194,7 +1194,7 @@
                                                     <DatePicker 
                                                         Margin="4 2" 
                                                         Padding="4 2"
-                                                        SelectedDate="{Binding CreateAt}"/>
+                                                        SelectedDate="{Binding CreateAt,UpdateSourceTrigger=PropertyChanged}"/>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellEditingTemplate>
 
@@ -1202,40 +1202,40 @@
                                         <DataGridTextColumn
                                             Width="100"
                                             Header="Информация"
-                                           Binding="{Binding Name}"
+                                           Binding="{Binding Name ,UpdateSourceTrigger=PropertyChanged}"
                                             />
                                         <DataGridTextColumn
                                             Width="100"
                                             Header="№ Приказа"
-                                           Binding="{Binding Order}"
+                                           Binding="{Binding Order,UpdateSourceTrigger=PropertyChanged}"
                                             />
                                         <DataGridCheckBoxColumn
                                             Header="Стаж в ЛГПУ"
-                                            Binding="{Binding IsUniver}"
+                                            Binding="{Binding IsUniver ,UpdateSourceTrigger=PropertyChanged}"
                                             />
                                         <DataGridCheckBoxColumn
                                             Header="Стаж Науч.Пед."
-                                            Binding="{Binding IsPedagogical}"
+                                            Binding="{Binding IsPedagogical,UpdateSourceTrigger=PropertyChanged}"
                                             />
                                         <DataGridCheckBoxColumn
                                             Header="Стаж Научный"
-                                            Binding="{Binding IsScience}"
+                                            Binding="{Binding IsScience,UpdateSourceTrigger=PropertyChanged}"
                                             />
                                         <DataGridCheckBoxColumn
                                             Header="Стаж Библиотеки"
-                                            Binding="{Binding IsLibrary}"
+                                            Binding="{Binding IsLibrary,UpdateSourceTrigger=PropertyChanged}"
                                             />
                                         <DataGridCheckBoxColumn
                                             Header="Стаж Мед."
-                                            Binding="{Binding IsMedical}"
+                                            Binding="{Binding IsMedical,UpdateSourceTrigger=PropertyChanged}"
                                             />
                                         <DataGridCheckBoxColumn
                                             Header="Стаж Музей"
-                                            Binding="{Binding IsMuseum}"
+                                            Binding="{Binding IsMuseum,UpdateSourceTrigger=PropertyChanged}"
                                             />
                                         <DataGridCheckBoxColumn
                                             Header="Общий стаж"
-                                            Binding="{Binding IsOver}"
+                                            Binding="{Binding IsOver,UpdateSourceTrigger=PropertyChanged}"
                                             />
 
                                     </DataGrid.Columns>
@@ -1424,7 +1424,7 @@
                             </Grid>
                         </TabItem>
                         <TabItem
-                             FontSize="14"
+                             FontSize="13"
                             Header="Удостоверения">
                             <Grid Margin="5">
                                 <Grid.RowDefinitions>
@@ -1448,21 +1448,32 @@
                                             ScrollViewer.IsDeferredScrollingEnabled="True"
                                             VirtualizingStackPanel.VirtualizationMode="Recycling"
                                             AlternatingRowBackground="#e1eff9"
-                                            IsReadOnly="True"    
                                             AutoGenerateColumns="False"
+                                            CanUserAddRows="False"
                                             ItemsSource="{Binding SelectedPerson.ArrayPensioner}"
                                             Grid.Column="0"
                                             Margin="5">
+                                            
+                                            <DataGrid.Resources>
+                                                <Style TargetType="{x:Type DataGridCell}">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                                            <Setter Property="Background" Value="#87CEFA" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                                <CollectionViewSource x:Key="ItemsTypePensioner" Source="{Binding TypePensioner}" />
+                                            </DataGrid.Resources>
 
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn
                                                     Header="Номер удостоверения"
-                                                    Binding="{Binding Document}"/>
+                                                    Binding="{Binding Document , UpdateSourceTrigger=PropertyChanged}"/>
 
                                                 <DataGridTemplateColumn Header="Дата выхода на пенсию">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock Text="{Binding DateDocument, StringFormat='dd.MM.yyyy'}"/>
+                                                            <TextBlock Text="{Binding DateDocument , UpdateSourceTrigger=PropertyChanged, StringFormat='dd.MM.yyyy'}"/>
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
 
@@ -1471,16 +1482,19 @@
                                                             <DatePicker 
                                                         Margin="4 2" 
                                                         Padding="4 2"
-                                                        SelectedDate="{Binding DateDocument}"/>
+                                                        SelectedDate="{Binding DateDocument , UpdateSourceTrigger=PropertyChanged}"/>
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellEditingTemplate>
 
                                                 </DataGridTemplateColumn>
 
-                                                <DataGridTextColumn
+                                                <DataGridComboBoxColumn 
                                                     Header="Вид пенсии"
-                                                    Binding="{Binding Type}"/>
-
+                                                    SelectedValueBinding="{Binding Type , UpdateSourceTrigger=PropertyChanged}"
+                                                    SelectedValuePath="Name"
+                                                    DisplayMemberPath="Name"
+                                                    ItemsSource="{Binding Source={StaticResource ItemsTypePensioner}}"/>
+                                           
                                             </DataGrid.Columns>
 
                                         </DataGrid>
@@ -1642,7 +1656,7 @@
                             </Grid>
                         </TabItem>
                         <TabItem 
-                             FontSize="14"
+                             FontSize="13"
                             Header="Семейное положение">
                             <Grid Margin="5">
                                 <Grid.ColumnDefinitions>
@@ -1656,21 +1670,32 @@
                                     ScrollViewer.IsDeferredScrollingEnabled="True"
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
                                     AlternatingRowBackground="#e1eff9"
-                                    IsReadOnly="True"    
+                                    
                                     AutoGenerateColumns="False"
                                     ItemsSource="{Binding SelectedPerson.ArrayFamily}"
                                     Grid.Column="0"
                                     Margin="5">
+                                    
+                                    <DataGrid.Resources>
+                                        <Style TargetType="{x:Type DataGridCell}">
+                                            <Style.Triggers>
+                                                <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                                    <Setter Property="Background" Value="#87CEFA" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                        <CollectionViewSource x:Key="ItemsTypeFamily" Source="{Binding TypeFamily}" />
+                                    </DataGrid.Resources>
 
                                     <DataGrid.Columns>
                                         <DataGridTextColumn 
-                                            Binding="{Binding FullName}"
+                                            Binding="{Binding FullName , UpdateSourceTrigger=PropertyChanged}"
                                             Header="Ф.И.О."/>
 
                                         <DataGridTemplateColumn Header="Дата рождения">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock Text="{Binding Birthday, StringFormat='dd.MM.yyyy'}"/>
+                                                    <TextBlock Text="{Binding Birthday,UpdateSourceTrigger=PropertyChanged, StringFormat='dd.MM.yyyy'}"/>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
 
@@ -1679,18 +1704,21 @@
                                                     <DatePicker 
                                                         Margin="4 2" 
                                                         Padding="4 2"
-                                                        SelectedDate="{Binding Birthday}"/>
+                                                        SelectedDate="{Binding Birthday,UpdateSourceTrigger=PropertyChanged}"/>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellEditingTemplate>
 
                                         </DataGridTemplateColumn>
+                                        
+                                        <DataGridComboBoxColumn 
+                                            Header="Степень родства"
+                                            SelectedValueBinding="{Binding Type , UpdateSourceTrigger=PropertyChanged}"
+                                            SelectedValuePath="Name"
+                                            DisplayMemberPath="Name"
+                                            ItemsSource="{Binding Source={StaticResource ItemsTypeFamily}}"/>
 
                                         <DataGridTextColumn 
-                                            Binding="{Binding Type}"
-                                            Header="Степень родства"/>
-
-                                        <DataGridTextColumn 
-                                            Binding="{Binding Description}"
+                                            Binding="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
                                             Header="Примечание"/>
 
                                     </DataGrid.Columns>
@@ -1735,7 +1763,7 @@
                             </Grid>
                         </TabItem>
                         <TabItem 
-                             FontSize="14"
+                             FontSize="13"
                             Header="История смены фамилии">
                             <Grid Margin="5">
                                 <Grid.ColumnDefinitions>
@@ -1825,7 +1853,7 @@
                             </Grid>
                         </TabItem>
                         <TabItem 
-                             FontSize="14"
+                             FontSize="13"
                             Header="Сканы документов">
                             <Grid Margin="5">
                                 <Grid.ColumnDefinitions>
@@ -1949,45 +1977,58 @@
                                     ScrollViewer.IsDeferredScrollingEnabled="True"
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
                                     AlternatingRowBackground="#e1eff9"
-                                    IsReadOnly="True"    
                                     AutoGenerateColumns="False"
+                                    CanUserAddRows="False"
                                     ItemsSource="{Binding SelectedPerson.ArrayEducation}"
                                     Grid.Column="0"
                                     Margin="5">
-
+                                    <DataGrid.Resources>
+                                        <Style TargetType="{x:Type DataGridCell}">
+                                            <Style.Triggers>
+                                                <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                                    <Setter Property="Background" Value="#87CEFA" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                        <CollectionViewSource x:Key="ItemsTypeEducation" Source="{Binding TypeEducation}" />
+                                    </DataGrid.Resources>
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn
-                                            Binding="{Binding TypeName}"
-                                            Header="Вид обзразование"/>
+                                      
+                                        <DataGridComboBoxColumn 
+                                            Header="Вид обзразования"
+                                            SelectedValueBinding="{Binding TypeName , UpdateSourceTrigger=PropertyChanged}"
+                                            SelectedValuePath="TypeName"
+                                            DisplayMemberPath="TypeName"
+                                            ItemsSource="{Binding Source={StaticResource ItemsTypeEducation}}"/>
 
                                         <DataGridTextColumn
                                             Width="100"
-                                            Binding="{Binding Institution }"
+                                            Binding="{Binding Institution ,UpdateSourceTrigger=PropertyChanged }"
                                             Header="Уч.Заведения"/>
 
                                         <DataGridTextColumn 
                                              Width="100"
-                                            Binding="{Binding Specialty}"
+                                            Binding="{Binding Specialty ,UpdateSourceTrigger=PropertyChanged}"
                                             Header="Специальность"/>
 
                                         <DataGridTextColumn
                                              Width="100"
-                                            Binding="{Binding Qualification}"
+                                            Binding="{Binding Qualification,UpdateSourceTrigger=PropertyChanged}"
                                             Header="Квалификация"/>
 
                                         <DataGridCheckBoxColumn 
                                              Width="80"
-                                            Binding="{Binding IsActual}"
+                                            Binding="{Binding IsActual,UpdateSourceTrigger=PropertyChanged}"
                                             Header="Основное"/>
 
                                         <DataGridTextColumn
-                                            Binding="{Binding Name}"
+                                            Binding="{Binding Name,UpdateSourceTrigger=PropertyChanged}"
                                             Header="Номер Диплома"/>
 
                                         <DataGridTemplateColumn Header="Дата выдачи">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock Text="{Binding DateIssue, StringFormat='dd.MM.yyyy'}"/>
+                                                    <TextBlock Text="{Binding DateIssue,UpdateSourceTrigger=PropertyChanged, StringFormat='dd.MM.yyyy'}"/>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
 
@@ -1996,7 +2037,7 @@
                                                     <DatePicker 
                                                         Margin="4 2" 
                                                         Padding="4 2"
-                                                        SelectedDate="{Binding DateIssue}"/>
+                                                        SelectedDate="{Binding DateIssue,UpdateSourceTrigger=PropertyChanged}"/>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellEditingTemplate>
 
