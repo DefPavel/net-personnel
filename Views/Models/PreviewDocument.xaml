@@ -7,7 +7,7 @@
         WindowStartupLocation="CenterScreen"
         Title="Preview" Height="850" Width="850">
     <Grid>
-        <Grid.RowDefinitions>
+        <!--<Grid.RowDefinitions>
             <RowDefinition Height="25"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -51,7 +51,17 @@
                 </Image> 
             </ScrollViewer> 
             
-        </Grid>
+        </Grid>-->
+
+        <DocumentViewer x:Name="documentViewer">
+            <FixedDocument>
+                <PageContent>
+                    <FixedPage>
+                        <Image x:Name="UrlImage"/>
+                    </FixedPage>
+                </PageContent>
+            </FixedDocument>
+        </DocumentViewer>
     </Grid>
         
 </Window>

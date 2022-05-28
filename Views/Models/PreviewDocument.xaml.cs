@@ -1,5 +1,4 @@
-﻿using System.Windows.Controls;
-using System.Windows.Media.Imaging;
+﻿using System.Windows.Media.Imaging;
 
 namespace AlphaPersonel.Views.Models;
 
@@ -8,10 +7,9 @@ public partial class PreviewDocument : Window
     public PreviewDocument(string url)
     {
         InitializeComponent();
-
         UrlImage.Source = new BitmapImage(new Uri(url));
     }
-    private void SV_ScrollChanged(object sender, ScrollChangedEventArgs e)  
+    /*private void SV_ScrollChanged(object sender, ScrollChangedEventArgs e)  
     {  
         HRect.Width = SV.ViewportWidth / Zoom.Value;  
         HRect.Height = SV.ViewportHeight / Zoom.Value;  
@@ -26,4 +24,5 @@ public partial class PreviewDocument : Window
         SV.ScrollToHorizontalOffset((p.X * Zoom.Value) - HRect.Width / 2);  
         SV.ScrollToVerticalOffset((p.Y * Zoom.Value) - HRect.Height / 2);
     }  
+    */
 }

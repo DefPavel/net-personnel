@@ -2,6 +2,7 @@
 using AlphaPersonel.Models.Home;
 using AlphaPersonel.Views.Models;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.Linq;
 
@@ -518,7 +519,10 @@ internal class PersonCardViewModel : BaseViewModel
 
     private static void OpenPreviewModel(object obj)
     {
-        if (obj is Documents d) new PreviewDocument("http://localhost:8080/" + d.Url).ShowDialog();
+        string urlHost = ConfigurationManager.AppSettings["host"]
+        ?? throw new NullReferenceException("Uninitialized property: " + nameof(urlHost));
+
+        if (obj is Documents d) new PreviewDocument(urlHost + d.Url).ShowDialog();
     }
 
     private ICommand? _openAddPosition;
