@@ -271,10 +271,5 @@ internal class AddPersonVeiwModel : BaseViewModel
         }
     }
     #endregion
-
-    public override void Dispose()
-    {
-        base.Dispose();
-    }
 }
 

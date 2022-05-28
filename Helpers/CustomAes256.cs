@@ -1,19 +1,17 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace AlphaPersonel.Helpers;
 internal static class CustomAes256
 {
     #region Конвертация из Byte в Hex String
 
-    private static string ByteArrayToString(byte[] ba)
+    private static string ByteArrayToString(IReadOnlyCollection<byte> ba)
     {
-        StringBuilder hex = new(ba.Length * 2);
-        for (int i = 0; i < ba.Length; i++)
+        StringBuilder hex = new(ba.Count * 2);
+        foreach (var b in ba)
         {
-            byte b = ba[i];
-            _ = hex.AppendFormat("{0:x2}", b);
+            _ = hex.Append($"{b:x2}");
         }
 
         return hex.ToString();
@@ -25,9 +23,9 @@ internal static class CustomAes256
 
     private static byte[] StringToByteArray(string hex)
     {
-        int numberChars = hex.Length;
-        byte[] bytes = new byte[numberChars / 2];
-        for (int i = 0; i < numberChars; i += 2)
+        var numberChars = hex.Length;
+        var bytes = new byte[numberChars / 2];
+        for (var i = 0; i < numberChars; i += 2)
         {
             bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
         }
@@ -101,10 +99,10 @@ internal static class CustomAes256
         }
 
         //Разбиваем значение до ":"
-        string[] splitchiper = cipherText.Split(':');
+        var splitchiper = cipherText.Split(':');
 
         //Записываем второе значение
-        byte[] chiperByte = StringToByteArray(splitchiper[1]);
+        var chiperByte = StringToByteArray(splitchiper[1]);
 
         // Создайте объект RijndaelManaged
         // с указанным ключом и IV. 
@@ -115,7 +113,7 @@ internal static class CustomAes256
         rijAlg.GenerateIV();
 
         // Создаём дешифратор для выполнения преобразования потока.
-        ICryptoTransform decryptor = rijAlg.CreateDecryptor(rijAlg.Key, rijAlg.IV);
+        var decryptor = rijAlg.CreateDecryptor(rijAlg.Key, rijAlg.IV);
 
         // Создаём поток для чтения дешифрованных данных (байтов). 
         using MemoryStream msDecrypt = new(chiperByte);
@@ -125,7 +123,7 @@ internal static class CustomAes256
         // расшифрованный текст.
         // Читаем дешифрованные байты из потока дешифрования
         // и помещаем их в строку.
-        string? plaintext = srDecrypt.ReadToEnd();
+        string plaintext = srDecrypt.ReadToEnd();
         return plaintext;
     }
     #endregion

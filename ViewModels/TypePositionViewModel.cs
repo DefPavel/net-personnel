@@ -72,7 +72,7 @@ internal class TypePositionViewModel : BaseViewModel
 
     private bool FilterToDepart(object emp)
     {
-        return string.IsNullOrEmpty(Filter) || (emp is TypePosition dep && dep.Name!.ToUpper().Contains(value: Filter.ToUpper()));
+        return string.IsNullOrEmpty(Filter) || (emp is TypePosition dep && dep.Name.ToUpper().Contains(value: Filter.ToUpper()));
     }
 
     private ObservableCollection<TypePosition>? _typePosition;
@@ -109,7 +109,7 @@ internal class TypePositionViewModel : BaseViewModel
     {
         try
         {
-            TypePosition = await QueryService.JsonDeserializeWithToken<TypePosition>(_user!.Token, "/pers/position/type/position", "GET");
+            TypePosition = await QueryService.JsonDeserializeWithToken<TypePosition>(_user.Token, "/pers/position/type/position", "GET");
         }
         // Проверка токена
         catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
@@ -158,7 +158,7 @@ internal class TypePositionViewModel : BaseViewModel
                 await QueryService.JsonSerializeWithToken(_user.Token, "/pers/position/type/position/add", "POST", SelectedPosition);
             }
             TypePosition = await QueryService.JsonDeserializeWithToken<TypePosition>(_user.Token, "/pers/position/type/position", "GET");
-            SelectedPosition = TypePosition.FirstOrDefault(x => x.Name == newSlectedItem!.Name);
+            SelectedPosition = TypePosition.FirstOrDefault(x => x.Name == newSlectedItem.Name);
            // _ = MessageBox.Show("Данные успешно сохраненны");
 
 
@@ -245,11 +245,6 @@ internal class TypePositionViewModel : BaseViewModel
                 _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-    }
-
-    public override void Dispose()
-    {
-        base.Dispose();
     }
 }
 

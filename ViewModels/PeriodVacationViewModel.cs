@@ -62,7 +62,7 @@ internal class PeriodVacationViewModel : BaseViewModel
 
     private bool FilterToDepart(object emp)
     {
-        return string.IsNullOrEmpty(Filter) || (emp is PeriodVacation dep && dep.Name!.ToUpper().Contains(value: Filter.ToUpper()));
+        return string.IsNullOrEmpty(Filter) || (emp is PeriodVacation dep && dep.Name.ToUpper().Contains(value: Filter.ToUpper()));
     }
 
     #endregion
@@ -96,7 +96,7 @@ internal class PeriodVacationViewModel : BaseViewModel
     {
         try
         {
-            PeriodVacations = await QueryService.JsonDeserializeWithToken<PeriodVacation>(_user!.Token, "/pers/vacation/period/get", "GET");
+            PeriodVacations = await QueryService.JsonDeserializeWithToken<PeriodVacation>(_user.Token, "/pers/vacation/period/get", "GET");
         }
         // Проверка токена
         catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
@@ -227,11 +227,5 @@ internal class PeriodVacationViewModel : BaseViewModel
 
 
     #endregion
-
-    public override void Dispose()
-    {
-
-        base.Dispose();
-    }
 }
 

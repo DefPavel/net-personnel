@@ -67,7 +67,7 @@ internal class DepartmentViewModel : BaseViewModel
 
     private bool FilterToDepart(object emp)
     {
-        return string.IsNullOrEmpty(Filter) || (emp is Departments dep && dep.Name!.ToUpper().Contains(value: Filter.ToUpper()));
+        return string.IsNullOrEmpty(Filter) || (emp is Departments dep && dep.Name.ToUpper().Contains(value: Filter.ToUpper()));
     }
 
     #endregion
@@ -103,9 +103,9 @@ internal class DepartmentViewModel : BaseViewModel
     {
         try
         {
-            TypeDepartments = await QueryService.JsonDeserializeWithToken<TypeDepartments>(_user!.Token, "/pers/tree/type/get", "GET");
+            TypeDepartments = await QueryService.JsonDeserializeWithToken<TypeDepartments>(_user.Token, "/pers/tree/type/get", "GET");
 
-            Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user!.Token, "/pers/tree/all", "GET");
+            Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user.Token, "/pers/tree/all", "GET");
 
             //RootDepartments = await QueryService.JsonDeserializeWithToken<Departments>(_user!.Token, "/pers/tree/all", "GET");
            // RootDepartments.Insert(0, new Departments { Name = "Не указано", RootTree = "Не указано" });
@@ -160,18 +160,18 @@ internal class DepartmentViewModel : BaseViewModel
             if (SelectedDepartment!.Id > 0)
             {
                 //Изменить уже текущие данные
-                await QueryService.JsonSerializeWithToken(token: _user!.Token, "/pers/tree/rename/" + SelectedDepartment.Id, "POST", SelectedDepartment);
+                await QueryService.JsonSerializeWithToken(token: _user.Token, "/pers/tree/rename/" + SelectedDepartment.Id, "POST", SelectedDepartment);
             }
             else
             {
                 // Создать новую запись отдела 
-                await QueryService.JsonSerializeWithToken(token: _user!.Token, "/pers/tree/add", "POST", SelectedDepartment);
+                await QueryService.JsonSerializeWithToken(token: _user.Token, "/pers/tree/add", "POST", SelectedDepartment);
                 // Обновить данные
                 //Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user.Token, "/pers/tree/all", "GET");
             }
             //ApiGetDepartments(p);
-            Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user!.Token, "/pers/tree/all", "GET");
-            SelectedDepartment = Departments.FirstOrDefault(x => x.Name == newSelectedDepartment!.Name);
+            Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user.Token, "/pers/tree/all", "GET");
+            SelectedDepartment = Departments.FirstOrDefault(x => x.Name == newSelectedDepartment.Name);
 
             //_ = MessageBox.Show("Данные успешно сохраненны");
         }
@@ -225,11 +225,5 @@ internal class DepartmentViewModel : BaseViewModel
         }
     }
     #endregion
-
-    public override void Dispose()
-    {
-        base.Dispose();
-    }
-
 }
 

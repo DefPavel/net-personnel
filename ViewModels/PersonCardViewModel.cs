@@ -504,9 +504,9 @@ internal class PersonCardViewModel : BaseViewModel
     private ICommand? _copyBuffer;
     public ICommand CopyBuffer => _copyBuffer ??= new LambdaCommand(CopyFullNameToBuffer);
 
-    private void CopyFullNameToBuffer(object obj)
+    private static void CopyFullNameToBuffer(object obj)
     {
-        if( obj != null && obj is Persons person)
+        if( obj is Persons person)
             Clipboard.SetText(person.FullName);
 
     }
@@ -575,8 +575,8 @@ internal class PersonCardViewModel : BaseViewModel
     && SelectedVacation.Period.Length > 0
     && SelectedVacation.Order.Length > 0);
 
-    private ICommand? _DeleteVacation;
-    public ICommand DeleteVacation => _DeleteVacation ??= new LambdaCommand(DeleteVacationsAsync, _ => SelectedVacation != null);
+    private ICommand? _deleteVacation;
+    public ICommand DeleteVacation => _deleteVacation ??= new LambdaCommand(DeleteVacationsAsync, _ => SelectedVacation != null);
     
     //------------------- Паспорт ------------------------------//
     
@@ -1028,14 +1028,17 @@ internal class PersonCardViewModel : BaseViewModel
         // var change = PersonsList?.FirstOrDefault(x => x.Id == SelectedPerson?.Id).FirstName;
         ObservableCollection<Persons> newArray = new();
 
-        foreach (var item in PersonsList)
-        {
-            if (item.Id == SelectedPerson?.Id)
+        if (PersonsList != null)
+            foreach (var item in PersonsList)
             {
-                item.FirstName = SelectedPerson.FirstName;
+                if (item.Id == SelectedPerson?.Id)
+                {
+                    item.FirstName = SelectedPerson.FirstName;
+                }
+
+                newArray.Add(item);
             }
-            newArray.Add(item);
-        }
+
         PersonsList = newArray;
 
 
@@ -1252,7 +1255,7 @@ internal class PersonCardViewModel : BaseViewModel
             // PersonsList = await _Api.GetListPersonsToDepartment(_User!.Token, _Department!.Id);
             // Маленький костыль, для того чтобы находить на каком item я должен стоять при загрузке личной карты
             var indeArray = PersonsList.Select((value, index) => (Value: value, Index: index))
-                .FirstOrDefault(p => p.Value.Id == SelectedPerson!.Id);
+                .FirstOrDefault(valueTuple => valueTuple.Value.Id == SelectedPerson!.Id);
             // Выбрать текущего человека при загрузке Window
             SelectedPerson = indeArray.Value;
 
@@ -2461,7 +2464,7 @@ internal class PersonCardViewModel : BaseViewModel
             SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
             if (SelectedPerson.ArrayDocuments != null)
                 SelectedDocument =
-                    SelectedPerson.ArrayDocuments.FirstOrDefault(x => x.Name == newSelectedDocument!.Name);
+                    SelectedPerson.ArrayDocuments.FirstOrDefault(x => x.Name == newSelectedDocument.Name);
             _ = MessageBox.Show("Данные успешно сохраненны");
         }
         catch (WebException ex)
@@ -2675,12 +2678,5 @@ internal class PersonCardViewModel : BaseViewModel
     }
 
     #endregion
-
-    public override void Dispose()
-    {
-
-        base.Dispose();
-    }
-
 }
 

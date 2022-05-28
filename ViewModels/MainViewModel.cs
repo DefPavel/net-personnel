@@ -2,7 +2,7 @@
 internal class MainViewModel : BaseViewModel
 {
     private readonly NavigationStore _navigationStore;
-    public BaseViewModel CurrentViewModel => _navigationStore!.CurrentViewModel!;
+    public BaseViewModel CurrentViewModel => _navigationStore.CurrentViewModel!;
 
     public MainViewModel(NavigationStore navigationStore)
     {
@@ -13,11 +13,6 @@ internal class MainViewModel : BaseViewModel
     private void OnCurrentViewModelChanged()
     {
         OnPropertyChanged(nameof(CurrentViewModel));
-    }
-
-    public override void Dispose()
-    {
-        base.Dispose();
     }
 }
 

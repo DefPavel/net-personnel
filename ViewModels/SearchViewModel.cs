@@ -135,7 +135,7 @@ internal class SearchViewModel : BaseViewModel
         try
         {
             IsLoading = true;
-            Persons = await QueryService.JsonDeserializeWithToken<Persons>(_user!.Token, queryUrl: $"/pers/person/find/?text={QueryPerson.Trim()}", "GET");
+            Persons = await QueryService.JsonDeserializeWithToken<Persons>(_user!.Token, queryUrl: $"/pers/person/find/?text={QueryPerson?.Trim()}", "GET");
             IsLoading = false;
         }
         // Проверка токена
@@ -165,10 +165,5 @@ internal class SearchViewModel : BaseViewModel
     }
 
     #endregion
-
-    public override void Dispose()
-    {
-        base.Dispose();
-    }
 }
 

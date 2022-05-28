@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-
-namespace AlphaPersonel.Helpers;
+﻿namespace AlphaPersonel.Helpers;
 internal static class ServiceWorkingExperience
 {
     // Общий стаж

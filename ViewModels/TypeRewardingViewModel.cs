@@ -36,7 +36,7 @@ internal class TypeRewardingViewModel : BaseViewModel
     }
     private bool FilterToType(object emp)
     {
-        return string.IsNullOrEmpty(Filter) || (emp is TypeRewarding dep && dep.Name!.ToUpper().Contains(Filter.ToUpper()));
+        return string.IsNullOrEmpty(Filter) || (emp is TypeRewarding dep && dep.Name.ToUpper().Contains(Filter.ToUpper()));
     }
 
 
@@ -68,16 +68,16 @@ internal class TypeRewardingViewModel : BaseViewModel
     public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack);
 
     private ICommand? _loadedType;
-    public ICommand? LoadedType => _loadedType ??= new LambdaCommand(ApiGetTypeRewarding);
+    public ICommand LoadedType => _loadedType ??= new LambdaCommand(ApiGetTypeRewarding);
 
     private ICommand? _add;
-    public ICommand? Add => _add ??= new LambdaCommand(AddTypeRewardingAsync);
+    public ICommand Add => _add ??= new LambdaCommand(AddTypeRewardingAsync);
 
     private ICommand? _save;
-    public ICommand? Save => _save ??= new LambdaCommand(SaveTypeRewarding);
+    public ICommand Save => _save ??= new LambdaCommand(SaveTypeRewarding);
 
     private ICommand? _delete;
-    public ICommand? Delete => _delete ??= new LambdaCommand(DeleteTypeRewarding);
+    public ICommand Delete => _delete ??= new LambdaCommand(DeleteTypeRewarding);
 
     #endregion
 
@@ -189,7 +189,7 @@ internal class TypeRewardingViewModel : BaseViewModel
         try
         {
             // Загрузить сами приказы
-            TypeRewardings = await QueryService.JsonDeserializeWithToken<TypeRewarding>(_user!.Token, "/pers/rewarding/type/get", "GET");
+            TypeRewardings = await QueryService.JsonDeserializeWithToken<TypeRewarding>(_user.Token, "/pers/rewarding/type/get", "GET");
         }
         // Проверка токена
         catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)

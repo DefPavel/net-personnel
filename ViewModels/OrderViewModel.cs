@@ -63,7 +63,7 @@ internal class OrderViewModel : BaseViewModel
         private set => Set(ref _collectionOrder, value);
     }
 
-    private bool FilterToOrder(object emp) => string.IsNullOrEmpty(Filter) || (emp is Order dep && dep.Name!.ToUpper().Contains(value: Filter.ToUpper()));
+    private bool FilterToOrder(object emp) => string.IsNullOrEmpty(Filter) || (emp is Order dep && dep.Name.ToUpper().Contains(value: Filter.ToUpper()));
 
 
     #region Команды
@@ -72,16 +72,16 @@ internal class OrderViewModel : BaseViewModel
     public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack);
 
     private ICommand? _loadedOrder;
-    public ICommand? LoadedOrder => _loadedOrder ??= new LambdaCommand(ApiGetOrders);
+    public ICommand LoadedOrder => _loadedOrder ??= new LambdaCommand(ApiGetOrders);
 
     private ICommand? _addNew;
-    public ICommand? AddNew => _addNew ??= new LambdaCommand(AddOrderAsync);
+    public ICommand AddNew => _addNew ??= new LambdaCommand(AddOrderAsync);
 
     private ICommand? _delete;
-    public ICommand? Delete => _delete ??= new LambdaCommand(DeleteOrder, _ => SelectedOrder is not null && Orders!.Count > 0);
+    public ICommand Delete => _delete ??= new LambdaCommand(DeleteOrder, _ => SelectedOrder is not null && Orders!.Count > 0);
 
     private ICommand? _save;
-    public ICommand? Save => _save ??= new LambdaCommand(UpdateOrder, _ => SelectedOrder is not null );
+    public ICommand Save => _save ??= new LambdaCommand(UpdateOrder, _ => SelectedOrder is not null );
 
     #endregion
 
@@ -97,9 +97,9 @@ internal class OrderViewModel : BaseViewModel
         try
         {
             // Загрузить сами приказы
-            Orders = await QueryService.JsonDeserializeWithToken<Order>(_user!.Token, "/pers/order/get", "GET");
+            Orders = await QueryService.JsonDeserializeWithToken<Order>(_user.Token, "/pers/order/get", "GET");
             // Загрузить массив типов приказов
-            TypeOrders = await QueryService.JsonDeserializeWithToken<TypeOrder>(_user!.Token, "/pers/order/type/get", "GET");
+            TypeOrders = await QueryService.JsonDeserializeWithToken<TypeOrder>(_user.Token, "/pers/order/type/get", "GET");
         }
         // Проверка токена
         catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
@@ -133,12 +133,12 @@ internal class OrderViewModel : BaseViewModel
             if (SelectedOrder!.Id > 0)
             {
                 //Изменить уже текущие данные
-                await QueryService.JsonSerializeWithToken(token: _user!.Token, "/pers/order/add", "POST", SelectedOrder);
+                await QueryService.JsonSerializeWithToken(token: _user.Token, "/pers/order/add", "POST", SelectedOrder);
             }
             else
             {
                 // Создать новую запись отдела 
-                await QueryService.JsonSerializeWithToken(token: _user!.Token, "/pers/order/add", "POST", SelectedOrder);
+                await QueryService.JsonSerializeWithToken(token: _user.Token, "/pers/order/add", "POST", SelectedOrder);
                 // Обновить данные
                 Orders = await QueryService.JsonDeserializeWithToken<Order>(_user.Token, "/pers/order/get", "GET");
             }
@@ -227,12 +227,5 @@ internal class OrderViewModel : BaseViewModel
 
 
     #endregion
-
-    public override void Dispose()
-    {
-
-        base.Dispose();
-    }
-
 }
 

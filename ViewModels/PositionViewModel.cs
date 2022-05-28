@@ -40,7 +40,7 @@ internal class PositionViewModel : BaseViewModel
         private set => Set(ref _collectionDepart, value);
     }
 
-    private bool FilterToPos(object emp) => string.IsNullOrEmpty(Filter) || (emp is Position pos && pos.Name!.ToUpper().Contains(value: Filter.ToUpper()));
+    private bool FilterToPos(object emp) => string.IsNullOrEmpty(Filter) || (emp is Position pos && pos.Name.ToUpper().Contains(value: Filter.ToUpper()));
 
 
     private bool _radioIsPed;
@@ -138,11 +138,11 @@ internal class PositionViewModel : BaseViewModel
     {
         try
         {
-            Positions = await QueryService.JsonDeserializeWithToken<Position>(_user!.Token, "/pers/position/all", "GET");
+            Positions = await QueryService.JsonDeserializeWithToken<Position>(_user.Token, "/pers/position/all", "GET");
 
-            Department = await QueryService.JsonDeserializeWithToken<Departments>(_user!.Token, "/pers/tree/all", "GET");
+            Department = await QueryService.JsonDeserializeWithToken<Departments>(_user.Token, "/pers/tree/all", "GET");
 
-            TypePosition = await QueryService.JsonDeserializeWithToken<TypePosition>(_user!.Token, "/pers/position/type/position", "GET");
+            TypePosition = await QueryService.JsonDeserializeWithToken<TypePosition>(_user.Token, "/pers/position/type/position", "GET");
         }
         // Проверка токена
         catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
@@ -191,15 +191,15 @@ internal class PositionViewModel : BaseViewModel
             {
                 SelectedPosition.IsPed = RadioIsPed;
                 //Изменить уже текущие данные
-                await QueryService.JsonSerializeWithToken(token: _user!.Token, "/pers/position/rename", "POST", SelectedPosition);
+                await QueryService.JsonSerializeWithToken(token: _user.Token, "/pers/position/rename", "POST", SelectedPosition);
             }
             else
             {
                 SelectedPosition.IsPed = RadioIsPed;
                 // Создать новую запись  
-                await QueryService.JsonSerializeWithToken(token: _user!.Token, "/pers/position/add", "POST", SelectedPosition);
+                await QueryService.JsonSerializeWithToken(token: _user.Token, "/pers/position/add", "POST", SelectedPosition);
                 // Обновить данные
-                Positions = await QueryService.JsonDeserializeWithToken<Position>(_user!.Token, "/pers/position/all", "GET");
+                Positions = await QueryService.JsonDeserializeWithToken<Position>(_user.Token, "/pers/position/all", "GET");
             }
             _ = MessageBox.Show("Данные успешно сохраненны");
         }
@@ -209,7 +209,7 @@ internal class PositionViewModel : BaseViewModel
             _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
         }
-        catch (System.Net.WebException ex)
+        catch (WebException ex)
         {
             if (ex.Response != null)
             {
@@ -254,12 +254,5 @@ internal class PositionViewModel : BaseViewModel
         }
     }
     #endregion
-
-    public override void Dispose()
-    {
-
-        base.Dispose();
-    }
-
 }
 

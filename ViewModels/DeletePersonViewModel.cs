@@ -3,54 +3,54 @@ internal class DeletePersonViewModel : BaseViewModel
 {
     #region Свойства
 
-    private readonly Persons _Person;
-    private readonly Users _User;
-    private readonly Departments _Department;
+    private readonly Persons _person;
+    private readonly Users _user;
+    private readonly Departments _department;
 
     // Массив Приказов
-    private ObservableCollection<Order>? _Orders;
+    private ObservableCollection<Order>? _orders;
     public ObservableCollection<Order>? Orders
     {
-        get => _Orders;
-        private set => Set(ref _Orders, value);
+        get => _orders;
+        private set => Set(ref _orders, value);
     }
     // Выбранный приказ
-    private Order? _SelectedOrders;
+    private Order? _selectedOrders;
     public Order? SelectedOrders
     {
-        get => _SelectedOrders;
-        set => Set(ref _SelectedOrders, value);
+        get => _selectedOrders;
+        set => Set(ref _selectedOrders, value);
     }
-    private DateTime? _DeleteWorking;
+    private DateTime? _deleteWorking;
     public DateTime? DaleteWorking
     {
-        get => _DeleteWorking;
-        set => Set(ref _DeleteWorking, value);
+        get => _deleteWorking;
+        set => Set(ref _deleteWorking, value);
     }
 
-    private string? _Title;
+    private string? _title;
     public string? Title
     {
-        get => _Title;
-        set => Set(ref _Title, value);
+        get => _title;
+        set => Set(ref _title, value);
     }
 
     #endregion
 
     public DeletePersonViewModel(string title ,Users users, Persons persons ,Departments department)
     {
-        _Title = title;
-        _Person = persons;
-        _User = users;
-        _Department = department;
+        _title = title;
+        _person = persons;
+        _user = users;
+        _department = department;
     }
 
     #region Команды
-    private ICommand? _GetData;
-    public ICommand GetData => _GetData ??= new LambdaCommand(LoadedApi);
+    private ICommand? _getData;
+    public ICommand GetData => _getData ??= new LambdaCommand(LoadedApi);
 
-    private ICommand? _CloseWin;
-    public ICommand CloseWin => _CloseWin ??= new LambdaCommand(CloseWindow);
+    private ICommand? _closeWin;
+    public ICommand CloseWin => _closeWin ??= new LambdaCommand(CloseWindow);
 
     #endregion
     #region логика
@@ -63,26 +63,26 @@ internal class DeletePersonViewModel : BaseViewModel
             {
                 object personMove = new
                 {
-                    id_person = _Person.Id,
+                    id_person = _person.Id,
                     created_at = DaleteWorking,
-                    name_departament = _Department.Name,
-                    name_position = _Person.PersonPosition,
+                    name_departament = _department.Name,
+                    name_position = _person.PersonPosition,
                     id_order = SelectedOrders!.Id,
                     order_drop = SelectedOrders!.Name,
-                    date_drop = _SelectedOrders!.DateOrder,
-                    is_main = _Person.IsMain,
-                    kolvo_b = _Person.StavkaBudget,
-                    kolvo_nb = _Person.StavkaNoBudget,
-                    id_type_contract = _Person.IdContract,
-                    date_begin = _Person.StartDateContract,
-                    date_end = _Person.EndDateContract,
-                    id_person_position = _Person.IdPersonPosition,
-                    is_ped = _Person.IsPed
+                    date_drop = _selectedOrders!.DateOrder,
+                    is_main = _person.IsMain,
+                    kolvo_b = _person.StavkaBudget,
+                    kolvo_nb = _person.StavkaNoBudget,
+                    id_type_contract = _person.IdContract,
+                    date_begin = _person.StartDateContract,
+                    date_end = _person.EndDateContract,
+                    id_person_position = _person.IdPersonPosition,
+                    is_ped = _person.IsPed
 
                 };
 
                 // Удалить персону
-                await QueryService.JsonSerializeWithToken(_User!.Token, "/pers/person/drop", "POST", personMove);
+                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/person/drop", "POST", personMove);
 
                 w.DialogResult = true;
                 w.Close();
@@ -95,10 +95,7 @@ internal class DeletePersonViewModel : BaseViewModel
                     {
                         using StreamReader reader = new(response.GetResponseStream());
 
-                        if (reader != null)
-                        {
-                            _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                        }
+                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                     }
                 }
                 else
@@ -111,15 +108,12 @@ internal class DeletePersonViewModel : BaseViewModel
 
     private async void LoadedApi(object p)
     {
+        
         try
         {
-            if (_User.Token == null)
-            {
-                return;
-            }
+            var idTypeOrder = await QueryService.JsonDeserializeWithObjectAndParam(_user.Token, "/pers/order/type/name", "POST", new TypeOrder { Name = "Увольнение" });
             // Загрузка приказов
-            TypeOrder idTypeOrder = await QueryService.JsonDeserializeWithObjectAndParam(_User.Token, "/pers/order/type/name", "POST", new TypeOrder { Name = "Увольнение" });
-            Orders = await QueryService.JsonDeserializeWithToken<Order>(_User.Token, "/pers/order/get/" + idTypeOrder.Id, "GET");
+            Orders = await QueryService.JsonDeserializeWithToken<Order>(_user.Token, "/pers/order/get/" + idTypeOrder.Id, "GET");
 
         }
         catch (WebException ex)
@@ -130,10 +124,7 @@ internal class DeletePersonViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
 
-                    if (reader != null)
-                    {
-                        _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                    }
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
             else

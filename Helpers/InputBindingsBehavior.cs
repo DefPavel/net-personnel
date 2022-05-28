@@ -19,7 +19,7 @@ namespace AlphaPersonel.Helpers
 
         private static void OnTakesInputBindingPrecedenceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((UIElement)d).PreviewKeyDown += new KeyEventHandler(InputBindingsBehavior_PreviewKeyDown);
+            ((UIElement)d).PreviewKeyDown += InputBindingsBehavior_PreviewKeyDown;
         }
 
         private static void InputBindingsBehavior_PreviewKeyDown(object sender, KeyEventArgs e)

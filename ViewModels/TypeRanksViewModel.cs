@@ -59,7 +59,7 @@ internal class TypeRanksViewModel : BaseViewModel
 
     private bool FilterToDepart(object emp)
     {
-        return string.IsNullOrEmpty(Filter) || (emp is TypeRank dep && dep.Name!.ToUpper().Contains(value: Filter.ToUpper()));
+        return string.IsNullOrEmpty(Filter) || (emp is TypeRank dep && dep.Name.ToUpper().Contains(value: Filter.ToUpper()));
     }
     #endregion
 
@@ -190,7 +190,7 @@ internal class TypeRanksViewModel : BaseViewModel
     {
         try
         {
-            TypeRank = await QueryService.JsonDeserializeWithToken<TypeRank>(_user!.Token, "/pers/rank/type/all", "GET");
+            TypeRank = await QueryService.JsonDeserializeWithToken<TypeRank>(_user.Token, "/pers/rank/type/all", "GET");
         }
         // Проверка токена
         catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
@@ -218,10 +218,4 @@ internal class TypeRanksViewModel : BaseViewModel
     }
 
     #endregion
-
-
-    public override void Dispose()
-    {
-        base.Dispose();
-    }
 }

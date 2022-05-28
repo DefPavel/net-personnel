@@ -13,7 +13,7 @@ internal class AddPositionViewModel : BaseViewModel
         set => Set(ref _countBudget, value);
     }
 
-    private bool _isMain = false;
+    private bool _isMain;
     public bool IsMain
     {
         get => _isMain;
@@ -194,7 +194,7 @@ internal class AddPositionViewModel : BaseViewModel
                 };
 
                 // Создать персону
-                await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/position/addByPerson", "POST", person);
+                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/position/addByPerson", "POST", person);
             }
             else
             {

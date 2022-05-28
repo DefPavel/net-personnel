@@ -36,7 +36,7 @@ internal class TypeOrderViewModel : BaseViewModel
     }
     private bool FilterToType(object emp)
     {
-        return string.IsNullOrEmpty(Filter) || (emp is TypeOrder dep && dep.Name!.ToUpper().Contains(Filter.ToUpper()));
+        return string.IsNullOrEmpty(Filter) || (emp is TypeOrder dep && dep.Name.ToUpper().Contains(Filter.ToUpper()));
     }
 
 
@@ -223,12 +223,5 @@ internal class TypeOrderViewModel : BaseViewModel
     }
 
     #endregion
-
-
-    public override void Dispose()
-    {
-
-        base.Dispose();
-    }
 }
 

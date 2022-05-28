@@ -61,7 +61,7 @@ internal class TypeVacationViewModel : BaseViewModel
 
     private bool FilterToType(object emp)
     {
-        return string.IsNullOrEmpty(Filter) || (emp is Models.TypeVacation dep && dep.Name!.ToUpper().Contains(Filter.ToUpper()));
+        return string.IsNullOrEmpty(Filter) || (emp is Models.TypeVacation dep && dep.Name.ToUpper().Contains(Filter.ToUpper()));
     }
 
     #region Команды
@@ -126,7 +126,7 @@ internal class TypeVacationViewModel : BaseViewModel
             }
             TypeVacations = await QueryService.JsonDeserializeWithToken<Models.TypeVacation>(_user.Token, "/pers/vacation/type/get", "GET");
             //_ = MessageBox.Show("Данные успешно сохраненны");
-            SelectedTypeVacation = TypeVacations.FirstOrDefault(x => x.Name == newSelectedVacation!.Name);
+            SelectedTypeVacation = TypeVacations.FirstOrDefault(x => x.Name == newSelectedVacation.Name);
         }
         // Проверка токена
         catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)

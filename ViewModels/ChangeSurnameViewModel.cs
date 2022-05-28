@@ -75,7 +75,7 @@ internal class ChangeSurnameViewModel : BaseViewModel
                 new_surname = NewSurname!.Trim(),
             };
 
-            await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/person/rename/firstname", "POST", paylod);
+            await QueryService.JsonSerializeWithToken(_user.Token, "/pers/person/rename/firstname", "POST", paylod);
 
             w.DialogResult = true;
             w.Close();

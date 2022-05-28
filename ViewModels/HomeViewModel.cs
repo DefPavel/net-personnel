@@ -162,14 +162,12 @@ internal class HomeViewModel : BaseViewModel
 
     private int CountIsPluralismOterIsPed
     {
-        get => _countIsPluralismOterIsPed;
         set => Set(ref _countIsPluralismOterIsPed, value);
     }
     private int _countIsPluralismOterNotIsPed;
 
     private int CountIsPluralismOterNotIsPed
     {
-        get => _countIsPluralismOterNotIsPed;
         set => Set(ref _countIsPluralismOterNotIsPed, value);
     }
 
@@ -350,7 +348,7 @@ internal class HomeViewModel : BaseViewModel
     {
         try
         {
-            await QueryService.JsonSerializeWithToken(token: _user!.Token,
+            await QueryService.JsonSerializeWithToken(token: _user.Token,
                 "/logout",
                 "POST",
                 User);
@@ -495,16 +493,16 @@ internal class HomeViewModel : BaseViewModel
             // Запуск progress bar
             IsLoading = true;
             // Выдать все должности
-            TypePosition = await QueryService.JsonDeserializeWithToken<TypePosition>(token: _user!.Token, "/pers/position/type/position/", "GET");
+            TypePosition = await QueryService.JsonDeserializeWithToken<TypePosition>(token: _user.Token, "/pers/position/type/position/", "GET");
             // Вывести список штатных должностей данного отдела
-            Positions = await QueryService.JsonDeserializeWithToken<Position>(token: _user!.Token, "/pers/position/get/" + SelectedItem!.Id, "GET");
+            Positions = await QueryService.JsonDeserializeWithToken<Position>(token: _user.Token, "/pers/position/get/" + SelectedItem!.Id, "GET");
             // Вывести сотрудников данного отдела
-            Persons = await QueryService.JsonDeserializeWithToken<Persons>(token: _user!.Token, "/pers/person/get/department/" + SelectedItem.Id, "GET");
+            Persons = await QueryService.JsonDeserializeWithToken<Persons>(token: _user.Token, "/pers/person/get/department/" + SelectedItem.Id, "GET");
             // Завершить progress bar
             IsLoading = false;
         }
         // Проверка токена
-        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse).StatusCode == 419)
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
         {
             _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
@@ -543,7 +541,7 @@ internal class HomeViewModel : BaseViewModel
 
         }
         // Проверка токена
-        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse).StatusCode == 419)
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
         {
             _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
@@ -603,7 +601,7 @@ internal class HomeViewModel : BaseViewModel
             */
         }
         // Проверка токена
-        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse).StatusCode == 419)
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
         {
             _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
@@ -634,14 +632,14 @@ internal class HomeViewModel : BaseViewModel
             {
 
                 //Изменить уже текущие данные
-                await QueryService.JsonSerializeWithToken(token: _user!.Token, "/pers/tree/rename/short/" + SelectedItem.Id, "POST", SelectedItem);
+                await QueryService.JsonSerializeWithToken(token: _user.Token, "/pers/tree/rename/short/" + SelectedItem.Id, "POST", SelectedItem);
             }
 
             // _ = MessageBox.Show("Данные успешно сохраненны");
 
         }
         // Проверка токена
-        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)?.StatusCode == 419)
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
         {
             _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
@@ -665,25 +663,25 @@ internal class HomeViewModel : BaseViewModel
             {
                 SelectedPosition.IsPed = RadioIsPed;
                 //Изменить уже текущие данные
-                await QueryService.JsonSerializeWithToken(token: _user!.Token, "/pers/position/rename", "POST", SelectedPosition);
+                await QueryService.JsonSerializeWithToken(token: _user.Token, "/pers/position/rename", "POST", SelectedPosition);
             }
             else
             {
                 SelectedPosition.IsPed = RadioIsPed;
                 // Создать новую запись  
-                await QueryService.JsonSerializeWithToken(token: _user!.Token, "/pers/position/add", "POST", SelectedPosition);
+                await QueryService.JsonSerializeWithToken(token: _user.Token, "/pers/position/add", "POST", SelectedPosition);
 
             }
             // Обновить данные
-            Positions = await QueryService.JsonDeserializeWithToken<Position>(token: _user!.Token, "/pers/position/get/" + SelectedItem!.Id, "GET");
+            Positions = await QueryService.JsonDeserializeWithToken<Position>(token: _user.Token, "/pers/position/get/" + SelectedItem!.Id, "GET");
             // Вывести сотрудников данного отдела
             //Persons = await QueryService.JsonDeserializeWithToken<Persons>(token: _user!.Token, "/pers/person/get/department/" + SelectedItem.Id, "GET");
 
-            SelectedPosition = Positions.FirstOrDefault(x => x.Name == newSelectedPosition!.Name);
+            SelectedPosition = Positions.FirstOrDefault(x => x.Name == newSelectedPosition.Name);
             _ = MessageBox.Show("Данные успешно сохраненны");
         }
         // Проверка токена
-        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse).StatusCode == 419)
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
         {
             _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
@@ -709,7 +707,7 @@ internal class HomeViewModel : BaseViewModel
             _ = _positions!.Remove(SelectedPosition);
         }
         // Проверка токена
-        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse).StatusCode == 419)
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
         {
             _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
@@ -734,17 +732,10 @@ internal class HomeViewModel : BaseViewModel
     // Логика фильтра
     private bool FilterToPerson(object emp)
     {
-        return string.IsNullOrEmpty(FilterPerson) || (emp is Persons per && per.FirstName!.ToUpper().Contains(value: FilterPerson.ToUpper()));
+        return string.IsNullOrEmpty(FilterPerson) || (emp is Persons per && per.FirstName.ToUpper().Contains(value: FilterPerson.ToUpper()));
     }
     #endregion
 
     #endregion
-
-    public override void Dispose()
-    {
-
-        base.Dispose();
-    }
-
 }
 

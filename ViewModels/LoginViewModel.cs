@@ -64,11 +64,6 @@ internal class LoginViewModel : BaseViewModel
                 _navigationStore.CurrentViewModel = new HomeViewModel(account: account,
                                                                   navigationStore: _navigationStore);
         }
-        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse).StatusCode == 419)
-        {
-            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
-        }
         catch (WebException ex)
         {
 
@@ -78,7 +73,7 @@ internal class LoginViewModel : BaseViewModel
                 {
                     using StreamReader reader = new(response.GetResponseStream());
                     account = JsonSerializer.Deserialize<Users>(await reader.ReadToEndAsync()) ?? throw new InvalidOperationException();
-                    ErrorMessage = account?.Error;
+                    ErrorMessage = account.Error;
                 }
             }
             else
@@ -89,10 +84,6 @@ internal class LoginViewModel : BaseViewModel
 
     }
 
-    public override void Dispose()
-    {
-        base.Dispose();
-    }
     #endregion
 
 

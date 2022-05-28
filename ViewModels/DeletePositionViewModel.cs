@@ -76,7 +76,7 @@ internal class DeletePositionViewModel : BaseViewModel
             };
 
             // Удалить персону
-            await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/position/dropByPerson", "POST", personMove);
+            await QueryService.JsonSerializeWithToken(_user.Token, "/pers/position/dropByPerson", "POST", personMove);
 
             w.DialogResult = true;
             w.Close();
