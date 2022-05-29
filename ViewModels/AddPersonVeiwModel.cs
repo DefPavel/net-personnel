@@ -1,4 +1,6 @@
-﻿namespace AlphaPersonel.ViewModels;
+﻿using System.Collections.Generic;
+
+namespace AlphaPersonel.ViewModels;
 
 internal class AddPersonVeiwModel : BaseViewModel
 {
@@ -106,16 +108,16 @@ internal class AddPersonVeiwModel : BaseViewModel
         set => Set(ref _gender, value);
     }
     // Массив Должностей
-    private ObservableCollection<Position>? _positions;
-    public ObservableCollection<Position>? Positions
+    private IEnumerable<Position>? _positions;
+    public IEnumerable<Position>? Positions
     {
         get => _positions;
         private set => Set(ref _positions, value);
     }
 
     // Место работы
-    private ObservableCollection<PlaceOfWork>? _places;
-    public ObservableCollection<PlaceOfWork>? Places
+    private IEnumerable<PlaceOfWork>? _places;
+    public IEnumerable<PlaceOfWork>? Places
     {
         get => _places;
         private set => Set(ref _places, value);
@@ -129,16 +131,16 @@ internal class AddPersonVeiwModel : BaseViewModel
     }
 
     // Тип контракта
-    private ObservableCollection<TypeContract>? _contracts;
-    public ObservableCollection<TypeContract>? Contracts
+    private IEnumerable<TypeContract>? _contracts;
+    public IEnumerable<TypeContract>? Contracts
     {
         get => _contracts;
         private set => Set(ref _contracts, value);
     }
 
     // Массив Приказов
-    private ObservableCollection<Order>? _orders;
-    public ObservableCollection<Order>? Orders
+    private IEnumerable<Order>? _orders;
+    public IEnumerable<Order>? Orders
     {
         get => _orders;
         private set => Set(ref _orders, value);

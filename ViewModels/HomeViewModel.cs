@@ -302,6 +302,9 @@ internal class HomeViewModel : BaseViewModel
 
     private ICommand? _openReportRewarding;
     public ICommand OpenReportRewarding => _openReportRewarding ??= new LambdaCommand(OpenReportRewardingPerson);
+    
+    private ICommand? _openReportVacation;
+    public ICommand OpenReportVacation => _openReportVacation ??= new LambdaCommand(OpenReportVacationPeriod);
 
     private ICommand? _openMasterReport;
     public ICommand OpenMasterReport => _openMasterReport ??= new LambdaCommand(OpenMasterReportView);
@@ -416,6 +419,15 @@ internal class HomeViewModel : BaseViewModel
         // _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
         InsertReportViewModel viewModel = new("/reports/pers/persons/rewarding/", "Отчет награжденных", _user);
         ReportByPersonInsert view = new() { DataContext = viewModel };
+        view.ShowDialog();
+
+    }
+    // Отчет остатков отпусков по периоду
+    private void OpenReportVacationPeriod(object p)
+    {
+        // _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
+        ReportVacationViewModel viewModel = new("/reports/pers/persons/vacation/residue/","Список остатков отпусков", _user);
+        ReportVacation view = new() { DataContext = viewModel };
         view.ShowDialog();
 
     }

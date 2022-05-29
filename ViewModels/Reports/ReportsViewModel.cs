@@ -280,6 +280,16 @@ internal class ReportsViewModel : BaseViewModel
                     Name = "Список деканов и директоров",
                     Url = "/reports/pers/persons/director/"
                 },
+                new ()
+                {
+                    Name = "Реестер Докторов",
+                    Url = "/reports/pers/persons/register_dok/"
+                },
+                new ()
+                {
+                    Name = "Реестер Кандидатов",
+                    Url = "/reports/pers/persons/register_kan/"
+                },
                 new()
                 {
                     Name = "Повышение квалификации(Методистов)",
