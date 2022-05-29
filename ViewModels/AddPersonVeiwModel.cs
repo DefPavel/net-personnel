@@ -12,6 +12,12 @@ internal class AddPersonVeiwModel : BaseViewModel
         get => _countBudget;
         set => Set(ref _countBudget, value);
     }
+    private bool _isLoading;
+    public bool IsLoading
+    {
+        get => _isLoading;
+        private set => Set(ref _isLoading, value);
+    }
 
     private decimal? _countNoBudget = 0;
     public decimal? CountNoBudget
@@ -214,14 +220,17 @@ internal class AddPersonVeiwModel : BaseViewModel
                 is_pluralism_oter = IsOter,
             };
 
+            IsLoading = true;
             // Создать персону
             await QueryService.JsonSerializeWithToken(_user.Token, "/pers/person/add", "POST", person);
+            IsLoading = false;
 
             w.DialogResult = true;
             w.Close();
         }
         catch (WebException ex)
         {
+            IsLoading = false;
             if (ex.Status == WebExceptionStatus.ProtocolError)
             {
                 if (ex.Response is HttpWebResponse response)

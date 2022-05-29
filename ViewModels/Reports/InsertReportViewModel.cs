@@ -6,10 +6,10 @@ internal class InsertReportViewModel : BaseViewModel
 
     private readonly string _titleReport;
 
-    private readonly string _Url;
+    private readonly string _url;
 
-    private VisualBoolean _isLoading = false;
-    public VisualBoolean IsLoading
+    private bool _isLoading = false;
+    public bool IsLoading
     {
         get => _isLoading;
         private set => Set(ref _isLoading, value);
@@ -43,7 +43,7 @@ internal class InsertReportViewModel : BaseViewModel
 
     public InsertReportViewModel(string url, string titleReport, Users user)
     {
-        _Url = url;
+        _url = url;
         _titleReport = titleReport;
         _user = user;
         IsPedagogical = new ObservableCollection<PedagogicalPosition>
@@ -96,14 +96,14 @@ internal class InsertReportViewModel : BaseViewModel
             };
 
             // Отправить запрос
-            await ReportService.JsonPostWithToken(person, _user!.Token, _Url + SelectedIsPed.Query, "POST", _titleReport);
+            await ReportService.JsonPostWithToken(person, _user!.Token, _url + SelectedIsPed.Query, "POST", _titleReport);
             IsLoading = false;
             w.DialogResult = true;
             w.Close();
         }
         catch (WebException ex)
         {
-
+            IsLoading = false;
             if (ex.Status == WebExceptionStatus.ProtocolError)
             {
                 if (ex.Response is HttpWebResponse response)

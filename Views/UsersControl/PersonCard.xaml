@@ -687,24 +687,44 @@
                                     ScrollViewer.IsDeferredScrollingEnabled="True"
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
                                     AlternatingRowBackground="#e1eff9"
-                                    IsReadOnly="True"    
-                                    AutoGenerateColumns="False"
+                                        AutoGenerateColumns="False"
+                                        CanUserAddRows="False"
                                      SelectedItem="{Binding SelectedPosition}"
-                                    ItemsSource="{Binding SelectedPerson.ArrayPosition}"
+                                     ItemsSource="{Binding SelectedPerson.ArrayPosition}"
                                     Margin="5">
+                                        <DataGrid.Resources>
+                                            <Style TargetType="{x:Type DataGridCell}">
+                                                <Style.Triggers>
+                                                    <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                                        <Setter Property="Background" Value="#87CEFA" />
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                            <CollectionViewSource x:Key="ItemsTypeContract" Source="{Binding TypeContracts }" />
+                                            <CollectionViewSource x:Key="ItemsTypePlace" Source="{Binding TypePlaceOfWorks }" />
+                                            <CollectionViewSource x:Key="ItemsTypeDepartment" Source="{Binding Departments }" />
+                                            <CollectionViewSource x:Key="ItemsTypePosition" Source="{Binding TypePositions }" />
+                                        </DataGrid.Resources>
                                         <DataGrid.Columns>
                                             <DataGridCheckBoxColumn 
+                                               
                                         Width="30"        
                                         Binding="{Binding IsMain ,TargetNullValue={x:Null}}"
                                         Header="Осн.место"/>
-                                            <DataGridTextColumn
-                                                
-                                        Header="Отдел"
-                                        Binding="{Binding DepartmentName}"/>
-                                            <DataGridTextColumn 
-                                        Binding="{Binding Name}"
+                                            <DataGridComboBoxColumn 
                                                 Width="*"
-                                        Header="Должность"/>
+                                                Header="Отдел"
+                                                SelectedValueBinding="{Binding DepartmentName , UpdateSourceTrigger=PropertyChanged}"
+                                                SelectedValuePath="Name"
+                                                DisplayMemberPath="Name"
+                                                ItemsSource="{Binding Source={StaticResource ItemsTypeDepartment}}"/>
+                                            <DataGridComboBoxColumn 
+                                                Width="*"
+                                                Header="Должность"
+                                                SelectedValueBinding="{Binding Name , UpdateSourceTrigger=PropertyChanged}"
+                                                SelectedValuePath="Name"
+                                                DisplayMemberPath="Name"
+                                                ItemsSource="{Binding Source={StaticResource ItemsTypePosition}}"/>
                                             <DataGridTextColumn 
                                         Binding="{Binding StavkaBudget}"
                                                 Width="90"
@@ -717,18 +737,56 @@
                                         Binding="{Binding Phone}"
                                                 Width="50"
                                         Header="Телефон"/>
-                                            <DataGridTextColumn 
-                                        Binding="{Binding Contract}"
-                                        Header="Вид контракта"/>
-                                            <DataGridTextColumn 
-                                        Binding="{Binding DateStartContract, StringFormat=d, ConverterCulture=ru-Ru}"
-                                        Header="Дата заключения"/>
-                                            <DataGridTextColumn 
-                                        Binding="{Binding DateEndContract, StringFormat=d, ConverterCulture=ru-Ru}"
-                                        Header="Дата окончания"/>
-                                            <DataGridTextColumn 
-                                        Binding="{Binding Place}"
-                                        Header="Место работы"/>
+
+                                            <DataGridComboBoxColumn 
+                                                Header="Вид контракта"
+                                                SelectedValueBinding="{Binding Contract , UpdateSourceTrigger=PropertyChanged}"
+                                                SelectedValuePath="Name"
+                                                DisplayMemberPath="Name"
+                                                ItemsSource="{Binding Source={StaticResource ItemsTypeContract}}"/>
+                                            
+                                            <DataGridTemplateColumn Header="Дата заключения">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding DateStartContract, UpdateSourceTrigger=PropertyChanged, StringFormat='dd.MM.yyyy'}"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+
+                                                <DataGridTemplateColumn.CellEditingTemplate>
+                                                    <DataTemplate>
+                                                        <DatePicker 
+                                                            Margin="4 2" 
+                                                            Padding="4 2"
+                                                            SelectedDate="{Binding DateStartContract, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellEditingTemplate>
+
+                                            </DataGridTemplateColumn>
+                                            
+                                            <DataGridTemplateColumn Header="Дата окончания">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding DateEndContract, UpdateSourceTrigger=PropertyChanged, StringFormat='dd.MM.yyyy'}"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+
+                                                <DataGridTemplateColumn.CellEditingTemplate>
+                                                    <DataTemplate>
+                                                        <DatePicker 
+                                                            Margin="4 2" 
+                                                            Padding="4 2"
+                                                            SelectedDate="{Binding DateEndContract, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellEditingTemplate>
+                                            </DataGridTemplateColumn>
+
+                                            <DataGridComboBoxColumn 
+                                                Header="Место работы"
+                                                SelectedValueBinding="{Binding Place , UpdateSourceTrigger=PropertyChanged}"
+                                                SelectedValuePath="Name"
+                                                DisplayMemberPath="Name"
+                                                ItemsSource="{Binding Source={StaticResource ItemsTypePlace}}"/>
+                                            
                                         </DataGrid.Columns>
 
                                     </DataGrid>
@@ -1251,32 +1309,34 @@
                                         Grid.Column="1"
                                         Grid.Row="1">
                                     <Label Content="Информация о записи "/>
-                                    <TextBox Text="{Binding SelectedHistory.Name}"/>
+                                    <TextBox Text="{Binding SelectedHistory.Name,UpdateSourceTrigger=PropertyChanged}"/>
+                                    <Label Content="№ приказа "/>
+                                    <TextBox Text="{Binding SelectedHistory.Order,UpdateSourceTrigger=PropertyChanged}"/>
                                     <Label Content="Дата заполнения"/>
                                     <DatePicker 
-                                            SelectedDate="{Binding SelectedHistory.CreateAt}"
+                                            SelectedDate="{Binding SelectedHistory.CreateAt,UpdateSourceTrigger=PropertyChanged}"
                                             Margin="4 2"
                                             Padding="4 2"/>
                                     <CheckBox 
-                                            IsChecked="{Binding SelectedHistory.IsUniver ,TargetNullValue={x:Null}}" 
+                                            IsChecked="{Binding SelectedHistory.IsUniver,UpdateSourceTrigger=PropertyChanged ,TargetNullValue={x:Null}}" 
                                             Content="Стаж в ЛГПУ" />
                                     <CheckBox 
-                                            IsChecked="{Binding SelectedHistory.IsPedagogical ,TargetNullValue={x:Null}}"
+                                            IsChecked="{Binding SelectedHistory.IsPedagogical,UpdateSourceTrigger=PropertyChanged ,TargetNullValue={x:Null}}"
                                             Content="Стаж Научно педагогический" />
                                     <CheckBox  
-                                            IsChecked="{Binding SelectedHistory.IsScience ,TargetNullValue={x:Null}}"
+                                            IsChecked="{Binding SelectedHistory.IsScience,UpdateSourceTrigger=PropertyChanged ,TargetNullValue={x:Null}}"
                                             Content="Стаж Научный" />
                                     <CheckBox  
-                                            IsChecked="{Binding SelectedHistory.IsLibrary ,TargetNullValue={x:Null}}"
+                                            IsChecked="{Binding SelectedHistory.IsLibrary,UpdateSourceTrigger=PropertyChanged ,TargetNullValue={x:Null}}"
                                             Content="Стаж Библиотечный" />
                                     <CheckBox  
-                                            IsChecked="{Binding SelectedHistory.IsMedical ,TargetNullValue={x:Null}}"
+                                            IsChecked="{Binding SelectedHistory.IsMedical,UpdateSourceTrigger=PropertyChanged ,TargetNullValue={x:Null}}"
                                             Content="Стаж Медицинский" />
                                     <CheckBox  
-                                            IsChecked="{Binding SelectedHistory.IsMuseum ,TargetNullValue={x:Null}}"
+                                            IsChecked="{Binding SelectedHistory.IsMuseum,UpdateSourceTrigger=PropertyChanged ,TargetNullValue={x:Null}}"
                                             Content="Стаж Музея" />
                                     <CheckBox  
-                                            IsChecked="{Binding SelectedHistory.IsOver ,TargetNullValue={x:Null}}"
+                                            IsChecked="{Binding SelectedHistory.IsOver,UpdateSourceTrigger=PropertyChanged ,TargetNullValue={x:Null}}"
                                             Content="Общий стаж" />
 
                                     <StackPanel 
@@ -1670,7 +1730,7 @@
                                     ScrollViewer.IsDeferredScrollingEnabled="True"
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
                                     AlternatingRowBackground="#e1eff9"
-                                    
+                                    CanUserAddRows="False"
                                     AutoGenerateColumns="False"
                                     ItemsSource="{Binding SelectedPerson.ArrayFamily}"
                                     Grid.Column="0"

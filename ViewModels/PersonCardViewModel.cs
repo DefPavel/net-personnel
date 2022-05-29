@@ -245,6 +245,34 @@ internal class PersonCardViewModel : BaseViewModel
             }
         }
     }
+    private IEnumerable<Departments>? _departments;
+    public IEnumerable<Departments>? Departments
+    {
+        get => _departments;
+        private set => Set(ref _departments, value);
+    }
+    private IEnumerable<TypePosition>? _typePositions;
+    public IEnumerable<TypePosition>? TypePositions
+    {
+        get => _typePositions;
+        private set => Set(ref _typePositions, value);
+    }
+    
+    // Тип контракта
+    private IEnumerable<TypeContract>? _typeContracts;
+    public IEnumerable<TypeContract>? TypeContracts
+    {
+        get => _typeContracts;
+        private set => Set(ref _typeContracts, value);
+    }
+    // Место работы
+    private IEnumerable<PlaceOfWork>? _typePlaceOfWorks;
+    public IEnumerable<PlaceOfWork>? TypePlaceOfWorks
+    {
+        get => _typePlaceOfWorks;
+        private set => Set(ref _typePlaceOfWorks, value);
+    }
+    
     // Список видов паспортов
     private IEnumerable<TypePassport>? _typePassports;
     public IEnumerable<TypePassport>? TypePassports
@@ -1217,7 +1245,14 @@ internal class PersonCardViewModel : BaseViewModel
         try
         {
             IsLoading = true;
-
+            // Справочник отделов
+            Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user!.Token, "/pers/tree/all", "GET");
+            // Справочник должностей
+            TypePositions = await QueryService.JsonDeserializeWithToken<TypePosition>(_user!.Token, "/pers/position/type/position", "GET");
+            // Справочник Мест работы
+            TypePlaceOfWorks = await QueryService.JsonDeserializeWithToken<PlaceOfWork>(_user!.Token, "/pers/position/type/place", "GET");
+            // Справочник контрактов
+            TypeContracts = await QueryService.JsonDeserializeWithToken<TypeContract>(token: _user!.Token, "/pers/position/type/contract", "GET");
             // Справочник паспортов
             TypePassports = await QueryService.JsonDeserializeWithToken<TypePassport>(token: _user!.Token, "/pers/person/get/passport", "GET");
             // Справочник (Период отпусков)
@@ -1249,7 +1284,7 @@ internal class PersonCardViewModel : BaseViewModel
             // Тут оставляем всё как есть
             TypeTitle = TypeRanks;
             // Показываем только два элемента для Членов акдемиков
-            TypeRanks = TypeRanks.Where(x => x.Name == "Академик" || x.Name == "Член-корреспондент");
+            TypeRanks = TypeRanks.Where(x => x.Name is "Академик" or "Член-корреспондент");
             // Получить список людей в отделе
             PersonsList = await QueryService.JsonDeserializeWithToken<Persons>(token: _user!.Token, "/pers/person/get/short/" + _idDepartment, "GET");
             // PersonsList = await _Api.GetListPersonsToDepartment(_User!.Token, _Department!.Id);

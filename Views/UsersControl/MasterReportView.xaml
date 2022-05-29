@@ -111,8 +111,18 @@
                     Width="80"
                     Margin="5"
                     Padding="5"
-                    HorizontalAlignment="Left"
-                    Content="Ok"/>
+                    HorizontalAlignment="Left">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                            <Setter Property="Content" Value="Выбрать" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                    <Setter Property="Content" Value="Загрузка..." />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
             </StackPanel>
         </GroupBox>
 

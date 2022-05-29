@@ -10,6 +10,13 @@ internal class LoginViewModel : BaseViewModel
     }
 
     #region Свойства
+    
+    private bool _isLoading;
+    public bool IsLoading
+    {
+        get => _isLoading;
+        private set => Set(ref _isLoading, value);
+    }
     private string? _userName;
     public string? UserName
     {
@@ -57,16 +64,21 @@ internal class LoginViewModel : BaseViewModel
         Users account;
         try
         {
-                account = await SignIn.Authentication(
-                username: UserName!,
-                password: Password!);
-
-                _navigationStore.CurrentViewModel = new HomeViewModel(account: account,
-                                                                  navigationStore: _navigationStore);
+            IsLoading = true;
+            //TitleButton = "Загрузка...";
+            account = await SignIn.Authentication(
+            username: UserName!,
+            password: Password!);
+            IsLoading = false;
+            //TitleButton = "Войти";
+            _navigationStore.CurrentViewModel = new HomeViewModel(account: account,
+                                                              navigationStore: _navigationStore);
+               
         }
         catch (WebException ex)
         {
-
+            IsLoading = false;
+            //TitleButton = "Войти";
             if (ex.Status == WebExceptionStatus.ProtocolError)
             {
                 if (ex.Response is HttpWebResponse response)

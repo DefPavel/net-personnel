@@ -68,8 +68,8 @@ internal class MasterReportViewModel : BaseViewModel
     private readonly Users _user;
 
     // Процесс загрузки
-    private VisualBoolean _isLoading = false;
-    public VisualBoolean IsLoading
+    private bool _isLoading = false;
+    public bool IsLoading
     {
         get => _isLoading;
         private set => Set(ref _isLoading, value);
@@ -261,6 +261,7 @@ internal class MasterReportViewModel : BaseViewModel
         }
         catch (WebException ex)
         {
+            IsLoading = false;
             if (ex.Status == WebExceptionStatus.ProtocolError)
             {
                 if (ex.Response is HttpWebResponse response)
