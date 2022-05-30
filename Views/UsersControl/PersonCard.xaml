@@ -737,6 +737,10 @@
                                         Binding="{Binding Phone}"
                                                 Width="50"
                                         Header="Телефон"/>
+                                            
+                                            <DataGridTextColumn 
+                                        Binding="{Binding Order}"
+                                        Header="Приказ"/>
 
                                             <DataGridComboBoxColumn 
                                                 Header="Вид контракта"
@@ -787,6 +791,23 @@
                                                 DisplayMemberPath="Name"
                                                 ItemsSource="{Binding Source={StaticResource ItemsTypePlace}}"/>
                                             
+                                            <DataGridTemplateColumn Header="Дата увольнения">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding DateDrop, UpdateSourceTrigger=PropertyChanged, StringFormat='dd.MM.yyyy'}"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+
+                                                <DataGridTemplateColumn.CellEditingTemplate>
+                                                    <DataTemplate>
+                                                        <DatePicker 
+                                                            Margin="4 2" 
+                                                            Padding="4 2"
+                                                            SelectedDate="{Binding DateDrop, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellEditingTemplate>
+
+                                            </DataGridTemplateColumn>
                                         </DataGrid.Columns>
 
                                     </DataGrid>
