@@ -14,7 +14,7 @@ namespace AlphaPersonel.Models.Home;
         public string Document { get; set; } = string.Empty;
 
         [JsonPropertyName("date_begin")]
-        public DateTime Datebegin { get; set; }
+        public DateTime? Datebegin { get; set; }
 
         [JsonPropertyName("id_person")]
         public int IdPerson { get; set; } = 0;

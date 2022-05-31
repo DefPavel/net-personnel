@@ -122,17 +122,17 @@ internal class Persons
     public FullAge? FullAge { get; set; }
 
     [JsonPropertyName("date_working")]
-    public DateTime DateWorking { get; set; }
+    public DateTime? DateWorking { get; set; }
 
 
     [JsonPropertyName("date_order")]
-    public DateTime DateOrder { get; set; }
+    public DateTime? DateOrder { get; set; }
 
     [JsonPropertyName("order")]
     public string OrderName { get; set; } = string.Empty;
 
     [JsonPropertyName("date_insert")]
-    public DateTime OrderDate { get; set; }
+    public DateTime? OrderDate { get; set; }
     [JsonPropertyName("position")]
     public string PersonPosition { get; set; } = string.Empty;
 
