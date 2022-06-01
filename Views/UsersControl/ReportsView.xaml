@@ -72,8 +72,8 @@
         </StackPanel>
         <DataGrid
             ScrollViewer.IsDeferredScrollingEnabled="True"
-            AlternatingRowBackground="#e1eff9"
-             FontSize="13"
+            AlternatingRowBackground="#ECEFF1"
+             FontSize="14"
             AutoGenerateColumns="False"
             CanUserAddRows="False"
             IsReadOnly="True"

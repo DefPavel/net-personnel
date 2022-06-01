@@ -139,6 +139,9 @@
                     Command="{Binding OpenReportVacation}"
                     Header="Список сотрудников не имеющие отпуск за период"/>
                 <MenuItem 
+                    Command="{Binding OpenReportContract}"
+                    Header="Истечении срока действия трудового договора"/>
+                <MenuItem 
                     Header="Списки..." 
                     Command="{Binding OpenReport}"/>
                 </MenuItem>
@@ -260,6 +263,7 @@
         </Grid>
         <!--#endregion-->
         <GridSplitter 
+            Background="#BDBDBD"
             Grid.Row="2"
             Width="2"
             Grid.Column="0"/>
@@ -414,7 +418,8 @@
                                     Margin="5"
                                     Grid.Column="0">
                                     <DataGrid 
-                                             
+                                             FontSize="14"
+                                        AlternatingRowBackground="#ECEFF1"
                                               SelectionMode="Single"
                                               Margin="5"
                                               ItemsSource="{Binding Positions}"
@@ -732,7 +737,7 @@
                                     IsReadOnly="True"
                                     
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
-                                    AlternatingRowBackground="#e1eff9"
+                                    AlternatingRowBackground="#ECEFF1"
                                     AutoGenerateColumns="False"
                                     CanUserAddRows="False"
                                     Margin="5"

@@ -68,8 +68,8 @@
                         Grid.Row="0" Grid.Column="1"/>
                     <DataGrid 
                         ScrollViewer.IsDeferredScrollingEnabled="True"
-                        AlternatingRowBackground="#e1eff9"
-                       
+                        AlternatingRowBackground="#ECEFF1"
+                        FontSize="14"
                         CanUserAddRows="False"
                         IsReadOnly="True"
                         SelectedItem="{Binding SelectedPerson}"
@@ -155,8 +155,8 @@
                         Grid.Row="0" Grid.Column="1"/>
                     <DataGrid 
                          ScrollViewer.IsDeferredScrollingEnabled="True"
-                        FontSize="13"
-                        AlternatingRowBackground="#e1eff9"
+                        FontSize="14"
+                        AlternatingRowBackground="#ECEFF1"
                         IsReadOnly="True"
                         CanUserAddRows="False"
                         AutoGenerateColumns="False"
