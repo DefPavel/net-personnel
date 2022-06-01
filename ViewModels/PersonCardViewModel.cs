@@ -560,7 +560,7 @@ internal class PersonCardViewModel : BaseViewModel
     public ICommand OpenChangePosition => _openChangePosition ??= new LambdaCommand(ChangePosition, _ => SelectedPerson != null && SelectedPosition != null);
 
     private ICommand? _openDropPosition;
-    public ICommand OpenDropPosition => _openDropPosition ??= new LambdaCommand(DeletePosition, _ => SelectedPerson != null && SelectedPosition != null && SelectedPosition.IsMain != true);
+    public ICommand OpenDropPosition => _openDropPosition ??= new LambdaCommand(DeletePosition, _ => SelectedPerson != null && SelectedPosition != null && SelectedPosition.IsMain != true && SelectedPosition.IsPluralismOter != true);
 
     private ICommand? _openChangeSurname;
     public ICommand OpenChangeSurname => _openChangeSurname ??= new LambdaCommand(ChangeSurname , _ => SelectedPerson != null);
