@@ -605,11 +605,11 @@
                                         Grid.Row="4">
 
                                         <RadioButton
-                                            IsEnabled="False"
+                                          
                                             IsChecked="{Binding RadioIsPed}"
                                             Content="Педагогическая должность"/>
                                         <RadioButton
-                                            IsEnabled="False"
+                                           
                                             IsChecked="{Binding RadioIsNoPed}"
                                             Content="Ремонто строительная и обслуживающая"/>
                                     </StackPanel>
@@ -618,7 +618,7 @@
                                         Grid.Row="5"
                                         Text="Лимит отпуска:"/>
                                     <TextBox 
-                                        IsEnabled="False"
+                                       
                                         Grid.Row="5"
                                         Grid.Column="1"
                                         Text="{Binding SelectedPosition.HolidayLimit}"

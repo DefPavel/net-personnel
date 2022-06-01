@@ -662,6 +662,24 @@
                                                         Height="13" />
                                             </Canvas>
                                         </Button>
+                                        
+                                        <Button Command="{Binding OpenChangePosition}">
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    Изменить должность
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                            <Canvas 
+                                                        Height="13"
+                                                        Width="13">
+                                                <Path
+                                                        Stretch="Uniform"
+                                                        Fill="#444444"
+                                                        Data="M21,9L17,5V8H10V10H17V13M7,11L3,15L7,19V16H14V14H7V11Z"
+                                                        Width="13" 
+                                                        Height="13" />
+                                            </Canvas>
+                                        </Button>
                                         <Button 
                                             Command="{Binding OpenDropPosition}">
                                             <Button.ToolTip>

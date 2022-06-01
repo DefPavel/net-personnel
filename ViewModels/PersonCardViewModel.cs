@@ -556,6 +556,9 @@ internal class PersonCardViewModel : BaseViewModel
     private ICommand? _openAddPosition;
     public ICommand OpenAddPosition => _openAddPosition ??= new LambdaCommand(AddPosition , _ => SelectedPerson != null);
 
+    private ICommand? _openChangePosition;
+    public ICommand OpenChangePosition => _openChangePosition ??= new LambdaCommand(ChangePosition, _ => SelectedPerson != null && SelectedPosition != null);
+
     private ICommand? _openDropPosition;
     public ICommand OpenDropPosition => _openDropPosition ??= new LambdaCommand(DeletePosition, _ => SelectedPerson != null && SelectedPosition != null && SelectedPosition.IsMain != true);
 
@@ -889,6 +892,11 @@ internal class PersonCardViewModel : BaseViewModel
             IsLoading = false;
 
         }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (WebException ex)
         {
 
@@ -917,6 +925,15 @@ internal class PersonCardViewModel : BaseViewModel
         // Обновить данные
         ApiGetInformationToPerson(p);
     }
+
+    private void ChangePosition(object p)
+    {
+        ChangePositionViewModel viewModel = new(_user!, SelectedPerson! , SelectedPosition);
+        ChangePosition view = new() { DataContext = viewModel };
+        view.ShowDialog();
+        // Обновить данные
+        ApiGetInformationToPerson(p);
+    }
     private void DeletePosition(object p)
     {
         DeletePositionViewModel viewModel = new($"С должности: '{SelectedPosition!.Name}'", _user!, SelectedPerson! , SelectedPosition!);
@@ -940,6 +957,11 @@ internal class PersonCardViewModel : BaseViewModel
 
             IsLoading = false;
 
+        }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
         }
         catch (WebException ex)
         {
@@ -981,6 +1003,11 @@ internal class PersonCardViewModel : BaseViewModel
             }
             IsLoading = false;
         }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (WebException ex)
         {
 
@@ -999,9 +1026,6 @@ internal class PersonCardViewModel : BaseViewModel
             }
         }
     }
-
-
-
     // Преобразование Фото в base64
     private static string GetBase64FromImage(string path)
     {
@@ -1103,6 +1127,11 @@ internal class PersonCardViewModel : BaseViewModel
             IsLoading = false;
 
         }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (WebException ex)
         {
 
@@ -1153,6 +1182,11 @@ internal class PersonCardViewModel : BaseViewModel
                 */
             IsLoading = false;
         }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (WebException ex)
         {
 
@@ -1184,6 +1218,11 @@ internal class PersonCardViewModel : BaseViewModel
             IsLoading = false;
 
 
+        }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
         }
         catch (WebException ex)
         {
@@ -1218,6 +1257,11 @@ internal class PersonCardViewModel : BaseViewModel
             IsLoading = false;
 
 
+        }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
         }
         catch (WebException ex)
         {
@@ -1295,6 +1339,11 @@ internal class PersonCardViewModel : BaseViewModel
             SelectedPerson = indeArray.Value;
 
             IsLoading = false;
+        }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
         }
         catch (WebException ex)
         {
@@ -2126,6 +2175,11 @@ internal class PersonCardViewModel : BaseViewModel
             _ = MessageBox.Show("Данные успешно сохраненны");
 
         }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (WebException ex)
         {
             if (ex.Status == WebExceptionStatus.ProtocolError)
@@ -2183,6 +2237,11 @@ internal class PersonCardViewModel : BaseViewModel
             _ = MessageBox.Show("Данные успешно сохраненны");
 
         }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (WebException ex)
         {
             if (ex.Status == WebExceptionStatus.ProtocolError)
@@ -2210,6 +2269,11 @@ internal class PersonCardViewModel : BaseViewModel
             //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
 
             _ = _selectedPerson!.ArrayPensioner!.Remove(SelectedPens);
+        }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
         }
         catch (WebException ex)
         {
@@ -2270,6 +2334,11 @@ internal class PersonCardViewModel : BaseViewModel
             _ = MessageBox.Show("Данные успешно сохраненны");
 
         }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (WebException ex)
         {
             if (ex.Status == WebExceptionStatus.ProtocolError)
@@ -2297,6 +2366,11 @@ internal class PersonCardViewModel : BaseViewModel
             //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
 
             _ = _selectedPerson!.ArrayInvalid!.Remove(SelectedInvalid);
+        }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
         }
         catch (WebException ex)
         {
@@ -2335,7 +2409,6 @@ internal class PersonCardViewModel : BaseViewModel
             };
             _selectedPerson!.ArrayVacation?.Insert(0, order);
             SelectedVacation = order;
-
     }
     private async void DeleteVacationsAsync(object p)
     {
@@ -2347,6 +2420,11 @@ internal class PersonCardViewModel : BaseViewModel
             //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
 
             _ = _selectedPerson!.ArrayVacation!.Remove(SelectedVacation);
+        }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
         }
         catch (WebException ex)
         {
@@ -2438,6 +2516,11 @@ internal class PersonCardViewModel : BaseViewModel
             _ = MessageBox.Show("Данные успешно сохраненны");
 
         }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (WebException ex)
         {
             if (ex.Status == WebExceptionStatus.ProtocolError)
@@ -2502,6 +2585,11 @@ internal class PersonCardViewModel : BaseViewModel
                     SelectedPerson.ArrayDocuments.FirstOrDefault(x => x.Name == newSelectedDocument.Name);
             _ = MessageBox.Show("Данные успешно сохраненны");
         }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (WebException ex)
         {
             if (ex.Status == WebExceptionStatus.ProtocolError)
@@ -2530,6 +2618,11 @@ internal class PersonCardViewModel : BaseViewModel
             //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
 
             _ = _selectedPerson!.ArrayDocuments!.Remove(SelectedDocument);
+        }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
         }
         catch (WebException ex)
         {
@@ -2569,6 +2662,11 @@ internal class PersonCardViewModel : BaseViewModel
             _ = MessageBox.Show("Данные успешно сохраненны");
 
         }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (WebException ex)
         {
             if (ex.Status == WebExceptionStatus.ProtocolError)
@@ -2587,7 +2685,6 @@ internal class PersonCardViewModel : BaseViewModel
         }
 
     }
-
     private async void AsyncDeleteOldSurname(object p)
     {
         try
@@ -2599,6 +2696,11 @@ internal class PersonCardViewModel : BaseViewModel
 
             _ = _selectedPerson!.ArrayChangeSurname!.Remove(SelectedOldSurname);
         }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (WebException ex)
         {
             if (ex.Status == WebExceptionStatus.ProtocolError)
@@ -2616,7 +2718,6 @@ internal class PersonCardViewModel : BaseViewModel
             }
         }
     }
-
     private async void DeleteFamilyPerson(object p)
     {
         try
@@ -2627,6 +2728,11 @@ internal class PersonCardViewModel : BaseViewModel
             //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
 
             _ = _selectedPerson!.ArrayFamily!.Remove(SelectedFamily);
+        }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
         }
         catch (WebException ex)
         {
@@ -2692,6 +2798,11 @@ internal class PersonCardViewModel : BaseViewModel
             SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
             _ = MessageBox.Show("Данные успешно сохраненны");
 
+        }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
         }
         catch (WebException ex)
         {

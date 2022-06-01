@@ -124,7 +124,7 @@ internal class TypeRewardingViewModel : BaseViewModel
 
         }
         // Проверка токена
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
         {
             _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);

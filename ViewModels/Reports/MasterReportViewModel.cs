@@ -15,13 +15,13 @@ internal class MasterReportViewModel : BaseViewModel
             {
                 IdPed = 1,
                 IsPed = "Педагогическая",
-                Query = "typ_pos.is_ped = true",
+                Query = "pos.is_ped = true",
             },
             new()
             {
                 IdPed = 2,
                 IsPed = "Не Педагогическая",
-                Query = "typ_pos.is_ped = false",
+                Query = "pos.is_ped = false",
             },
             new()
             {

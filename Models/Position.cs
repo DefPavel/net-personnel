@@ -32,7 +32,7 @@ internal class Position
     [JsonPropertyName("is_main")] public bool IsMain { get; set; }
 
     // Сколько дней отпуска по должности
-    [JsonPropertyName("holiday")] public int HolidayLimit { get; set; }
+    [JsonPropertyName("holiday")] public int? HolidayLimit { get; set; }
 
     [JsonPropertyName("stavka_nobudget")] public decimal StavkaNoBudget { get; set; }
 
