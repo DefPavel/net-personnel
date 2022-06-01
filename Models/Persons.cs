@@ -124,7 +124,6 @@ internal class Persons
     [JsonPropertyName("date_working")]
     public DateTime? DateWorking { get; set; }
 
-
     [JsonPropertyName("date_order")]
     public DateTime? DateOrder { get; set; }
 

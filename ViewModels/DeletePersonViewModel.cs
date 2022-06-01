@@ -6,6 +6,7 @@ internal class DeletePersonViewModel : BaseViewModel
     private readonly Persons _person;
     private readonly Users _user;
     private readonly Departments _department;
+   
 
     // Массив Приказов
     private ObservableCollection<Order>? _orders;
@@ -77,6 +78,7 @@ internal class DeletePersonViewModel : BaseViewModel
                     date_begin = _person.StartDateContract,
                     date_end = _person.EndDateContract,
                     id_person_position = _person.IdPersonPosition,
+                    is_pluralism_oter = _person.IsPluralismOter,
                     is_ped = _person.IsPed
 
                 };
