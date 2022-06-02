@@ -11,7 +11,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="Добавить новую запись сотрудника" 
-        Height="878" Width="450">
+        Height="800" Width="450">
     
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -19,16 +19,17 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-    <Grid>
-        <StackPanel Margin="5">
-            <TextBlock 
+    <ScrollViewer>
+        <Grid>
+            <StackPanel Margin="5">
+                <TextBlock 
                   Style="{StaticResource Header30}"
                 Text="Добавить сотрудника"/>
 
-            <Label
+                <Label
                 Content="Выбрать должность"
                 FontWeight="Bold"/>
-            <ComboBox
+                <ComboBox
                    
                     ItemsSource="{Binding Positions}"
                     DisplayMemberPath="Name"
@@ -36,51 +37,51 @@
                     SelectedItem="{Binding SelectedPositions}"
                     SelectedValue="{Binding SelectedPositions.Name , Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"
             />
-            <Label
+                <Label
                 FontWeight="Bold"
                 Content="Фамилия"/>
-            <TextBox SpellCheck.IsEnabled="True" Language="ru-ru" 
+                <TextBox SpellCheck.IsEnabled="True" Language="ru-ru" 
                      Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
-            <Label 
+                <Label 
                 FontWeight="Bold"
                 Content="Имя"/>
-            <TextBox SpellCheck.IsEnabled="True" Language="ru-ru" 
+                <TextBox SpellCheck.IsEnabled="True" Language="ru-ru" 
                      Text="{Binding MidlleName, UpdateSourceTrigger=PropertyChanged}"/>
-            <Label 
+                <Label 
                 FontWeight="Bold"
                 Content="Отчество"/>
-            <TextBox SpellCheck.IsEnabled="True" Language="ru-ru" 
+                <TextBox SpellCheck.IsEnabled="True" Language="ru-ru" 
                      Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"/>
-            <Label 
+                <Label 
                 FontWeight="Bold"
                 Content="Дата рождения"/>
-            <DatePicker Margin="4 0" 
+                <DatePicker Margin="4 0" 
                         SelectedDate="{Binding Birthday ,
                         UpdateSourceTrigger=PropertyChanged}" />
-            <Label 
+                <Label 
                 FontWeight="Bold"
                 Content="Пол"/>
-            <StackPanel Orientation="Horizontal">
-                <RadioButton
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton
                     IsChecked="{Binding Gender}"
                     Padding="2"
                     Content="Мужской"/>
-                <RadioButton
+                    <RadioButton
                      Padding="2"
                     Content="Женский"/>
-            </StackPanel>
-            <Separator 
+                </StackPanel>
+                <Separator 
                 Margin="5 0 5 0"
                 Height="1"/>
-            <Label 
+                <Label 
                 FontWeight="Bold"
                 Content="Телефон"/>
-            <StackPanel 
+                <StackPanel 
                 Margin="5 0 0 0"
                 Orientation="Horizontal">
-                <TextBlock 
+                    <TextBlock 
                     Text="Лугаком:"/>
-                <xctk:MaskedTextBox 
+                    <xctk:MaskedTextBox 
                      Foreground="#444444"
                     Background="#FFFFFF"
                     Padding="4 2"
@@ -90,8 +91,8 @@
                     Text="{Binding LugPhone , UpdateSourceTrigger=PropertyChanged}"
                     Mask="(000) 000-0000"
                     />
-                <TextBlock Text="МТС:"/>
-                <xctk:MaskedTextBox 
+                    <TextBlock Text="МТС:"/>
+                    <xctk:MaskedTextBox 
                     Foreground="#444444"
                     Background="#FFFFFF"
                     Padding="4 2"
@@ -101,19 +102,19 @@
                     Text="{Binding MtcPhone , UpdateSourceTrigger=PropertyChanged}"
                     Mask="(000) 000-0000"
                     />
-            </StackPanel>
-            <Separator 
+                </StackPanel>
+                <Separator 
                 Margin="5 0 5 0"
                 Height="1"/>
-            <Label 
+                <Label 
                 FontWeight="Bold"
                 Content="Ставка"/>
-            <StackPanel
+                <StackPanel
                 Margin="5 0 0 0"
                 Orientation="Horizontal">
-                <TextBlock Text="Бюджет:"/>
+                    <TextBlock Text="Бюджет:"/>
 
-                <xctk:DecimalUpDown
+                    <xctk:DecimalUpDown
                     Foreground="#444444"
                     Background="#FFFFFF"
                     Padding="4 2"
@@ -128,8 +129,8 @@
                     Minimum="0.0"
                     />
 
-                <TextBlock Text="Не Бюджет:"/>
-                <xctk:DecimalUpDown
+                    <TextBlock Text="Не Бюджет:"/>
+                    <xctk:DecimalUpDown
                      Foreground="#444444"
                     Background="#FFFFFF"
                     Padding="4 2"
@@ -145,21 +146,21 @@
                    
                     />
 
-            </StackPanel>
-            <Separator 
+                </StackPanel>
+                <Separator 
                 Margin="5 0 5 0"
                 Height="1"/>
-            <Label 
+                <Label 
                 FontWeight="Bold"
                 Content="Дата приёма на работу"/>
-            <DatePicker Margin="4 0" 
+                <DatePicker Margin="4 0" 
                         SelectedDate="{Binding DateWorking ,
                         UpdateSourceTrigger=PropertyChanged}"/>
 
-            <Label 
+                <Label 
                 FontWeight="Bold"
                 Content="Выбрать место работы"/>
-            <ComboBox 
+                <ComboBox 
                     IsEditable="True"
                     ItemsSource="{Binding Places}"
                     DisplayMemberPath="Name"
@@ -167,10 +168,10 @@
                     SelectedItem="{Binding SelectedPlace}"
                     SelectedValue="{Binding SelectedPlace.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
                     />
-            <Label 
+                <Label 
                 FontWeight="Bold"
                 Content="Тип контракта"/>
-            <ComboBox 
+                <ComboBox 
                     IsEditable="True"
                     ItemsSource="{Binding Contracts}"
                     DisplayMemberPath="Name"
@@ -178,31 +179,31 @@
                     SelectedItem="{Binding SelectedContract}"
                     SelectedValue="{Binding SelectedContract.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
                     />
-            <Label 
+                <Label 
                 FontWeight="Bold"
                 Content="Дата заключения контракта"/>
-            <DatePicker Margin="4 0" 
+                <DatePicker Margin="4 0" 
                         SelectedDate="{Binding DateContract ,
                         UpdateSourceTrigger=PropertyChanged}"/>
-            <Label 
+                <Label 
                 FontWeight="Bold"
                 Content="Дата окончания контракта"/>
-            <DatePicker Margin="4 0" 
+                <DatePicker Margin="4 0" 
                         SelectedDate="{Binding DateEndContract ,
                         UpdateSourceTrigger=PropertyChanged}"/>
-            <CheckBox 
+                <CheckBox 
                 Margin="5"
                 Content="Основное место работы"
                 IsChecked="{Binding IsMain , UpdateSourceTrigger=PropertyChanged}"/>
 
-            <CheckBox 
+                <CheckBox 
                 Margin="5"
                 Content="Внешний совместитель"
                 IsChecked="{Binding IsOter , UpdateSourceTrigger=PropertyChanged}"/>
-            <Label 
+                <Label 
                 FontWeight="Bold"
                 Content="Выбрать приказ (приёма на работу)"/>
-            <ComboBox 
+                <ComboBox 
                     IsEditable="True"
                     ItemsSource="{Binding Orders}"
                     DisplayMemberPath="Name"
@@ -210,33 +211,35 @@
                     SelectedItem="{Binding SelectedOrders}"
                     SelectedValue="{Binding SelectedOrders.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
                     />
-            <Button
+                <Button
                 Margin="5"
                 HorizontalAlignment="Right"
                 Width="80"
                 Command="{Binding CloseWin}"
                 CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}">
-                <StackPanel Orientation="Horizontal">
-                    <fa:ImageAwesome
+                    <StackPanel Orientation="Horizontal">
+                        <fa:ImageAwesome
                                 Height="12"
                                 Margin="0 0 5 0"
                                 Icon="Solid_Plus"
                                 />
-                    <TextBlock Text="Создать" >
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                                <Setter Property="Text" Value="Войти" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsLoading}" Value="True">
-                                        <Setter Property="Text" Value="Загрузка" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </StackPanel>
-            </Button>
-        </StackPanel>
+                        <TextBlock Text="Создать" >
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                    <Setter Property="Text" Value="Войти" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                            <Setter Property="Text" Value="Загрузка" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
 
-    </Grid>
+        </Grid>
+    </ScrollViewer>
+   
 </Window>

@@ -6,7 +6,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Themes/Styles/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <SolidColorBrush x:Key="AccentColorBrush" Color="#1976D2" />
+            <SolidColorBrush x:Key="AccentColorBrush" Color="#1e88e5" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -229,6 +229,7 @@
                 Margin="0 0 5 5"
                 x:Name="TreeDepartment"
                 ItemsSource="{Binding Departments}">
+
                 <!-- Получить выбранный элемент из TreeView -->
                 <i:Interaction.Behaviors>
                     <behaviours:BindableSelectedItemBehavior
@@ -436,7 +437,7 @@
                                             <Style TargetType="{x:Type DataGridCell}">
                                                 <Style.Triggers>
                                                     <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                                        <Setter Property="Background" Value="#87CEFA" />
+                                                        <Setter Property="Background" Value="#1e88e5" />
                                                     </Trigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -750,7 +751,7 @@
                                         <Style TargetType="{x:Type DataGridCell}">
                                             <Style.Triggers>
                                                 <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                                    <Setter Property="Background" Value="#87CEFA" />
+                                                    <Setter Property="Background" Value="#1e88e5" />
                                                 </Trigger>
                                             </Style.Triggers>
                                         </Style>

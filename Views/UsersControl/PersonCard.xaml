@@ -247,6 +247,15 @@
                 CanUserAddRows="False"
                 Grid.Row="3" 
                 >
+                <DataGrid.Resources>
+                    <Style TargetType="{x:Type DataGridCell}">
+                        <Style.Triggers>
+                            <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                <Setter Property="Background" Value="#1e88e5" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Resources>
                 <DataGrid.ContextMenu>
                     <ContextMenu>
                         <MenuItem 
@@ -719,7 +728,7 @@
                                             <Style TargetType="{x:Type DataGridCell}">
                                                 <Style.Triggers>
                                                     <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                                        <Setter Property="Background" Value="#87CEFA" />
+                                                        <Setter Property="Background" Value="#1e88e5" />
                                                     </Trigger>
                                                 </Style.Triggers>
                                             </Style>
