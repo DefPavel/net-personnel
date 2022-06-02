@@ -197,6 +197,11 @@ internal class ReportsViewModel : BaseViewModel
                 },
                 new ()
                 {
+                    Name = "Сотрудники в отпуске(по уходу за ребенком)",
+                    Url = "/reports/pers/persons/decret/"
+                },
+                new ()
+                {
                     Name = "Список всех сотрудников",
                     Url = "/reports/pers/persons/"
                 },

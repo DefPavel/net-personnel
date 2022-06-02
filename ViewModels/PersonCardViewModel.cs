@@ -521,6 +521,12 @@ internal class PersonCardViewModel : BaseViewModel
     private ICommand? _openReportRewarding;
     public ICommand OpenReportRewarding => _openReportRewarding ??= new LambdaCommand(OpenReportRewardingPerson);
 
+    private ICommand? _openReportVacation;
+    public ICommand OpenReportVacation => _openReportVacation ??= new LambdaCommand(OpenReportVacationPeriod);
+
+    private ICommand? _openReportContract;
+    public ICommand OpenReportContract => _openReportContract ??= new LambdaCommand(OpenReportContracts);
+
     private ICommand? _openMasterReport;
     public ICommand OpenMasterReport => _openMasterReport ??= new LambdaCommand(OpenMasterReportView);
 
@@ -752,7 +758,7 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
-            await QueryService.JsonSerializeWithToken(token: _user!.Token,
+            await QueryService.JsonSerializeWithToken(token: _user.Token,
                 "/logout",
                 "POST",
                 User);
@@ -779,90 +785,108 @@ internal class PersonCardViewModel : BaseViewModel
 
     private void OpenTypeVacationView(object p)
     {
-        if (_user != null) _navigationStore.CurrentViewModel = new TypeVacationViewModel(_navigationStore, _user);
+        _navigationStore.CurrentViewModel = new TypeVacationViewModel(_navigationStore, _user!);
     }
 
     private void OpenTypeRewardingView(object p)
     {
-        if (_user != null) _navigationStore.CurrentViewModel = new TypeRewardingViewModel(_navigationStore, _user);
+        _navigationStore.CurrentViewModel = new TypeRewardingViewModel(_navigationStore, _user!);
     }
 
     private void OpenPeriodView(object p)
     {
-        if (_user != null) _navigationStore.CurrentViewModel = new PeriodVacationViewModel(_navigationStore, _user);
+        _navigationStore.CurrentViewModel = new PeriodVacationViewModel(_navigationStore, _user!);
     }
     // Отчеты
     private void OpenReportView(object p)
     {
-        if (_user != null) _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
+        _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user!);
     }
     // Отчет принятых
     private void OpenReportInsertPerson(object p)
     {
         // _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
-        if (_user == null) return;
-        InsertReportViewModel viewModel = new("/reports/pers/persons/insert/", "Отчет принятых", _user);
+        InsertReportViewModel viewModel = new("/reports/pers/persons/insert/", "Отчет принятых", _user!);
         ReportByPersonInsert view = new() { DataContext = viewModel };
         view.ShowDialog();
+
     }
     // Отчет уволенных
     private void OpenReportDropPerson(object p)
     {
         // _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
-        if (_user == null) return;
-        InsertReportViewModel viewModel = new("/reports/pers/persons/drop/", "Отчет уволенных", _user);
+        InsertReportViewModel viewModel = new("/reports/pers/persons/drop/", "Отчет уволенных", _user!);
         ReportByPersonInsert view = new() { DataContext = viewModel };
         view.ShowDialog();
+
     }
     // Отчет награжденных
     private void OpenReportRewardingPerson(object p)
     {
         // _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
-        if (_user == null) return;
-        InsertReportViewModel viewModel = new("/reports/pers/persons/rewarding/", "Отчет награжденных", _user);
+        InsertReportViewModel viewModel = new("/reports/pers/persons/rewarding/", "Отчет награжденных", _user!);
         ReportByPersonInsert view = new() { DataContext = viewModel };
         view.ShowDialog();
+
+    }
+    // Отчет остатков отпусков по периоду
+    private void OpenReportVacationPeriod(object p)
+    {
+        // _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
+        ReportVacationViewModel viewModel = new("/reports/pers/persons/vacation/residue/", "Список остатков отпусков", _user!);
+        ReportVacation view = new() { DataContext = viewModel };
+        view.ShowDialog();
+
+    }
+
+    private void OpenReportContracts(object p)
+    {
+        // _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
+        InsertReportViewModel viewModel = new("/reports/pers/persons/contract/", "Истечении срока действия трудового договора", _user!);
+        ReportByPersonInsert view = new() { DataContext = viewModel };
+        view.ShowDialog();
+
     }
     // Новый отчет
     private void OpenMasterReportView(object p)
     {
-        if (_user != null) _navigationStore.CurrentViewModel = new MasterReportViewModel(_navigationStore, _user);
+        _navigationStore.CurrentViewModel = new MasterReportViewModel(_navigationStore, _user!);
     }
 
     // Отделы
     private void OpenDepartmentView(object p)
     {
-        if (_user != null) _navigationStore.CurrentViewModel = new DepartmentViewModel(_navigationStore, _user);
+        _navigationStore.CurrentViewModel = new DepartmentViewModel(_navigationStore, _user!);
     }
     // Типы приказов
     private void OpenTypeOrderView(object p)
     {
-        if (_user != null) _navigationStore.CurrentViewModel = new TypeOrderViewModel(_navigationStore, _user);
+        _navigationStore.CurrentViewModel = new TypeOrderViewModel(_navigationStore, _user!);
     }
     // Тип Званий
     private void OpenTypeRankView(object p)
     {
-        if (_user != null) _navigationStore.CurrentViewModel = new TypeRanksViewModel(_navigationStore, _user);
+        _navigationStore.CurrentViewModel = new TypeRanksViewModel(_navigationStore, _user!);
     }
     // Приказы
     private void OpenOrderView(object p)
     {
-        if (_user != null) _navigationStore.CurrentViewModel = new OrderViewModel(_navigationStore, _user);
+        _navigationStore.CurrentViewModel = new OrderViewModel(_navigationStore, _user!);
     }
 
     private void OpenPositionView(object p)
     {
-        if (_user != null) _navigationStore.CurrentViewModel = new PositionViewModel(_navigationStore, _user);
+        _navigationStore.CurrentViewModel = new PositionViewModel(_navigationStore, _user!);
     }
     // Поиск
     private void OpenSearchView(object p)
     {
-        if (_user != null) _navigationStore.CurrentViewModel = new SearchViewModel(_navigationStore, _user);
+        _navigationStore.CurrentViewModel = new SearchViewModel(_navigationStore, _user!);
     }
 
     private void OpenTypePositionView(object p)
     {
-        if (_user != null) _navigationStore.CurrentViewModel = new TypePositionViewModel(_navigationStore, _user);
+        _navigationStore.CurrentViewModel = new TypePositionViewModel(_navigationStore, _user!);
     }
 
     #endregion
