@@ -35,6 +35,7 @@
         <!--#endregion-->
         <!--#region MENU -->
         <Menu 
+            FontSize="13"
             Background="#e0e0e0"
             Grid.Row="0" 
             VerticalAlignment="Center"

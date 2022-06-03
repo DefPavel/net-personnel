@@ -245,11 +245,12 @@ internal class ReportsViewModel : BaseViewModel
                     Name = "Список академиков и членов корреспондентов",
                     Url = "/reports/pers/persons/academic/"
                 },
-                new ()
+                /*new ()
                 {
                     Name = "Список Принятых Сотрудников",
                     Url = "/reports/pers/persons/insert/"
                 },
+                */
                 new ()
                 {
                     Name = "Список Сотрудников(Юбиляров)",
@@ -257,8 +258,13 @@ internal class ReportsViewModel : BaseViewModel
                 },
                 new ()
                 {
-                    Name = "Список всех сотрудников(Имеющих русский паспорт)",
+                    Name = "Список всех сотрудников(Имеющие РФ паспорт)",
                     Url = "/reports/pers/persons/passport_rus/"
+                },
+                new ()
+                {
+                    Name = "Список всех сотрудников(Не имеющие РФ паспорт)",
+                    Url = "/reports/pers/persons/passport_no_rus/"
                 },
                 new ()
                 {
@@ -275,11 +281,12 @@ internal class ReportsViewModel : BaseViewModel
                     Name = "Список всех сотрудников(У которорых отсутствует справка о несудимости)",
                     Url = "/reports/pers/persons/reference_no/"
                 },
-                new ()
+               /* new ()
                 {
                     Name = "Список Награжденных",
                     Url = "/reports/pers/persons/rewarding/"
                 },
+               */
                 new ()
                 {
                     Name = "Список деканов и директоров",
