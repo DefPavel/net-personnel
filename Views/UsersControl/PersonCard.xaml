@@ -36,6 +36,7 @@
 
         <!--#region Menu -->
         <Menu 
+            Background="#e0e0e0"
             Grid.Row="0" 
             VerticalAlignment="Center"
             Grid.ColumnSpan="2">
@@ -107,8 +108,8 @@
 
                 <!--<MenuItem Header="Календарь праздников"
                           Command="{Binding }"/>-->
-                <MenuItem Header="Отправка в отпуск..."/>
-               
+                <!--<MenuItem Header="Отправка в отпуск..."/>-->
+
             </MenuItem>
             <MenuItem
                 IsEnabled="{Binding IsAdministrator}">
@@ -146,8 +147,7 @@
                     Header="Списки..." 
                     Command="{Binding OpenReport}"/>
             </MenuItem>
-            
-            <MenuItem
+            <MenuItem 
                 Command="{Binding OpenMasterReport}"
                 IsEnabled="{Binding IsAdministrator}">
                 <MenuItem.Header>
@@ -165,6 +165,13 @@
                         <TextBlock>Параметрический отчет</TextBlock>
                     </StackPanel>
                 </MenuItem.Header>
+
+                <MenuItem Header="Поиск" Command="{Binding OpenSearch}"/>
+                <MenuItem Header="Настройки">
+
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="Выход из аккаунта" Command="{Binding Logout}"/>
             </MenuItem>
         </Menu>
         <!--#endregion-->
@@ -330,7 +337,7 @@
                     <ScrollViewer IsDeferredScrollingEnabled="True">
                         <Grid Margin="5" FocusManager.FocusedElement="{Binding ElementName=TextFilerName}">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="265"/>
+                                <RowDefinition Height="285"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
@@ -338,7 +345,8 @@
                             <GroupBox
                             Grid.Row="0"
                             Margin="2"
-                            Header="Основная информация">
+                            Header="Основная информация" 
+                            >
                                 <Grid>
                                     <Grid.InputBindings>
 
@@ -486,8 +494,9 @@
                                             <RowDefinition Height="30"/>
                                             <RowDefinition Height="23"/>
                                             <RowDefinition Height="30"/>
-                                            <RowDefinition Height="23"/>
-                                            <RowDefinition Height="30"/>
+                                            <RowDefinition Height="*"/>
+                                           
+                                            
                                         </Grid.RowDefinitions>
 
                                         <Label 
@@ -536,10 +545,12 @@
                                              <Run Text="{Binding SelectedPerson.FullAge.Days}"/>
                                              <Run Text=";"/>
                                         </TextBlock>
-                                        
-                                        
-
-                                        
+                                        <Button
+                                            Command="{Binding SaveMainInfo}"
+                                            Width="90"
+                                            HorizontalAlignment="Right"
+                                            Content="Сохранить"
+                                            Grid.Row="8"/>
                                     </Grid>
 
                                 </Grid>
@@ -882,7 +893,7 @@
                                         <Style TargetType="{x:Type DataGridCell}">
                                             <Style.Triggers>
                                                 <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                                    <Setter Property="Background" Value="#87CEFA" />
+                                                    <Setter Property="Background" Value="#1e88e5" />
                                                 </Trigger>
                                             </Style.Triggers>
                                         </Style>
@@ -1040,7 +1051,7 @@
                                         <Style TargetType="{x:Type DataGridCell}">
                                             <Style.Triggers>
                                                 <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                                    <Setter Property="Background" Value="#87CEFA" />
+                                                    <Setter Property="Background" Value="#1e88e5" />
                                                 </Trigger>
                                             </Style.Triggers>
                                         </Style>
@@ -1203,16 +1214,7 @@
                                         Margin="5 0 0 0"
                                         Text="{Binding StageIsOver}" 
                                         />
-                                    <TextBlock 
-                                        Margin="5 0 0 0"
-                                        Text="Стаж в ЛГПУ:" 
-                                        FontWeight="Bold"/>
-                                    <TextBlock 
-                                        Foreground="#B71C1C"
-                                        Margin="5 0 0 0"
-                                        Text="{Binding StageIsUniver}" 
-                                        />
-
+                                    
                                     <TextBlock 
                                         Margin="5 0 0 0"
                                         Text="Стаж Науч-пед.:" 
@@ -1232,6 +1234,15 @@
                                         Margin="5 0 0 0"
                                         Text="{Binding StageIsScience}" 
                                        />
+                                    <TextBlock 
+                                        Margin="5 0 0 0"
+                                        Text="Стаж в ЛГПУ:" 
+                                        FontWeight="Bold"/>
+                                    <TextBlock 
+                                        Foreground="#B71C1C"
+                                        Margin="5 0 0 0"
+                                        Text="{Binding StageIsUniver}" 
+                                        />
 
                                     <TextBlock 
                                         Margin="5 0 0 0"
@@ -1242,15 +1253,7 @@
                                         Margin="5 0 0 0"
                                         Text="{Binding StageIsLibrary}" 
                                         />
-                                    <TextBlock 
-                                        Margin="5 0 0 0"
-                                        Text="Стаж Мед.:" 
-                                        FontWeight="Bold"/>
-                                    <TextBlock 
-                                        Foreground="#B71C1C"
-                                        Margin="5 0 0 0"
-                                        Text="{Binding StageIsMedical}" 
-                                        />
+                                    
                                     <TextBlock 
                                         Margin="5 0 0 0"
                                         Text="Стаж Музея:" 
@@ -1259,6 +1262,15 @@
                                         Foreground="#B71C1C"
                                         Margin="5 0 0 0"
                                         Text="{Binding StageIsMuseum}" 
+                                        />
+                                    <TextBlock 
+                                        Margin="5 0 0 0"
+                                        Text="Стаж Мед.:" 
+                                        FontWeight="Bold"/>
+                                    <TextBlock 
+                                        Foreground="#B71C1C"
+                                        Margin="5 0 0 0"
+                                        Text="{Binding StageIsMedical}" 
                                         />
 
 
@@ -1282,7 +1294,7 @@
                                         <Style TargetType="{x:Type DataGridCell}">
                                             <Style.Triggers>
                                                 <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                                    <Setter Property="Background" Value="#87CEFA" />
+                                                    <Setter Property="Background" Value="#1e88e5" />
                                                 </Trigger>
                                             </Style.Triggers>
                                         </Style>
@@ -1311,7 +1323,7 @@
 
                                         </DataGridTemplateColumn>
                                         <DataGridTextColumn
-                                            Width="100"
+                                            Width="*"
                                             Header="Информация"
                                            Binding="{Binding Name ,UpdateSourceTrigger=PropertyChanged}"
                                             />
@@ -1402,7 +1414,7 @@
                                             Command="{Binding SaveHistory}"
                                             Content="Сохранить"/>
                                         <Button 
-                                            Command="{Binding DeleteEducation}"
+                                            Command="{Binding DeleteHistory}"
                                             Content="Удалить"/>
                                     </StackPanel>
                                 </StackPanel>
@@ -1441,17 +1453,17 @@
                                         </Grid.ColumnDefinitions>
 
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="22"/>
+                                            <RowDefinition Height="25"/>
                                             <RowDefinition Height="30"/>
-                                            <RowDefinition Height="22"/>
+                                            <RowDefinition Height="25"/>
                                             <RowDefinition Height="30"/>
-                                            <RowDefinition Height="22"/>
+                                            <RowDefinition Height="25"/>
                                             <RowDefinition Height="30"/>
-                                            <RowDefinition Height="22"/>
+                                            <RowDefinition Height="25"/>
                                             <RowDefinition Height="30"/>
                                             <RowDefinition Height="50"/>
                                             <RowDefinition Height="30"/>
-                                            <RowDefinition Height="22"/>
+                                            <RowDefinition Height="25"/>
                                         </Grid.RowDefinitions>
                                         <Label 
                                     Grid.Column="0"
@@ -1475,41 +1487,45 @@
                                     Grid.Row="1">
                                         </TextBox>
 
-                                        <Label 
-                                    Grid.Column="0"
-                                    Grid.Row="2"
-                                    Content="Серия паспорта"/>
-                                        <TextBox
-                                     Grid.Column="0"
-                                    Grid.Row="3"
-                                    Text="{Binding SelectedPerson.SerialPassport , UpdateSourceTrigger=PropertyChanged}"
-                                    />
-                                        <Label 
-                                    Grid.Column="1"
-                                    Grid.Row="2"
-                                    Content="Номер паспорта"/>
-                                        <TextBox
-                                     Grid.Column="1"
-                                    Grid.Row="3"
-                                    Text="{Binding SelectedPerson.NumberPassport , UpdateSourceTrigger=PropertyChanged}"
-                                    />
+
+                                        <Grid 
+                                            Grid.Column="0"
+                                            Grid.Row="2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0"  Content="Серия паспорта"/>
+                                            <Label Grid.Column="1"  Content="Номер паспорта"/>
+                                        </Grid>
+
+                                        <Grid
+                                            Grid.Row="3"
+                                            Grid.Column="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Grid.Column="0" Text="{Binding SelectedPerson.SerialPassport , UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBox Grid.Column="1" Text="{Binding SelectedPerson.NumberPassport , UpdateSourceTrigger=PropertyChanged}" />
+                                        </Grid>
                                         <Label 
                                     Grid.Column="0"
                                     Grid.Row="4"
                                     Content="Кем выдан паспорт"/>
                                         <TextBox
-                                     Grid.Column="0"
+                                     Grid.ColumnSpan="2"
                                     Grid.Row="5"
                                     Text="{Binding SelectedPerson.OrganizationPassport , UpdateSourceTrigger=PropertyChanged}"
                                     />
 
                                         <Label 
                                     Grid.Column="1"
-                                    Grid.Row="4"
+                                    Grid.Row="2"
                                     Content="Дата выдачи"/>
                                         <DatePicker
                                      Grid.Column="1"
-                                    Grid.Row="5"
+                                    Grid.Row="3"
                                     Padding="4 1"
                                     Margin="4 4"
                                     SelectedDate="{Binding SelectedPerson.DatePassport , UpdateSourceTrigger=PropertyChanged}"
@@ -1531,14 +1547,14 @@
                                             Grid.Column="0"
                                             Grid.Row="8"
                                             Width="120"
-                                            Content="Сохранить изменения"/>
+                                            Content="Сохранить"/>
                                     </Grid>
                                 </GroupBox>
                             </Grid>
                         </TabItem>
                         <TabItem
                              FontSize="13"
-                            Header="Удостоверения">
+                            Header="Удостоверение">
                             <Grid Margin="5">
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
@@ -1546,7 +1562,7 @@
                                 </Grid.RowDefinitions>
                                 <GroupBox
                                     Margin="5"
-                                    Header="Удостоверение Пенсионера"
+                                    Header="Пенсионное удостоверение"
                                     Grid.Row="0">
 
                                     <Grid>
@@ -1571,7 +1587,7 @@
                                                 <Style TargetType="{x:Type DataGridCell}">
                                                     <Style.Triggers>
                                                         <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                                            <Setter Property="Background" Value="#87CEFA" />
+                                                            <Setter Property="Background" Value="#1e88e5" />
                                                         </Trigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -1645,9 +1661,6 @@
                                             Content="Удалить"/>
                                             </StackPanel>
 
-
-
-
                                         </StackPanel>
                                     </Grid>
 
@@ -1657,7 +1670,7 @@
 
                                 <GroupBox
                                     Margin="5"
-                                    Header="Удостоверение Инвалида"
+                                    Header="Удостоверение об инвалидности"
                                     Grid.Row="1">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -1667,7 +1680,7 @@
 
                                         <DataGrid 
                                             SelectedItem="{Binding SelectedInvalid}"
-                                            FontSize="13"
+                                            FontSize="14"
                                             ScrollViewer.IsDeferredScrollingEnabled="True"
                                             VirtualizingStackPanel.VirtualizationMode="Recycling"
                                             AlternatingRowBackground="#e1eff9"
@@ -1677,6 +1690,17 @@
                                             Grid.Column="0"
                                             Margin="5">
 
+                                            <DataGrid.Resources>
+                                                <Style TargetType="{x:Type DataGridCell}">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                                            <Setter Property="Background" Value="#1e88e5" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            
+                                            </DataGrid.Resources>
+                                            
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn
                                                     Binding="{Binding Document}"
@@ -1793,7 +1817,7 @@
                                         <Style TargetType="{x:Type DataGridCell}">
                                             <Style.Triggers>
                                                 <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                                    <Setter Property="Background" Value="#87CEFA" />
+                                                    <Setter Property="Background" Value="#1e88e5" />
                                                 </Trigger>
                                             </Style.Triggers>
                                         </Style>
@@ -1895,6 +1919,15 @@
                                     ItemsSource="{Binding SelectedPerson.ArrayChangeSurname}"
                                     Grid.Column="0"
                                     Margin="5">
+                                    <DataGrid.Resources>
+                                        <Style TargetType="{x:Type DataGridCell}">
+                                            <Style.Triggers>
+                                                <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                                    <Setter Property="Background" Value="#1e88e5" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGrid.Resources>
 
                                     <DataGrid.Columns>
                                         <DataGridTextColumn 
@@ -1997,7 +2030,7 @@
                                         <Style TargetType="{x:Type DataGridCell}">
                                             <Style.Triggers>
                                                 <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                                    <Setter Property="Background" Value="#87CEFA" />
+                                                    <Setter Property="Background" Value="#1e88e5" />
                                                 </Trigger>
                                             </Style.Triggers>
                                         </Style>
@@ -2095,11 +2128,12 @@
                                     ItemsSource="{Binding SelectedPerson.ArrayEducation}"
                                     Grid.Column="0"
                                     Margin="5">
+                                   
                                     <DataGrid.Resources>
                                         <Style TargetType="{x:Type DataGridCell}">
                                             <Style.Triggers>
                                                 <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                                    <Setter Property="Background" Value="#87CEFA" />
+                                                    <Setter Property="Background" Value="#1e88e5" />
                                                 </Trigger>
                                             </Style.Triggers>
                                         </Style>
@@ -2560,7 +2594,7 @@
 
                                         <DataGrid 
                                             SelectedItem="{Binding SelectedTitle}"
-                                            FontSize="13"
+                                            FontSize="14"
                                             ScrollViewer.IsDeferredScrollingEnabled="True"
                                             VirtualizingStackPanel.VirtualizationMode="Recycling"
                                             AlternatingRowBackground="#ECEFF1"
@@ -2573,6 +2607,7 @@
                                             <DataGrid.Columns>
 
                                                 <DataGridTextColumn
+                                                    Width="*"
                                                     Binding="{Binding TypeRank}"
                                                     Header="Звание"/>
 
@@ -3041,6 +3076,10 @@
                     Margin="5 0 0 5"
                     Command="{Binding OpenreportSpravka}"
                     Content="Справка с места работы"/>
+                <Button 
+                    Margin="5 0 0 5"
+                    Command="{Binding OpenreportObjective}"
+                    Content="Объективка"/>
             </StackPanel>
 
         </Grid>

@@ -9,14 +9,14 @@
         d:DataContext="{d:DesignInstance Type=viewmodels:ChangePositionViewModel}"
         mc:Ignorable="d"
         Title="Перевод" 
-        Height="580"
+       FontSize="14"
         Width="350">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{ Binding GetData }"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Grid>
+    <Grid Margin="5">
         <StackPanel>
             <TextBlock 
                 Style="{StaticResource Header30}"

@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Title="Сменить фамилию" 
         WindowStartupLocation="CenterScreen"
-        Height="270"
+        FontSize="14"
         Width="350">
 
 

@@ -1,4 +1,6 @@
-﻿namespace AlphaPersonel.ViewModels;
+﻿using AlphaPersonel.Models;
+
+namespace AlphaPersonel.ViewModels;
 
 internal class LoginViewModel : BaseViewModel
 {
@@ -7,10 +9,20 @@ internal class LoginViewModel : BaseViewModel
     public LoginViewModel(NavigationStore navigationStore)
     {
         _navigationStore = navigationStore;
+
+        if (!File.Exists(Path.Combine(appData, "settings.json")))
+        {
+            var settings = new Settings { Login = "" };
+            using FileStream createStream = File.Create(Path.Combine(appData, "settings.json"));
+            JsonSerializer.Serialize(createStream, settings);
+        }
+       _userName = JsonSerializer.Deserialize<Settings>(File.ReadAllText(Path.Combine(appData, "settings.json")))?.Login;
     }
 
     #region Свойства
-    
+
+    private static readonly string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
     private bool _isLoading;
     public bool IsLoading
     {
@@ -41,6 +53,18 @@ internal class LoginViewModel : BaseViewModel
             OnPropertyChanged(nameof(IsErrorVisible));
         }
     }
+
+    private bool _isRememberMe;
+    public bool IsRememberMe
+    {
+        get => _isRememberMe;
+        set
+        {
+            _ = Set(ref _isRememberMe, value);
+            OnPropertyChanged(nameof(IsRememberMe));
+        }
+    }
+
     // Свойство отображения уведомления при не валидных данных 
     public bool IsErrorVisible => !string.IsNullOrEmpty(ErrorMessage);
     // Доступность
@@ -64,15 +88,24 @@ internal class LoginViewModel : BaseViewModel
         Users account;
         try
         {
+            if(IsRememberMe == true)
+            {
+                var settings = new Settings { Login = UserName!, Checked = true };
+                string settingsText = JsonSerializer.Serialize(settings);
+                
+                File.WriteAllText(Path.Combine(appData, "settings.json"), settingsText);
+
+            }
+
             IsLoading = true;
-            //TitleButton = "Загрузка...";
             account = await SignIn.Authentication(
             username: UserName!,
             password: Password!);
             IsLoading = false;
-            //TitleButton = "Войти";
+
             _navigationStore.CurrentViewModel = new HomeViewModel(account: account,
                                                               navigationStore: _navigationStore);
+
                
         }
         catch (WebException ex)

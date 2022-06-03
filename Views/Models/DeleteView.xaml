@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodels="clr-namespace:AlphaPersonel.ViewModels" xmlns:i="http://schemas.microsoft.com/xaml/behaviors" d:DataContext="{d:DesignInstance Type=viewmodels:DeletePersonViewModel}"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Увольнение" Height="250" Width="350">
+        Title="Увольнение" FontSize="14" Width="350">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">

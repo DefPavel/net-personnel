@@ -7,8 +7,7 @@
              xmlns:pwbx="clr-namespace:AlphaPersonel.Helpers"
              d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}"
              mc:Ignorable="d" 
-             FontFamily="Arial"
-             FontSize="13"
+             FontSize="14"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.InputBindings>
         <KeyBinding Command="{Binding Auth}" Key="Return"/>
@@ -50,11 +49,11 @@
             <Label 
                         Grid.Column="0"
                         Grid.Row="1"
-                        FontSize="12"
+                        
                         Content="Введите логин:"/>
             <TextBox
                         x:Name="TextUserName"
-                        FontSize="12"
+                       
                         Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}"
                         Grid.Column="1"
                         Grid.Row="1"
@@ -62,11 +61,11 @@
             <Label 
                         Grid.Column="0"
                         Grid.Row="3"
-                        FontSize="12"
+                        
                         Content="Введите пароль:"/>
             <PasswordBox
                         x:Name="TextPassword"
-                        FontSize="12"
+                        
                         pwbx:BoundPasswordBox.BoundPassword="{
                         Binding Password,
                         Mode=TwoWay,
@@ -82,7 +81,7 @@
                         HorizontalAlignment="Right"
                         Grid.Column="1"
                         Grid.Row="5"
-                        FontSize="12"
+                        IsChecked="{Binding IsRememberMe}"
                         Content="Запомнить?"/>
             <Label 
                     x:Name="ErrorMessage"

@@ -8,15 +8,15 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Создать новую должность" 
-        Height="580"
-        Width="350">
+        Title="Создать новую должность"
+        FontSize="14"
+        Width="450">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{ Binding GetData }"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Grid>
+    <Grid Margin="5">
         <StackPanel>
             <TextBlock 
                 Style="{StaticResource Header30}"

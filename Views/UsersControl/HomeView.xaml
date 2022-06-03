@@ -23,7 +23,7 @@
             <RowDefinition Height="26"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="23"/>
         </Grid.RowDefinitions>
         <!--#region COLUMNS MAIN GRID -->
         <Grid.ColumnDefinitions>
@@ -35,6 +35,7 @@
         <!--#endregion-->
         <!--#region MENU -->
         <Menu 
+            Background="#e0e0e0"
             Grid.Row="0" 
             VerticalAlignment="Center"
             Grid.ColumnSpan="2">
@@ -106,7 +107,7 @@
                 
                 <!--<MenuItem Header="Календарь праздников"
                           Command="{Binding }"/>-->
-                <MenuItem Header="Отправка в отпуск..."/>
+                <!--<MenuItem Header="Отправка в отпуск..."/>-->
                
             </MenuItem>
             <MenuItem
@@ -144,8 +145,9 @@
                 <MenuItem 
                     Header="Списки..." 
                     Command="{Binding OpenReport}"/>
-                </MenuItem>
-            <MenuItem
+            </MenuItem>
+            <MenuItem 
+                 Background="#e0e0e0"
                 Command="{Binding OpenMasterReport}"
                 IsEnabled="{Binding IsAdministrator}">
                 <MenuItem.Header>
@@ -264,7 +266,6 @@
         </Grid>
         <!--#endregion-->
         <GridSplitter 
-            Background="#BDBDBD"
             Grid.Row="2"
             Width="2"
             Grid.Column="0"/>
@@ -736,7 +737,7 @@
                                 <DataGrid
                                     SelectionMode="Single"
                                     IsReadOnly="True"
-                                    
+                                    FontSize="14"
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
                                     AlternatingRowBackground="#ECEFF1"
                                     AutoGenerateColumns="False"
@@ -918,7 +919,10 @@
         </Grid>
         <!--#endregion-->
         <!--#region Status Bar -->
+        <Separator Grid.Row="3" 
+            Grid.Column="0"/>
         <StatusBar 
+            Background="#e0e0e0"
             Grid.Row="3" 
             Grid.Column="0"
             Grid.ColumnSpan="2">

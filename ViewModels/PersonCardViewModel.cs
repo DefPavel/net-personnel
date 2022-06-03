@@ -574,6 +574,9 @@ internal class PersonCardViewModel : BaseViewModel
     private ICommand? _openreportSpravka;
     public ICommand OpenreportSpravka => _openreportSpravka ??= new LambdaCommand(ReportSpravkaCard, _ => SelectedPosition != null);
 
+    private ICommand? _openreportObjective;
+    public ICommand OpenreportObjective => _openreportObjective ??= new LambdaCommand(ReportEmploymentHistory, _ => SelectedPerson != null);
+
     private ICommand? _loadedListPerson;
     public ICommand LoadedListPerson => _loadedListPerson ??= new LambdaCommand(ApiGetListPersons);
 
@@ -751,6 +754,9 @@ internal class PersonCardViewModel : BaseViewModel
     private ICommand? _saveHistory;
     public ICommand SaveHistory => _saveHistory ??= new LambdaCommand(SaveHistoryAsync, _ => SelectedHistory != null);
 
+    private ICommand? _deleteHistory;
+    public ICommand DeleteHistory => _deleteHistory ??= new LambdaCommand(DeleteHistoryAsync, _ => SelectedHistory != null);
+
     #endregion
 
     #region Methods Menu Items
@@ -758,7 +764,7 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
-            await QueryService.JsonSerializeWithToken(token: _user.Token,
+            await QueryService.JsonSerializeWithToken(token: _user!.Token,
                 "/logout",
                 "POST",
                 User);
@@ -939,6 +945,46 @@ internal class PersonCardViewModel : BaseViewModel
             }
         }
     }
+    // Объективка
+    private async void ReportEmploymentHistory(object p)
+    {
+        try
+        {
+            IsLoading = true;
+
+            await ReportService.JsonPostWithToken(
+                    SelectedPerson!,
+                    token: _user!.Token,
+                    queryUrl: "/reports/pers/persons/objective/",
+                    httpMethod: "POST",
+                    reportName: "Объективка");
+
+            IsLoading = false;
+
+        }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
+        catch (WebException ex)
+        {
+
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
 
 
     private void AddPosition(object p)
@@ -952,7 +998,7 @@ internal class PersonCardViewModel : BaseViewModel
 
     private void ChangePosition(object p)
     {
-        ChangePositionViewModel viewModel = new(_user!, SelectedPerson! , SelectedPosition);
+        ChangePositionViewModel viewModel = new(_user!, SelectedPerson! , SelectedPosition!);
         ChangePosition view = new() { DataContext = viewModel };
         view.ShowDialog();
         // Обновить данные
@@ -2390,6 +2436,39 @@ internal class PersonCardViewModel : BaseViewModel
             //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
 
             _ = _selectedPerson!.ArrayInvalid!.Remove(SelectedInvalid);
+        }
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+    private async void DeleteHistoryAsync(object p)
+    {
+        try
+        {
+            if (MessageBox.Show("Вы действительно хотитет удалить данный отдел?", "Вопрос", MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
+            await QueryService.JsonSerializeWithToken(_user!.Token, "/pers/person/history/" + SelectedHistory!.Id, "DELETE", SelectedHistory);
+            //_Api.DeleteDepartment(_User.Token, SelectedDepartment.Id);
+
+            _ = _selectedPerson!.HistoryEmployment!.Remove(SelectedHistory);
         }
         catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
         {

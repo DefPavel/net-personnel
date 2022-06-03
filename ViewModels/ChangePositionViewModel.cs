@@ -177,6 +177,8 @@
             {
                 if (DateContract != null)
                 {
+                    //2201
+                    _ = MessageBox.Show(_position.Id.ToString());
                     object person = new
                     {
                         id = _position.Id,

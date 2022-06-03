@@ -339,7 +339,7 @@ internal class HomeViewModel : BaseViewModel
     public ICommand DeletePosition => _deletePosition ??= new LambdaCommand(DeletePositionApi, _ => SelectedPosition is not null);
 
     private ICommand? _openDeletePerson;
-    public ICommand OpenDeletePerson => _openDeletePerson ??= new LambdaCommand(DeletePerson, _ => SelectedItem is not null);
+    public ICommand OpenDeletePerson => _openDeletePerson ??= new LambdaCommand(DeletePerson, _ => SelectedItem is not null && SelectedPerson != null);
 
     private ICommand? _renameDepartment;
     public ICommand RenameDepartment => _renameDepartment ??= new LambdaCommand(UpdateDataDepartment, _ => SelectedItem is not null);

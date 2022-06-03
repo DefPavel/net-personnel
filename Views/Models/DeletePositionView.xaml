@@ -8,7 +8,9 @@
         d:DataContext="{d:DesignInstance Type=viewmodels:DeletePositionViewModel}"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="DeletePositionView" Height="250" Width="350">
+        Title="DeletePositionView" 
+        FontSize="14"
+        Width="350">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
