@@ -1,0 +1,48 @@
+﻿<Window x:Class="AlphaPersonel.Views.EmployeeExperience"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AlphaPersonel.Views"
+        xmlns:viewmodels="clr-namespace:AlphaPersonel.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:EmployeeExperienceViewModel}"
+        mc:Ignorable="d"
+        FontSize="14"
+         WindowStartupLocation="CenterScreen"
+        Title="Стаж сотрудника" Height="480" Width="300">
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="300"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+            <GroupBox 
+                Margin="5"
+                Grid.Row="0"
+                Header="Выбор стажа">
+            <StackPanel>
+                <CheckBox IsChecked="{Binding StageIsOver , UpdateSourceTrigger=PropertyChanged ,TargetNullValue={x:Null}}" Content="Общий стаж" />
+                <CheckBox IsChecked="{Binding StageIsPedagogical , UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Null}}" Content="Научно-педагогический стаж" />
+                <CheckBox IsChecked="{Binding StageIsScience , UpdateSourceTrigger=PropertyChanged,TargetNullValue={x:Null}}" Content="Научный стаж" />
+                <CheckBox IsChecked="{Binding StageIsUniver , UpdateSourceTrigger=PropertyChanged,TargetNullValue={x:Null}}" Content="В ЛГПУ стаж" />
+                <CheckBox IsChecked="{Binding StageIsLibrary , UpdateSourceTrigger=PropertyChanged,TargetNullValue={x:Null}}" Content="Библиотечный стаж" />
+                <CheckBox IsChecked="{Binding StageIsMedical , UpdateSourceTrigger=PropertyChanged,TargetNullValue={x:Null}}" Content="Медицинский стаж" />
+                <CheckBox IsChecked="{Binding StageIsMuseum , UpdateSourceTrigger=PropertyChanged,TargetNullValue={x:Null}}" Content="Стаж в Музеи" />
+
+                <DatePicker SelectedDate="{Binding DateSelected , UpdateSourceTrigger=PropertyChanged}" Padding="4 0"  Margin="5"/>
+                <Button Command="{Binding GetInfo}" Content="Выбрать"/>
+            </StackPanel>
+        </GroupBox>
+            
+        <TextBox
+                Margin="5"
+                VerticalAlignment="Top"
+                Grid.Row="1"
+                Text="{Binding TextWrapResul , UpdateSourceTrigger=PropertyChanged}"
+                VerticalScrollBarVisibility="Visible"
+                AcceptsReturn="True"
+                Height="100"
+                TextWrapping="Wrap"/>
+
+    </Grid>
+</Window>

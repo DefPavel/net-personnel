@@ -546,7 +546,7 @@ internal class PersonCardViewModel : BaseViewModel
     }
 
     private ICommand? _openreportCard;
-    public ICommand OpenReportCard => _openreportCard ??= new LambdaCommand(ReportPersonCard);
+    public ICommand OpenReportCard => _openreportCard ??= new LambdaCommand(ReportPersonCard , _ => SelectedPerson != null);
     
     private ICommand? _openPreview;
     public ICommand OpenPreview => _openPreview ??= new LambdaCommand(OpenPreviewModel);
@@ -576,6 +576,9 @@ internal class PersonCardViewModel : BaseViewModel
 
     private ICommand? _openreportObjective;
     public ICommand OpenreportObjective => _openreportObjective ??= new LambdaCommand(ReportEmploymentHistory, _ => SelectedPerson != null);
+
+    private ICommand? _openExperience;
+    public ICommand OpenExperience => _openExperience ??= new LambdaCommand(OpenEmployeeExperience, _ => SelectedPerson != null);
 
     private ICommand? _loadedListPerson;
     public ICommand LoadedListPerson => _loadedListPerson ??= new LambdaCommand(ApiGetListPersons);
@@ -853,6 +856,15 @@ internal class PersonCardViewModel : BaseViewModel
         view.ShowDialog();
 
     }
+
+    private void OpenEmployeeExperience(object p)
+    {
+        // _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
+        EmployeeExperienceViewModel viewModel = new(SelectedPerson!);
+        EmployeeExperience view = new() { DataContext = viewModel };
+        view.ShowDialog();
+
+    }
     // Новый отчет
     private void OpenMasterReportView(object p)
     {
@@ -1062,13 +1074,13 @@ internal class PersonCardViewModel : BaseViewModel
             // После получение информации рассчитать стаж
             if (SelectedPerson!.HistoryEmployment?.Count > 0)
             {
-                StageIsOver = ServiceWorkingExperience.GetStageIsOver(SelectedPerson.HistoryEmployment);
-                StageIsUniver = ServiceWorkingExperience.GetStageIsUniver(SelectedPerson.HistoryEmployment);
-                StageIsScience = ServiceWorkingExperience.GetStageIsScience(SelectedPerson.HistoryEmployment);
-                StageIsPedagogical = ServiceWorkingExperience.GetStageIsPedagogical(SelectedPerson.HistoryEmployment);
-                StageIsMedical = ServiceWorkingExperience.GetStageIsMedical(SelectedPerson.HistoryEmployment);
-                StageIsMuseum = ServiceWorkingExperience.GetStageIsMuseum(SelectedPerson.HistoryEmployment);
-                StageIsLibrary = ServiceWorkingExperience.GetStageIsLibrary(SelectedPerson.HistoryEmployment);
+                StageIsOver = ServiceWorkingExperience.GetStageIsOver(SelectedPerson.HistoryEmployment , DateTime.Now);
+                StageIsUniver = ServiceWorkingExperience.GetStageIsUniver(SelectedPerson.HistoryEmployment, DateTime.Now);
+                StageIsScience = ServiceWorkingExperience.GetStageIsScience(SelectedPerson.HistoryEmployment, DateTime.Now);
+                StageIsPedagogical = ServiceWorkingExperience.GetStageIsPedagogical(SelectedPerson.HistoryEmployment , DateTime.Now);
+                StageIsMedical = ServiceWorkingExperience.GetStageIsMedical(SelectedPerson.HistoryEmployment, DateTime.Now);
+                StageIsMuseum = ServiceWorkingExperience.GetStageIsMuseum(SelectedPerson.HistoryEmployment, DateTime.Now);
+                StageIsLibrary = ServiceWorkingExperience.GetStageIsLibrary(SelectedPerson.HistoryEmployment, DateTime.Now);
 
             }
             IsLoading = false;

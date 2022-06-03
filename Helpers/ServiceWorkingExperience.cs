@@ -2,7 +2,7 @@
 internal static class ServiceWorkingExperience
 {
     // Общий стаж
-    public static string GetStageIsOver(ObservableCollection<HistoryEmployment> histories)
+    public static string GetStageIsOver(ObservableCollection<HistoryEmployment> histories , DateTime date)
     {
         var currentDate = DateTime.Now.Date;
         var trigger = false;
@@ -19,13 +19,13 @@ internal static class ServiceWorkingExperience
             trigger = t.IsOver;
         }
         // В случае если стаж не прирывный
-        totalTicks += ServiceDate.ItervalDate(currentDate, DateTime.Now.Date);
+        totalTicks += ServiceDate.ItervalDate(currentDate, date);
 
         return ServiceDate.ConvertTicksToDateTime(totalTicks);
 
     }
     // Нучно-Педагогический
-    public static string GetStageIsPedagogical(ObservableCollection<HistoryEmployment> histories)
+    public static string GetStageIsPedagogical(ObservableCollection<HistoryEmployment> histories , DateTime date)
     {
         var currentDate = DateTime.Now.Date;
         var trigger = false;
@@ -42,13 +42,13 @@ internal static class ServiceWorkingExperience
             trigger = t.IsPedagogical;
         }
         // В случае если стаж не прирывный
-        totalTicks += ServiceDate.ItervalDate(currentDate, DateTime.Now.Date);
+        totalTicks += ServiceDate.ItervalDate(currentDate, date);
 
         return ServiceDate.ConvertTicksToDateTime(totalTicks);
 
     }
     // В универе
-    public static string GetStageIsUniver(ObservableCollection<HistoryEmployment> histories)
+    public static string GetStageIsUniver(ObservableCollection<HistoryEmployment> histories , DateTime date)
     {
         var currentDate = DateTime.Now.Date;
         var trigger = false;
@@ -65,13 +65,13 @@ internal static class ServiceWorkingExperience
             trigger = t.IsUniver;
         }
         // В случае если стаж не прирывный
-        totalTicks += ServiceDate.ItervalDate(currentDate, DateTime.Now.Date);
+        totalTicks += ServiceDate.ItervalDate(currentDate, date);
 
         return ServiceDate.ConvertTicksToDateTime(totalTicks);
 
     }
     // Научный
-    public static string GetStageIsScience(ObservableCollection<HistoryEmployment> histories)
+    public static string GetStageIsScience(ObservableCollection<HistoryEmployment> histories , DateTime date)
     {
         var currentDate = DateTime.Now.Date;
         var trigger = false;
@@ -88,13 +88,13 @@ internal static class ServiceWorkingExperience
             trigger = t.IsScience;
         }
         // В случае если стаж не прирывный
-        totalTicks += ServiceDate.ItervalDate(currentDate, DateTime.Now.Date);
+        totalTicks += ServiceDate.ItervalDate(currentDate, date);
 
         return ServiceDate.ConvertTicksToDateTime(totalTicks);
 
     }
     // Медицинский
-    public static string GetStageIsMedical(ObservableCollection<HistoryEmployment> histories)
+    public static string GetStageIsMedical(ObservableCollection<HistoryEmployment> histories , DateTime date)
     {
         var currentDate = DateTime.Now.Date;
         var trigger = false;
@@ -111,13 +111,13 @@ internal static class ServiceWorkingExperience
             trigger = t.IsMedical;
         }
         // В случае если стаж не прирывный
-        totalTicks += ServiceDate.ItervalDate(currentDate, DateTime.Now.Date);
+        totalTicks += ServiceDate.ItervalDate(currentDate, date);
 
         return ServiceDate.ConvertTicksToDateTime(totalTicks);
 
     }
     // Музей
-    public static string GetStageIsMuseum(ObservableCollection<HistoryEmployment> histories)
+    public static string GetStageIsMuseum(ObservableCollection<HistoryEmployment> histories , DateTime date)
     {
         var currentDate = DateTime.Now.Date;
         var trigger = false;
@@ -134,13 +134,13 @@ internal static class ServiceWorkingExperience
             trigger = t.IsMuseum;
         }
         // В случае если стаж не прирывный
-        totalTicks += ServiceDate.ItervalDate(currentDate, DateTime.Now.Date);
+        totalTicks += ServiceDate.ItervalDate(currentDate, date);
 
         return ServiceDate.ConvertTicksToDateTime(totalTicks);
 
     }
     // Библиотека
-    public static string GetStageIsLibrary(ObservableCollection<HistoryEmployment> histories)
+    public static string GetStageIsLibrary(ObservableCollection<HistoryEmployment> histories , DateTime date)
     {
         var currentDate = DateTime.Now.Date;
         var trigger = false;
@@ -157,7 +157,7 @@ internal static class ServiceWorkingExperience
             trigger = t.IsLibrary;
         }
         // В случае если стаж не прирывный
-        totalTicks += ServiceDate.ItervalDate(currentDate, DateTime.Now.Date);
+        totalTicks += ServiceDate.ItervalDate(currentDate, date);
 
         return ServiceDate.ConvertTicksToDateTime(totalTicks);
 

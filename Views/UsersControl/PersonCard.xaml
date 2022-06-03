@@ -3080,6 +3080,10 @@
                     Margin="5 0 0 5"
                     Command="{Binding OpenreportObjective}"
                     Content="Объективка"/>
+                <Button 
+                    Margin="5 0 0 5"
+                    Command="{Binding OpenExperience}"
+                    Content="Стаж сотрудника"/>
             </StackPanel>
 
         </Grid>
