@@ -38,7 +38,7 @@
         </Button>
         <TextBlock 
                 Margin="35 0 0 0"
-                Style="{StaticResource Header30}"
+                FontSize="30"
                     Grid.Column="0"
                     Grid.Row="0"
                     Text="Глобальный поиск" />
@@ -83,15 +83,7 @@
                                 <i:InvokeCommandAction Command="{ Binding OpenPersonCard }"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
-                        <DataGrid.Resources>
-                            <Style TargetType="{x:Type DataGridCell}">
-                                <Style.Triggers>
-                                    <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                        <Setter Property="Background" Value="#1e88e5" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGrid.Resources>
+                       
                         <DataGrid.Columns>
                             <DataGridCheckBoxColumn 
                                 Binding="{Binding IsPed}"
@@ -164,15 +156,7 @@
                         ItemsSource="{Binding Departments}"
                         Grid.ColumnSpan="2" Grid.Column="0"
                          Grid.Row="1">
-                        <DataGrid.Resources>
-                            <Style TargetType="{x:Type DataGridCell}">
-                                <Style.Triggers>
-                                    <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                        <Setter Property="Background" Value="#87CEFA" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGrid.Resources>
+                       
 
                         <DataGrid.Columns>
                             <DataGridTextColumn 

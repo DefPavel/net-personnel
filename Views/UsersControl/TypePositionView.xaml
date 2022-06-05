@@ -62,7 +62,7 @@
         </Button>
         <TextBlock 
                 Margin="35 0 0 0"
-                Style="{StaticResource Header30}"
+                FontSize="30"
                     Grid.Column="0"
                     Grid.Row="0"
                     Text="Справочник Должностей" />
@@ -79,7 +79,7 @@
 
         <DataGrid
             ScrollViewer.IsDeferredScrollingEnabled="True"
-            AlternatingRowBackground="#ECEFF1"
+           
              FontSize="14"
             AutoGenerateColumns="False"
             CanUserAddRows="False"
@@ -95,15 +95,7 @@
                     Binding="{Binding Name , UpdateSourceTrigger=PropertyChanged}"
                     Header="Наименование"/>
             </DataGrid.Columns>
-            <DataGrid.Resources>
-                <Style TargetType="{x:Type DataGridCell}">
-                    <Style.Triggers>
-                        <Trigger Property="DataGridCell.IsSelected" Value="True">
-                            <Setter Property="Background" Value="#1e88e5" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.Resources>
+           
 
         </DataGrid>
 

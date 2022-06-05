@@ -7,14 +7,12 @@
         xmlns:views="clr-namespace:AlphaPersonel.Views"
         d:DataContext="{d:DesignInstance Type=view-models:MainViewModel}"
         mc:Ignorable="d"
-        
+        Style="{DynamicResource CustomWindowStyle}"
         Title="Personnel" 
         WindowStartupLocation="CenterScreen"
-        WindowState="Maximized"
         MinHeight="600"
         MinWidth="600"
-        Icon="/Assets/mwpf_icon.ico" 
-        Background="#FAFAFA">
+        Icon="/Assets/mwpf_icon.ico" >
     <ContentControl
             Content="{Binding CurrentViewModel}">
         <ContentControl.Resources>

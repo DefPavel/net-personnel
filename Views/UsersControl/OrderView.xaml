@@ -92,17 +92,11 @@
             Grid.Column="0">
             <!-- Запомни что combobox рабает только таким образом в Datagrid -->
             <DataGrid.Resources>
-                <Style TargetType="{x:Type DataGridCell}">
-                    <Style.Triggers>
-                        <Trigger Property="DataGridCell.IsSelected" Value="True">
-                            <Setter Property="Background" Value="#1e88e5" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
+               
                 <CollectionViewSource x:Key="ItemsTypeOrders" Source="{Binding TypeOrders}" />
             </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Приказ" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Приказ"  Width="*" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridComboBoxColumn 
                     Header="Тип приказа"
                     SelectedValueBinding="{Binding Type , UpdateSourceTrigger=PropertyChanged}"
@@ -151,7 +145,8 @@
                     SelectedValue="{Binding SelectedOrder.Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
                     />
                 <Label Content="Дата Приказа"/>
-                <DatePicker SelectedDate="{Binding SelectedOrder.DateOrder}" />
+                <DatePicker SelectedDate="{Binding SelectedOrder.DateOrder}" >
+                </DatePicker>
                 <StackPanel Margin="0 5 5 5" Orientation="Horizontal">
                     <Button Command="{Binding AddNew}" CommandParameter="{Binding SelectedOrder}" Content="Создать"/>
                     <Button Command="{Binding Save}" CommandParameter="{Binding SelectedOrder}"  Content="Сохранить"/>

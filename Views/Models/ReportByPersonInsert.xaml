@@ -10,6 +10,7 @@
         FontSize="14"
         Title="Параметры для Отчета" 
         Height="200" 
+        Style="{DynamicResource CustomWindowStyle}"
         Width="300">
     <Grid>
         <StackPanel 

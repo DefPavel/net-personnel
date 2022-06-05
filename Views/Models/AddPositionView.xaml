@@ -8,6 +8,7 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
+        Style="{DynamicResource CustomWindowStyle}"
         Title="Создать новую должность"
         FontSize="14"
         Width="450">
@@ -19,7 +20,7 @@
     <Grid Margin="5">
         <StackPanel>
             <TextBlock 
-                Style="{StaticResource Header30}"
+                FontSize="30"
                 Text="Добавить должность"/>
             <Label
                 Content="Выбрать отдел"

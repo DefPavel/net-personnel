@@ -36,7 +36,6 @@
         <!--#region MENU -->
         <Menu 
             FontSize="13"
-            Background="#e0e0e0"
             Grid.Row="0" 
             VerticalAlignment="Center"
             Grid.ColumnSpan="2">
@@ -52,7 +51,7 @@
                             <Path
                               
                             Stretch="Uniform"
-                            Fill="#444444"
+                            Fill="White"
                             Data="M13,9V3.5L18.5,9M6,2C4.89,2 4,2.89 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2H6Z"
                             Width="13" 
                             Height="13" />
@@ -79,7 +78,7 @@
                         Width="13">
                         <Path
                             Stretch="Uniform"
-                            Fill="#444444"
+                            Fill="White"
                             Data="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"
                             Width="13" 
                             Height="13" />
@@ -120,7 +119,7 @@
                         Width="13">
                             <Path
                             Stretch="Uniform"
-                            Fill="#444444"
+                            Fill="White"
                             Data="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M7,20H9V14H7V20M11,20H13V12H11V20M15,20H17V16H15V20Z"
                             Width="13" 
                             Height="13" />
@@ -129,6 +128,7 @@
                     </StackPanel>
                 </MenuItem.Header>
                 <MenuItem 
+                    Padding="3"
                     Command="{Binding OpenReportInsert}"
                     Header="Список принятых сотрудников за период"/>
                 <MenuItem 
@@ -148,7 +148,6 @@
                     Command="{Binding OpenReport}"/>
             </MenuItem>
             <MenuItem 
-                 Background="#e0e0e0"
                 Command="{Binding OpenMasterReport}"
                 IsEnabled="{Binding IsAdministrator}">
                 <MenuItem.Header>
@@ -158,7 +157,7 @@
                             Width="13">
                             <Path
                                 Stretch="Uniform"
-                                Fill="#444444"
+                                Fill="White"
                                 Data="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M7,20H9V14H7V20M11,20H13V12H11V20M15,20H17V16H15V20Z"
                                 Width="13" 
                                 Height="13" />
@@ -173,7 +172,7 @@
             Grid.Column="0" 
             Grid.ColumnSpan="2"
             VerticalAlignment="Top"
-            Background="{StaticResource BorderBrush}" Margin="0"/>
+            Margin="0"/>
         <!--#endregion-->
         <!--#region SideBar -->
         <Grid 
@@ -185,10 +184,11 @@
             </Grid.RowDefinitions>
             <!--#region Древо отдела -->
             <StackPanel 
+                Margin="0 0 5 0"
                 HorizontalAlignment="Right"
                 Orientation="Horizontal">
                 <Button 
-                    Width="23"
+                    Width="25"
                     Command="{Binding GetTreeView}">
                     <Button.ToolTip>
                         <ToolTip>
@@ -200,14 +200,14 @@
                         Width="13">
                         <Path
                     Stretch="Uniform"
-                    Fill="#444444"
+                    Fill="White"
                     Data="M12,6V9L16,5L12,1V4A8,8 0 0,0 4,12C4,13.57 4.46,15.03 5.24,16.26L6.7,14.8C6.25,13.97 6,13 6,12A6,6 0 0,1 12,6M18.76,7.74L17.3,9.2C17.74,10.04 18,11 18,12A6,6 0 0,1 12,18V15L8,19L12,23V20A8,8 0 0,0 20,12C20,10.43 19.54,8.97 18.76,7.74Z"
                     Width="13" 
                     Height="13" />
                     </Canvas>
                 </Button>
                 <Button 
-                    Width="23"
+                    Width="25"
                     Command="{Binding OpenSearch}" >
                     <Button.ToolTip>
                         <ToolTip>
@@ -219,7 +219,7 @@
                         Width="13">
                         <Path
                     Stretch="Uniform"
-                    Fill="#444444"
+                    Fill="White"
                     Data="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"
                     Width="13" 
                     Height="13" />
@@ -250,6 +250,7 @@
                     <HierarchicalDataTemplate  
                         ItemsSource = "{Binding Child }">
                         <TextBlock 
+                            Padding="3"
                             Tag  = "{Binding Id}"  
                             Text = "{Binding Name}">
                         </TextBlock>
@@ -282,7 +283,7 @@
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
                     <TextBlock
-                        Style="{StaticResource Header20}"
+                        FontSize="20"
                         Margin="20 5 5 5"
                         Text="{Binding SelectedItem.Name}"/>
                 </Grid>
@@ -314,7 +315,7 @@
                                 <TextBox
                                     Grid.Column="1"
                                     Grid.Row="0" 
-                                    Style="{StaticResource SelectedIsEnabled}"
+                                    
                                     Text="{Binding SelectedItem.Name, UpdateSourceTrigger=PropertyChanged}" />
 
                                 <TextBlock
@@ -326,7 +327,7 @@
                                 <TextBox
                                     Grid.Column="1"
                                     Grid.Row="1"
-                                    Style="{StaticResource SelectedIsEnabled}"
+                                    
                                     Text="{Binding SelectedItem.Short , UpdateSourceTrigger=PropertyChanged}" />
 
                                 <TextBlock
@@ -336,7 +337,7 @@
                                     Padding="3"
                                     Text="Внут.телефон:"/>
                                 <TextBox   
-                                    Style="{StaticResource SelectedIsEnabled}"
+                                    
                                     Grid.Column="1"
                                     Grid.Row="2"
                                     Text="{Binding SelectedItem.Phone , UpdateSourceTrigger=PropertyChanged}" />
@@ -400,7 +401,7 @@
                                         />
                                 </StackPanel>
                                 <Button 
-                                    Background="White"
+                                    
                                     Grid.Column="1"
                                     Grid.Row="5"
                                     Margin="2"
@@ -434,17 +435,7 @@
                                             Header="Наименование Должности"
                                             Binding="{Binding Name}"/>
                                         </DataGrid.Columns>
-                                        <DataGrid.Resources>
-
-                                            <Style TargetType="{x:Type DataGridCell}">
-                                                <Style.Triggers>
-                                                    <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                                        <Setter Property="Background" Value="#1e88e5" />
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-
-                                        </DataGrid.Resources>
+                                        
                                     </DataGrid>
                                 </Grid>
                                 <GridSplitter Grid.Column="0" Width="3"/>
@@ -635,19 +626,19 @@
                                         Grid.Column="1"
                                         Grid.Row="6">
                                         <Button 
-                                        Background="White"
+                                       
                                         Width="120"
                                         HorizontalAlignment="Right"
                                         Command="{Binding AddPosition}"
                                         Content="Создать"/>
                                         <Button 
-                                        Background="White"
+                                       
                                         Width="120"
                                         HorizontalAlignment="Right"
                                         Command="{Binding SavePosition}"
                                         Content="Сохранить"/>
                                         <Button 
-                                        Background="White"
+                                       
                                         Width="120"
                                         HorizontalAlignment="Right"
                                         Command="{Binding DeletePosition}"
@@ -670,7 +661,9 @@
                                 <StackPanel>
                                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                                         <Button 
-                                            Width="23"
+                                            Height="22"
+                                             Margin="0 0 5 0"
+                                            Width="25"
                                             Command="{Binding OpenAddPerson}">
                                             <Button.ToolTip>
                                                 <ToolTip>
@@ -678,18 +671,19 @@
                                                 </ToolTip>
                                             </Button.ToolTip>
                                             <Canvas 
-                                                Height="13"
-                                                Width="13">
+                                                Height="15"
+                                                Width="15">
                                             <Path
                                             Stretch="Uniform"
-                                            Fill="#444444"
+                                            Fill="White"
                                             Data="M19 17V19H7V17S7 13 13 13 19 17 19 17M16 8A3 3 0 1 0 13 11A3 3 0 0 0 16 8M19.2 13.06A5.6 5.6 0 0 1 21 17V19H24V17S24 13.55 19.2 13.06M18 5A2.91 2.91 0 0 0 17.11 5.14A5 5 0 0 1 17.11 10.86A2.91 2.91 0 0 0 18 11A3 3 0 0 0 18 5M8 10H5V7H3V10H0V12H3V15H5V12H8Z"
                                             Width="13" 
                                             Height="13" />
                                             </Canvas>
                                         </Button>
-                                        <Button  
-                                            Width="23"
+                                        <Button
+                                            Margin="0 0 5 0"
+                                            Width="25"
                                             Command="{Binding OpenPersonCard}">
                                             <Button.ToolTip>
                                                 <ToolTip>
@@ -697,19 +691,20 @@
                                                 </ToolTip>
                                             </Button.ToolTip>
                                             <Canvas 
-                                                Height="13"
-                                                Width="13">
+                                                Height="15"
+                                                Width="15">
                                                 <Path
                                             Stretch="Uniform"
-                                            Fill="#444444"
+                                            Fill="White"
                                             Data="M18,19H6V17.6C6,15.6 10,14.5 12,14.5C14,14.5 18,15.6 18,17.6M12,7A3,3 0 0,1 15,10A3,3 0 0,1 12,13A3,3 0 0,1 9,10A3,3 0 0,1 12,7M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3Z"
                                             Width="13" 
                                             Height="13" />
                                             </Canvas>
                                         </Button>
                                         <Button  
-                                            Width="23"
-                                            Command="{Binding OpenDeletePerson}">
+                                             Margin="0 0 5 0"
+                                            Width="25"
+                                            Command="{Binding OpenDeletePerson}" Cursor="Hand">
                                             <Button.ToolTip>
                                                 <ToolTip>
                                                     Уволить персону
@@ -717,11 +712,11 @@
                                             </Button.ToolTip>
 
                                             <Canvas 
-                                                Height="13"
-                                                Width="13">
+                                                Height="15"
+                                                Width="15">
                                                 <Path
                                             Stretch="Uniform"
-                                            Fill="#444444"
+                                            Fill="White"
                                             Data="M19 17V19H7V17S7 13 13 13 19 17 19 17M16 8A3 3 0 1 0 13 11A3 3 0 0 0 16 8M19.2 13.06A5.6 5.6 0 0 1 21 17V19H24V17S24 13.55 19.2 13.06M18 5A2.91 2.91 0 0 0 17.11 5.14A5 5 0 0 1 17.11 10.86A2.91 2.91 0 0 0 18 11A3 3 0 0 0 18 5M8 10H0V12H8Z"
                                             Width="13" 
                                             Height="13" />
@@ -732,10 +727,10 @@
                                         Margin="5 0 0 0"
                                         Text="Введите фамилию для поиска"/>
                                     <TextBox 
-                                        Style="{StaticResource SelectedIsEnabled}"
                                         Text="{Binding FilterPerson, UpdateSourceTrigger=PropertyChanged}"/>
                                 </StackPanel>
                                 <DataGrid
+                                   
                                     SelectionMode="Single"
                                     IsReadOnly="True"
                                     FontSize="14"
@@ -748,15 +743,16 @@
                                     ItemsSource="{Binding CollectionPerson}"
                                     SelectedItem="{Binding SelectedPerson}" 
                                     >
+                                   
                                     <DataGrid.Resources>
 
-                                        <Style TargetType="{x:Type DataGridCell}">
+                                        <!--<Style TargetType="{x:Type DataGridCell}">
                                             <Style.Triggers>
                                                 <Trigger Property="DataGridCell.IsSelected" Value="True">
                                                     <Setter Property="Background" Value="#1e88e5" />
                                                 </Trigger>
                                             </Style.Triggers>
-                                        </Style>
+                                        </Style>-->
 
                                         <CollectionViewSource x:Key="ItemsPosition" Source="{Binding Positions}" />
                                     </DataGrid.Resources>
@@ -827,7 +823,7 @@
                                         </DataGridTemplateColumn>
 
                                         <DataGridComboBoxColumn 
-                                            Width="80"
+                                            Width="90"
                                             Header="Должность"
                                             SelectedValueBinding="{Binding PersonPosition}"
                                             SelectedValuePath="Name"
@@ -923,7 +919,7 @@
         <Separator Grid.Row="3" 
             Grid.Column="0"/>
         <StatusBar 
-            Background="#e0e0e0"
+            Background="#FF424242"
             Grid.Row="3" 
             Grid.Column="0"
             Grid.ColumnSpan="2">

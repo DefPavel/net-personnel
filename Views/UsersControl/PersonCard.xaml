@@ -37,7 +37,6 @@
         <!--#region Menu -->
         <Menu 
             FontSize="13"
-            Background="#e0e0e0"
             Grid.Row="0" 
             VerticalAlignment="Center"
             Grid.ColumnSpan="2">
@@ -53,7 +52,7 @@
                             <Path
                               
                             Stretch="Uniform"
-                            Fill="#444444"
+                            Fill="White"
                             Data="M13,9V3.5L18.5,9M6,2C4.89,2 4,2.89 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2H6Z"
                             Width="13" 
                             Height="13" />
@@ -62,11 +61,15 @@
                     </StackPanel>
                 </MenuItem.Header>
 
-                <MenuItem Header="Поиск" Command="{Binding OpenSearch}"/>
-                <MenuItem Header="Настройки">
-
+                <MenuItem 
+                     Margin="3"
+                    Padding="3"
+                    Header="Поиск" Command="{Binding OpenSearch}"/>
+                <MenuItem
+                     Margin="3"
+                    Padding="3"
+                    Header="Настройки">
                 </MenuItem>
-                <Separator/>
                 <MenuItem Header="Выход из аккаунта" Command="{Binding Logout}"/>
             </MenuItem>
             <MenuItem 
@@ -80,7 +83,7 @@
                         Width="13">
                             <Path
                             Stretch="Uniform"
-                            Fill="#444444"
+                            Fill="White"
                             Data="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"
                             Width="13" 
                             Height="13" />
@@ -88,23 +91,50 @@
                         <TextBlock>Справочники</TextBlock>
                     </StackPanel>
                 </MenuItem.Header>
-                <MenuItem Header="Список подразделений"
+                <MenuItem 
+                     Margin="3"
+                    Padding="3"
+                    Header="Список подразделений"
                           Command="{Binding OpenDepartment}" />
-                <MenuItem Header="Виды должностей"
+                <MenuItem
+                     Margin="3"
+                    Padding="3"
+                    Header="Виды должностей"
                           Command="{Binding OpenTypePosition}"/>
-                <MenuItem Header="Виды отпусков"
+                <MenuItem
+                     Margin="3"
+                    Padding="3"
+                    Header="Виды отпусков"
                           Command="{Binding OpenVacation}"/>
-                <MenuItem Header="Виды приказов"
+                <MenuItem 
+                     Margin="3"
+                    Padding="3"
+                    Header="Виды приказов"
                           Command="{Binding OpenTypeOrder}"/>
-                <MenuItem Header="Виды награждений"
+                <MenuItem 
+                     Margin="3"
+                    Padding="3"
+                    Header="Виды награждений"
                           Command="{Binding OpenRewarding}"/>
-                <MenuItem Header="Виды званий"
+                <MenuItem
+                     Margin="3"
+                    Padding="3"
+                    Header="Виды званий"
                           Command="{Binding OpenTypeRanks}"/>
-                <MenuItem Header="Периоды отпусков"
+                <MenuItem 
+                     Margin="3"
+                    Padding="3"
+                    Header="Периоды отпусков"
                           Command="{Binding OpenPeriod}"/>
-                <MenuItem Header="Список приказов" 
+                <MenuItem 
+                     Margin="3"
+                    Padding="3"
+                    Header="Список приказов" 
                           Command="{Binding OpenOrder}"/>
-                <MenuItem Header="Список штатных должностей"
+                <MenuItem
+                     Margin="3"
+                    Padding="3"
+                    Header="Список штатных должностей"
                           Command="{Binding OpenPosition}"/>
 
                 <!--<MenuItem Header="Календарь праздников"
@@ -121,7 +151,7 @@
                         Width="13">
                             <Path
                             Stretch="Uniform"
-                            Fill="#444444"
+                            Fill="White"
                             Data="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M7,20H9V14H7V20M11,20H13V12H11V20M15,20H17V16H15V20Z"
                             Width="13" 
                             Height="13" />
@@ -130,21 +160,33 @@
                     </StackPanel>
                 </MenuItem.Header>
                 <MenuItem 
+                    Margin="3"
+                    Padding="3"
                     Command="{Binding OpenReportInsert}"
                     Header="Список принятых сотрудников за период"/>
                 <MenuItem 
+                     Margin="3"
+                     Padding="3"
                     Command="{Binding OpenReportRewarding}"
                     Header="Список награжденных сотрудников за период"/>
                 <MenuItem 
+                     Margin="3"
+                     Padding="3"
                     Command="{Binding OpenReportDelete}"
                     Header="Список уволенных сотрудников за период"/>
-                <MenuItem 
+                <MenuItem
+                     Margin="3"
+                     Padding="3"
                     Command="{Binding OpenReportVacation}"
                     Header="Список сотрудников не имеющие отпуск за период"/>
                 <MenuItem 
+                     Margin="3"
+                     Padding="3"
                     Command="{Binding OpenReportContract}"
                     Header="Истечении срока действия трудового договора"/>
                 <MenuItem 
+                     Margin="3"
+                     Padding="3"
                     Header="Списки..." 
                     Command="{Binding OpenReport}"/>
             </MenuItem>
@@ -158,7 +200,7 @@
                             Width="13">
                             <Path
                                 Stretch="Uniform"
-                                Fill="#444444"
+                                Fill="White"
                                 Data="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M7,20H9V14H7V20M11,20H13V12H11V20M15,20H17V16H15V20Z"
                                 Width="13" 
                                 Height="13" />
@@ -166,13 +208,6 @@
                         <TextBlock>Параметрический отчет</TextBlock>
                     </StackPanel>
                 </MenuItem.Header>
-
-                <MenuItem Header="Поиск" Command="{Binding OpenSearch}"/>
-                <MenuItem Header="Настройки">
-
-                </MenuItem>
-                <Separator/>
-                <MenuItem Header="Выход из аккаунта" Command="{Binding Logout}"/>
             </MenuItem>
         </Menu>
         <!--#endregion-->
@@ -182,7 +217,7 @@
             Grid.Column="0" 
             Grid.ColumnSpan="2"
             VerticalAlignment="Top"
-            Background="{StaticResource BorderBrush}" Margin="0"/>
+             Margin="0"/>
 
         <!--#region SideBar -->
         <Grid  
@@ -197,9 +232,11 @@
 
             <StackPanel Grid.Row="0">
                 <Button
+                    Height="25"
                     Command="{Binding GetBack}"
-                    Content="Вернуться на главное"/>
+                    Content="Вернуться на главное" Cursor="Hand"/>
                 <Button
+                    Height="25"
                     Command="{Binding LoadedListAll}"
                     Content="Отобразить всех"/>
             </StackPanel>
@@ -255,15 +292,7 @@
                 CanUserAddRows="False"
                 Grid.Row="3" 
                 >
-                <DataGrid.Resources>
-                    <Style TargetType="{x:Type DataGridCell}">
-                        <Style.Triggers>
-                            <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                <Setter Property="Background" Value="#1e88e5" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.Resources>
+               
                 <DataGrid.ContextMenu>
                     <ContextMenu>
                         <MenuItem 
@@ -309,19 +338,21 @@
             </Grid.RowDefinitions>
 
             <TextBlock 
+                FontSize="20"
                 Grid.Row="0"
                 HorizontalAlignment="Center"
                 Text="{Binding SelectedPerson.ArrayPosition[0].DepartmentName}"
-                Style="{StaticResource Header20}"/>
+                />
             <Separator
                 VerticalAlignment="Bottom"
                 Grid.Row="0"/>
 
             <TextBlock 
+                FontSize="20"
                 Margin="5 0 0 0"
                 Grid.Row="1"
                 Text="{Binding SelectedPerson.FullName}"
-                Style="{StaticResource Header20}"
+               
                 />
             <Separator 
                 Grid.Row="2"
@@ -391,6 +422,7 @@
                                         HorizontalAlignment="Center"
                                         Content="Дата приёма:"/>
                                         <DatePicker
+                                        Background="Transparent"
                                         Padding="4 1"
                                         Margin="4 3"
                                         SelectedDate="{Binding SelectedPerson.DateWorking , UpdateSourceTrigger=PropertyChanged}"
@@ -671,7 +703,10 @@
                                         Margin="0 0 2 0"
                                         HorizontalAlignment="Right"
                                         Orientation="Horizontal">
-                                        <Button Command="{Binding OpenAddPosition}">
+                                        <Button 
+                                            Width="25"
+                                            Margin="0 0 5 0"
+                                            Command="{Binding OpenAddPosition}">
                                             <Button.ToolTip>
                                                 <ToolTip>
                                                     Создать новую должность
@@ -682,14 +717,17 @@
                                                         Width="13">
                                                 <Path
                                                         Stretch="Uniform"
-                                                        Fill="#444444"
+                                                        Fill="White"
                                                         Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"
                                                         Width="13" 
                                                         Height="13" />
                                             </Canvas>
                                         </Button>
                                         
-                                        <Button Command="{Binding OpenChangePosition}">
+                                        <Button 
+                                             Width="25"
+                                            Margin="0 0 5 0"
+                                            Command="{Binding OpenChangePosition}">
                                             <Button.ToolTip>
                                                 <ToolTip>
                                                     Изменить должность
@@ -700,13 +738,15 @@
                                                         Width="13">
                                                 <Path
                                                         Stretch="Uniform"
-                                                        Fill="#444444"
+                                                        Fill="White"
                                                         Data="M21,9L17,5V8H10V10H17V13M7,11L3,15L7,19V16H14V14H7V11Z"
                                                         Width="13" 
                                                         Height="13" />
                                             </Canvas>
                                         </Button>
                                         <Button 
+                                             Width="25"
+                                            Margin="0 0 5 0"
                                             Command="{Binding OpenDropPosition}">
                                             <Button.ToolTip>
                                                 <ToolTip>
@@ -718,7 +758,7 @@
                                                         Width="13">
                                                 <Path
                                                         Stretch="Uniform"
-                                                        Fill="#444444"
+                                                        Fill="White"
                                                         Data="M19,13H5V11H19V13Z"
                                                         Width="13" 
                                                         Height="13" />
@@ -737,13 +777,7 @@
                                      ItemsSource="{Binding SelectedPerson.ArrayPosition}"
                                     Margin="5">
                                         <DataGrid.Resources>
-                                            <Style TargetType="{x:Type DataGridCell}">
-                                                <Style.Triggers>
-                                                    <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                                        <Setter Property="Background" Value="#1e88e5" />
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
+  
                                             <CollectionViewSource x:Key="ItemsTypeContract" Source="{Binding TypeContracts }" />
                                             <CollectionViewSource x:Key="ItemsTypePlace" Source="{Binding TypePlaceOfWorks }" />
                                             <CollectionViewSource x:Key="ItemsTypeDepartment" Source="{Binding Departments }" />
@@ -884,21 +918,13 @@
                                      FontSize="14"
                                     ScrollViewer.IsDeferredScrollingEnabled="True"
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
-                                    AlternatingRowBackground="#ECEFF1"
+                                   
                                     IsReadOnly="True"    
                                     AutoGenerateColumns="False"
                                      SelectedItem="{Binding SelectedMove}"
                                     ItemsSource="{Binding SelectedPerson.ArrayMove}"
                                     Margin="10">
-                                    <DataGrid.Resources>
-                                        <Style TargetType="{x:Type DataGridCell}">
-                                            <Style.Triggers>
-                                                <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                                    <Setter Property="Background" Value="#1e88e5" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </DataGrid.Resources>
+                               
                                     <DataGrid.Columns>
                                         <DataGridCheckBoxColumn 
                                             Binding="{Binding IsMain}"
@@ -1039,7 +1065,7 @@
                                 <DataGrid
                                     
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
-                                    AlternatingRowBackground="#ECEFF1"
+                                  
                                      FontSize="14"
                                     ScrollViewer.IsDeferredScrollingEnabled="True"
                                     SelectedItem="{Binding SelectedVacation}"
@@ -1049,14 +1075,7 @@
                                     Grid.Column="0"
                                     Margin="10">
                                     <DataGrid.Resources>
-                                        <Style TargetType="{x:Type DataGridCell}">
-                                            <Style.Triggers>
-                                                <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                                    <Setter Property="Background" Value="#1e88e5" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-
+                                      
                                         <CollectionViewSource x:Key="ItemsTypeVacations" Source="{Binding TypeVacation}" />
                                         <CollectionViewSource x:Key="ItemsPeriodVacations" Source="{Binding PeriodVacation}" />
                                     </DataGrid.Resources>
@@ -1292,13 +1311,7 @@
                                     Grid.Row="1"
                                     Grid.Column="0">
                                     <DataGrid.Resources>
-                                        <Style TargetType="{x:Type DataGridCell}">
-                                            <Style.Triggers>
-                                                <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                                    <Setter Property="Background" Value="#1e88e5" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
+                                     
 
                                     </DataGrid.Resources>
                                     <DataGrid.Columns>
@@ -1585,13 +1598,7 @@
                                             Margin="5">
                                             
                                             <DataGrid.Resources>
-                                                <Style TargetType="{x:Type DataGridCell}">
-                                                    <Style.Triggers>
-                                                        <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                                            <Setter Property="Background" Value="#1e88e5" />
-                                                        </Trigger>
-                                                    </Style.Triggers>
-                                                </Style>
+                                                
                                                 <CollectionViewSource x:Key="ItemsTypePensioner" Source="{Binding TypePensioner}" />
                                             </DataGrid.Resources>
 
@@ -1815,13 +1822,7 @@
                                     Margin="5">
                                     
                                     <DataGrid.Resources>
-                                        <Style TargetType="{x:Type DataGridCell}">
-                                            <Style.Triggers>
-                                                <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                                    <Setter Property="Background" Value="#1e88e5" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
+                                        
                                         <CollectionViewSource x:Key="ItemsTypeFamily" Source="{Binding TypeFamily}" />
                                     </DataGrid.Resources>
 
@@ -1920,16 +1921,7 @@
                                     ItemsSource="{Binding SelectedPerson.ArrayChangeSurname}"
                                     Grid.Column="0"
                                     Margin="5">
-                                    <DataGrid.Resources>
-                                        <Style TargetType="{x:Type DataGridCell}">
-                                            <Style.Triggers>
-                                                <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                                    <Setter Property="Background" Value="#1e88e5" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </DataGrid.Resources>
-
+                                   
                                     <DataGrid.Columns>
                                         <DataGridTextColumn 
                                             Binding="{Binding Surname}"
@@ -2013,7 +2005,7 @@
                                      FontSize="14"
                                     ScrollViewer.IsDeferredScrollingEnabled="True"
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
-                                    AlternatingRowBackground="#ECEFF1"
+                                   
                                     IsReadOnly="True"    
                                     AutoGenerateColumns="False"
                                     ItemsSource="{Binding SelectedPerson.ArrayDocuments}"
@@ -2027,15 +2019,7 @@
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
 
-                                    <DataGrid.Resources>
-                                        <Style TargetType="{x:Type DataGridCell}">
-                                            <Style.Triggers>
-                                                <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                                    <Setter Property="Background" Value="#1e88e5" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </DataGrid.Resources>
+                                   
                                     <DataGrid.Columns>
                                         <DataGridTextColumn 
                                             Binding="{Binding Type}"

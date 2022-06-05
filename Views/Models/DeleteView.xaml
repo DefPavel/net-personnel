@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodels="clr-namespace:AlphaPersonel.ViewModels" xmlns:i="http://schemas.microsoft.com/xaml/behaviors" d:DataContext="{d:DesignInstance Type=viewmodels:DeletePersonViewModel}"
         mc:Ignorable="d"
+        Style="{DynamicResource CustomWindowStyle}"
         WindowStartupLocation="CenterScreen"
         Title="Увольнение" FontSize="14" Width="350">
 
@@ -16,7 +17,7 @@
     <Grid>
         <StackPanel Margin="5">
             <TextBlock 
-                  Style="{StaticResource Header30}"
+                 FontSize="30"
                 Text="Увольнение"/>
             <Label  FontWeight="Bold" Content="{Binding Title}"/>
             <Label

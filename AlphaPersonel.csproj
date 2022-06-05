@@ -13,8 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Types\" />
-	<Folder Include="Themes\" />  
+    <Folder Include="Models\Types\" />  
   </ItemGroup>
 
     <ItemGroup>

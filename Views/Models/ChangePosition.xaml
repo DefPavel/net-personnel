@@ -6,6 +6,7 @@
         xmlns:viewmodels="clr-namespace:AlphaPersonel.ViewModels"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        Style="{DynamicResource CustomWindowStyle}"
         d:DataContext="{d:DesignInstance Type=viewmodels:ChangePositionViewModel}"
         mc:Ignorable="d"
         Title="Перевод" 
@@ -19,7 +20,7 @@
     <Grid Margin="5">
         <StackPanel>
             <TextBlock 
-                Style="{StaticResource Header30}"
+               FontSize="30"
                 Text="Добавить должность"/>
             <Label
                 Content="Выбрать отдел"

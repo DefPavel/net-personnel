@@ -65,7 +65,7 @@
         </Button>
         <TextBlock 
                 Margin="35 0 0 0"
-                Style="{StaticResource Header30}"
+               FontSize="30"
                     Grid.Column="0"
                     Grid.Row="0"
                     Text="Штатные подразделения" />
@@ -92,17 +92,11 @@
             Grid.Column="0">
             <!-- Запомни что combobox рабает только таким образом в Datagrid -->
             <DataGrid.Resources>
-                <Style TargetType="{x:Type DataGridCell}">
-                    <Style.Triggers>
-                        <Trigger Property="DataGridCell.IsSelected" Value="True">
-                            <Setter Property="Background" Value="#1e88e5" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
+               
                 <CollectionViewSource x:Key="ItemsTypeDep" Source="{Binding TypeDepartments}" />
             </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Наименование" Binding="{Binding Name ,UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Наименование" Width="*" Binding="{Binding Name ,UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Краткое название" Binding="{Binding Short,UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridComboBoxColumn 
                     Header="Тип отдела"
@@ -151,37 +145,26 @@
                 <Label Content="Внутренний номер телефона"/>
                 <TextBox Text="{Binding SelectedDepartment.Phone , UpdateSourceTrigger=PropertyChanged}"/>
                 <StackPanel Margin="0 5 5 5" Orientation="Horizontal">
-                    <Button Command="{Binding AddNewDepartment}" CommandParameter="{Binding SelectedDepartment}">
-                        <StackPanel Orientation="Horizontal">
-                                    <fa:ImageAwesome
-                                Height="12"
-                                Margin="0 0 5 0"
-                                Icon="Solid_Plus"
-                                />
-                            <TextBlock Text="Создать"/>
-                        </StackPanel>
+                    <Button 
+                        Padding="3"
+                        Margin="0 0 5 0"
+                        Command="{Binding AddNewDepartment}"
+                            CommandParameter="{Binding SelectedDepartment}" Cursor="Hand">
+                       Создать
                     </Button>
-                    <Button Command="{Binding SaveDepartment}" CommandParameter="{Binding SelectedDepartment}">
-                        <StackPanel Orientation="Horizontal">
-                            <fa:ImageAwesome
-                                Height="12"
-                                Margin="0 0 5 0"
-                                Icon="Solid_Check"
-                                />
-                            <TextBlock Text="Сохранить"/>
-                        </StackPanel>
+                    <Button 
+                        Padding="3"
+                        Margin="0 0 5 0"
+                        Command="{Binding SaveDepartment}" CommandParameter="{Binding SelectedDepartment}">
+                        Сохранить
                     </Button>
-                    <Button Command="{Binding DeleteDepartment}"
+                    <Button 
+                        Padding="3"
+                        Margin="0 0 5 0"
+                        Command="{Binding DeleteDepartment}"
                             CommandParameter="{Binding SelectedDepartment}" 
                             >
-                        <StackPanel Orientation="Horizontal">
-                            <fa:ImageAwesome
-                                Height="12"
-                                Margin="0 0 5 0"
-                                Icon="Solid_Trash"
-                                />
-                            <TextBlock Text="Удалить"/>
-                        </StackPanel>
+                        Удалить
                     </Button>
                 </StackPanel>
             </StackPanel>

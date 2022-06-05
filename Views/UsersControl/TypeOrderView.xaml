@@ -65,7 +65,7 @@
         </Button>
         <TextBlock 
                 Margin="35 0 0 0"
-                Style="{StaticResource Header30}"
+                FontSize="30"
                     Grid.Column="0"
                     Grid.Row="0"
                     Text="Справочник вид приказов" />
@@ -92,17 +92,9 @@
             Grid.Row="2"
             Grid.Column="0">
             <!-- Запомни что combobox рабает только таким образом в Datagrid -->
-            <DataGrid.Resources>
-                <Style TargetType="{x:Type DataGridCell}">
-                    <Style.Triggers>
-                        <Trigger Property="DataGridCell.IsSelected" Value="True">
-                            <Setter Property="Background" Value="#1e88e5" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.Resources>
+           
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Наименование" Binding="{Binding Name,UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Наименование" Width="*" Binding="{Binding Name,UpdateSourceTrigger=PropertyChanged}"/>
             </DataGrid.Columns>
         </DataGrid>
         <GridSplitter Width="2" 

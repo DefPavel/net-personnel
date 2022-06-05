@@ -8,7 +8,8 @@
         d:DataContext="{d:DesignInstance Type=viewmodels:DeletePositionViewModel}"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="DeletePositionView" 
+        Title="DeletePositionView"
+        Style="{DynamicResource CustomWindowStyle}"
         FontSize="14"
         Width="350">
 
@@ -21,7 +22,7 @@
     <Grid>
         <StackPanel Margin="5">
             <TextBlock 
-                  Style="{StaticResource Header30}"
+                  FontSize="30"
                 Text="Увольнение"/>
            <Label
                 Content="{Binding Title}"

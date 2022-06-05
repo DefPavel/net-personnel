@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         mc:Ignorable="d"
+        Style="{DynamicResource CustomWindowStyle}"
         WindowStartupLocation="CenterScreen"
         Title="Preview" Height="850" Width="850">
     <Grid>

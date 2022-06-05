@@ -8,6 +8,7 @@
         d:DataContext="{d:DesignInstance Type=viewmodels:ChangeSurnameViewModel}"
         mc:Ignorable="d"
         Title="Сменить фамилию" 
+        Style="{DynamicResource CustomWindowStyle}"
         WindowStartupLocation="CenterScreen"
         FontSize="14"
         Width="350">
@@ -22,7 +23,7 @@
     <Grid >
         <StackPanel  Margin="5">
             <TextBlock 
-                  Style="{StaticResource Header30}"
+                 FontSize="30"
                 Text="Изменить фамилию"/>
             <Label
                 Content="Выбрать приказ смены фамилии"

@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
         xmlns:viewmodels="clr-namespace:AlphaPersonel.ViewModels"
-        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
-        xmlns:fa="http://schemas.fontawesome.com/icons/svg"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         d:DataContext="{d:DesignInstance Type=viewmodels:AddPersonVeiwModel}"
         mc:Ignorable="d"
+        Style="{DynamicResource CustomWindowStyle}"
         FontSize="14"
         WindowStartupLocation="CenterScreen"
         Title="Добавить новую запись сотрудника" 
@@ -25,7 +25,7 @@
         <Grid Margin="5">
             <StackPanel Margin="5">
                 <TextBlock 
-                  Style="{StaticResource Header30}"
+                  FontSize="30"
                 Text="Добавить сотрудника"/>
 
                 <Label
@@ -53,12 +53,12 @@
                         Grid.Column="0"
                     FontWeight="Bold"
                     Content="Фамилия"/>
-                    <Label 
-                        Grid.Column="1"
+                    <Label
+                        Grid.Row="0" Grid.Column="1"
                         FontWeight="Bold"
                         Content="Имя"/>
-                    <Label 
-                         Grid.Column="2"
+                    <Label
+                        Grid.Row="0" Grid.Column="2"
                         FontWeight="Bold"
                         Content="Отчество"/>
 
@@ -257,28 +257,22 @@
                 <Button
                 Margin="5"
                 HorizontalAlignment="Right"
-                Width="80"
+                MinWidth="95"
                 Command="{Binding CloseWin}"
-                CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}">
-                    <StackPanel Orientation="Horizontal">
-                        <fa:ImageAwesome
-                                Height="12"
-                                Margin="0 0 5 0"
-                                Icon="Solid_Plus"
-                                />
-                        <TextBlock Text="Создать" >
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                                    <Setter Property="Text" Value="Войти" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsLoading}" Value="True">
-                                            <Setter Property="Text" Value="Загрузка" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </StackPanel>
+                CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Cursor="Hand">
+
+                    <TextBlock Text="Создать" >
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                <Setter Property="Text" Value="Войти" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                        <Setter Property="Text" Value="Загрузка" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
                 </Button>
             </StackPanel>
 
