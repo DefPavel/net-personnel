@@ -479,6 +479,9 @@ internal class PersonCardViewModel : BaseViewModel
     private ICommand? _logout;
     public ICommand Logout => _logout ??= new LambdaCommand(Exit);
 
+    private ICommand? _openMasterDrop;
+    public ICommand OpenMasterDrop => _openMasterDrop ??= new LambdaCommand(OpenMasterDropView);
+
     private ICommand? _openDepartment;
     public ICommand OpenDepartment => _openDepartment ??= new LambdaCommand(OpenDepartmentView);
 
@@ -871,6 +874,10 @@ internal class PersonCardViewModel : BaseViewModel
         _navigationStore.CurrentViewModel = new MasterReportViewModel(_navigationStore, _user!);
     }
 
+    private void OpenMasterDropView(object p)
+    {
+        _navigationStore.CurrentViewModel = new MasterDropViewModel(_navigationStore, _user);
+    }
     // Отделы
     private void OpenDepartmentView(object p)
     {

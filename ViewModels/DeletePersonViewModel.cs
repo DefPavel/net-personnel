@@ -6,7 +6,6 @@ internal class DeletePersonViewModel : BaseViewModel
     private readonly Persons _person;
     private readonly Users _user;
     private readonly Departments _department;
-   
 
     // Массив Приказов
     private ObservableCollection<Order>? _orders;

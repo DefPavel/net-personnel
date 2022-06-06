@@ -105,7 +105,10 @@
                           Command="{Binding OpenOrder}"/>
                 <MenuItem Header="Список штатных должностей"
                           Command="{Binding OpenPosition}"/>
-                
+
+                <MenuItem Header="Мастер увольнений"
+                          Command="{Binding OpenMasterDrop}"/>
+
                 <!--<MenuItem Header="Календарь праздников"
                           Command="{Binding }"/>-->
                 <!--<MenuItem Header="Отправка в отпуск..."/>-->

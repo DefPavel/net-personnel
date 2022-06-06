@@ -276,6 +276,9 @@ internal class HomeViewModel : BaseViewModel
     private ICommand? _openPosition;
     public ICommand OpenPosition => _openPosition ??= new LambdaCommand(OpenPositionView);
 
+    private ICommand? _openMasterDrop;
+    public ICommand OpenMasterDrop => _openMasterDrop ??= new LambdaCommand(OpenMasterDropView);
+
     private ICommand? _openTypePosition;
     public ICommand OpenTypePosition => _openTypePosition ??= new LambdaCommand(OpenTypePositionView);
 
@@ -473,6 +476,11 @@ internal class HomeViewModel : BaseViewModel
     private void OpenPositionView(object p)
     {
         _navigationStore.CurrentViewModel = new PositionViewModel(_navigationStore, _user);
+    }
+
+    private void OpenMasterDropView(object p)
+    {
+        _navigationStore.CurrentViewModel = new MasterDropViewModel(_navigationStore, _user);
     }
     // Поиск
     private void OpenSearchView(object p)

@@ -77,6 +77,9 @@
             <DataTemplate DataType="{x:Type view-models:MasterReportViewModel}">
                 <views:MasterReportView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type view-models:MasterDropViewModel}">
+                <views:MasterDropView />
+            </DataTemplate>
         </ContentControl.Resources>
     </ContentControl>
    
