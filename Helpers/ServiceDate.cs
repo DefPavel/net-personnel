@@ -6,10 +6,10 @@ internal static class ServiceDate
     // Вычесление интервала
     public static long ItervalDate(DateTime startDate, DateTime endDate)
     {
-        //var diff = endDate - startDate;
+        var diff = endDate - startDate;
 
-        var diff = DateToTicks(endDate.Year , endDate.Month , endDate.Day) - DateToTicks(startDate.Year , startDate.Month , startDate.Day);
-        return diff;
+        //var diff = DateToTicks(endDate.Year , endDate.Month , endDate.Day) - DateToTicks(startDate.Year , startDate.Month , startDate.Day);
+        return diff.Ticks;
     }
 
     #region Новый метод расчета

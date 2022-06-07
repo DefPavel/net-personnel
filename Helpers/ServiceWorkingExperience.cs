@@ -9,30 +9,36 @@ internal static class ServiceWorkingExperience
     {
         var currentDate = DateTime.Now.Date;
         var trigger = false;
-        long totalTicks = 0;
-
-       
+        var age = new List<Age>();
         // Проходимся по списку стажа
         foreach (var t in histories)
         {
             if (trigger == t.IsOver) continue;
-            // Если стаж прирывался 
-            if (trigger) totalTicks += ServiceDate.ItervalDate(currentDate, t.CreateAt);
 
+            if (trigger)
+            {
+                age.Add(ServiceDate.GetDate(currentDate, t.CreateAt));
+            }
             currentDate = t.CreateAt;
             trigger = t.IsOver;
         }
-        // Если стаж не прирывался 
+
         if (trigger)
         {
-            totalTicks += ServiceDate.ItervalDate(currentDate, date);     
+            age.Add(ServiceDate.GetDate(currentDate, date));
         }
 
-            // Является ли год високосным
-        var last = histories.Last();
-        var isLeap = ServiceDate.IsLeapYear(last.CreateAt.Year);
-        
-        return ServiceDate.ConvertTicksToDateTime(totalTicks, isLeap);
+        var sumDate = 0;
+
+        foreach (var item in age)
+        {
+            sumDate += item.Days + item.Mounths * 30 + item.Years * 12 * 30;
+        }
+        int resultYear = sumDate / (12 * 30);
+        int resultMounth = (sumDate - resultYear * 12 * 30) / 30;
+        int resultDays = sumDate - resultYear * 12 * 30 - resultMounth * 30;
+
+        return $"{resultYear} г. {resultMounth} м. {resultDays} д.";
 
     }
     // Нучно-Педагогический
@@ -104,26 +110,36 @@ internal static class ServiceWorkingExperience
     {
         var currentDate = DateTime.Now.Date;
         var trigger = false;
-        long totalTicks = 0;
-
+        var age = new List<Age>();
         // Проходимся по списку стажа
         foreach (var t in histories)
         {
             if (trigger == t.IsUniver) continue;
-            // Если стаж прирывался 
-            if (trigger) totalTicks += ServiceDate.ItervalDate(currentDate, t.CreateAt);
 
+            if (trigger)
+            {
+                age.Add(ServiceDate.GetDate(currentDate, t.CreateAt));
+            }
             currentDate = t.CreateAt;
             trigger = t.IsUniver;
         }
+
         if (trigger)
         {
-            totalTicks += ServiceDate.ItervalDate(currentDate, date);     
+            age.Add(ServiceDate.GetDate(currentDate, date));
         }
 
-        var last = histories.Last();
-        var isLeap = DateTime.IsLeapYear(last.CreateAt.Year);
-        return ServiceDate.ConvertTicksToDateTime(totalTicks ,isLeap);
+        var sumDate = 0;
+
+        foreach (var item in age)
+        {
+            sumDate += item.Days + item.Mounths * 30 + item.Years * 12 * 30;
+        }
+        int resultYear = sumDate / (12 * 30);
+        int resultMounth = (sumDate - resultYear * 12 * 30) / 30;
+        int resultDays = sumDate - resultYear * 12 * 30 - resultMounth * 30;
+
+        return $"{resultYear} г. {resultMounth} м. {resultDays} д.";
 
     }
     // Научный
@@ -131,27 +147,36 @@ internal static class ServiceWorkingExperience
     {
         var currentDate = DateTime.Now.Date;
         var trigger = false;
-        long totalTicks = 0;
-
+        var age = new List<Age>();
         // Проходимся по списку стажа
         foreach (var t in histories)
         {
             if (trigger == t.IsScience) continue;
-            // Если стаж прирывался 
-            if (trigger) totalTicks += ServiceDate.ItervalDate(currentDate, t.CreateAt);
 
+            if (trigger)
+            {
+                age.Add(ServiceDate.GetDate(currentDate, t.CreateAt));
+            }
             currentDate = t.CreateAt;
             trigger = t.IsScience;
         }
+
         if (trigger)
         {
-            totalTicks += ServiceDate.ItervalDate(currentDate, date);     
+            age.Add(ServiceDate.GetDate(currentDate, date));
         }
 
-        var last = histories.Last();
-        var isLeap = DateTime.IsLeapYear(last.CreateAt.Year);
-        
-        return ServiceDate.ConvertTicksToDateTime(totalTicks ,isLeap);
+        var sumDate = 0;
+
+        foreach (var item in age)
+        {
+            sumDate += item.Days + item.Mounths * 30 + item.Years * 12 * 30;
+        }
+        int resultYear = sumDate / (12 * 30);
+        int resultMounth = (sumDate - resultYear * 12 * 30) / 30;
+        int resultDays = sumDate - resultYear * 12 * 30 - resultMounth * 30;
+
+        return $"{resultYear} г. {resultMounth} м. {resultDays} д.";
 
     }
     // Медицинский
@@ -159,26 +184,36 @@ internal static class ServiceWorkingExperience
     {
         var currentDate = DateTime.Now.Date;
         var trigger = false;
-        long totalTicks = 0;
-
+        var age = new List<Age>();
         // Проходимся по списку стажа
         foreach (var t in histories)
         {
             if (trigger == t.IsMedical) continue;
-            // Если стаж прирывался 
-            if (trigger) totalTicks += ServiceDate.ItervalDate(currentDate, t.CreateAt);
 
+            if (trigger)
+            {
+                age.Add(ServiceDate.GetDate(currentDate, t.CreateAt));
+            }
             currentDate = t.CreateAt;
             trigger = t.IsMedical;
         }
+
         if (trigger)
         {
-            totalTicks += ServiceDate.ItervalDate(currentDate, date);     
+            age.Add(ServiceDate.GetDate(currentDate, date));
         }
 
-        var last = histories.Last();
-        var isLeap = DateTime.IsLeapYear(last.CreateAt.Year);
-        return ServiceDate.ConvertTicksToDateTime(totalTicks,isLeap);
+        var sumDate = 0;
+
+        foreach (var item in age)
+        {
+            sumDate += item.Days + item.Mounths * 30 + item.Years * 12 * 30;
+        }
+        int resultYear = sumDate / (12 * 30);
+        int resultMounth = (sumDate - resultYear * 12 * 30) / 30;
+        int resultDays = sumDate - resultYear * 12 * 30 - resultMounth * 30;
+
+        return $"{resultYear} г. {resultMounth} м. {resultDays} д.";
 
     }
     // Музей
@@ -186,26 +221,36 @@ internal static class ServiceWorkingExperience
     {
         var currentDate = DateTime.Now.Date;
         var trigger = false;
-        long totalTicks = 0;
-
+        var age = new List<Age>();
         // Проходимся по списку стажа
         foreach (var t in histories)
         {
             if (trigger == t.IsMuseum) continue;
-            // Если стаж прирывался 
-            if (trigger) totalTicks += ServiceDate.ItervalDate(currentDate, t.CreateAt);
 
+            if (trigger)
+            {
+                age.Add(ServiceDate.GetDate(currentDate, t.CreateAt));
+            }
             currentDate = t.CreateAt;
             trigger = t.IsMuseum;
         }
-        // В случае если стаж не прирывный
+
         if (trigger)
         {
-            totalTicks += ServiceDate.ItervalDate(currentDate, date);     
+            age.Add(ServiceDate.GetDate(currentDate, date));
         }
-        var last = histories.Last();
-        var isLeap = DateTime.IsLeapYear(last.CreateAt.Year);
-        return ServiceDate.ConvertTicksToDateTime(totalTicks, isLeap);
+
+        var sumDate = 0;
+
+        foreach (var item in age)
+        {
+            sumDate += item.Days + item.Mounths * 30 + item.Years * 12 * 30;
+        }
+        int resultYear = sumDate / (12 * 30);
+        int resultMounth = (sumDate - resultYear * 12 * 30) / 30;
+        int resultDays = sumDate - resultYear * 12 * 30 - resultMounth * 30;
+
+        return $"{resultYear} г. {resultMounth} м. {resultDays} д.";
 
     }
     // Библиотека
@@ -213,29 +258,36 @@ internal static class ServiceWorkingExperience
     {
         var currentDate = DateTime.Now.Date;
         var trigger = false;
-        long totalTicks = 0;
-
+        var age = new List<Age>();
         // Проходимся по списку стажа
         foreach (var t in histories)
         {
             if (trigger == t.IsLibrary) continue;
-            // Если стаж прирывался 
-            if (trigger) totalTicks += ServiceDate.ItervalDate(currentDate, t.CreateAt);
 
+            if (trigger)
+            {
+                age.Add(ServiceDate.GetDate(currentDate, t.CreateAt));
+            }
             currentDate = t.CreateAt;
             trigger = t.IsLibrary;
         }
 
         if (trigger)
         {
-            totalTicks += ServiceDate.ItervalDate(currentDate, date);  
+            age.Add(ServiceDate.GetDate(currentDate, date));
         }
-        // В случае если стаж не прирывный
-        //totalTicks += ServiceDate.ItervalDate(currentDate, date);
 
-        var last = histories.Last();
-        var isLeap = DateTime.IsLeapYear(last.CreateAt.Year);
-        return ServiceDate.ConvertTicksToDateTime(totalTicks, isLeap);
+        var sumDate = 0;
+
+        foreach (var item in age)
+        {
+            sumDate += item.Days + item.Mounths * 30 + item.Years * 12 * 30;
+        }
+        int resultYear = sumDate / (12 * 30);
+        int resultMounth = (sumDate - resultYear * 12 * 30) / 30;
+        int resultDays = sumDate - resultYear * 12 * 30 - resultMounth * 30;
+
+        return $"{resultYear} г. {resultMounth} м. {resultDays} д.";
 
     }
 
