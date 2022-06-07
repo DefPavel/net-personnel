@@ -1085,6 +1085,7 @@ internal class PersonCardViewModel : BaseViewModel
                 StageIsUniver = ServiceWorkingExperience.GetStageIsUniver(SelectedPerson.HistoryEmployment, DateTime.Now);
                 StageIsScience = ServiceWorkingExperience.GetStageIsScience(SelectedPerson.HistoryEmployment, DateTime.Now);
                 StageIsPedagogical = ServiceWorkingExperience.GetStageIsPedagogical(SelectedPerson.HistoryEmployment , DateTime.Now);
+                //StageIsPedagogical = ServiceWorkingExperience.NewGetStageIsPedagogical(SelectedPerson.HistoryEmployment , DateTime.Now);
                 StageIsMedical = ServiceWorkingExperience.GetStageIsMedical(SelectedPerson.HistoryEmployment, DateTime.Now);
                 StageIsMuseum = ServiceWorkingExperience.GetStageIsMuseum(SelectedPerson.HistoryEmployment, DateTime.Now);
                 StageIsLibrary = ServiceWorkingExperience.GetStageIsLibrary(SelectedPerson.HistoryEmployment, DateTime.Now);

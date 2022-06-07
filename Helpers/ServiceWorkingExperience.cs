@@ -1,4 +1,7 @@
-﻿namespace AlphaPersonel.Helpers;
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace AlphaPersonel.Helpers;
 internal static class ServiceWorkingExperience
 {
     // Общий стаж
@@ -8,6 +11,7 @@ internal static class ServiceWorkingExperience
         var trigger = false;
         long totalTicks = 0;
 
+       
         // Проходимся по списку стажа
         foreach (var t in histories)
         {
@@ -18,10 +22,17 @@ internal static class ServiceWorkingExperience
             currentDate = t.CreateAt;
             trigger = t.IsOver;
         }
-        // В случае если стаж не прирывный
-        totalTicks += ServiceDate.ItervalDate(currentDate, date);
+        // Если стаж не прирывался 
+        if (trigger)
+        {
+            totalTicks += ServiceDate.ItervalDate(currentDate, date);     
+        }
 
-        return ServiceDate.ConvertTicksToDateTime(totalTicks);
+            // Является ли год високосным
+        var last = histories.Last();
+        var isLeap = DateTime.IsLeapYear(last.CreateAt.Year);
+        
+        return ServiceDate.ConvertTicksToDateTime(totalTicks, isLeap);
 
     }
     // Нучно-Педагогический
@@ -41,10 +52,52 @@ internal static class ServiceWorkingExperience
             currentDate = t.CreateAt;
             trigger = t.IsPedagogical;
         }
-        // В случае если стаж не прирывный
-        totalTicks += ServiceDate.ItervalDate(currentDate, date);
+        
+        if (trigger)
+        {
+            totalTicks += ServiceDate.ItervalDate(currentDate, date);     
+        }
 
-        return ServiceDate.ConvertTicksToDateTime(totalTicks);
+        var last = histories.Last();
+        var isLeap = DateTime.IsLeapYear(last.CreateAt.Year);
+        
+        return ServiceDate.ConvertTicksToDateTime(totalTicks ,isLeap);
+
+    }
+    public static string NewGetStageIsPedagogical(ObservableCollection<HistoryEmployment> histories , DateTime date)
+    {
+        var currentDate = DateTime.Now.Date;
+        var trigger = false;
+        long totalTicks = 0;
+        var age = new List<Age>();
+        // Проходимся по списку стажа
+        foreach (var t in histories)
+        {
+            if (trigger == t.IsPedagogical) continue;
+
+            if (trigger)
+            {
+                age.Add(ServiceDate.GetDate(currentDate, t.CreateAt));
+                //age += ServiceDate.GetDate(currentDate, t.CreateAt);
+            }
+            currentDate = t.CreateAt;
+            trigger = t.IsPedagogical;
+        }
+        
+        if (trigger)
+        {
+            //totalTicks += ServiceDate.ItervalDate(currentDate, date);    
+            age.Add(ServiceDate.GetDate(currentDate, date));
+        }
+        
+        var sumYears = age.Sum(x => x.Years); //1
+        var sumMounth = age.Sum(x => x.Mounths); //12
+        var sumDays = age.Sum(x => x.Days); //365
+
+        //var last = histories.Last();
+        //var isLeap = DateTime.IsLeapYear(last.CreateAt.Year);
+        
+        return ServiceDate.ConvertTicksToDateTime(totalTicks ,false);
 
     }
     // В универе
@@ -64,10 +117,14 @@ internal static class ServiceWorkingExperience
             currentDate = t.CreateAt;
             trigger = t.IsUniver;
         }
-        // В случае если стаж не прирывный
-        totalTicks += ServiceDate.ItervalDate(currentDate, date);
+        if (trigger)
+        {
+            totalTicks += ServiceDate.ItervalDate(currentDate, date);     
+        }
 
-        return ServiceDate.ConvertTicksToDateTime(totalTicks);
+        var last = histories.Last();
+        var isLeap = DateTime.IsLeapYear(last.CreateAt.Year);
+        return ServiceDate.ConvertTicksToDateTime(totalTicks ,isLeap);
 
     }
     // Научный
@@ -87,10 +144,15 @@ internal static class ServiceWorkingExperience
             currentDate = t.CreateAt;
             trigger = t.IsScience;
         }
-        // В случае если стаж не прирывный
-        totalTicks += ServiceDate.ItervalDate(currentDate, date);
+        if (trigger)
+        {
+            totalTicks += ServiceDate.ItervalDate(currentDate, date);     
+        }
 
-        return ServiceDate.ConvertTicksToDateTime(totalTicks);
+        var last = histories.Last();
+        var isLeap = DateTime.IsLeapYear(last.CreateAt.Year);
+        
+        return ServiceDate.ConvertTicksToDateTime(totalTicks ,isLeap);
 
     }
     // Медицинский
@@ -110,10 +172,14 @@ internal static class ServiceWorkingExperience
             currentDate = t.CreateAt;
             trigger = t.IsMedical;
         }
-        // В случае если стаж не прирывный
-        totalTicks += ServiceDate.ItervalDate(currentDate, date);
+        if (trigger)
+        {
+            totalTicks += ServiceDate.ItervalDate(currentDate, date);     
+        }
 
-        return ServiceDate.ConvertTicksToDateTime(totalTicks);
+        var last = histories.Last();
+        var isLeap = DateTime.IsLeapYear(last.CreateAt.Year);
+        return ServiceDate.ConvertTicksToDateTime(totalTicks,isLeap);
 
     }
     // Музей
@@ -134,9 +200,13 @@ internal static class ServiceWorkingExperience
             trigger = t.IsMuseum;
         }
         // В случае если стаж не прирывный
-        totalTicks += ServiceDate.ItervalDate(currentDate, date);
-
-        return ServiceDate.ConvertTicksToDateTime(totalTicks);
+        if (trigger)
+        {
+            totalTicks += ServiceDate.ItervalDate(currentDate, date);     
+        }
+        var last = histories.Last();
+        var isLeap = DateTime.IsLeapYear(last.CreateAt.Year);
+        return ServiceDate.ConvertTicksToDateTime(totalTicks, isLeap);
 
     }
     // Библиотека
@@ -156,10 +226,17 @@ internal static class ServiceWorkingExperience
             currentDate = t.CreateAt;
             trigger = t.IsLibrary;
         }
-        // В случае если стаж не прирывный
-        totalTicks += ServiceDate.ItervalDate(currentDate, date);
 
-        return ServiceDate.ConvertTicksToDateTime(totalTicks);
+        if (trigger)
+        {
+            totalTicks += ServiceDate.ItervalDate(currentDate, date);  
+        }
+        // В случае если стаж не прирывный
+        //totalTicks += ServiceDate.ItervalDate(currentDate, date);
+
+        var last = histories.Last();
+        var isLeap = DateTime.IsLeapYear(last.CreateAt.Year);
+        return ServiceDate.ConvertTicksToDateTime(totalTicks, isLeap);
 
     }
 
