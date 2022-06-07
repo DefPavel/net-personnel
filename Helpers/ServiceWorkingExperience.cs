@@ -30,7 +30,7 @@ internal static class ServiceWorkingExperience
 
             // Является ли год високосным
         var last = histories.Last();
-        var isLeap = DateTime.IsLeapYear(last.CreateAt.Year);
+        var isLeap = ServiceDate.IsLeapYear(last.CreateAt.Year);
         
         return ServiceDate.ConvertTicksToDateTime(totalTicks, isLeap);
 
@@ -68,7 +68,6 @@ internal static class ServiceWorkingExperience
     {
         var currentDate = DateTime.Now.Date;
         var trigger = false;
-        long totalTicks = 0;
         var age = new List<Age>();
         // Проходимся по списку стажа
         foreach (var t in histories)
@@ -78,7 +77,6 @@ internal static class ServiceWorkingExperience
             if (trigger)
             {
                 age.Add(ServiceDate.GetDate(currentDate, t.CreateAt));
-                //age += ServiceDate.GetDate(currentDate, t.CreateAt);
             }
             currentDate = t.CreateAt;
             trigger = t.IsPedagogical;
@@ -86,19 +84,20 @@ internal static class ServiceWorkingExperience
         
         if (trigger)
         {
-            //totalTicks += ServiceDate.ItervalDate(currentDate, date);    
             age.Add(ServiceDate.GetDate(currentDate, date));
         }
-        
-        var sumYears = age.Sum(x => x.Years); //1
-        var sumMounth = age.Sum(x => x.Mounths); //12
-        var sumDays = age.Sum(x => x.Days); //365
 
-        //var last = histories.Last();
-        //var isLeap = DateTime.IsLeapYear(last.CreateAt.Year);
-        
-        return ServiceDate.ConvertTicksToDateTime(totalTicks ,false);
+        var sumDate = 0;
 
+        foreach (var item in age)
+        {
+            sumDate += item.Days + item.Mounths * 30 + item.Years * 12 * 30;
+        }
+        int resultYear = sumDate / (12 * 30);
+        int resultMounth = (sumDate - resultYear * 12 * 30)/ 30;
+        int resultDays = sumDate - resultYear * 12 * 30 - resultMounth * 30;
+
+        return $"{resultYear} г. {resultMounth} м. {resultDays} д.";
     }
     // В универе
     public static string GetStageIsUniver(ObservableCollection<HistoryEmployment> histories , DateTime date)
