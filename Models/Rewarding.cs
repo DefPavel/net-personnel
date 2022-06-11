@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿namespace AlphaPersonel.Models;
 
-namespace AlphaPersonel.Models.Home
-{
     internal class Rewarding
     {
         [JsonPropertyName("id")]
@@ -33,6 +26,9 @@ namespace AlphaPersonel.Models.Home
 
         [JsonPropertyName("order")]
         public string Order { get; set; } = string.Empty;
-    }
 
+        [JsonPropertyName("date_order")]
+        public DateTime DateOrder { get; set; }
 }
+
+

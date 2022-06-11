@@ -1,4 +1,7 @@
-﻿namespace AlphaPersonel.ViewModels;
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace AlphaPersonel.ViewModels;
 
 internal class DeletePositionViewModel : BaseViewModel
 {
@@ -8,8 +11,8 @@ internal class DeletePositionViewModel : BaseViewModel
     private readonly Position _position;
 
     // Массив Приказов
-    private ObservableCollection<Order>? _orders;
-    public ObservableCollection<Order>? Orders
+    private IEnumerable<Order>? _orders;
+    public IEnumerable<Order>? Orders
     {
         get => _orders;
         private set => Set(ref _orders, value);
@@ -104,9 +107,14 @@ internal class DeletePositionViewModel : BaseViewModel
     {
         try
         {
+            var currentYear = DateTime.Today.Year;
+            var prevYear = DateTime.Today.AddYears(-1);
+
             // Загрузка приказов
             var idTypeOrder = await QueryService.JsonDeserializeWithObjectAndParam(_user.Token, "/pers/order/type/name", "POST", new TypeOrder { Name = "Увольнение" });
-            Orders = await QueryService.JsonDeserializeWithToken<Order>(_user.Token, "/pers/order/get/" + idTypeOrder.Id, "GET");
+            var orders = await QueryService.JsonDeserializeWithToken<Order>(_user.Token, "/pers/order/get/" + idTypeOrder.Id, "GET");
+            // Берем за последние два года , чтобы Combobox сильно не тупил от количества элементов
+            Orders = orders.Where(x => x.DateOrder.Date.Year == currentYear || x.DateOrder.Date.Year == prevYear.Year);
 
         }
         catch (WebException ex)

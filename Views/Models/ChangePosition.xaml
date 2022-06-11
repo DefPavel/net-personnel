@@ -7,9 +7,10 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         d:DataContext="{d:DesignInstance Type=viewmodels:ChangePositionViewModel}"
+        WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
-        Title="Перевод" 
-       FontSize="14"
+        Title="{Binding Title}" 
+        FontSize="14"
         Width="350">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -20,7 +21,7 @@
         <StackPanel>
             <TextBlock 
                 Style="{StaticResource Header30}"
-                Text="Добавить должность"/>
+                Text="{Binding Title}"/>
             <Label
                 Content="Выбрать отдел"
                 FontWeight="Bold"/>
@@ -85,7 +86,7 @@
                     />
             <Label 
                 FontWeight="Bold"
-                Content="Выбрать приказ перевода"/>
+                Content="{Binding TextOrder}"/>
             <ComboBox 
                     IsEditable="True"
                     ItemsSource="{Binding Orders}"

@@ -1377,15 +1377,18 @@ internal class PersonCardViewModel : BaseViewModel
     {
         try
         {
+            var currentYear = DateTime.Today.Year;
+            var prevYear = DateTime.Today.AddYears(-1);
+
             IsLoading = true;
             // Справочник отделов
-            Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user!.Token, "/pers/tree/all", "GET");
+            //Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user!.Token, "/pers/tree/all", "GET");
             // Справочник должностей
-            TypePositions = await QueryService.JsonDeserializeWithToken<TypePosition>(_user!.Token, "/pers/position/type/position", "GET");
+            //TypePositions = await QueryService.JsonDeserializeWithToken<TypePosition>(_user!.Token, "/pers/position/type/position", "GET");
             // Справочник Мест работы
-            TypePlaceOfWorks = await QueryService.JsonDeserializeWithToken<PlaceOfWork>(_user!.Token, "/pers/position/type/place", "GET");
+            //TypePlaceOfWorks = await QueryService.JsonDeserializeWithToken<PlaceOfWork>(_user!.Token, "/pers/position/type/place", "GET");
             // Справочник контрактов
-            TypeContracts = await QueryService.JsonDeserializeWithToken<TypeContract>(token: _user!.Token, "/pers/position/type/contract", "GET");
+            //TypeContracts = await QueryService.JsonDeserializeWithToken<TypeContract>(token: _user!.Token, "/pers/position/type/contract", "GET");
             // Справочник паспортов
             TypePassports = await QueryService.JsonDeserializeWithToken<TypePassport>(token: _user!.Token, "/pers/person/get/passport", "GET");
             // Справочник (Период отпусков)
@@ -1401,11 +1404,17 @@ internal class PersonCardViewModel : BaseViewModel
             // Тип награждения
             TypeRewarding = await QueryService.JsonDeserializeWithToken<Rewarding>(token: _user!.Token, "/pers/rewarding/type/get", "GET");
             // Приказы для награждения
-            OrderRewarding = await QueryService.JsonDeserializeWithToken<Rewarding>(token: _user!.Token, "/pers/order/get/9", "GET");
+            var orderRewarding = await QueryService.JsonDeserializeWithToken<Rewarding>(token: _user!.Token, "/pers/order/get/9", "GET");
+            OrderRewarding = orderRewarding.Where(x => x.DateOrder.Date.Year == currentYear || x.DateOrder.Date.Year == prevYear.Year);
+
             // Приказы для отпусков
-            OrderVacations = await QueryService.JsonDeserializeWithToken<Vacation>(token: _user!.Token, "/pers/order/get/1", "GET");
+            var orderVacation = await QueryService.JsonDeserializeWithToken<Vacation>(token: _user!.Token, "/pers/order/get/1", "GET");
+            OrderVacations = orderVacation.Where(x => x.DateOrder.Date.Year == currentYear || x.DateOrder.Date.Year == prevYear.Year);
+
             // Приказы для смены фамилии
-            OrderOldSurname = await QueryService.JsonDeserializeWithToken<OldSurname>(token: _user!.Token, "/pers/order/get/5", "GET");
+            var orderSurname = await QueryService.JsonDeserializeWithToken<OldSurname>(token: _user!.Token, "/pers/order/get/5", "GET");
+            OrderOldSurname = orderSurname.Where(x => x.DateOrder.Date.Year == currentYear || x.DateOrder.Date.Year == prevYear.Year);
+
             // Мед.категория 
             MedicalCategory = await QueryService.JsonDeserializeWithToken<MedicalCategory>(token: _user!.Token, "/pers/medical/type/get", "GET");
             // Ученая степень
