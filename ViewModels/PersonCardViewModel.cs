@@ -876,7 +876,7 @@ internal class PersonCardViewModel : BaseViewModel
 
     private void OpenMasterDropView(object p)
     {
-        _navigationStore.CurrentViewModel = new MasterDropViewModel(_navigationStore, _user);
+        _navigationStore.CurrentViewModel = new MasterDropViewModel(_navigationStore, _user!);
     }
     // Отделы
     private void OpenDepartmentView(object p)
