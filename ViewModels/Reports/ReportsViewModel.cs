@@ -240,6 +240,11 @@ internal class ReportsViewModel : BaseViewModel
                     Name = "Список всех сотрудников(Не ЛГПУ)",
                     Url = "/reports/pers/persons/no_lgpu/"
                 },
+                 new()
+                {
+                    Name = "Список всех сотрудников Совместители(Не ЛГПУ)",
+                    Url = "/reports/pers/persons/no_lgpu/is_pluralism/"
+                },
                 new ()
                 {
                     Name = "Список академиков и членов корреспондентов",
@@ -309,8 +314,18 @@ internal class ReportsViewModel : BaseViewModel
                 },
                 new()
                 {
+                    Name = "Повышение квалификации Совместители(Методистов)",
+                    Url = "/reports/pers/persons/metodist/is_pluralism/"
+                },
+                new()
+                {
                     Name = "Список Профессоров и Докторов",
                     Url = "/reports/pers/persons/doc_prof/"
+                },
+                 new()
+                {
+                    Name = "Список Профессоров и Докторов(Совместители)",
+                    Url = "/reports/pers/persons/doc_prof/is_pluralism/"
                 },
                 new()
                 {
