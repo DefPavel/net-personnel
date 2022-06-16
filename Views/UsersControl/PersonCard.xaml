@@ -140,10 +140,17 @@
                     Command="{Binding OpenReportContract}"
                     Header="Истечении срока действия трудового договора"/>
                 <MenuItem 
+                    Command="{Binding OpenReportContractIsPluralism}"
+                    Header="Истечении срока действия трудового договора(Совместители)"/>
+                <MenuItem 
+                    Command="{Binding OpenReportJubilee}"
+                    Header="Список сотрудников Юбиляров"/>
+                <MenuItem 
                     Header="Списки..." 
                     Command="{Binding OpenReport}"/>
             </MenuItem>
             <MenuItem 
+                 Background="#e0e0e0"
                 Command="{Binding OpenMasterReport}"
                 IsEnabled="{Binding IsAdministrator}">
                 <MenuItem.Header>
@@ -161,10 +168,6 @@
                         <TextBlock>Параметрический отчет</TextBlock>
                     </StackPanel>
                 </MenuItem.Header>
-                <MenuItem Header="Поиск" Command="{Binding OpenSearch}"/>
-                <MenuItem Header="Настройки"></MenuItem>
-                <Separator/>
-                <MenuItem Header="Выход из аккаунта" Command="{Binding Logout}"/>
             </MenuItem>
         </Menu>
         <!--#endregion-->

@@ -1,5 +1,6 @@
 ﻿
 using AlphaPersonel.Models.Home;
+using AlphaPersonel.ViewModels.Reports;
 using AlphaPersonel.Views.Models;
 using System.Collections.Generic;
 using System.Configuration;
@@ -533,6 +534,12 @@ internal class PersonCardViewModel : BaseViewModel
     private ICommand? _openMasterReport;
     public ICommand OpenMasterReport => _openMasterReport ??= new LambdaCommand(OpenMasterReportView);
 
+    private ICommand? _openReportContractIsPluralism;
+    public ICommand OpenReportContractIsPluralism => _openReportContractIsPluralism ??= new LambdaCommand(OpenReportContractsIsPluralism);
+
+    private ICommand? _openReportJubilee;
+    public ICommand OpenReportJubilee => _openReportJubilee ??= new LambdaCommand(OpenReportJubilees);
+
     #endregion
 
     private ICommand? _updateStates;
@@ -765,6 +772,7 @@ internal class PersonCardViewModel : BaseViewModel
 
     #endregion
 
+
     #region Methods Menu Items
     private async void Exit(object p)
     {
@@ -795,6 +803,22 @@ internal class PersonCardViewModel : BaseViewModel
         }
     }
 
+    private void OpenReportContractsIsPluralism(object p)
+    {
+        // _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
+        InsertReportViewModel viewModel = new("/reports/pers/persons/contract/is_pluralism/", "Истечении срока действия трудового договора(Совместители)", _user!);
+        ReportByPersonInsert view = new() { DataContext = viewModel };
+        view.ShowDialog();
+
+    }
+    private void OpenReportJubilees(object p)
+    {
+        // _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
+        ReportViewModelJubilee viewModel = new("/reports/pers/persons/jubilee/", "Список сотрудников юбиляров", _user!);
+        RepotViewJubilee view = new() { DataContext = viewModel };
+        view.ShowDialog();
+
+    }
     private void OpenTypeVacationView(object p)
     {
         _navigationStore.CurrentViewModel = new TypeVacationViewModel(_navigationStore, _user!);

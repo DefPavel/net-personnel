@@ -144,6 +144,9 @@
                     Command="{Binding OpenReportContractIsPluralism}"
                     Header="Истечении срока действия трудового договора(Совместители)"/>
                 <MenuItem 
+                    Command="{Binding OpenReportJubilee}"
+                    Header="Список сотрудников Юбиляров"/>
+                <MenuItem 
                     Header="Списки..." 
                     Command="{Binding OpenReport}"/>
             </MenuItem>

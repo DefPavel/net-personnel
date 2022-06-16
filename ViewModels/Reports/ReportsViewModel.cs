@@ -256,11 +256,12 @@ internal class ReportsViewModel : BaseViewModel
                     Url = "/reports/pers/persons/insert/"
                 },
                 */
-                new ()
+               /* new ()
                 {
                     Name = "Список Сотрудников(Юбиляров)",
                     Url = "/reports/pers/persons/jubilee/"
                 },
+               */
                 new ()
                 {
                     Name = "Список всех сотрудников(Имеющие РФ паспорт)",
@@ -296,6 +297,11 @@ internal class ReportsViewModel : BaseViewModel
                 {
                     Name = "Список деканов и директоров",
                     Url = "/reports/pers/persons/director/"
+                },
+                new ()
+                {
+                    Name = "Список доцентов и кандидатов",
+                    Url = "/reports/pers/persons/scince/"
                 },
                 new ()
                 {
@@ -350,7 +356,7 @@ internal class ReportsViewModel : BaseViewModel
                 new()
                 {
                     Name = "Список всех сотрудников(больше 1 ставки)",
-                    Url = "/reports/pers/persons/responsible/"
+                    Url = "/reports/pers/persons/stavka/"
                 },
                 new()
                 {
