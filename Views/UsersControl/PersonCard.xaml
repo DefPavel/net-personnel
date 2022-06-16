@@ -682,7 +682,7 @@
                                         </Button>
                                     </StackPanel>
                                     <DataGrid 
-                                        IsReadOnly="True"
+                                        
                                         FontSize="14"
                                         Grid.Row="1"
                                     ScrollViewer.IsDeferredScrollingEnabled="True"
