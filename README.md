@@ -6,3 +6,5 @@
 ``dotnet run ``
 ### Install Version «.NET»
 [.NET6](https://github.com/dotnet/core/blob/main/release-notes/6.0/6.0.2/6.0.2.md)
+
+MSI-Installer - в режиме x64 (Если необходимо,то пересобери x86)

@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32002.185
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlphaPersonel", "AlphaPersonel.csproj", "{DAC6EA70-6255-4ACB-B56F-F75CBD54541F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlphaPersonel", "AlphaPersonel.csproj", "{DAC6EA70-6255-4ACB-B56F-F75CBD54541F}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{88E2ABAA-525C-4227-9056-D60CB6F3BFFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,8 @@ Global
 		{DAC6EA70-6255-4ACB-B56F-F75CBD54541F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAC6EA70-6255-4ACB-B56F-F75CBD54541F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DAC6EA70-6255-4ACB-B56F-F75CBD54541F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88E2ABAA-525C-4227-9056-D60CB6F3BFFF}.Debug|Any CPU.ActiveCfg = Debug
+		{88E2ABAA-525C-4227-9056-D60CB6F3BFFF}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
