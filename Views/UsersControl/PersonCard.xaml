@@ -526,6 +526,7 @@
                                 Grid.Row="3"
                                 Header="Описание">
                                 <TextBox 
+                                    FontSize="14"
                                     AcceptsReturn="True"  
                                     TextWrapping="Wrap"
                                     VerticalScrollBarVisibility="Auto"

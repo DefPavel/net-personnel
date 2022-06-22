@@ -1225,7 +1225,8 @@ internal class PersonCardViewModel : BaseViewModel
                 birthday = SelectedPerson.Birthday,
                 phone_ua = SelectedPerson.PhoneUkraine,
                 phone_lug = SelectedPerson.PhoneLugakom,
-                date_to_working = SelectedPerson.DateWorking
+                date_to_working = SelectedPerson.DateWorking,
+                description = SelectedPerson.Description,
             };
 
             await QueryService.JsonSerializeWithToken(token: _user!.Token,
