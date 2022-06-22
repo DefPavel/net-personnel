@@ -11,6 +11,9 @@ internal class Persons
     [JsonPropertyName("id")]
     public int Id { get; set; }
 
+    [JsonPropertyName("id_pers_pos")]
+    public int IdPersPos { get; set; }
+
     [JsonPropertyName("firstname")]
     public string FirstName { get; set; } = string.Empty;
 
