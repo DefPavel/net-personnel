@@ -1,4 +1,6 @@
-﻿namespace AlphaPersonel.ViewModels;
+﻿using System.Collections.Generic;
+
+namespace AlphaPersonel.ViewModels;
 public enum TypeReport
 {
     IsPed = 1,
@@ -35,7 +37,7 @@ internal class ReportsViewModel : BaseViewModel
         set => Set(ref _selectedReport, value);
     }
 
-    private bool _selectedIsPed;
+    private bool _selectedIsPed = true;
     public bool SelectedIsPed
     {
         get => _selectedIsPed;
@@ -49,7 +51,7 @@ internal class ReportsViewModel : BaseViewModel
         set => Set(ref _selectedIsNoPed, value);
     }
 
-    private bool _selectedIsAll = true;
+    private bool _selectedIsAll;
     public bool SelectedIsAll
     {
         get => _selectedIsAll;
@@ -57,14 +59,27 @@ internal class ReportsViewModel : BaseViewModel
     }
 
     // Массив отчетов
-    private ObservableCollection<Report>? _reports;
+    private IEnumerable<Report>? _reports;
 
-    private ObservableCollection<Report>? Reports
+    private IEnumerable<Report>? Reports
     {
         get => _reports;
         set
         {
             _ = Set(ref _reports, value);
+            if (Reports != null) CollectionDepart = CollectionViewSource.GetDefaultView(Reports);
+            CollectionDepart.Filter = FilterToDepart;
+        }
+    }
+
+    private IEnumerable<Report>? _reportsPluralist;
+
+    private IEnumerable<Report>? ReportsPluralist
+    {
+        get => _reportsPluralist;
+        set
+        {
+            _ = Set(ref _reportsPluralist, value);
             if (Reports != null) CollectionDepart = CollectionViewSource.GetDefaultView(Reports);
             CollectionDepart.Filter = FilterToDepart;
         }
@@ -109,6 +124,9 @@ internal class ReportsViewModel : BaseViewModel
     private ICommand? _openReport;
     public ICommand OpenReport => _openReport ??= new LambdaCommand(ApiGetReport, CanCommandExecute);
 
+    private ICommand? _loadedReports;
+    public ICommand LoadedReports => _loadedReports ??= new LambdaCommand(LoadedData);
+
     private ICommand? _getToMain;
     public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack , _ => IsLoading != true);
 
@@ -121,6 +139,38 @@ internal class ReportsViewModel : BaseViewModel
         _navigationStore.CurrentViewModel = new HomeViewModel(_user, _navigationStore);
     }
 
+    private async void LoadedData(object obj)
+    {
+        try
+        {
+            Reports = await QueryService.JsonDeserializeWithToken<Report>(_user.Token, "/reports/pers/get/1", "GET");
+
+            ReportsPluralist = await QueryService.JsonDeserializeWithToken<Report>(_user.Token, "/reports/pers/get/2", "GET");
+        }
+        // Проверка токена
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                }
+            }
+            // Не удалось получить response
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
     private async void ApiGetReport(object obj)
     {
         try
@@ -160,9 +210,14 @@ internal class ReportsViewModel : BaseViewModel
             }
             IsLoading = false;
         }
+        // Проверка токена
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
         catch (WebException ex)
         {
-
             if (ex.Status == WebExceptionStatus.ProtocolError)
             {
                 if (ex.Response is HttpWebResponse response)
@@ -172,6 +227,7 @@ internal class ReportsViewModel : BaseViewModel
                     _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 }
             }
+            // Не удалось получить response
             else
             {
                 _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -188,7 +244,7 @@ internal class ReportsViewModel : BaseViewModel
         _user = user;
         _navigationStore = navigationStore;
 
-        Reports = new ObservableCollection<Report>
+       /* Reports = new ObservableCollection<Report>
             {
                 new ()
                 {
@@ -228,7 +284,7 @@ internal class ReportsViewModel : BaseViewModel
                 new ()
                 {
                     Name = "Список всех сотрудников(Пенсионеры)",
-                    Url = "/reports/pers/persons/persioner"
+                    Url = "/reports/pers/persons/persioner/"
                 },
                 new ()
                 {
@@ -250,7 +306,7 @@ internal class ReportsViewModel : BaseViewModel
                     Name = "Список Принятых Сотрудников",
                     Url = "/reports/pers/persons/insert/"
                 },
-                */
+                
                 new ()
                 {
                     Name = "Список Сотрудников(Юбиляров)",
@@ -281,12 +337,6 @@ internal class ReportsViewModel : BaseViewModel
                     Name = "Список всех сотрудников(У которорых отсутствует справка о несудимости)",
                     Url = "/reports/pers/persons/reference_no/"
                 },
-               /* new ()
-                {
-                    Name = "Список Награжденных",
-                    Url = "/reports/pers/persons/rewarding/"
-                },
-               */
                 new ()
                 {
                     Name = "Список деканов и директоров",
@@ -347,7 +397,7 @@ internal class ReportsViewModel : BaseViewModel
                     Name = "Список всех сотрудников(Внутренние совместители)",
                     Url = "/reports/pers/persons/is_pluralism_in/"
                 },
-            };
+            };*/
     }
 
     public override void Dispose()
