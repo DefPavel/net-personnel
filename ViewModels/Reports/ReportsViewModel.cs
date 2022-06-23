@@ -29,6 +29,7 @@ internal class ReportsViewModel : BaseViewModel
 
     private readonly NavigationStore _navigationStore;
 
+    #region Штат
     // Выбранные отчет
     private Report? _selectedReport;
     public Report? SelectedReport
@@ -57,6 +58,38 @@ internal class ReportsViewModel : BaseViewModel
         get => _selectedIsAll;
         set => Set(ref _selectedIsAll, value);
     }
+    #endregion
+
+    #region Совместители
+    private Report? _selectedReportPluralist;
+    public Report? SelectedReportPluralist
+    {
+        get => _selectedReportPluralist;
+        set => Set(ref _selectedReportPluralist, value);
+    }
+
+    private bool _selectedIsPedPluralist = true;
+    public bool SelectedIsPedPluralist
+    {
+        get => _selectedIsPedPluralist;
+        set => Set(ref _selectedIsPedPluralist, value);
+    }
+
+    private bool _selectedIsNoPedPluralist;
+    public bool SelectedIsNoPedPluralist
+    {
+        get => _selectedIsNoPedPluralist;
+        set => Set(ref _selectedIsNoPedPluralist, value);
+    }
+
+    private bool _selectedIsAllPluralist;
+    public bool SelectedIsAllPluralist
+    {
+        get => _selectedIsAllPluralist;
+        set => Set(ref _selectedIsAllPluralist, value);
+    }
+
+    #endregion
 
     // Массив отчетов
     private IEnumerable<Report>? _reports;
@@ -80,8 +113,8 @@ internal class ReportsViewModel : BaseViewModel
         set
         {
             _ = Set(ref _reportsPluralist, value);
-            if (Reports != null) CollectionDepart = CollectionViewSource.GetDefaultView(Reports);
-            CollectionDepart.Filter = FilterToDepart;
+            if (ReportsPluralist != null) CollectionPluralist = CollectionViewSource.GetDefaultView(ReportsPluralist);
+            CollectionPluralist.Filter = FilterToPluralist;
         }
     }
 
@@ -100,7 +133,30 @@ internal class ReportsViewModel : BaseViewModel
 
         }
     }
+
+    // Поисковая строка 
+    private string? _filterPluralist;
+    public string? FilterPluralist
+    {
+        get => _filterPluralist;
+        set
+        {
+            _ = Set(ref _filterPluralist, value);
+            if (ReportsPluralist != null)
+            {
+                _collectionPluralist.Refresh();
+            }
+
+        }
+    }
     // Специальная колекция для фильтров
+    private ICollectionView _collectionPluralist;
+    public ICollectionView CollectionPluralist
+    {
+        get => _collectionPluralist;
+        private set => Set(ref _collectionPluralist, value);
+    }
+
     private ICollectionView _collectionDepart;
     public ICollectionView CollectionDepart
     {
@@ -113,6 +169,11 @@ internal class ReportsViewModel : BaseViewModel
         return string.IsNullOrEmpty(Filter) || (emp is Report dep && dep.Name!.ToUpper().Contains(value: Filter.ToUpper()));
     }
 
+    private bool FilterToPluralist(object emp)
+    {
+        return string.IsNullOrEmpty(FilterPluralist) || (emp is Report dep && dep.Name!.ToUpper().Contains(value: FilterPluralist.ToUpper()));
+    }
+
     private bool CanCommandExecute(object p)
     {
         return p is Report && IsLoading != true;
@@ -123,6 +184,9 @@ internal class ReportsViewModel : BaseViewModel
 
     private ICommand? _openReport;
     public ICommand OpenReport => _openReport ??= new LambdaCommand(ApiGetReport, CanCommandExecute);
+
+    private ICommand? _openReportPluralist;
+    public ICommand OpenReportPluralist => _openReportPluralist ??= new LambdaCommand(ApiGetReportPluralist, CanCommandExecute);
 
     private ICommand? _loadedReports;
     public ICommand LoadedReports => _loadedReports ??= new LambdaCommand(LoadedData);
@@ -171,6 +235,71 @@ internal class ReportsViewModel : BaseViewModel
             }
         }
     }
+
+    private async void ApiGetReportPluralist(object obj)
+    {
+        try
+        {
+            IsLoading = true;
+            var reportName = SelectedReportPluralist!.Name;
+            if (SelectedIsPedPluralist)
+            {
+
+                if (reportName != null)
+                    await ReportService.JsonDeserializeWithToken(
+                        token: _user!.Token,
+                        queryUrl: SelectedReportPluralist!.Url + TypeReport.IsPed,
+                        httpMethod: "GET",
+                        reportName: reportName
+                    );
+            }
+            else if (SelectedIsNoPedPluralist)
+            {
+                if (reportName != null)
+                    await ReportService.JsonDeserializeWithToken(
+                        token: _user!.Token,
+                        queryUrl: SelectedReportPluralist!.Url + TypeReport.IsNoPed.ToString(),
+                        httpMethod: "GET",
+                        reportName: reportName
+                    );
+            }
+            else
+            {
+                if (reportName != null)
+                    await ReportService.JsonDeserializeWithToken(
+                        token: _user!.Token,
+                        queryUrl: SelectedReportPluralist!.Url + TypeReport.IsAll.ToString(),
+                        httpMethod: "GET",
+                        reportName: reportName
+                    );
+            }
+            IsLoading = false;
+        }
+        // Проверка токена
+        catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
+        {
+            _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                }
+            }
+            // Не удалось получить response
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+
     private async void ApiGetReport(object obj)
     {
         try

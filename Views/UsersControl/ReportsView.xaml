@@ -48,6 +48,7 @@
                     Grid.Row="0"
                     Text="Справочник Отчетов" />
         <TabControl 
+            FontSize="14"
              Margin="5 0 0 0"
             Grid.Row="1">
             <TabItem Header="Штат">
@@ -139,20 +140,20 @@
                             Grid.Row="0">
                         <TextBlock Margin="5 0 0 0" Text="Введите наименование отчета"/>
                         <TextBox 
-                Text="{Binding Filter , UpdateSourceTrigger=PropertyChanged}"/>
+                Text="{Binding FilterPluralist , UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                     <StackPanel 
             Margin="5"
             Grid.Row="1"
             Orientation="Horizontal">
                         <RadioButton
-                IsChecked="{Binding SelectedIsPed}"
+                IsChecked="{Binding SelectedIsPedPluralist}"
                 Content="Педагогическое"/>
                         <RadioButton
-                 IsChecked="{Binding SelectedIsNoPed}"
+                 IsChecked="{Binding SelectedIsNoPedPluralist}"
                 Content="Не Педагогическое"/>
                         <RadioButton
-                 IsChecked="{Binding SelectedIsAll}"
+                 IsChecked="{Binding SelectedIsAllPluralist}"
                 Content="Все"/>
                     </StackPanel>
                     <DataGrid
@@ -162,23 +163,23 @@
             AutoGenerateColumns="False"
             CanUserAddRows="False"
             IsReadOnly="True"
-            ItemsSource="{Binding CollectionDepart}"
-            SelectedItem="{Binding SelectedReport}"
+            ItemsSource="{Binding CollectionPluralist}"
+            SelectedItem="{Binding SelectedReportPluralist}"
             Margin="10"         
             Grid.Row="2"
             Grid.Column="0">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDoubleClick">
                                 <i:InvokeCommandAction  
-                        Command="{Binding OpenReport}"
-                    CommandParameter="{Binding SelectedReport}"/>
+                        Command="{Binding OpenReportPluralist}"
+                    CommandParameter="{Binding SelectedReportPluralist}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem  
-                    Command="{Binding OpenReport}"
-                    CommandParameter="{Binding SelectedReport}"
+                    Command="{Binding OpenReportPluralist}"
+                    CommandParameter="{Binding SelectedReportPluralist}"
                     Header="Сохранить отчет"/>
                             </ContextMenu>
                         </DataGrid.ContextMenu>
