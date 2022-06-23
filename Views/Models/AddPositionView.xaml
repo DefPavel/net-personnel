@@ -6,6 +6,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
         xmlns:viewmodels="clr-namespace:AlphaPersonel.ViewModels" 
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        d:DataContext="{d:DesignInstance Type=viewmodels:AddPositionViewModel}"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="Создать новую должность"

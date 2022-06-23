@@ -1,11 +1,14 @@
-﻿namespace AlphaPersonel.ViewModels;
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace AlphaPersonel.ViewModels;
 
 internal class MasterDropViewModel : BaseViewModel
 {
     private readonly Users _user;
 
-    private ObservableCollection<PedagogicalPosition>? _isPedagogical;
-    public ObservableCollection<PedagogicalPosition>? IsPedagogical
+    private IEnumerable<PedagogicalPosition>? _isPedagogical;
+    public IEnumerable<PedagogicalPosition>? IsPedagogical
     {
         get => _isPedagogical;
         private set => Set(ref _isPedagogical, value);
@@ -17,8 +20,8 @@ internal class MasterDropViewModel : BaseViewModel
         set => Set(ref _selectedIsPed, value);
     }
 
-    private ObservableCollection<string>? _typePersons;
-    public ObservableCollection<string>? TypePersons
+    private IEnumerable<string>? _typePersons;
+    public IEnumerable<string>? TypePersons
     {
         get => _typePersons;
         private set => Set(ref _typePersons, value);
@@ -94,15 +97,15 @@ internal class MasterDropViewModel : BaseViewModel
     }
 
     // Массив Приказов
-    private ObservableCollection<Order>? _orders;
-    public ObservableCollection<Order>? Orders
+    private IEnumerable<Order> _orders;
+    public IEnumerable<Order> Orders
     {
         get => _orders;
         private set => Set(ref _orders, value);
     }
     // Выбранный приказ
-    private Order? _selectedOrders;
-    public Order? SelectedOrders
+    private Order _selectedOrders;
+    public Order SelectedOrders
     {
         get => _selectedOrders;
         set => Set(ref _selectedOrders, value);
@@ -154,6 +157,9 @@ internal class MasterDropViewModel : BaseViewModel
 
     private ICommand? _deletePerson;
     public ICommand DeletePerson => _deletePerson ??= new LambdaCommand(DeleteDropPerson, _ => SelectedDropPerson != null);
+
+    private ICommand? _commitApi;
+    public ICommand CommitApi => _commitApi ??= new LambdaCommand(DropPersons , _ => SelectedOrders != null && DaleteWorking != null);
 
 
     private ICommand? _getData;
@@ -211,7 +217,7 @@ internal class MasterDropViewModel : BaseViewModel
             if (SelectedPerson != null)
             {
                 DroPersons.Add(SelectedPerson!);
-                Persons.Remove(SelectedPerson);
+                Persons.Remove(SelectedPerson!);
             }
         }
         catch (Exception ex)
@@ -220,14 +226,52 @@ internal class MasterDropViewModel : BaseViewModel
         }
      
     }
+    private async void DropPersons(object p)
+    {
+        try
+        {
+            if (DroPersons != null)
+            {
+
+
+                object person = new
+                {
+                    id_order = SelectedOrders.Id,
+                    date_drop = DaleteWorking.Value.Date,
+                    order_drop = SelectedOrders.Name,
+                    persons = DroPersons,
+                };
+                await QueryService.JsonSerializeWithToken(_user.Token, "/pers/person/droplist", "POST", person);
+                DroPersons.Clear();
+
+            }
+        }
+        catch (WebException ex)
+        {
+            if (ex.Status == WebExceptionStatus.ProtocolError)
+            {
+                if (ex.Response is HttpWebResponse response)
+                {
+                    using StreamReader reader = new(response.GetResponseStream());
+
+                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+    }
     private void DeleteDropPerson(object p)
     {
         try
         {
             if (SelectedDropPerson != null)
             {
+                Persons.Insert(0,SelectedDropPerson!);
                 DroPersons.Remove(SelectedDropPerson!);
-                Persons.Add(SelectedDropPerson);
             }
         }
         catch (Exception ex)
@@ -242,9 +286,14 @@ internal class MasterDropViewModel : BaseViewModel
 
         try
         {
+            var currentYear = DateTime.Today.Year;
+            var prevYear = DateTime.Today.AddYears(-1);
+
             var idTypeOrder = await QueryService.JsonDeserializeWithObjectAndParam(_user.Token, "/pers/order/type/name", "POST", new TypeOrder { Name = "Увольнение" });
             // Загрузка приказов
-            Orders = await QueryService.JsonDeserializeWithToken<Order>(_user.Token, "/pers/order/get/" + idTypeOrder.Id, "GET");
+            var orders = await QueryService.JsonDeserializeWithToken<Order>(_user.Token, "/pers/order/get/" + idTypeOrder.Id, "GET");
+            // Берем за последние два года , чтобы Combobox сильно не тупил от количества элементов
+            Orders = orders.Where(x => x.DateOrder.Date.Year == currentYear || x.DateOrder.Date.Year == prevYear.Year);
 
         }
         catch (WebException ex)

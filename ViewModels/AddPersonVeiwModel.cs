@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace AlphaPersonel.ViewModels;
 
@@ -254,11 +255,17 @@ internal class AddPersonVeiwModel : BaseViewModel
     {
         try
         {
+            var currentYear = DateTime.Today.Year;
+            var prevYear = DateTime.Today.AddYears(-1);
+
             // Загрузка место работы
             Places = await QueryService.JsonDeserializeWithToken<PlaceOfWork>(_user.Token, "/pers/position/type/place", "GET");
             // Загрузка приказов
             var idTypeOrder = await QueryService.JsonDeserializeWithObjectAndParam(_user.Token, "/pers/order/type/name", "POST", new TypeOrder { Name = "Приём" });
-            Orders = await QueryService.JsonDeserializeWithToken<Order>(_user.Token, "/pers/order/get/" + idTypeOrder.Id, "GET");
+            // Загрузка всех приказов данного типа
+            var orders = await QueryService.JsonDeserializeWithToken<Order>(_user.Token, "/pers/order/get/" + idTypeOrder.Id, "GET");
+            // Берем за последние два года , чтобы Combobox сильно не тупил от количества элементов
+            Orders = orders.Where(x => x.DateOrder.Date.Year == currentYear || x.DateOrder.Date.Year == prevYear.Year);
             //Загрузка должностей
             Positions = await QueryService.JsonDeserializeWithToken<Position>(_user.Token, "/pers/position/get/" + _idDepartment, "GET");
             // загрузка типов контракта

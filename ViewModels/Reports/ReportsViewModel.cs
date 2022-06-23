@@ -284,7 +284,7 @@ internal class ReportsViewModel : BaseViewModel
                 new ()
                 {
                     Name = "Список всех сотрудников(Пенсионеры)",
-                    Url = "/reports/pers/persons/persioner/"
+                    Url = "/reports/pers/persons/persioner"
                 },
                 new ()
                 {
@@ -344,6 +344,11 @@ internal class ReportsViewModel : BaseViewModel
                 },
                 new ()
                 {
+                    Name = "Список доцентов и кандидатов",
+                    Url = "/reports/pers/persons/scince/"
+                },
+                new ()
+                {
                     Name = "Реестер Докторов",
                     Url = "/reports/pers/persons/register_dok/"
                 },
@@ -359,8 +364,18 @@ internal class ReportsViewModel : BaseViewModel
                 },
                 new()
                 {
+                    Name = "Повышение квалификации Совместители(Методистов)",
+                    Url = "/reports/pers/persons/metodist/is_pluralism/"
+                },
+                new()
+                {
                     Name = "Список Профессоров и Докторов",
                     Url = "/reports/pers/persons/doc_prof/"
+                },
+                 new()
+                {
+                    Name = "Список Профессоров и Докторов(Совместители)",
+                    Url = "/reports/pers/persons/doc_prof/is_pluralism/"
                 },
                 new()
                 {
@@ -385,7 +400,7 @@ internal class ReportsViewModel : BaseViewModel
                 new()
                 {
                     Name = "Список всех сотрудников(больше 1 ставки)",
-                    Url = "/reports/pers/persons/responsible/"
+                    Url = "/reports/pers/persons/stavka/"
                 },
                 new()
                 {

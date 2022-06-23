@@ -1,36 +1,38 @@
-﻿using Microsoft.Win32;
-using System.Configuration;
+﻿using System.Configuration;
 
 namespace AlphaPersonel.Services.Api;
 
 internal static class ReportService
 {
     private static readonly string? ApiUrl = ConfigurationManager.AppSettings["api"];
-
-    /*public static void SaveStreamAsFile(string filePath, Stream inputStream, string fileName)
-    {
-        DirectoryInfo info = new(filePath);
-        if (!info.Exists)
-        {
-            info.Create();
-        }
-        string path = Path.Combine(filePath, fileName);
-        using FileStream outputFileStream = new(path, FileMode.Create);
-        inputStream.CopyTo(outputFileStream);
-    }
-    */
-
     private static void SaveReport(Stream inputStream, string reportName)
     {
-        SaveFileDialog sf = new()
+        // Получить путь рабочего стола
+        string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+
+        /*SaveFileDialog sf = new()
         {
             FileName = $"{reportName}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss}",
             Filter = "DocX|*.docx",
             DefaultExt = ".docx",
         };
-        if (sf.ShowDialog() != true) return;
-        using FileStream outputFileStream = new(sf.FileName, FileMode.Create);
-        inputStream.CopyTo(outputFileStream);
+        */
+        //if (sf.ShowDialog() != true) return;
+        if(Directory.Exists(path + $"\\Документы-Программы"))
+        {
+            using FileStream outputFileStream = new(path + $"\\Документы-Программы\\{reportName}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.docx", FileMode.Create);
+            inputStream.CopyTo(outputFileStream);
+        }
+        else
+        {
+            Directory.CreateDirectory(path + $"\\Документы-Программы");
+            using FileStream outputFileStream = new(path + $"\\Документы-Программы\\{reportName}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.docx", FileMode.Create);
+            inputStream.CopyTo(outputFileStream);
+
+        }
+        MessageBox.Show("Отчет создан! Путь:" + path + $"\\Документы-Программы\\{reportName}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.docx");
+       
     }
     public static async Task JsonPostWithToken(object obj, string token, string queryUrl, string httpMethod, string reportName)
     {

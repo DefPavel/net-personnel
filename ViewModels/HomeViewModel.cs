@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using AlphaPersonel.Views.Models;
 using System.Linq;
+using AlphaPersonel.ViewModels.Reports;
+
 namespace AlphaPersonel.ViewModels;
 
 internal class HomeViewModel : BaseViewModel
@@ -312,6 +314,12 @@ internal class HomeViewModel : BaseViewModel
     private ICommand? _openReportContract;
     public ICommand OpenReportContract => _openReportContract ??= new LambdaCommand(OpenReportContracts);
 
+    private ICommand? _openReportContractIsPluralism;
+    public ICommand OpenReportContractIsPluralism => _openReportContractIsPluralism ??= new LambdaCommand(OpenReportContractsIsPluralism);
+
+    private ICommand? _openReportJubilee;
+    public ICommand OpenReportJubilee => _openReportJubilee ??= new LambdaCommand(OpenReportJubilees);
+
     private ICommand? _openMasterReport;
     public ICommand OpenMasterReport => _openMasterReport ??= new LambdaCommand(OpenMasterReportView);
 
@@ -437,12 +445,28 @@ internal class HomeViewModel : BaseViewModel
         view.ShowDialog();
 
     }
-
+   
     private void OpenReportContracts(object p)
     {
         // _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
         InsertReportViewModel viewModel = new("/reports/pers/persons/contract/", "Истечении срока действия трудового договора", _user);
         ReportByPersonInsert view = new() { DataContext = viewModel };
+        view.ShowDialog();
+
+    }
+    private void OpenReportContractsIsPluralism(object p)
+    {
+        // _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
+        InsertReportViewModel viewModel = new("/reports/pers/persons/contract/is_pluralism/", "Истечении срока действия трудового договора(Совместители)", _user);
+        ReportByPersonInsert view = new() { DataContext = viewModel };
+        view.ShowDialog();
+
+    }
+    private void OpenReportJubilees(object p)
+    {
+        // _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
+        ReportViewModelJubilee viewModel = new("/reports/pers/persons/jubilee/", "Список сотрудников юбиляров", _user);
+        RepotViewJubilee view = new() { DataContext = viewModel };
         view.ShowDialog();
 
     }

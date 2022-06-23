@@ -1,4 +1,7 @@
-﻿namespace AlphaPersonel.ViewModels;
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace AlphaPersonel.ViewModels;
 
 internal class AddPositionViewModel : BaseViewModel
 {
@@ -42,38 +45,38 @@ internal class AddPositionViewModel : BaseViewModel
     }
 
     // Массив Должностей
-    private ObservableCollection<Position>? _positions;
-    public ObservableCollection<Position>? Positions
+    private IEnumerable<Position>? _positions;
+    public IEnumerable<Position>? Positions
     {
         get => _positions;
         private set => Set(ref _positions, value);
     }
 
     // Тип контракта
-    private ObservableCollection<TypeContract>? _contracts;
-    public ObservableCollection<TypeContract>? Contracts
+    private IEnumerable<TypeContract>? _contracts;
+    public IEnumerable<TypeContract>? Contracts
     {
         get => _contracts;
         private set => Set(ref _contracts, value);
     }
 
-    private ObservableCollection<Departments>? _departments;
-    public ObservableCollection<Departments>? Departments
+    private IEnumerable<Departments>? _departments;
+    public IEnumerable<Departments>? Departments
     {
         get => _departments;
         private set => Set(ref _departments, value);
     }
 
     // Массив Приказов
-    private ObservableCollection<Order>? _orders;
-    public ObservableCollection<Order>? Orders
+    private IEnumerable<Order>? _orders;
+    public IEnumerable<Order>? Orders
     {
         get => _orders;
         private set => Set(ref _orders, value);
     }
     // Место работы
-    private ObservableCollection<PlaceOfWork>? _places;
-    public ObservableCollection<PlaceOfWork>? Places
+    private IEnumerable<PlaceOfWork>? _places;
+    public IEnumerable<PlaceOfWork>? Places
     {
         get => _places;
         private set => Set(ref _places, value);
@@ -227,13 +230,17 @@ internal class AddPositionViewModel : BaseViewModel
     {
         try
         {
+            var currentYear = DateTime.Today.Year;
+            var prevYear = DateTime.Today.AddYears(-1);
             // Загрузка место работы
             Places = await QueryService.JsonDeserializeWithToken<PlaceOfWork>(_user.Token, "/pers/position/type/place", "GET");
             // загрузка типов контракта
             Contracts = await QueryService.JsonDeserializeWithToken<TypeContract>(_user.Token, "/pers/position/type/contract", "GET");
             // Загрузка приказов
             var idTypeOrder = await QueryService.JsonDeserializeWithObjectAndParam(_user.Token, "/pers/order/type/name", "POST", new TypeOrder { Name = "Перевод" });
-            Orders = await QueryService.JsonDeserializeWithToken<Order>(_user.Token, "/pers/order/get/" + idTypeOrder.Id, "GET");
+            var orders = await QueryService.JsonDeserializeWithToken<Order>(_user.Token, "/pers/order/get/" + idTypeOrder.Id, "GET");
+            // Берем за последние два года , чтобы Combobox сильно не тупил от количества элементов
+            Orders = orders.Where(x => x.DateOrder.Date.Year == currentYear || x.DateOrder.Date.Year == prevYear.Year);
             // Загрузка отделов
             Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user.Token, "/pers/tree/all" , "GET");
         }

@@ -76,6 +76,7 @@
             <StackPanel Grid.Column="1">
                 <Label Content="НПП/Не НПП"/>
                 <ComboBox 
+                    IsEnabled="False"
                     ItemsSource="{Binding IsPedagogical}"
                     SelectedItem="{Binding SelectedIsPed}"
                     DisplayMemberPath="IsPed"
@@ -99,7 +100,7 @@
 
                 <Label Content="Дата назначения"/>
                 <DatePicker  SelectedDate="{Binding DaleteWorking , UpdateSourceTrigger=PropertyChanged}"/>
-                <Button HorizontalAlignment="Right" Content="Отправить"/>
+                <Button Command="{Binding CommitApi}" HorizontalAlignment="Right" Content="Отправить"/>
             </StackPanel>
         </Grid>
         <Grid 
@@ -119,7 +120,7 @@
                 IsReadOnly="True"
                 FontSize="14"
                 SelectedItem="{Binding SelectedPerson}"
-                ItemsSource="{Binding Persons}"
+                ItemsSource="{Binding Persons }"
                 Margin="5"
                 Grid.Row="1">
                 <DataGrid.Columns>
