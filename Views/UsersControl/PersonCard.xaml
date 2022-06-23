@@ -1204,8 +1204,10 @@
                                         />
                                 </StackPanel>
                                 <DataGrid 
+                                    ScrollViewer.CanContentScroll="True" 
+                                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                      FontSize="14"
-                                     ScrollViewer.IsDeferredScrollingEnabled="True"
+                                    
                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
                                     SelectedItem="{Binding SelectedHistory}"
                                     AlternatingRowBackground="#ECEFF1"
@@ -1245,7 +1247,7 @@
                                             </DataGridTemplateColumn.CellEditingTemplate>
                                         </DataGridTemplateColumn>
                                         <DataGridTextColumn
-                                            Width="*"
+                                            Width="200"
                                             Header="Информация"
                                            Binding="{Binding Name ,UpdateSourceTrigger=PropertyChanged}"
                                             />
@@ -2580,7 +2582,7 @@
                         </TabItem>
                         <TabItem 
                               FontSize="13"
-                            Header="Аккадемик/Член-корр.">
+                            Header="Академик/Член-корр.">
                             <Grid Margin="5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
@@ -2676,7 +2678,7 @@
                         </TabItem>
                         <TabItem 
                              FontSize="13"
-                            Header="Медецинское образование">
+                            Header="Медицинское образование">
                             <Grid Margin="5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
