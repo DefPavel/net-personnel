@@ -1813,9 +1813,10 @@
                                     <Label Content="Номер приказа"/>
                                     <ComboBox 
                                         ItemsSource="{Binding OrderOldSurname}"
-                                        DisplayMemberPath="Order"
-                                        SelectedValuePath="Order"
-                                        SelectedValue="{Binding SelectedOldSurname.Order, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+                                        SelectedValue="{Binding SelectedOldSurname.Order, UpdateSourceTrigger=PropertyChanged }"
+                                        DisplayMemberPath="Name"
+                                        SelectedValuePath="Name"
+                                        
                                         />
                                     <StackPanel Orientation="Horizontal">
                                         <Button 

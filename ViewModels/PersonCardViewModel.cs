@@ -351,8 +351,8 @@ internal class PersonCardViewModel : BaseViewModel
     }
 
     // Приказы для смены фамилии
-    private IEnumerable<OldSurname>? _orderOldSurname;
-    public IEnumerable<OldSurname>? OrderOldSurname
+    private IEnumerable<Order>? _orderOldSurname;
+    public IEnumerable<Order>? OrderOldSurname
     {
         get => _orderOldSurname;
         private set => Set(ref _orderOldSurname, value);
@@ -1437,7 +1437,7 @@ internal class PersonCardViewModel : BaseViewModel
             OrderVacations = orderVacation.Where(x => x.DateOrder.Date.Year == currentYear || x.DateOrder.Date.Year == prevYear.Year);
 
             // Приказы для смены фамилии
-            var orderSurname = await QueryService.JsonDeserializeWithToken<OldSurname>(token: _user!.Token, "/pers/order/get/5", "GET");
+            var orderSurname = await QueryService.JsonDeserializeWithToken<Order>(token: _user!.Token, "/pers/order/get/5", "GET");
             OrderOldSurname = orderSurname.Where(x => x.DateOrder.Date.Year == currentYear || x.DateOrder.Date.Year == prevYear.Year);
 
             // Мед.категория 
