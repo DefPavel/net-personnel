@@ -1403,7 +1403,7 @@ internal class PersonCardViewModel : BaseViewModel
         try
         {
             var currentYear = DateTime.Today.Year;
-            var prevYear = DateTime.Today.AddYears(-1);
+            var prevYear = DateTime.Today.AddYears(-2);
 
             IsLoading = true;
             // Справочник отделов

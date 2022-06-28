@@ -1006,6 +1006,7 @@
                                         </Style>
                                         <CollectionViewSource x:Key="ItemsTypeVacations" Source="{Binding TypeVacation}" />
                                         <CollectionViewSource x:Key="ItemsPeriodVacations" Source="{Binding PeriodVacation}" />
+                                        <CollectionViewSource x:Key="ItemsOrderVacations" Source="{Binding OrderVacations}" />
                                     </DataGrid.Resources>
                                     <DataGrid.Columns>
                                         <DataGridComboBoxColumn 
@@ -1053,6 +1054,18 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellEditingTemplate>
                                         </DataGridTemplateColumn>
+
+                                        <DataGridTextColumn
+                                            Binding="{Binding Order}"
+                                            Header="Приказ"/>
+                                        
+                                        <!--<DataGridComboBoxColumn 
+                                            SelectedValueBinding="{Binding Order}"
+                                            SelectedValuePath="Order"
+                                            DisplayMemberPath="Order"
+                                            ItemsSource="{Binding Source={StaticResource ItemsOrderVacations}}"
+                                            Header="Приказ"/>-->
+                                        
                                         <DataGridTextColumn 
                                             Binding="{Binding Residue}"
                                             Header="Остаток"/>
