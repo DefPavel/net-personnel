@@ -302,6 +302,13 @@ internal class HomeViewModel : BaseViewModel
     private ICommand? _openReportInsert;
     public ICommand OpenReportInsert => _openReportInsert ??= new LambdaCommand(OpenReportInsertPerson);
 
+    private ICommand? _openReportInsertOther;
+    public ICommand OpenReportInsertOther => _openReportInsertOther ??= new LambdaCommand(OpenReportInsertPersonIsOther);
+
+    private ICommand? _openReportDeleteOther;
+    public ICommand OpenReportDeleteOther => _openReportDeleteOther ??= new LambdaCommand(OpenReportDropPerson);
+
+
     private ICommand? _openReportDelete;
     public ICommand OpenReportDelete => _openReportDelete ??= new LambdaCommand(OpenReportDropPerson);
 
@@ -418,11 +425,27 @@ internal class HomeViewModel : BaseViewModel
         view.ShowDialog();
 
     }
+    private void OpenReportInsertPersonIsOther(object p)
+    {
+        // _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
+        InsertReportViewModel viewModel = new("/reports/pers/persons/insert/is_pluralism/", "Отчет принятых(Совместителей)", _user!);
+        ReportByPersonInsert view = new() { DataContext = viewModel };
+        view.ShowDialog();
+
+    }
     // Отчет уволенных
     private void OpenReportDropPerson(object p)
     {
         // _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
         InsertReportViewModel viewModel = new("/reports/pers/persons/drop/", "Отчет уволенных", _user);
+        ReportByPersonInsert view = new() { DataContext = viewModel };
+        view.ShowDialog();
+
+    }
+    private void OpenReportDropPersonIsOther(object p)
+    {
+        // _navigationStore.CurrentViewModel = new ReportsViewModel(_navigationStore, _user);
+        InsertReportViewModel viewModel = new("/reports/pers/persons/drop/is_pluralism/", "Отчет уволенных", _user!);
         ReportByPersonInsert view = new() { DataContext = viewModel };
         view.ShowDialog();
 

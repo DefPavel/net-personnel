@@ -129,11 +129,17 @@
                     Command="{Binding OpenReportInsert}"
                     Header="Список принятых сотрудников за период"/>
                 <MenuItem 
+                    Command="{Binding OpenReportInsertOther}"
+                    Header="Список принятых сотрудников(Совместители) за период"/>
+                <MenuItem 
                     Command="{Binding OpenReportRewarding}"
                     Header="Список награжденных сотрудников за период"/>
                 <MenuItem 
                     Command="{Binding OpenReportDelete}"
                     Header="Список уволенных сотрудников за период"/>
+                <MenuItem 
+                    Command="{Binding OpenReportDelete}"
+                    Header="Список уволенных сотрудников(Совместители) за период"/>
                 <MenuItem 
                     Command="{Binding OpenReportVacation}"
                     Header="Список сотрудников не имеющие отпуск за период"/>
