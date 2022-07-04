@@ -21,7 +21,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="60"/>
-            <RowDefinition Height="150"/>
+            <RowDefinition Height="220"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -50,7 +50,7 @@
                     Text="Мастер увольнения" />
 
         <Grid
-            Margin="5"
+            Margin="3"
             Grid.Column="0"
             Grid.Row="1">
 
@@ -99,7 +99,13 @@
                     MinWidth="100"/>
 
                 <Label Content="Дата назначения"/>
-                <DatePicker  SelectedDate="{Binding DaleteWorking , UpdateSourceTrigger=PropertyChanged}"/>
+                <DatePicker  
+                    Padding="2"
+                    Margin="2"
+                    SelectedDate="{Binding DaleteWorking , UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Content="Причина увольнения"/>
+                <TextBox Text="{Binding Informatinon , UpdateSourceTrigger=PropertyChanged}"/>
+
                 <Button Command="{Binding CommitApi}" HorizontalAlignment="Right" Content="Отправить"/>
             </StackPanel>
         </Grid>
@@ -110,7 +116,9 @@
                 <RowDefinition Height="50" />
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0">
+            <StackPanel 
+                Margin="5"
+                Grid.Row="0">
                 <TextBlock FontSize="13" Text="Введите фамилию"/>
                 <TextBox Text="{Binding FilterPerson , UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>

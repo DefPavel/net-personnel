@@ -137,7 +137,7 @@
                     Command="{Binding OpenReportDelete}"
                     Header="Список уволенных сотрудников за период"/>
                 <MenuItem 
-                    Command="{Binding OpenReportDelete}"
+                    Command="{Binding OpenReportDeleteOther}"
                     Header="Список уволенных сотрудников(Совместители) за период"/>
                 <MenuItem 
                     Command="{Binding OpenReportVacation}"

@@ -33,6 +33,13 @@ internal class MasterDropViewModel : BaseViewModel
         set => Set(ref _selectedTypePerson, value);
     }
 
+    private string? _information = "Уволен в связи с истечением срока действия СТД";
+    public string? Informatinon
+    {
+        get => _information;
+        set => Set(ref _information, value);
+    }
+
 
     private ObservableCollection<Persons>? _persons;
     public ObservableCollection<Persons>? Persons
@@ -239,6 +246,7 @@ internal class MasterDropViewModel : BaseViewModel
                     id_order = SelectedOrders.Id,
                     date_drop = DaleteWorking.Value.Date,
                     order_drop = SelectedOrders.Name,
+                    information = Informatinon,
                     persons = DroPersons,
                 };
                 await QueryService.JsonSerializeWithToken(_user.Token, "/pers/person/droplist", "POST", person);
