@@ -1065,6 +1065,8 @@
                                             Binding="{Binding Order}"
                                             Header="Приказ"/>
                                         
+                                       
+
                                         <!--<DataGridComboBoxColumn 
                                             SelectedValueBinding="{Binding Order}"
                                             SelectedValuePath="Order"
@@ -1075,6 +1077,9 @@
                                         <DataGridTextColumn 
                                             Binding="{Binding Residue}"
                                             Header="Остаток"/>
+                                        <DataGridTextColumn
+                                            Binding="{Binding Description}"
+                                            Header="Примечание"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                                 <GridSplitter 
@@ -1124,6 +1129,10 @@
                                     <TextBox 
                                         IsEnabled="False"
                                         Text="{Binding SelectedVacation.Residue , UpdateSourceTrigger=PropertyChanged}"
+                                        />
+                                    <Label Content="Примечание"/>
+                                    <TextBox 
+                                        Text="{Binding SelectedVacation.Description , UpdateSourceTrigger=PropertyChanged}"
                                         />
                                     <StackPanel 
                                         

@@ -38,5 +38,8 @@ internal class Vacation
     [JsonPropertyName("id_person")]
     public int IdPerson { get; set; } = 0;
 
+    [JsonPropertyName("description")]
+    public string Description { get; set; } = string.Empty;
+
 }
 

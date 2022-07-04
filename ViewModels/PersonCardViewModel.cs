@@ -632,8 +632,7 @@ internal class PersonCardViewModel : BaseViewModel
     public ICommand SaveVacation => _saveVacation ??= new LambdaCommand(SaveVacationsPerson, _ => 
     SelectedVacation != null
     && SelectedVacation.Type.Length > 0 
-    && SelectedVacation.Period.Length > 0
-    && SelectedVacation.Order.Length > 0);
+    && SelectedVacation.Period.Length > 0);
 
     private ICommand? _deleteVacation;
     public ICommand DeleteVacation => _deleteVacation ??= new LambdaCommand(DeleteVacationsAsync, _ => SelectedVacation != null);
