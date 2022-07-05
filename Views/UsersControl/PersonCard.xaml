@@ -1259,7 +1259,7 @@
                                             Binding="{Binding Record, UpdateSourceTrigger=PropertyChanged}"
                                             Header="№"
                                            />
-                                        <DataGridTemplateColumn Header="Дата записи">
+                                        <!--<DataGridTemplateColumn Header="Дата записи">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding CreateAt, UpdateSourceTrigger=PropertyChanged, StringFormat='dd.MM.yyyy'}"/>
@@ -1273,9 +1273,13 @@
                                                         SelectedDate="{Binding CreateAt,UpdateSourceTrigger=PropertyChanged}"/>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellEditingTemplate>
-                                        </DataGridTemplateColumn>
+                                        </DataGridTemplateColumn>-->
+                                        <DataGridTextColumn 
+                                            Header="Дата записи"
+                                             Binding="{Binding CreateAt,StringFormat='dd.MM.yyyy' ,UpdateSourceTrigger=PropertyChanged}"
+                                            />
                                         <DataGridTextColumn
-                                            Width="200"
+                                            Width="*"
                                             Header="Информация"
                                            Binding="{Binding Name ,UpdateSourceTrigger=PropertyChanged}"
                                             />
@@ -1285,11 +1289,11 @@
                                            Binding="{Binding Order,UpdateSourceTrigger=PropertyChanged}"
                                             />
                                         <DataGridCheckBoxColumn
-                                            Header="Стаж в ЛГПУ"
+                                            Header="ЛГПУ"
                                             Binding="{Binding IsUniver ,UpdateSourceTrigger=PropertyChanged}"
                                             />
                                         <DataGridCheckBoxColumn
-                                            Header="Стаж Науч.Пед."
+                                            Header="Науч.Пед."
                                             Binding="{Binding IsPedagogical,UpdateSourceTrigger=PropertyChanged}"
                                             />
                                         <DataGridCheckBoxColumn
@@ -1297,19 +1301,19 @@
                                             Binding="{Binding IsScience,UpdateSourceTrigger=PropertyChanged}"
                                             />
                                         <DataGridCheckBoxColumn
-                                            Header="Стаж Библиотеки"
+                                            Header="Библ."
                                             Binding="{Binding IsLibrary,UpdateSourceTrigger=PropertyChanged}"
                                             />
                                         <DataGridCheckBoxColumn
-                                            Header="Стаж Мед."
+                                            Header="Мед."
                                             Binding="{Binding IsMedical,UpdateSourceTrigger=PropertyChanged}"
                                             />
                                         <DataGridCheckBoxColumn
-                                            Header="Стаж Музей"
+                                            Header="Музей"
                                             Binding="{Binding IsMuseum,UpdateSourceTrigger=PropertyChanged}"
                                             />
                                         <DataGridCheckBoxColumn
-                                            Header="Общий стаж"
+                                            Header="Общий"
                                             Binding="{Binding IsOver,UpdateSourceTrigger=PropertyChanged}"
                                             />
                                     </DataGrid.Columns>
