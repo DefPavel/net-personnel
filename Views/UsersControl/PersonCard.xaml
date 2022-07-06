@@ -19,7 +19,7 @@
     </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="26"/>
+            <RowDefinition Height="23"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
@@ -34,9 +34,9 @@
         <!--#region Menu -->
         <Menu 
             FontSize="13"
-            Background="#e0e0e0"
+            Background="White"
             Grid.Row="0" 
-            VerticalAlignment="Center"
+            VerticalAlignment="Top"
             Grid.ColumnSpan="2">
             <MenuItem>
                 <MenuItem.Header>
@@ -156,7 +156,7 @@
                     Command="{Binding OpenReport}"/>
             </MenuItem>
             <MenuItem 
-                 Background="#e0e0e0"
+                Background="White"
                 Command="{Binding OpenMasterReport}"
                 IsEnabled="{Binding IsAdministrator}">
                 <MenuItem.Header>
@@ -188,12 +188,14 @@
             Grid.Column="0"
             Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="55"/>
+                <RowDefinition Height="60"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0">
+            <StackPanel 
+                Margin="5 5 5 0"
+                Grid.Row="0">
                 <Button
                     Command="{Binding GetBack}"
                     Content="Вернуться на главное"/>
@@ -202,7 +204,7 @@
                     Content="Отобразить всех"/>
             </StackPanel>
             <StackPanel 
-                Margin="5 0 5 0"
+                Margin="5 5 5 0"
                 Orientation="Horizontal"
                 Grid.Row="1">
                 <RadioButton Margin="5 0 5 0" IsChecked="True" Content="Обе категории">
@@ -228,16 +230,16 @@
                 </RadioButton>
             </StackPanel>
             <StackPanel 
-              
+                Margin="5 0 5 0"
                 Grid.Row="2">
-                <Separator Margin="5 2 5 0"/>
+                <Separator/>
                 <TextBox
-                     Margin="5 0 5 0"
                     Text="{Binding FilterPerson , UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             <!-- Пока что поставил Index Потому что не в какую не передаётся значение selectedItem из предыдущего VM -->
             <!-- По хорошему можно просто передать данный список и всё!Но пока не выходит,так что делаю через API -->
             <DataGrid
+                Margin="10 5 10 5"
                  FontSize="14"
                 IsReadOnly="True"
                 x:Name="PersonGrid"
@@ -245,8 +247,6 @@
                 VirtualizingStackPanel.VirtualizationMode="Recycling"
                 ItemsSource="{Binding CollectionPerson}"
                 SelectedItem="{Binding SelectedPerson}" 
-                
-                Margin="5"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
                 Grid.Row="3" 
@@ -289,8 +289,11 @@
         </Grid>
         <!--#endregion-->
         <GridSplitter 
-            Width="2"
-            Grid.Row="1" Grid.Column="0"/>
+            Background="White"
+            Width="4"
+            Margin="0 0 0 5"
+            Grid.Row="1" 
+            Grid.Column="0"/>
         <!--#region Content -->
         <Grid 
             Grid.Row="1"

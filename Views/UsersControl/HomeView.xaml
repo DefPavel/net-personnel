@@ -6,11 +6,11 @@
 	xmlns:viewmodels="clr-namespace:AlphaPersonel.ViewModels"
 	xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
 	xmlns:behaviours="clr-namespace:AlphaPersonel.Helpers"
-             d:DataContext="{d:DesignInstance Type=viewmodels:HomeViewModel}"
-             mc:Ignorable="d" 
-             FontFamily="Arial"
-             FontSize="13"
-             d:DesignHeight="450" d:DesignWidth="1000">
+    d:DataContext="{d:DesignInstance Type=viewmodels:HomeViewModel}"
+    mc:Ignorable="d" 
+    FontFamily="Arial"
+    FontSize="13"
+    d:DesignHeight="450" d:DesignWidth="1000">
     <!--Загрузка всех отделов -->
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -19,7 +19,7 @@
     </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="26"/>
+            <RowDefinition Height="23"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="23"/>
@@ -35,9 +35,9 @@
         <!--#region MENU -->
         <Menu 
             FontSize="13"
-            Background="#e0e0e0"
+            Background="White"
             Grid.Row="0" 
-            VerticalAlignment="Center"
+            VerticalAlignment="Top"
             Grid.ColumnSpan="2">
             <MenuItem>
                 <MenuItem.Header>
@@ -157,7 +157,7 @@
                     Command="{Binding OpenReport}"/>
             </MenuItem>
             <MenuItem 
-                 Background="#e0e0e0"
+                Background="White"
                 Command="{Binding OpenMasterReport}"
                 IsEnabled="{Binding IsAdministrator}">
                 <MenuItem.Header>
@@ -274,8 +274,9 @@
         </Grid>
         <!--#endregion-->
         <GridSplitter 
+            Background="White"
             Grid.Row="2"
-            Width="2"
+            Width="4"
             Grid.Column="0"/>
         <!--#region Content -->
         <Grid 
