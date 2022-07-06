@@ -208,7 +208,7 @@ namespace AlphaPersonel.ViewModels
                         count_nobudget = CountNoBudget,
                         date_start_contract = DateContract!,
                         date_end_contract = DateEndContract,
-                        is_pluralism_inner = true,
+                        is_pluralism_inner = IsMain != true,
                         is_main = IsMain,
                         created_at = SelectedOrders.DateOrder,
                         name_departament = SelectedDepartments!.Name,

@@ -13,7 +13,7 @@
         MinHeight="600"
         MinWidth="600"
         Icon="/Assets/mwpf_icon.ico" 
-        Background="#efebe9">
+        >
     <ContentControl
             Content="{Binding CurrentViewModel}">
         <ContentControl.Resources>

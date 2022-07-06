@@ -1,0 +1,64 @@
+﻿<Window x:Class="AlphaPersonel.Views.Models.ChangeDateContractView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewmodels="clr-namespace:AlphaPersonel.ViewModels" 
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        d:DataContext="{d:DesignInstance Type=viewmodels:ChangeDateContractViewModel}"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Height="350"
+        Title="Продление контрактов" 
+        Width="350">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{ Binding GetData }"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid Margin="5">
+        <StackPanel>
+            <TextBlock 
+                Style="{StaticResource Header30}"
+                Text="{Binding Title}"/>
+
+            <Label
+                Content="Выбранная должности"
+                FontWeight="Bold"/>
+            <TextBox 
+                Text="{Binding SelectedPositions.Name}"
+                />
+            <Label 
+                FontWeight="Bold"
+                Content="Дата заключения контракта"/>
+            <DatePicker Margin="4 2 4 2" 
+                        SelectedDate="{Binding SelectedPositions.DateStartContract ,
+                        UpdateSourceTrigger=PropertyChanged}"/>
+            <Label 
+                FontWeight="Bold"
+                Content="Дата окончания контракта"/>
+            <DatePicker Margin="4 2 4 2" 
+                        SelectedDate="{Binding SelectedPositions.DateEndContract ,
+                        UpdateSourceTrigger=PropertyChanged}"/>
+            <Label
+                Content="Выбрать приказ"
+                FontWeight="Bold"/>
+            <ComboBox 
+                    IsEditable="True"
+                    ItemsSource="{Binding Orders}"
+                    DisplayMemberPath="Name"
+                    SelectedValuePath="Name"
+                    SelectedItem="{Binding SelectedOrders}"
+                    SelectedValue="{Binding SelectedOrders.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+            />
+            <Button
+                Command="{Binding CloseWin}"
+                CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                HorizontalAlignment="Right" 
+                Content="Сохранить"/>
+
+
+
+        </StackPanel>
+    </Grid>
+</Window>

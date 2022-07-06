@@ -274,7 +274,7 @@
         </Grid>
         <!--#endregion-->
         <GridSplitter 
-            Background="White"
+            Background="#bdbdbd"
             Grid.Row="2"
             Width="4"
             Grid.Column="0"/>
@@ -901,7 +901,7 @@
         <Separator Grid.Row="3" 
             Grid.Column="0"/>
         <StatusBar 
-            Background="#e0e0e0"
+            Background="#bdbdbd"
             Grid.Row="3" 
             Grid.Column="0"
             Grid.ColumnSpan="2">

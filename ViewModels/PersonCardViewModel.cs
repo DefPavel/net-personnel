@@ -582,6 +582,9 @@ internal class PersonCardViewModel : BaseViewModel
     private ICommand? _openChangePosition;
     public ICommand OpenChangePosition => _openChangePosition ??= new LambdaCommand(ChangePosition, _ => SelectedPerson != null && SelectedPosition != null);
 
+    private ICommand? _openChangeDatePosition;
+    public ICommand OpenChangeDatePosition => _openChangeDatePosition ??= new LambdaCommand(ChangeDatePosition, _ => SelectedPerson != null && SelectedPosition != null);
+
     private ICommand? _openDropPosition;
     public ICommand OpenDropPosition => _openDropPosition ??= new LambdaCommand(DeletePosition, _ => SelectedPerson != null && SelectedPosition != null && SelectedPosition.IsMain != true && SelectedPosition.IsPluralismOter != true);
 
@@ -1066,6 +1069,15 @@ internal class PersonCardViewModel : BaseViewModel
     {
         ChangePositionViewModel viewModel = new(_user!, SelectedPerson! , SelectedPosition!);
         ChangePosition view = new() { DataContext = viewModel };
+        view.ShowDialog();
+        // Обновить данные
+        ApiGetInformationToPerson(p);
+    }
+
+    private void ChangeDatePosition(object p)
+    {
+        ChangeDateContractViewModel viewModel = new(_user!, SelectedPerson!, SelectedPosition!);
+        ChangeDateContractView view = new() { DataContext = viewModel };
         view.ShowDialog();
         // Обновить данные
         ApiGetInformationToPerson(p);

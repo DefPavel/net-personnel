@@ -53,8 +53,8 @@ internal class HomeViewModel : BaseViewModel
         get => _user;
         set => Set(ref _user, value);
     }
-    // Права на изменение данных 
-    public bool IsAdministrator => _user.Grants!.FirstOrDefault(x => x.Name.Contains("изменение"))?.Id == 2; 
+    // Права администратора
+    public bool IsAdministrator => _user.GroupName!.FirstOrDefault(x => x.Name.Contains("root") || x.Name.Contains("Администратор(Personnel)")) != null; 
     public bool IsReadeOnly => !IsAdministrator; // Маленький костыль для свойства только чтения
                                                  // Массив Отделов
     private ObservableCollection<Departments>? _departments;

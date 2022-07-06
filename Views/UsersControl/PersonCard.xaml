@@ -6,12 +6,11 @@
 	xmlns:viewmodels="clr-namespace:AlphaPersonel.ViewModels"
 	xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
 	xmlns:heplper="clr-namespace:AlphaPersonel.Helpers"
-             heplper:InputBindingsBehavior.TakesInputBindingPrecedence="True"
-             d:DataContext="{d:DesignInstance Type=viewmodels:PersonCardViewModel}"
-             mc:Ignorable="d" 
-             FontSize="13"
-            
-             d:DesignHeight="950" d:DesignWidth="1100">
+    heplper:InputBindingsBehavior.TakesInputBindingPrecedence="True"
+    d:DataContext="{d:DesignInstance Type=viewmodels:PersonCardViewModel}"
+    mc:Ignorable="d" 
+    FontSize="13"         
+    d:DesignHeight="950" d:DesignWidth="1100">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{ Binding LoadedListPerson }"/>
@@ -289,7 +288,7 @@
         </Grid>
         <!--#endregion-->
         <GridSplitter 
-            Background="White"
+            Background="#bdbdbd"
             Width="4"
             Margin="0 0 0 5"
             Grid.Row="1" 
@@ -670,6 +669,7 @@
                                                         Height="13" />
                                             </Canvas>
                                         </Button>
+               
                                         <Button Command="{Binding OpenChangePosition}">
                                             <Button.ToolTip>
                                                 <ToolTip>
@@ -683,6 +683,23 @@
                                                         Stretch="Uniform"
                                                         Fill="#444444"
                                                         Data="M21,9L17,5V8H10V10H17V13M7,11L3,15L7,19V16H14V14H7V11Z"
+                                                        Width="13" 
+                                                        Height="13" />
+                                            </Canvas>
+                                        </Button>
+                                        <Button Command="{Binding OpenChangeDatePosition}">
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    Продление контрактов
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                            <Canvas 
+                                                        Height="13"
+                                                        Width="13">
+                                                <Path
+                                                        Stretch="Uniform"
+                                                        Fill="#444444"
+                                                        Data="M19,19H5V8H19M19,3H18V1H16V3H8V1H6V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M16.53,11.06L15.47,10L10.59,14.88L8.47,12.76L7.41,13.82L10.59,17L16.53,11.06Z"
                                                         Width="13" 
                                                         Height="13" />
                                             </Canvas>
