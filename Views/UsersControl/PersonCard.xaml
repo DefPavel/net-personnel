@@ -834,7 +834,7 @@
                                                 SelectedValuePath="Name"
                                                 DisplayMemberPath="Name"
                                                 ItemsSource="{Binding Source={StaticResource ItemsTypePlace}}"/>-->
-                                            <DataGridTemplateColumn Header="Дата увольнения">
+                                            <!--<DataGridTemplateColumn Header="Дата увольнения">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <TextBlock Text="{Binding DateDrop, UpdateSourceTrigger=PropertyChanged, StringFormat='dd.MM.yyyy'}"/>
@@ -848,7 +848,7 @@
                                                             SelectedDate="{Binding DateDrop, UpdateSourceTrigger=PropertyChanged}"/>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellEditingTemplate>
-                                            </DataGridTemplateColumn>
+                                            </DataGridTemplateColumn>-->
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </Grid>
@@ -1317,7 +1317,7 @@
                                             Binding="{Binding IsPedagogical,UpdateSourceTrigger=PropertyChanged}"
                                             />
                                         <DataGridCheckBoxColumn
-                                            Header="Стаж Научный"
+                                            Header="Науч"
                                             Binding="{Binding IsScience,UpdateSourceTrigger=PropertyChanged}"
                                             />
                                         <DataGridCheckBoxColumn
