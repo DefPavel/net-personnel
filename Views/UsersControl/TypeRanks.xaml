@@ -82,9 +82,7 @@
             ScrollViewer.IsDeferredScrollingEnabled="True"
             AlternatingRowBackground="#ECEFF1"
             FontSize="14"
-            AutoGenerateColumns="False"
-            CanUserAddRows="False"
-            
+            AutoGenerateColumns="False"        
             ItemsSource="{Binding CollectionDepart}"
             SelectedItem="{Binding SelectedRank}"
             Margin="10"         

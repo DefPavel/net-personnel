@@ -4,7 +4,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:viewmodels="clr-namespace:AlphaPersonel.ViewModels"
-	xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+	xmlns:i="http://schemas.microsoft.com/xaml/behaviors"       
 	xmlns:behaviours="clr-namespace:AlphaPersonel.Helpers"
     d:DataContext="{d:DesignInstance Type=viewmodels:HomeViewModel}"
     mc:Ignorable="d" 
@@ -299,6 +299,13 @@
                     <TabControl>
                         <TabItem Header="Информация о подразделении">
                             <Grid Margin="5">
+                                <Grid.InputBindings>
+                                    <KeyBinding
+                                        Modifiers="Ctrl"
+                                        Key="S"
+                                        Command="{Binding RenameDepartment}" 
+                                    />              
+                                </Grid.InputBindings>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="*"/>
@@ -417,6 +424,13 @@
                         <TabItem 
                              Header="Штатные должности">
                             <Grid Margin="5">
+                                <Grid.InputBindings>
+                                    <KeyBinding
+                                        Modifiers="Ctrl"
+                                        Key="S"
+                                        Command="{Binding SavePosition}" 
+                                        />
+                                </Grid.InputBindings>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
@@ -431,14 +445,10 @@
                                               Margin="5"
                                               ItemsSource="{Binding Positions}"
                                               SelectedValue="{Binding SelectedPosition , UpdateSourceTrigger=PropertyChanged }"
-                                              IsReadOnly="True"
+ 
                                               AutoGenerateColumns="False">
-                                        <DataGrid.Columns>
-                                            <DataGridTextColumn
-                                            Header="Наименование Должности"
-                                            Binding="{Binding Name}"/>
-                                        </DataGrid.Columns>
                                         <DataGrid.Resources>
+                                            <CollectionViewSource x:Key="ItemsPositions" Source="{Binding TypePosition}" />
                                             <Style TargetType="{x:Type DataGridCell}">
                                                 <Style.Triggers>
                                                     <Trigger Property="DataGridCell.IsSelected" Value="True">
@@ -447,6 +457,20 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </DataGrid.Resources>
+                                        <DataGrid.Columns>
+                                            <!--<DataGridTextColumn
+                                            Header="Наименование Должности"
+                                            Binding="{Binding Name}"/> -->
+                                            <DataGridComboBoxColumn 
+                                                        Header="Должность"
+                                                        SelectedValueBinding="{Binding Name , UpdateSourceTrigger=PropertyChanged}"
+                                                        SelectedValuePath="Name"
+                                                        DisplayMemberPath="Name"
+                                                        ItemsSource="{Binding Source={StaticResource ItemsPositions}}"
+                                                />          
+                                        </DataGrid.Columns>
+                                     
+
                                     </DataGrid>
                                 </Grid>
                                 <GridSplitter Grid.Column="0" Width="3"/>
@@ -469,7 +493,7 @@
                                     <TextBlock 
                                         Grid.Column="0"
                                         Grid.Row="0"
-                                        Text="Должность:"/>
+                                        Text="{Binding SelectedPosition.Id}"/>
                                     <!-- <ComboBox
                                         Grid.Row="0"
                                         Grid.Column="1"

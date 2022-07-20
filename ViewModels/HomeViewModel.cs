@@ -738,6 +738,15 @@ internal class HomeViewModel : BaseViewModel
         {
             var newSelectedPosition = SelectedPosition!;
 
+            if(SelectedPosition.HolidayLimit == 0 || SelectedPosition.HolidayLimit is null)
+            {
+                SelectedPosition.HolidayLimit = 28;
+            }
+            if (SelectedPosition.DepartmentName.Length == 0)
+            {
+                SelectedPosition.DepartmentName = SelectedItem!.Name;
+
+            }
             if (SelectedPosition!.Id > 0)
             {
                 SelectedPosition.IsPed = RadioIsPed;

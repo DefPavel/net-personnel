@@ -81,9 +81,7 @@
             ScrollViewer.IsDeferredScrollingEnabled="True"
             AlternatingRowBackground="#ECEFF1"
              FontSize="14"
-            AutoGenerateColumns="False"
-            CanUserAddRows="False"
-           
+            AutoGenerateColumns="False"   
             ItemsSource="{Binding CollectionDepart}"
             SelectedItem="{Binding SelectedPosition}"
             Margin="10"         
@@ -123,18 +121,13 @@
                     SpellCheck.IsEnabled="True" 
                     Language="ru-ru" 
                     Text="{Binding SelectedPosition.Name , UpdateSourceTrigger=PropertyChanged}" />
-                <Label Content="Лимит Отпусков"/>
-                <TextBox 
-                    SpellCheck.IsEnabled="True" 
-                    Language="ru-ru" 
-                    Text="{Binding SelectedPosition.LimitHoliday , UpdateSourceTrigger=PropertyChanged}"/>
                 <Label Content="В родительном падеже"/>
                 <TextBox 
                     SpellCheck.IsEnabled="True" 
                     Language="ru-ru" 
                     Text="{Binding SelectedPosition.NameGenitive , UpdateSourceTrigger=PropertyChanged}"/>
 
-                <StackPanel Margin="0 5 0 0"  Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="4">
+                <!--<StackPanel Margin="0 5 0 0"  Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="4">
 
                     <RadioButton
                         IsChecked="{Binding RadioIsPed}"
@@ -143,6 +136,7 @@
                         IsChecked="{Binding RadioIsNoPed}"
                         Content="Ремонто строительная и обслуживающая"/>
                 </StackPanel>
+                -->
 
                 <StackPanel Margin="0 5 5 5" Orientation="Horizontal">
                     <Button Command="{Binding Add}" CommandParameter="{Binding SelectedPosition}" Content="Создать"/>

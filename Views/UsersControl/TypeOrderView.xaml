@@ -82,9 +82,7 @@
         <DataGrid
              ScrollViewer.IsDeferredScrollingEnabled="True"
             AlternatingRowBackground="#ECEFF1"
-           
             AutoGenerateColumns="False"
-            CanUserAddRows="False"
              FontSize="14"
             ItemsSource="{Binding TypeOrders}"
             SelectedItem="{Binding SelectedOrder}"

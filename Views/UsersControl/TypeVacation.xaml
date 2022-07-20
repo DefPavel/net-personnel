@@ -85,7 +85,6 @@
             AlternatingRowBackground="#ECEFF1"
            
             AutoGenerateColumns="False"
-            CanUserAddRows="False"
             FontSize="14"
             ItemsSource="{Binding CollectionDepart}"
             SelectedItem="{Binding SelectedTypeVacation}"

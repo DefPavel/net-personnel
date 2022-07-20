@@ -79,10 +79,8 @@
         <DataGrid
             ScrollViewer.IsDeferredScrollingEnabled="True"
             AlternatingRowBackground="#ECEFF1"
-             FontSize="14"
+            FontSize="14"
             AutoGenerateColumns="False"
-            CanUserAddRows="False"
-           
             ItemsSource="{Binding CollectionDepart}"
             SelectedItem="{Binding SelectedType}"
             Margin="10"         

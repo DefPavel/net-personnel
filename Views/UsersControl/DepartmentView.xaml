@@ -84,7 +84,6 @@
             AlternatingRowBackground="#ECEFF1"
             FontSize="14"
             AutoGenerateColumns="False"
-            CanUserAddRows="False"
             ItemsSource="{Binding CollectionDepart}"
             SelectedItem="{Binding SelectedDepartment}"
             Margin="10"         

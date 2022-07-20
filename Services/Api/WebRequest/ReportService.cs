@@ -1,10 +1,14 @@
 ﻿using System.Configuration;
+using System.Diagnostics;
 
 namespace AlphaPersonel.Services.Api;
 
 internal static class ReportService
 {
     private static readonly string? ApiUrl = ConfigurationManager.AppSettings["api"];
+
+    private static readonly string? DocxUrl = ConfigurationManager.AppSettings["docx"];
+
     private static void SaveReport(Stream inputStream, string reportName)
     {
         // Получить путь рабочего стола
@@ -19,20 +23,25 @@ internal static class ReportService
         };
         */
         //if (sf.ShowDialog() != true) return;
-        if(Directory.Exists(path + $"\\Документы-Программы"))
+        var file = path + $"\\Документы-Программы\\{reportName.Replace(" ", "_")}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.docx";
+        if (Directory.Exists(path + $"\\Документы-Программы"))
         {
-            using FileStream outputFileStream = new(path + $"\\Документы-Программы\\{reportName}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.docx", FileMode.Create);
+            using FileStream outputFileStream = new(file, FileMode.Create);
             inputStream.CopyTo(outputFileStream);
         }
         else
         {
+            
             Directory.CreateDirectory(path + $"\\Документы-Программы");
-            using FileStream outputFileStream = new(path + $"\\Документы-Программы\\{reportName}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.docx", FileMode.Create);
+            using FileStream outputFileStream = new(file, FileMode.Create);
             inputStream.CopyTo(outputFileStream);
 
         }
-        MessageBox.Show("Отчет создан! Путь:" + path + $"\\Документы-Программы\\{reportName}_{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.docx");
-       
+        inputStream.Dispose();
+        //OLD "C:\Program Files\Microsoft Office\Office14\WINWORD.EXE" 
+        //NEW "C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE"
+        if(DocxUrl != null)
+            _ = Process.Start(DocxUrl, file);
     }
     public static async Task JsonPostWithToken(object obj, string token, string queryUrl, string httpMethod, string reportName)
     {

@@ -1317,7 +1317,7 @@
                                             Binding="{Binding IsPedagogical,UpdateSourceTrigger=PropertyChanged}"
                                             />
                                         <DataGridCheckBoxColumn
-                                            Header="Стаж Научный"
+                                            Header="Научный"
                                             Binding="{Binding IsScience,UpdateSourceTrigger=PropertyChanged}"
                                             />
                                         <DataGridCheckBoxColumn
@@ -1345,6 +1345,8 @@
                                         Margin="5"
                                         Grid.Column="1"
                                         Grid.Row="1">
+                                    <Label Content="Номер записи "/>
+                                    <TextBox Text="{Binding SelectedHistory.Record,UpdateSourceTrigger=PropertyChanged}"/>
                                     <Label Content="Информация о записи "/>
                                     <TextBox Text="{Binding SelectedHistory.Name,UpdateSourceTrigger=PropertyChanged}"/>
                                     <Label Content="№ приказа "/>

@@ -2,6 +2,8 @@
 internal class Position
 {
     [JsonPropertyName("id")] public int Id { get; set; }
+
+    [JsonPropertyName("id_type")] public int IdType { get; set; }
     // Рабочий телефон
     [JsonPropertyName("phone")] public string Phone { get; set; } = string.Empty;
     // Навзание должности

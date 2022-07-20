@@ -133,15 +133,17 @@ internal class OrderViewModel : BaseViewModel
             if (SelectedOrder!.Id > 0)
             {
                 //Изменить уже текущие данные
-                await QueryService.JsonSerializeWithToken(token: _user.Token, "/pers/order/add", "POST", SelectedOrder);
+                await QueryService.JsonSerializeWithToken(token: _user.Token, "/pers/order/rename/" + SelectedOrder.Id, "POST", SelectedOrder);
             }
             else
             {
                 // Создать новую запись отдела 
                 await QueryService.JsonSerializeWithToken(token: _user.Token, "/pers/order/add", "POST", SelectedOrder);
-                // Обновить данные
-                Orders = await QueryService.JsonDeserializeWithToken<Order>(_user.Token, "/pers/order/get", "GET");
+                
             }
+            // Обновить данные
+            Orders = await QueryService.JsonDeserializeWithToken<Order>(_user.Token, "/pers/order/get", "GET");
+
             _ = MessageBox.Show("Данные успешно сохраненны");
         }
         // Проверка токена
