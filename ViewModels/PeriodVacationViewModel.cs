@@ -97,6 +97,11 @@ internal class PeriodVacationViewModel : BaseViewModel
         try
         {
             PeriodVacations = await QueryService.JsonDeserializeWithToken<PeriodVacation>(_user.Token, "/pers/vacation/period/get", "GET");
+
+            if (PeriodVacations.Count > 0)
+            {
+                SelectedPeriod = PeriodVacations[0];
+            }
         }
         // Проверка токена
         catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)

@@ -107,8 +107,10 @@ internal class DepartmentViewModel : BaseViewModel
 
             Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user.Token, "/pers/tree/all", "GET");
 
-            //RootDepartments = await QueryService.JsonDeserializeWithToken<Departments>(_user!.Token, "/pers/tree/all", "GET");
-           // RootDepartments.Insert(0, new Departments { Name = "Не указано", RootTree = "Не указано" });
+            if(Departments.Count > 0)
+            {
+                SelectedDepartment = Departments[0];
+            }
         }
         catch (WebException ex)
         {

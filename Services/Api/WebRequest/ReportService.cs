@@ -39,7 +39,7 @@ internal static class ReportService
         }
         inputStream.Dispose();
         //OLD "C:\Program Files\Microsoft Office\Office14\WINWORD.EXE" 
-        //NEW "C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE"
+        //NEW "C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE"
         if(DocxUrl != null)
             _ = Process.Start(DocxUrl, file);
     }

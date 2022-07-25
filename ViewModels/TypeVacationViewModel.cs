@@ -195,6 +195,11 @@ internal class TypeVacationViewModel : BaseViewModel
             // Загрузить массив типов приказов
             TypeVacations = await QueryService.JsonDeserializeWithToken<Models.TypeVacation>(_user.Token, "/pers/vacation/type/get", "GET");
 
+            if(TypeVacations.Count > 0)
+            {
+                SelectedTypeVacation = TypeVacations[0];
+            }
+
 
         }
         // Проверка токена

@@ -110,6 +110,11 @@ internal class TypePositionViewModel : BaseViewModel
         try
         {
             TypePosition = await QueryService.JsonDeserializeWithToken<TypePosition>(_user.Token, "/pers/position/type/position", "GET");
+
+            if(TypePosition.Count > 0)
+            {
+                SelectedPosition = TypePosition[0];
+            }
         }
         // Проверка токена
         catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)

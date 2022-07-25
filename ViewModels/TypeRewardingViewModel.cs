@@ -190,6 +190,11 @@ internal class TypeRewardingViewModel : BaseViewModel
         {
             // Загрузить сами приказы
             TypeRewardings = await QueryService.JsonDeserializeWithToken<TypeRewarding>(_user.Token, "/pers/rewarding/type/get", "GET");
+
+            if(TypeRewardings.Count > 0)
+            {
+                SelectedType = TypeRewardings[0];
+            }
         }
         // Проверка токена
         catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)

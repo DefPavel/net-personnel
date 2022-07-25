@@ -8,7 +8,7 @@ internal class TypeOrderViewModel : BaseViewModel
 
     public TypeOrderViewModel(NavigationStore navigationStore, Users user)
     {
-        this._navigationStore = navigationStore;
+        _navigationStore = navigationStore;
         _user = user;
     }
 
@@ -195,6 +195,10 @@ internal class TypeOrderViewModel : BaseViewModel
             // Загрузить массив типов приказов
             TypeOrders = await QueryService.JsonDeserializeWithToken<TypeOrder>(_user.Token, "/pers/order/type/get", "GET");
 
+            if(TypeOrders.Count > 0)
+            {
+                SelectedOrder = TypeOrders[0];
+            }
 
         }
         // Проверка токена

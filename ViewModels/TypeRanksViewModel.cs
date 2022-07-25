@@ -191,6 +191,11 @@ internal class TypeRanksViewModel : BaseViewModel
         try
         {
             TypeRank = await QueryService.JsonDeserializeWithToken<TypeRank>(_user.Token, "/pers/rank/type/all", "GET");
+
+            if(TypeRank.Count > 0)
+            {
+                SelectedRank = TypeRank[0];
+            }
         }
         // Проверка токена
         catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)

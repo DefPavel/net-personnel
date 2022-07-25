@@ -71,6 +71,10 @@ internal class Persons
     [JsonPropertyName("type_passport")]
         public string TypePassport { get; set; } = string.Empty;
 
+    [JsonPropertyName("position_pluralist")]
+    public string PositionPluralist { get; set; } = string.Empty;
+
+
     #endregion
 
     #region Bool 

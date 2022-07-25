@@ -469,6 +469,8 @@ internal class PersonCardViewModel : BaseViewModel
             {
                 RadioIsFemale = true;
             }
+            // SaveMainInfoByPerson(_selectedPerson);
+            
         }
     }
     #endregion
@@ -526,7 +528,7 @@ internal class PersonCardViewModel : BaseViewModel
     public ICommand OpenReportDelete => _openReportDelete ??= new LambdaCommand(OpenReportDropPerson);
 
     private ICommand? _openReportDeleteOther;
-    public ICommand OpenReportDeleteOther => _openReportDeleteOther ??= new LambdaCommand(OpenReportDropPerson);
+    public ICommand OpenReportDeleteOther => _openReportDeleteOther ??= new LambdaCommand(OpenReportDropPersonIsOther);
 
 
     private ICommand? _openReportRewarding;
@@ -1137,9 +1139,60 @@ internal class PersonCardViewModel : BaseViewModel
             IsLoading = true;
             // Информация о сотруднике
             SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(token: _user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
+
+            //Служебные перемещения 
+            if(SelectedPerson!.ArrayMove?.Count > 0)
+            {
+                SelectedMove = SelectedPerson.ArrayMove[0];
+            }
+            //Отпуска 
+            if (SelectedPerson!.ArrayVacation?.Count > 0)
+            {
+                SelectedVacation = SelectedPerson.ArrayVacation[0];
+            }
+            // Образование
+            if (SelectedPerson!.ArrayEducation?.Count > 0)
+            {
+                SelectedEducation = SelectedPerson.ArrayEducation[0];
+            }
+            // Члены/корре.
+            if (SelectedPerson!.ArrayMeberAcademic?.Count > 0)
+            {
+                SeletedMemberAcademic = SelectedPerson.ArrayMeberAcademic[0];
+            }
+
+            if (SelectedPerson!.ArrayAcademicTitle?.Count > 0)
+            {
+                SelectedTitle = SelectedPerson.ArrayAcademicTitle[0];
+            }
+            // Повышение квалификации
+            if (SelectedPerson!.ArrayQualification?.Count > 0)
+            {
+                SelectedQualification = SelectedPerson.ArrayQualification[0];
+            }
+            // Научные степени
+            if (SelectedPerson!.ArrayScientificDegree?.Count > 0)
+            {
+                SeletedDegree = SelectedPerson.ArrayScientificDegree[0];
+            }
+
+            // Документы
+            if (SelectedPerson!.ArrayDocuments?.Count > 0)
+            {
+                SelectedDocument = SelectedPerson.ArrayDocuments[0];
+            }
+
+            // Награждения
+            if (SelectedPerson!.ArrayRewarding?.Count > 0)
+            {
+                SelectedRewarding = SelectedPerson.ArrayRewarding[0];
+            }
+
             // После получение информации рассчитать стаж
             if (SelectedPerson!.HistoryEmployment?.Count > 0)
             {
+                // Трудовая
+                SelectedHistory = SelectedPerson.HistoryEmployment[0];
                 StageIsOver = ServiceWorkingExperience.GetStageIsOver(SelectedPerson.HistoryEmployment , DateTime.Now);
                 StageIsUniver = ServiceWorkingExperience.GetStageIsUniver(SelectedPerson.HistoryEmployment, DateTime.Now);
                 StageIsScience = ServiceWorkingExperience.GetStageIsScience(SelectedPerson.HistoryEmployment, DateTime.Now);
@@ -1149,6 +1202,7 @@ internal class PersonCardViewModel : BaseViewModel
                 StageIsLibrary = ServiceWorkingExperience.GetStageIsLibrary(SelectedPerson.HistoryEmployment, DateTime.Now);
 
             }
+
             IsLoading = false;
         }
         catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
@@ -1262,6 +1316,7 @@ internal class PersonCardViewModel : BaseViewModel
                 phone_lug = SelectedPerson.PhoneLugakom,
                 date_to_working = SelectedPerson.DateWorking,
                 description = SelectedPerson.Description,
+                position_pluralist = SelectedPerson.PositionPluralist,
             };
 
             await QueryService.JsonSerializeWithToken(token: _user!.Token,
@@ -1278,11 +1333,13 @@ internal class PersonCardViewModel : BaseViewModel
         }
         catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
         {
+            IsLoading = false;
             _ = MessageBox.Show("Скорее всего время токена истекло! ", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             _navigationStore.CurrentViewModel = new LoginViewModel(_navigationStore);
         }
         catch (WebException ex)
         {
+            IsLoading = false;
 
             if (ex.Status == WebExceptionStatus.ProtocolError)
             {

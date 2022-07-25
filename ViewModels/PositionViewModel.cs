@@ -143,6 +143,11 @@ internal class PositionViewModel : BaseViewModel
             Department = await QueryService.JsonDeserializeWithToken<Departments>(_user.Token, "/pers/tree/all", "GET");
 
             TypePosition = await QueryService.JsonDeserializeWithToken<TypePosition>(_user.Token, "/pers/position/type/position", "GET");
+
+            if(Positions.Count > 0)
+            {
+                SelectedPosition = Positions[0];
+            }
         }
         // Проверка токена
         catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)

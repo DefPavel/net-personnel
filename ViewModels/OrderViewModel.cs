@@ -100,6 +100,11 @@ internal class OrderViewModel : BaseViewModel
             Orders = await QueryService.JsonDeserializeWithToken<Order>(_user.Token, "/pers/order/get", "GET");
             // Загрузить массив типов приказов
             TypeOrders = await QueryService.JsonDeserializeWithToken<TypeOrder>(_user.Token, "/pers/order/type/get", "GET");
+
+            if (Orders.Count > 0)
+            {
+                SelectedOrder = Orders[0];
+            }
         }
         // Проверка токена
         catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
