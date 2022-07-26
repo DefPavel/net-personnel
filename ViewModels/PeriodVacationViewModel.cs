@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-
 namespace AlphaPersonel.ViewModels;
 internal class PeriodVacationViewModel : BaseViewModel
 {
@@ -73,16 +72,16 @@ internal class PeriodVacationViewModel : BaseViewModel
     public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack);
 
     private ICommand? _loadedPeriod;
-    public ICommand LoadedPeriod => _loadedPeriod ??= new LambdaCommand(ApiGetPeriod);
+    public ICommand LoadedPeriod => _loadedPeriod ??= new LambdaAsyncCommand(ApiGetPeriod);
 
     private ICommand? _addNew;
     public ICommand AddNew => _addNew ??= new LambdaCommand(AddPeriod);
 
     private ICommand? _save;
-    public ICommand Save => _save ??= new LambdaCommand(SavePeriod,_ => SelectedPeriod is not null);
+    public ICommand Save => _save ??= new LambdaAsyncCommand(SavePeriod,_ => SelectedPeriod is not null);
 
     private ICommand? _delete;
-    public ICommand Delete => _delete ??= new LambdaCommand(DeletePeriod, _ => PeriodVacations != null && SelectedPeriod is not null);
+    public ICommand Delete => _delete ??= new LambdaAsyncCommand(DeletePeriod, _ => PeriodVacations != null && SelectedPeriod is not null);
 
     #endregion
 
@@ -91,8 +90,7 @@ internal class PeriodVacationViewModel : BaseViewModel
     {
         _navigationStore.CurrentViewModel = new HomeViewModel(_user, _navigationStore);
     }
-
-    private async void ApiGetPeriod(object p)
+    private async Task ApiGetPeriod(object p)
     {
         try
         {
@@ -127,7 +125,6 @@ internal class PeriodVacationViewModel : BaseViewModel
         }
 
     }
-
     private void AddPeriod(object p)
     {
 
@@ -149,8 +146,7 @@ internal class PeriodVacationViewModel : BaseViewModel
 
 
     }
-
-    private async void DeletePeriod(object p)
+    private async Task DeletePeriod(object p)
     {
         try
         {
@@ -184,8 +180,7 @@ internal class PeriodVacationViewModel : BaseViewModel
             }
         }
     }
-
-    private async void SavePeriod(object p)
+    private async Task SavePeriod(object p)
     {
         try
         {
@@ -228,9 +223,6 @@ internal class PeriodVacationViewModel : BaseViewModel
         }
 
     }
-
-
-
     #endregion
 }
 

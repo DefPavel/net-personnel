@@ -39,7 +39,6 @@ internal class DeletePersonViewModel : BaseViewModel
     }
 
     #endregion
-
     public DeletePersonViewModel(string title ,Users users, Persons persons ,Departments department)
     {
         _title = title;
@@ -56,6 +55,7 @@ internal class DeletePersonViewModel : BaseViewModel
     public ICommand CloseWin => _closeWin ??= new LambdaCommand(CloseWindow);
 
     #endregion
+    
     #region логика
 
     private async void CloseWindow(object win)

@@ -9,7 +9,7 @@ internal class SearchViewModel : BaseViewModel
     public Users? User
     {
         get => _user;
-        set => Set(ref _user, value);
+        private set => Set(ref _user, value);
     }
 
     public SearchViewModel(NavigationStore navigationStore, Users user)
@@ -65,35 +65,28 @@ internal class SearchViewModel : BaseViewModel
     }
 
     #region Команды
-
     // Команда поиска сотрудника
     private ICommand? _searchPerson;
     // Лямбда Команда 
-    public ICommand SearchPerson => _searchPerson ??= new LambdaCommand(SearchItemPersonAsync, CanSearchPerson);
+    public ICommand SearchPerson => _searchPerson ??= new LambdaAsyncCommand(SearchItemPersonAsync, CanSearchPerson);
     // Команда поиска сотрудника
     private ICommand? _searchDepartment;
     // Лямбда Команда 
-    public ICommand SearchDepartment => _searchDepartment ??= new LambdaCommand(SearchItemDepartment, CanSearchDepartment);
-
+    public ICommand SearchDepartment => _searchDepartment ??= new LambdaAsyncCommand(SearchItemDepartment, CanSearchDepartment);
     private ICommand? _getToMain;
     public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack);
-
     private ICommand? _openPersonCard;
     public ICommand OpenPersonCard => _openPersonCard ??= new LambdaCommand(OpenPersonCardView);
-
     #endregion
 
     #region Логика
     private bool CanSearchPerson(object arg) => !string.IsNullOrEmpty(QueryPerson);
     private bool CanSearchDepartment(object arg) => !string.IsNullOrEmpty(QueryDepartment);
-
-
     private void OpenPersonCardView(object p)
     {
         _navigationStore.CurrentViewModel = new PersonCardViewModel(_user!, _navigationStore, SelectedPerson!, SelectedPerson!.IdDepartment);
     }
-
-    private async void SearchItemDepartment(object obj)
+    private async Task SearchItemDepartment(object p)
     {
         try
         {
@@ -124,13 +117,11 @@ internal class SearchViewModel : BaseViewModel
             }
         }
     }
-
     private void GetBack(object p)
     {
         _navigationStore.CurrentViewModel = new HomeViewModel(_user!, _navigationStore);
     }
-
-    private async void SearchItemPersonAsync(object obj)
+    private async Task SearchItemPersonAsync(object p)
     {
         try
         {

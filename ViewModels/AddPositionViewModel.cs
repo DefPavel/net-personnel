@@ -127,13 +127,13 @@ internal class AddPositionViewModel : BaseViewModel
     }
 
     private ICommand? _getData;
-    public ICommand GetData => _getData ??= new LambdaCommand(LoadedApi);
+    public ICommand GetData => _getData ??= new LambdaAsyncCommand(LoadedApi);
 
     private ICommand? _getPosition;
-    public ICommand GetPosition => _getPosition ??= new LambdaCommand(LoadedPositions);
+    public ICommand GetPosition => _getPosition ??= new LambdaAsyncCommand(LoadedPositions);
 
     private ICommand? _closeWin;
-    public ICommand CloseWin => _closeWin ??= new LambdaCommand(CloseWindow, _ => 
+    public ICommand CloseWin => _closeWin ??= new LambdaAsyncCommand(CloseWindow, _ => 
     SelectedOrders != null 
     && SelectedDepartments != null 
     && SelectedContract != null
@@ -141,7 +141,7 @@ internal class AddPositionViewModel : BaseViewModel
     );
 
 
-    private async void LoadedPositions(object p)
+    private async Task LoadedPositions(object p)
     {
         try
         {
@@ -171,7 +171,7 @@ internal class AddPositionViewModel : BaseViewModel
         }
     }
 
-    private async void CloseWindow(object win)
+    private async Task CloseWindow(object win)
     {
         if (win is not Window w) return;
         try
@@ -226,7 +226,7 @@ internal class AddPositionViewModel : BaseViewModel
     }
 
     // Загрузить все справочники
-    private async void LoadedApi(object p)
+    private async Task LoadedApi(object p)
     {
         try
         {

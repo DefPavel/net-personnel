@@ -70,14 +70,14 @@ internal class TypeOrderViewModel : BaseViewModel
     public ICommand AddType => _addType ??= new LambdaCommand(AddTypeOrderAsync);
 
     private ICommand? _saveType;
-    public ICommand SaveType => _saveType ??= new LambdaCommand(SaveTypeOrder, _ => SelectedOrder is not null && !string.IsNullOrWhiteSpace(SelectedOrder.Name));
+    public ICommand SaveType => _saveType ??= new LambdaAsyncCommand(SaveTypeOrder, _ => SelectedOrder is not null && !string.IsNullOrWhiteSpace(SelectedOrder.Name));
 
     private ICommand? _deleteType;
-    public ICommand DeleteType => _deleteType ??= new LambdaCommand(DeleteTypeOrder, _ => SelectedOrder is not null && TypeOrders!.Count > 0);
+    public ICommand DeleteType => _deleteType ??= new LambdaAsyncCommand(DeleteTypeOrder, _ => SelectedOrder is not null && TypeOrders!.Count > 0);
 
     private ICommand? _loadedOrder;
 
-    public ICommand LoadedOrder => _loadedOrder ??= new LambdaCommand(ApiGetOrders);
+    public ICommand LoadedOrder => _loadedOrder ??= new LambdaAsyncCommand(ApiGetOrders);
     #endregion
 
 
@@ -89,7 +89,7 @@ internal class TypeOrderViewModel : BaseViewModel
     }
 
     // Создать в коллекции новый тип приказа
-    private  void AddTypeOrderAsync(object p)
+    private void AddTypeOrderAsync(object p)
     {
         var count = TypeOrders!.Where(x => x.Id == 0).ToList().Count;
         if(count > 0)
@@ -106,8 +106,7 @@ internal class TypeOrderViewModel : BaseViewModel
         SelectedOrder = typeOrder;
 
     }
-
-    private async void DeleteTypeOrder(object p)
+    private async Task DeleteTypeOrder(object p)
     {
         try
         {
@@ -141,9 +140,8 @@ internal class TypeOrderViewModel : BaseViewModel
             }
         }
     }
-
     // Сохранить новую запись типа приказа
-    private async void SaveTypeOrder(object p)
+    private async Task SaveTypeOrder(object p)
     {
         try
         {
@@ -188,7 +186,7 @@ internal class TypeOrderViewModel : BaseViewModel
 
     }
     // Вернуть список типов приказов
-    private async void ApiGetOrders(object p)
+    private async Task ApiGetOrders(object p)
     {
         try
         {

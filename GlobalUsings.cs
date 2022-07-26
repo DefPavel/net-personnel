@@ -14,6 +14,7 @@ global using AlphaPersonel.Views;
 global using AlphaPersonel.Services;
 global using AlphaPersonel.Services.Api;
 global using AlphaPersonel.Commands;
+global using AlphaPersonel.Commands.Base;
 global using AlphaPersonel.Helpers;
 global using System.Text.Json.Serialization;
 global using System.Threading.Tasks;

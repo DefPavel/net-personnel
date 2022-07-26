@@ -48,12 +48,12 @@ internal class DeletePositionViewModel : BaseViewModel
 
 
     private ICommand? _getData;
-    public ICommand GetData => _getData ??= new LambdaCommand(LoadedApi);
+    public ICommand GetData => _getData ??= new LambdaAsyncCommand(LoadedApi);
 
     private ICommand? _closeWin;
-    public ICommand CloseWin => _closeWin ??= new LambdaCommand(CloseWindow , _ => SelectedOrders != null && DateDelete != null);
+    public ICommand CloseWin => _closeWin ??= new LambdaAsyncCommand(CloseWindow , _ => SelectedOrders != null && DateDelete != null);
 
-    private async void CloseWindow(object win)
+    private async Task CloseWindow(object win)
     {
         if (win is not Window w) return;
         try
@@ -103,7 +103,7 @@ internal class DeletePositionViewModel : BaseViewModel
     }
 
 
-    private async void LoadedApi(object p)
+    private async Task LoadedApi(object p)
     {
         try
         {

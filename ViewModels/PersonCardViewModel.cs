@@ -552,7 +552,7 @@ internal class PersonCardViewModel : BaseViewModel
     #endregion
 
     private ICommand? _updateStates;
-    public ICommand UpdateStates => _updateStates ??= new LambdaCommand(ApiUpdateStatePersonAsync);
+    public ICommand UpdateStates => _updateStates ??= new LambdaAsyncCommand(ApiUpdateStatePersonAsync);
 
     private ICommand? _copyBuffer;
     public ICommand CopyBuffer => _copyBuffer ??= new LambdaCommand(CopyFullNameToBuffer);
@@ -561,11 +561,10 @@ internal class PersonCardViewModel : BaseViewModel
     {
         if( obj is Persons person)
             Clipboard.SetText(person.FullName);
-
     }
 
-    private ICommand? _openreportCard;
-    public ICommand OpenReportCard => _openreportCard ??= new LambdaCommand(ReportPersonCard , _ => SelectedPerson != null);
+    private ICommand? _openReportCard;
+    public ICommand OpenReportCard => _openReportCard ??= new LambdaAsyncCommand(ReportPersonCard , _ => SelectedPerson != null);
     
     private ICommand? _openPreview;
     public ICommand OpenPreview => _openPreview ??= new LambdaCommand(OpenPreviewModel);
@@ -579,46 +578,46 @@ internal class PersonCardViewModel : BaseViewModel
     }
 
     private ICommand? _openAddPosition;
-    public ICommand OpenAddPosition => _openAddPosition ??= new LambdaCommand(AddPosition , _ => SelectedPerson != null);
+    public ICommand OpenAddPosition => _openAddPosition ??= new LambdaAsyncCommand(AddPosition , _ => SelectedPerson != null);
 
     private ICommand? _openChangePosition;
-    public ICommand OpenChangePosition => _openChangePosition ??= new LambdaCommand(ChangePosition, _ => SelectedPerson != null && SelectedPosition != null);
+    public ICommand OpenChangePosition => _openChangePosition ??= new LambdaAsyncCommand(ChangePosition, _ => SelectedPerson != null && SelectedPosition != null);
 
     private ICommand? _openChangeDatePosition;
-    public ICommand OpenChangeDatePosition => _openChangeDatePosition ??= new LambdaCommand(ChangeDatePosition, _ => SelectedPerson != null && SelectedPosition != null);
+    public ICommand OpenChangeDatePosition => _openChangeDatePosition ??= new LambdaAsyncCommand(ChangeDatePosition, _ => SelectedPerson != null && SelectedPosition != null);
 
     private ICommand? _openDropPosition;
-    public ICommand OpenDropPosition => _openDropPosition ??= new LambdaCommand(DeletePosition, _ => SelectedPerson != null && SelectedPosition != null && SelectedPosition.IsMain != true && SelectedPosition.IsPluralismOter != true);
+    public ICommand OpenDropPosition => _openDropPosition ??= new LambdaAsyncCommand(DeletePosition, _ => SelectedPerson != null && SelectedPosition != null && SelectedPosition.IsMain != true && SelectedPosition.IsPluralismOter != true);
 
     private ICommand? _openChangeSurname;
-    public ICommand OpenChangeSurname => _openChangeSurname ??= new LambdaCommand(ChangeSurname , _ => SelectedPerson != null);
+    public ICommand OpenChangeSurname => _openChangeSurname ??= new LambdaAsyncCommand(ChangeSurname , _ => SelectedPerson != null);
 
     private ICommand? _openreportSpravka;
-    public ICommand OpenreportSpravka => _openreportSpravka ??= new LambdaCommand(ReportSpravkaCard, _ => SelectedPosition != null);
+    public ICommand OpenreportSpravka => _openreportSpravka ??= new LambdaAsyncCommand(ReportSpravkaCard, _ => SelectedPosition != null);
 
     private ICommand? _openreportObjective;
-    public ICommand OpenreportObjective => _openreportObjective ??= new LambdaCommand(ReportEmploymentHistory, _ => SelectedPerson != null);
+    public ICommand OpenreportObjective => _openreportObjective ??= new LambdaAsyncCommand(ReportEmploymentHistory, _ => SelectedPerson != null);
 
     private ICommand? _openExperience;
     public ICommand OpenExperience => _openExperience ??= new LambdaCommand(OpenEmployeeExperience, _ => SelectedPerson != null);
 
     private ICommand? _loadedListPerson;
-    public ICommand LoadedListPerson => _loadedListPerson ??= new LambdaCommand(ApiGetListPersons);
+    public ICommand LoadedListPerson => _loadedListPerson ??= new LambdaAsyncCommand(ApiGetListPersons);
 
     private ICommand? _loadedListAll;
-    public ICommand LoadedListAll => _loadedListAll ??= new LambdaCommand(ApiGetListAllPersonsAsync);
+    public ICommand LoadedListAll => _loadedListAll ??= new LambdaAsyncCommand(ApiGetListAllPersonsAsync);
 
     private ICommand? _uploadPhoto;
-    public ICommand UploadPhoto => _uploadPhoto ??= new LambdaCommand(UploadFormPhoto);
+    public ICommand UploadPhoto => _uploadPhoto ??= new LambdaAsyncCommand(UploadFormPhoto);
 
     private ICommand? _saveMainInfo;
-    public ICommand SaveMainInfo => _saveMainInfo ??= new LambdaCommand(SaveMainInfoByPerson);
+    public ICommand SaveMainInfo => _saveMainInfo ??= new LambdaAsyncCommand(SaveMainInfoByPerson);
 
     private ICommand? _getBack;
-    public ICommand GetBack => _getBack ??= new LambdaCommand(GetBackViewAsync);
+    public ICommand GetBack => _getBack ??= new LambdaAsyncCommand(GetBackViewAsync);
 
     private ICommand? _getInfo;
-    public ICommand GetInfo => _getInfo ??= new LambdaCommand(ApiGetInformationToPerson, CanCommandExecute);
+    public ICommand GetInfo => _getInfo ??= new LambdaAsyncCommand(ApiGetInformationToPerson, CanCommandExecute);
 
     private ICommand? _getPersonsToNppAll;
     public ICommand GetPersonsToNppAll => _getPersonsToNppAll ??= new LambdaCommand(GetNppPersonsAll);
@@ -634,13 +633,13 @@ internal class PersonCardViewModel : BaseViewModel
     public ICommand AddVacation => _addVacation ??= new LambdaCommand(AddVacationsPerson);
 
     private ICommand? _saveVacation;
-    public ICommand SaveVacation => _saveVacation ??= new LambdaCommand(SaveVacationsPerson, _ => 
+    public ICommand SaveVacation => _saveVacation ??= new LambdaAsyncCommand(SaveVacationsPerson, _ => 
     SelectedVacation != null
     && SelectedVacation.Type.Length > 0 
     && SelectedVacation.Period.Length > 0);
 
     private ICommand? _deleteVacation;
-    public ICommand DeleteVacation => _deleteVacation ??= new LambdaCommand(DeleteVacationsAsync, _ => SelectedVacation != null);
+    public ICommand DeleteVacation => _deleteVacation ??= new LambdaAsyncCommand(DeleteVacationsAsync, _ => SelectedVacation != null);
     
     //------------------- Паспорт ------------------------------//
     
@@ -649,28 +648,28 @@ internal class PersonCardViewModel : BaseViewModel
     public ICommand AddDocument => _addDocument ??= new LambdaCommand(AddDocumentPerson);
 
     private ICommand? _saveDocument;
-    public ICommand SaveDocument => _saveDocument ??= new LambdaCommand(SaveDocumentPerson, _ => SelectedDocument != null);
+    public ICommand SaveDocument => _saveDocument ??= new LambdaAsyncCommand(SaveDocumentPerson, _ => SelectedDocument != null);
     
     private ICommand? _saveUploadDocument;
     public ICommand SaveUploadDocument => _saveUploadDocument ??= new LambdaCommand(UploadDocumentByPerson, _ => SelectedDocument != null);
 
     private ICommand? _deleteDocument;
-    public ICommand DeleteDocument => _deleteDocument ??= new LambdaCommand(DeleteDocumentByPerson, _ => SelectedDocument != null);
+    public ICommand DeleteDocument => _deleteDocument ??= new LambdaAsyncCommand(DeleteDocumentByPerson, _ => SelectedDocument != null);
     
     // Родственники
     private ICommand? _addFamily;
     public ICommand AddFamily => _addFamily ??= new LambdaCommand(AddFamilyPerson);
 
     private ICommand? _saveFamily;
-    public ICommand SaveFamily => _saveFamily ??= new LambdaCommand(SaveFamilyPerson, _ => _selectedFamily != null);
+    public ICommand SaveFamily => _saveFamily ??= new LambdaAsyncCommand(SaveFamilyPerson, _ => _selectedFamily != null);
 
     private ICommand? _deleteFamily;
-    public ICommand DeleteFamily => _deleteFamily ??= new LambdaCommand(DeleteFamilyPerson, _ => SelectedFamily != null);
+    public ICommand DeleteFamily => _deleteFamily ??= new LambdaAsyncCommand(DeleteFamilyPerson, _ => SelectedFamily != null);
 
 
 
     private ICommand? _deleteOldSurname;
-    public ICommand DeleteOldSurname => _deleteOldSurname ??= new LambdaCommand(AsyncDeleteOldSurname, _ => SelectedOldSurname != null);
+    public ICommand DeleteOldSurname => _deleteOldSurname ??= new LambdaAsyncCommand(AsyncDeleteOldSurname, _ => SelectedOldSurname != null);
 
     //------------------- ОБРАЗОВАНИЕ ------------------------------//
 
@@ -679,50 +678,50 @@ internal class PersonCardViewModel : BaseViewModel
     public ICommand AddMedical => _addMedical ??= new LambdaCommand(AddEducationMed);
 
     private ICommand? _saveMedical;
-    public ICommand SaveMedical => _saveMedical ??= new LambdaCommand(SaveEducationMed, _ => SelectedMedical != null);
+    public ICommand SaveMedical => _saveMedical ??= new LambdaAsyncCommand(SaveEducationMed, _ => SelectedMedical != null);
 
     private ICommand? _deleteMedical;
-    public ICommand DeleteMedical => _deleteMedical ??= new LambdaCommand(DeleteEducationMed, _ => SelectedMedical != null);
+    public ICommand DeleteMedical => _deleteMedical ??= new LambdaAsyncCommand(DeleteEducationMed, _ => SelectedMedical != null);
 
     // Член-корр.
     private ICommand? _addMember;
     public ICommand AddMember => _addMember ??= new LambdaCommand(AddMemberAcademic);
 
     private ICommand? _saveMember;
-    public ICommand SaveMember => _saveMember ??= new LambdaCommand(SaveMemberAcademic, _ => SeletedMemberAcademic != null);
+    public ICommand SaveMember => _saveMember ??= new LambdaAsyncCommand(SaveMemberAcademic, _ => SeletedMemberAcademic != null);
 
     private ICommand? _deleteMember;
-    public ICommand DeleteMember => _deleteMember ??= new LambdaCommand(DeleteMemberAcademic, _ => SeletedMemberAcademic != null);
+    public ICommand DeleteMember => _deleteMember ??= new LambdaAsyncCommand(DeleteMemberAcademic, _ => SeletedMemberAcademic != null);
 
     // Награждения
     private ICommand? _addRewarding;
     public ICommand AddRewarding => _addRewarding ??= new LambdaCommand(AddRewardingPerson);
 
     private ICommand? _saveRewarding;
-    public ICommand SaveRewarding => _saveRewarding ??= new LambdaCommand(SaveRewardingPerson, _ => SelectedRewarding != null);
+    public ICommand SaveRewarding => _saveRewarding ??= new LambdaAsyncCommand(SaveRewardingPerson, _ => SelectedRewarding != null);
 
     private ICommand? _deleteRewarding;
-    public ICommand DeleteRewarding => _deleteRewarding ??= new LambdaCommand(DeleteRewardingPerson, _ => SelectedRewarding != null);
+    public ICommand DeleteRewarding => _deleteRewarding ??= new LambdaAsyncCommand(DeleteRewardingPerson, _ => SelectedRewarding != null);
 
     // Основное образование
     private ICommand? _addEducation;
     public ICommand AddEducation => _addEducation ??= new LambdaCommand(AddMainEducation);
 
     private ICommand? _saveEducation;
-    public ICommand SaveEducation => _saveEducation ??= new LambdaCommand(SaveMainEducation, _ => SelectedEducation != null);
+    public ICommand SaveEducation => _saveEducation ??= new LambdaAsyncCommand(SaveMainEducation, _ => SelectedEducation != null);
 
     private ICommand? _deleteEducation;
-    public ICommand DeleteEducation => _deleteEducation ??= new LambdaCommand(DeleteMainEducation, _ => SelectedEducation != null);
+    public ICommand DeleteEducation => _deleteEducation ??= new LambdaAsyncCommand(DeleteMainEducation, _ => SelectedEducation != null);
 
     // Повышение квалификации
     private ICommand? _addQualification;
     public ICommand AddQualification => _addQualification ??= new LambdaCommand(AddQualificationEducation);
 
     private ICommand? _saveQualification;
-    public ICommand SaveQualification => _saveQualification ??= new LambdaCommand(SaveQualificationEducation, _ => SelectedQualification != null);
+    public ICommand SaveQualification => _saveQualification ??= new LambdaAsyncCommand(SaveQualificationEducation, _ => SelectedQualification != null);
 
     private ICommand? _deleteQualification;
-    public ICommand DeleteQualification => _deleteQualification ??= new LambdaCommand(DeletealificationEducation, _ => SelectedQualification != null);
+    public ICommand DeleteQualification => _deleteQualification ??= new LambdaAsyncCommand(DeletealificationEducation, _ => SelectedQualification != null);
 
 
     // Научная степень
@@ -730,44 +729,44 @@ internal class PersonCardViewModel : BaseViewModel
     public ICommand AddScience => _addScience ??= new LambdaCommand(AddScienceDegree);
 
     private ICommand? _saveScience;
-    public ICommand SaveScience => _saveScience ??= new LambdaCommand(SaveScienceDegree, _ => SeletedDegree != null);
+    public ICommand SaveScience => _saveScience ??= new LambdaAsyncCommand(SaveScienceDegree, _ => SeletedDegree != null);
 
     private ICommand? _deleteScience;
-    public ICommand DeleteScience => _deleteScience ??= new LambdaCommand(DeleteScienceDegree, _ => SeletedDegree != null);
+    public ICommand DeleteScience => _deleteScience ??= new LambdaAsyncCommand(DeleteScienceDegree, _ => SeletedDegree != null);
 
     // Ученое звание
     private ICommand? _addTitle;
     public ICommand AddTile => _addTitle ??= new LambdaCommand(AddAcademicTitle);
 
     private ICommand? _saveTitle;
-    public ICommand SaveTile => _saveTitle ??= new LambdaCommand(SaveAcademicTitle, _ => SelectedTitle != null);
+    public ICommand SaveTile => _saveTitle ??= new LambdaAsyncCommand(SaveAcademicTitle, _ => SelectedTitle != null);
 
     private ICommand? _deleteTitle;
-    public ICommand DeleteTitle => _deleteTitle ??= new LambdaCommand(DeleteAcademicTitle, _ => SelectedTitle != null);
+    public ICommand DeleteTitle => _deleteTitle ??= new LambdaAsyncCommand(DeleteAcademicTitle, _ => SelectedTitle != null);
 
     // изменить данные паспорта
     private ICommand? _saveDataPassport;
-    public ICommand SaveDataPassport => _saveDataPassport ??= new LambdaCommand(UpdatePassport, _ => SelectedPerson != null);
+    public ICommand SaveDataPassport => _saveDataPassport ??= new LambdaAsyncCommand(UpdatePassport, _ => SelectedPerson != null);
 
     // Пенсионеры
     private ICommand? _addPensioner;
     public ICommand AddPensioner => _addPensioner ??= new LambdaCommand(AddPensionerAsync);
 
     private ICommand? _savePensioner;
-    public ICommand SavePensioner => _savePensioner ??= new LambdaCommand(SavePensionerAsync, _ => SelectedPens != null);
+    public ICommand SavePensioner => _savePensioner ??= new LambdaAsyncCommand(SavePensionerAsync, _ => SelectedPens != null);
 
     private ICommand? _deletePensioner;
-    public ICommand DeletePensioner => _deletePensioner ??= new LambdaCommand(DeletePensionerAsync, _ => SelectedPens != null);
+    public ICommand DeletePensioner => _deletePensioner ??= new LambdaAsyncCommand(DeletePensionerAsync, _ => SelectedPens != null);
 
     // Инвалиды
     private ICommand? _addInvalid;
     public ICommand AddInvalid => _addInvalid ??= new LambdaCommand(AddInvalidAsync);
 
     private ICommand? _saveInvalid;
-    public ICommand SaveInvalid => _saveInvalid ??= new LambdaCommand(SaveInvalidAsync, _ => SelectedInvalid != null);
+    public ICommand SaveInvalid => _saveInvalid ??= new LambdaAsyncCommand(SaveInvalidAsync, _ => SelectedInvalid != null);
 
     private ICommand? _deleteInvalid;
-    public ICommand DeleteInvalid => _deleteInvalid ??= new LambdaCommand(DeleteInvalidAsync, _ => SelectedInvalid != null);
+    public ICommand DeleteInvalid => _deleteInvalid ??= new LambdaAsyncCommand(DeleteInvalidAsync, _ => SelectedInvalid != null);
 
     // Трудовая книга
 
@@ -776,13 +775,12 @@ internal class PersonCardViewModel : BaseViewModel
 
     // Изменить трудовую
     private ICommand? _saveHistory;
-    public ICommand SaveHistory => _saveHistory ??= new LambdaCommand(SaveHistoryAsync, _ => SelectedHistory != null);
+    public ICommand SaveHistory => _saveHistory ??= new LambdaAsyncCommand(SaveHistoryAsync, _ => SelectedHistory != null);
 
     private ICommand? _deleteHistory;
-    public ICommand DeleteHistory => _deleteHistory ??= new LambdaCommand(DeleteHistoryAsync, _ => SelectedHistory != null);
+    public ICommand DeleteHistory => _deleteHistory ??= new LambdaAsyncCommand(DeleteHistoryAsync, _ => SelectedHistory != null);
 
     #endregion
-
 
     #region Methods Menu Items
     private async void Exit(object p)
@@ -971,7 +969,7 @@ internal class PersonCardViewModel : BaseViewModel
     #region Основная Логика
 
     // Распечатать Справку с места работы
-    private async void ReportSpravkaCard(object p)
+    private async Task ReportSpravkaCard(object p)
     {
         try
         {
@@ -1017,7 +1015,7 @@ internal class PersonCardViewModel : BaseViewModel
         }
     }
     // Объективка
-    private async void ReportEmploymentHistory(object p)
+    private async Task ReportEmploymentHistory(object p)
     {
         try
         {
@@ -1058,42 +1056,42 @@ internal class PersonCardViewModel : BaseViewModel
     }
 
 
-    private void AddPosition(object p)
+    private async Task AddPosition(object p)
     {
         AddPositionViewModel viewModel = new(_user! , SelectedPerson!);
         AddPositionView view = new() { DataContext = viewModel };
         view.ShowDialog();
         // Обновить данные
-        ApiGetInformationToPerson(p);
+        await ApiGetInformationToPerson(p);
     }
 
-    private void ChangePosition(object p)
+    private async Task ChangePosition(object p)
     {
         ChangePositionViewModel viewModel = new(_user!, SelectedPerson! , SelectedPosition!);
         ChangePosition view = new() { DataContext = viewModel };
         view.ShowDialog();
         // Обновить данные
-        ApiGetInformationToPerson(p);
+        await ApiGetInformationToPerson(p);
     }
 
-    private void ChangeDatePosition(object p)
+    private async Task ChangeDatePosition(object p)
     {
         ChangeDateContractViewModel viewModel = new(_user!, SelectedPerson!, SelectedPosition!);
         ChangeDateContractView view = new() { DataContext = viewModel };
         view.ShowDialog();
         // Обновить данные
-        ApiGetInformationToPerson(p);
+        await ApiGetInformationToPerson(p);
     }
-    private void DeletePosition(object p)
+    private async Task DeletePosition(object p)
     {
         DeletePositionViewModel viewModel = new($"С должности: '{SelectedPosition!.Name}'", _user!, SelectedPerson! , SelectedPosition!);
         DeletePositionView view = new() { DataContext = viewModel };
         view.ShowDialog();
         // Обновить данные
-        ApiGetInformationToPerson(p);
+        await ApiGetInformationToPerson(p);
     }
     // Распечатать личную карту
-    private async void ReportPersonCard(object p)
+    private async Task ReportPersonCard(object p)
     {
         try
         {
@@ -1132,7 +1130,7 @@ internal class PersonCardViewModel : BaseViewModel
         }
     }
     // Api Информация персоны
-    private async void ApiGetInformationToPerson(object p)
+    private async Task ApiGetInformationToPerson(object p)
     {
         try
         {
@@ -1242,15 +1240,13 @@ internal class PersonCardViewModel : BaseViewModel
     }
 
     // Вернуться на главную страницу
-    private async void GetBackViewAsync(object p)
+    private async Task GetBackViewAsync(object p)
     {
         _department = await QueryService.JsonDeserializeWithObject<Departments>(token: _user!.Token,
                                                                                 "/pers/tree/find/" + _idDepartment,
                                                                                 "GET");
         _navigationStore.CurrentViewModel = new HomeViewModel(_user!, _navigationStore, _department!);
     }
-
-
     private void GetNppPersons(object p)
     {
         if (CollectionPerson == null) return;
@@ -1270,8 +1266,7 @@ internal class PersonCardViewModel : BaseViewModel
         CollectionPerson.Filter = null;
         CollectionPerson.Refresh();
     }
-
-    private async void ChangeSurname(object p)
+    private async Task ChangeSurname(object p)
     {
         ChangeSurnameViewModel viewModel = new(_user!, SelectedPerson!);
         ChangeSurnameView view = new() { DataContext = viewModel };
@@ -1297,8 +1292,7 @@ internal class PersonCardViewModel : BaseViewModel
 
 
     }
-
-    private async void SaveMainInfoByPerson(object p)
+    private async Task SaveMainInfoByPerson(object p)
     {
         try
         {
@@ -1324,7 +1318,7 @@ internal class PersonCardViewModel : BaseViewModel
                 "POST"
                 ,person);
 
-            ApiGetInformationToPerson(p);
+            await ApiGetInformationToPerson(p);
 
             //ApiGetListAllPersonsAsync(p);
             _ = MessageBox.Show("Данные обновлены!", "Сообщение");
@@ -1358,7 +1352,7 @@ internal class PersonCardViewModel : BaseViewModel
     }
 
     // Загрузка изображений на человека
-    private async void UploadFormPhoto(object p)
+    private async Task UploadFormPhoto(object p)
     {
         try
         {
@@ -1377,15 +1371,7 @@ internal class PersonCardViewModel : BaseViewModel
                 new { photo = base64 });
 
             _ = MessageBox.Show("Фотография загружена");
-            ApiGetInformationToPerson(p);
-            //SelectedPerson = await QueryService.JsonObjectWithToken<Persons>(_user!.Token, "/pers/person/card/" + SelectedPerson!.Id, "GET");
-
-            /*Avatar.BeginInit();
-                Avatar.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-                Avatar.CacheOption = BitmapCacheOption.OnLoad;
-                Avatar.UriSource = new Uri(SelectedPerson.Photo);
-                Avatar.EndInit();
-                */
+            await ApiGetInformationToPerson(p);
             IsLoading = false;
         }
         catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
@@ -1412,7 +1398,7 @@ internal class PersonCardViewModel : BaseViewModel
         }
     }
 
-    private async void ApiUpdateStatePersonAsync(object obj)
+    private async Task ApiUpdateStatePersonAsync(object obj)
     {
         try
         {
@@ -1451,7 +1437,7 @@ internal class PersonCardViewModel : BaseViewModel
     }
 
     // Полный список сотрдуников
-    private async void ApiGetListAllPersonsAsync(object obj)
+    private async Task ApiGetListAllPersonsAsync(object obj)
     {
         try
         {
@@ -1490,7 +1476,7 @@ internal class PersonCardViewModel : BaseViewModel
     }
 
     // Вернуть список людей из отдела
-    private async void ApiGetListPersons(object p)
+    private async Task ApiGetListPersons(object p)
     {
         try
         {
@@ -1627,7 +1613,7 @@ internal class PersonCardViewModel : BaseViewModel
             }
         }
     }
-    private async void SaveMainEducation(object p)
+    private async Task SaveMainEducation(object p)
     {
         try
         {
@@ -1666,7 +1652,7 @@ internal class PersonCardViewModel : BaseViewModel
         }
 
     }
-    private async void DeleteMainEducation(object p)
+    private async Task DeleteMainEducation(object p)
     {
         try
         {
@@ -1696,48 +1682,28 @@ internal class PersonCardViewModel : BaseViewModel
     }
 
     /* Повышение квалификации */
-    private async void AddQualificationEducation(object p)
+    private void AddQualificationEducation(object p)
     {
-        try
+        var count = _selectedPerson!.ArrayQualification?.Where(x => x.Id == 0).ToList().Count;
+        if (count > 0)
         {
-            var count = _selectedPerson!.ArrayQualification?.Where(x => x.Id == 0).ToList().Count;
-            if (count > 0)
-            {
-                _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-            Qualification order = new()
-            {
-                NameCourse = "Курс",
-                Certificate = "№ 0000",
-                DateBegin = DateTime.Now,
-                DateEnd = DateTime.Now,
-                DateIssue = DateTime.Now,
-                Place = "Место выдачи"
-
-            };
-            _selectedPerson!.ArrayQualification?.Insert(0, order);
-            SelectedQualification = order;
-
+            _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
         }
-        catch (WebException ex)
+        Qualification order = new()
         {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
+            NameCourse = "Курс",
+            Certificate = "№ 0000",
+            DateBegin = DateTime.Now,
+            DateEnd = DateTime.Now,
+            DateIssue = DateTime.Now,
+            Place = "Место выдачи"
 
-                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+        };
+        _selectedPerson!.ArrayQualification?.Insert(0, order);
+        SelectedQualification = order;
     }
-    private async void SaveQualificationEducation(object p)
+    private async Task SaveQualificationEducation(object p)
     {
         try
         {
@@ -1776,7 +1742,7 @@ internal class PersonCardViewModel : BaseViewModel
         }
 
     }
-    private async void DeletealificationEducation(object p)
+    private async Task DeletealificationEducation(object p)
     {
         try
         {
@@ -1806,45 +1772,26 @@ internal class PersonCardViewModel : BaseViewModel
     }
 
     /* Медицинское образование */
-    private async void AddEducationMed(object p)
+    private void AddEducationMed(object p)
     {
-        try
+        var count = _selectedPerson!.ArrayMedical?.Where(x => x.Id == 0).ToList().Count;
+        if (count > 0)
         {
-            var count = _selectedPerson!.ArrayMedical?.Where(x => x.Id == 0).ToList().Count;
-            if (count > 0)
-            {
-                _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-            Medical order = new()
-            {
-                Category = "Аттестация",
-                Name = "Новый элемент",
-                DateStart = DateTime.Now,
-                DateEnd = DateTime.Now,
-            };
-            _selectedPerson!.ArrayMedical?.Insert(0, order);
-            SelectedMedical = order;
-
+            _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
         }
-        catch (WebException ex)
+        Medical order = new()
         {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
+            Category = "Аттестация",
+            Name = "Новый элемент",
+            DateStart = DateTime.Now,
+            DateEnd = DateTime.Now,
+        };
+        _selectedPerson!.ArrayMedical?.Insert(0, order);
+        SelectedMedical = order;
 
-                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
     }
-    private async void SaveEducationMed(object p)
+    private async Task SaveEducationMed(object p)
     {
         try
         {
@@ -1883,7 +1830,7 @@ internal class PersonCardViewModel : BaseViewModel
         }
 
     }
-    private async void DeleteEducationMed(object p)
+    private async Task DeleteEducationMed(object p)
     {
         try
         {
@@ -1911,49 +1858,29 @@ internal class PersonCardViewModel : BaseViewModel
             }
         }
     }
-
     /* Член-корр. */
-    private async void AddMemberAcademic(object p)
+    private void AddMemberAcademic(object p)
     {
-        try
+        var count = _selectedPerson!.ArrayMeberAcademic?.Where(x => x.Id == 0).ToList().Count;
+        if (count > 0)
         {
-            var count = _selectedPerson!.ArrayMeberAcademic?.Where(x => x.Id == 0).ToList().Count;
-            if (count > 0)
-            {
-                _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-
-            MemberAcademic order = new()
-            {
-                Document = "№ 0000",
-                NameAcademic = "",
-                Datebegin = DateTime.Now,
-                Name = "Академик",
-
-            };
-            _selectedPerson!.ArrayMeberAcademic?.Insert(0, order);
-            SeletedMemberAcademic = order;
-
+            _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
         }
-        catch (WebException ex)
+
+        MemberAcademic order = new()
         {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
+            Document = "№ 0000",
+            NameAcademic = "",
+            Datebegin = DateTime.Now,
+            Name = "Академик",
 
-                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+        };
+        _selectedPerson!.ArrayMeberAcademic?.Insert(0, order);
+        SeletedMemberAcademic = order;
+            
     }
-    private async void SaveMemberAcademic(object p)
+    private async Task SaveMemberAcademic(object p)
     {
         try
         {
@@ -1992,7 +1919,7 @@ internal class PersonCardViewModel : BaseViewModel
         }
 
     }
-    private async void DeleteMemberAcademic(object p)
+    private async Task DeleteMemberAcademic(object p)
     {
         try
         {
@@ -2020,56 +1947,32 @@ internal class PersonCardViewModel : BaseViewModel
             }
         }
     }
-
     /* Награждения */
-    private async void AddRewardingPerson(object p)
+    private void AddRewardingPerson(object p)
     {
-        try
+        var count = _selectedPerson!.ArrayRewarding?.Where(x => x.Id == 0).ToList().Count;
+        if (count > 0)
         {
-            var count = _selectedPerson!.ArrayRewarding?.Where(x => x.Id == 0).ToList().Count;
-            if (count > 0)
-            {
-                _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-
-            Rewarding order = new()
-            {
-                NumberDocumet = "",
-                Type = "Благодарность",
-                DateIssue = DateTime.Now,
-
-
-            };
-            _selectedPerson!.ArrayRewarding?.Insert(0, order);
-            SelectedRewarding = order;
-
+            _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
         }
-        catch (WebException ex)
+
+        Rewarding order = new()
         {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
+            NumberDocumet = "",
+            Type = "Благодарность",
+            DateIssue = DateTime.Now,
 
-                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+
+        };
+        _selectedPerson!.ArrayRewarding?.Insert(0, order);
+        SelectedRewarding = order;
     }
-    private async void SaveRewardingPerson(object p)
+    private async Task SaveRewardingPerson(object p)
     {
         try
         {
             SelectedRewarding!.IdPerson = SelectedPerson!.Id;
-
-            //SelectedRewarding!.IdOrder = 
-
             if (SelectedRewarding!.Id > 0)
             {
                 // Изменить
@@ -2103,7 +2006,7 @@ internal class PersonCardViewModel : BaseViewModel
         }
 
     }
-    private async void DeleteRewardingPerson(object p)
+    private async Task DeleteRewardingPerson(object p)
     {
         try
         {
@@ -2131,7 +2034,6 @@ internal class PersonCardViewModel : BaseViewModel
             }
         }
     }
-
     private async void AddScienceDegree(object p)
     {
         try
@@ -2174,48 +2076,27 @@ internal class PersonCardViewModel : BaseViewModel
             }
         }
     }
-
     /* Ученое звание */
-    private async void AddAcademicTitle(object p)
+    private void AddAcademicTitle(object p)
     {
-        try
+        var count = _selectedPerson!.ArrayAcademicTitle?.Where(x => x.Id == 0).ToList().Count;
+        if (count > 0)
         {
-            var count = _selectedPerson!.ArrayAcademicTitle?.Where(x => x.Id == 0).ToList().Count;
-            if (count > 0)
-            {
-                _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-            AcademicTitle order = new()
-            {
-                Department = "Наименование подразделения",
-                Document = "№ 0000",
-                Place = "Место присвоения",
-                DateIssue = DateTime.Now,
-
-            };
-            _selectedPerson!.ArrayAcademicTitle?.Insert(0, order);
-            SelectedTitle = order;
-
+            _ = MessageBox.Show("Вы не сохранили предыдущую запись!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
         }
-        catch (WebException ex)
+        AcademicTitle order = new()
         {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                if (ex.Response is HttpWebResponse response)
-                {
-                    using StreamReader reader = new(response.GetResponseStream());
+            Department = "Наименование подразделения",
+            Document = "№ 0000",
+            Place = "Место присвоения",
+            DateIssue = DateTime.Now,
 
-                    _ = MessageBox.Show(await reader.ReadToEndAsync(), "Ошибочка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                }
-            }
-            else
-            {
-                _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+        };
+        _selectedPerson!.ArrayAcademicTitle?.Insert(0, order);
+        SelectedTitle = order;
     }
-    private async void SaveScienceDegree(object p)
+    private async Task SaveScienceDegree(object p)
     {
         try
         {
@@ -2256,8 +2137,7 @@ internal class PersonCardViewModel : BaseViewModel
         }
 
     }
-
-    private async void SaveAcademicTitle(object p)
+    private async Task SaveAcademicTitle(object p)
     {
         try
         {
@@ -2298,8 +2178,7 @@ internal class PersonCardViewModel : BaseViewModel
         }
 
     }
-
-    private async void DeleteScienceDegree(object p)
+    private async Task DeleteScienceDegree(object p)
     {
         try
         {
@@ -2327,8 +2206,7 @@ internal class PersonCardViewModel : BaseViewModel
             }
         }
     }
-
-    private async void DeleteAcademicTitle(object p)
+    private async Task DeleteAcademicTitle(object p)
     {
         try
         {
@@ -2357,7 +2235,6 @@ internal class PersonCardViewModel : BaseViewModel
         }
     }
 
-
     #endregion
 
     #region Паспорт данные
@@ -2365,7 +2242,7 @@ internal class PersonCardViewModel : BaseViewModel
     // Сканы документов
 
     // Сохранить изменения паспорта
-    private async void UpdatePassport(object p)
+    private async Task UpdatePassport(object p)
     {
         try
         {
@@ -2431,7 +2308,7 @@ internal class PersonCardViewModel : BaseViewModel
         SelectedPens = order;
 
     }
-    private async void SavePensionerAsync(object p)
+    private async Task SavePensionerAsync(object p)
     {
         try
         {
@@ -2474,7 +2351,7 @@ internal class PersonCardViewModel : BaseViewModel
             }
         }
     }
-    private async void DeletePensionerAsync(object p)
+    private async Task DeletePensionerAsync(object p)
     {
         try
         {
@@ -2508,7 +2385,7 @@ internal class PersonCardViewModel : BaseViewModel
         }
     }
     // Инвалидность
-    private  void AddInvalidAsync(object p)
+    private void AddInvalidAsync(object p)
     {
         var count = _selectedPerson!.ArrayInvalid?.Where(x => x.Id == 0).ToList().Count;
         if (count > 0)
@@ -2528,7 +2405,7 @@ internal class PersonCardViewModel : BaseViewModel
         SelectedInvalid = order;
 
     }
-    private async void SaveInvalidAsync(object p)
+    private async Task SaveInvalidAsync(object p)
     {
         try
         {
@@ -2571,7 +2448,7 @@ internal class PersonCardViewModel : BaseViewModel
             }
         }
     }
-    private async void DeleteInvalidAsync(object p)
+    private async Task DeleteInvalidAsync(object p)
     {
         try
         {
@@ -2604,7 +2481,7 @@ internal class PersonCardViewModel : BaseViewModel
             }
         }
     }
-    private async void DeleteHistoryAsync(object p)
+    private async Task DeleteHistoryAsync(object p)
     {
         try
         {
@@ -2658,7 +2535,7 @@ internal class PersonCardViewModel : BaseViewModel
             _selectedPerson!.ArrayVacation?.Insert(0, order);
             SelectedVacation = order;
     }
-    private async void DeleteVacationsAsync(object p)
+    private async Task DeleteVacationsAsync(object p)
     {
         try
         {
@@ -2731,7 +2608,7 @@ internal class PersonCardViewModel : BaseViewModel
         _selectedPerson!.ArrayFamily?.Insert(0, order);
         SelectedFamily = order;
     }
-    private async void SaveVacationsPerson(object p)
+    private async Task SaveVacationsPerson(object p)
     {
         try
         {
@@ -2787,7 +2664,6 @@ internal class PersonCardViewModel : BaseViewModel
         }
 
     }
-
     private void UploadDocumentByPerson(object p)
     {
         
@@ -2803,8 +2679,7 @@ internal class PersonCardViewModel : BaseViewModel
         SelectedDocument!.Url = UrlDocument;
         SelectedDocument!.Base64 = base64;
     }
-
-    private async void SaveDocumentPerson(object p)
+    private async Task SaveDocumentPerson(object p)
     {
         try
         {
@@ -2856,7 +2731,7 @@ internal class PersonCardViewModel : BaseViewModel
         }
 
     }
-    private async void DeleteDocumentByPerson(object p)
+    private async Task DeleteDocumentByPerson(object p)
     {
         try
         {
@@ -2889,7 +2764,7 @@ internal class PersonCardViewModel : BaseViewModel
             }
         }
     }
-    private async void SaveFamilyPerson(object p)
+    private async Task SaveFamilyPerson(object p)
     {
         try
         {
@@ -2933,7 +2808,7 @@ internal class PersonCardViewModel : BaseViewModel
         }
 
     }
-    private async void AsyncDeleteOldSurname(object p)
+    private async Task AsyncDeleteOldSurname(object p)
     {
         try
         {
@@ -2966,7 +2841,7 @@ internal class PersonCardViewModel : BaseViewModel
             }
         }
     }
-    private async void DeleteFamilyPerson(object p)
+    private async Task DeleteFamilyPerson(object p)
     {
         try
         {
@@ -2999,14 +2874,12 @@ internal class PersonCardViewModel : BaseViewModel
             }
         }
     }
-
-
     #endregion
-
+    
     #region Работа
 
     // Трудовая книга
-    private  void AddHistoryAsync(object p)
+    private void AddHistoryAsync(object p)
     {
         var count = _selectedPerson!.HistoryEmployment?.Where(x => x.Id == 0).ToList().Count;
         if (count > 0)
@@ -3025,8 +2898,7 @@ internal class PersonCardViewModel : BaseViewModel
         SelectedHistory = order;
 
     }
-
-    private async void SaveHistoryAsync(object p)
+    private async Task SaveHistoryAsync(object p)
     {
         try
         {

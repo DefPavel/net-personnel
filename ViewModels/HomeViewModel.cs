@@ -18,7 +18,7 @@ internal class HomeViewModel : BaseViewModel
         _user = account;
         _navigationStore = navigationStore;
         _selectedItem = departments;
-        ApiGetPersons(departments);
+        ApiGetPersons(departments).ConfigureAwait(false);
     }
 
     #region Свойства
@@ -261,7 +261,7 @@ internal class HomeViewModel : BaseViewModel
     #region Menu Items
 
     private ICommand? _logout;
-    public ICommand Logout => _logout ??= new LambdaCommand(Exit);
+    public ICommand Logout => _logout ??= new LambdaAsyncCommand(Exit);
 
     private ICommand? _openDepartment;
     public ICommand OpenDepartment => _openDepartment ??= new LambdaCommand(OpenDepartmentView);
@@ -336,31 +336,31 @@ internal class HomeViewModel : BaseViewModel
 
     // Команда для отображения всех отделов для TreeView
     private ICommand? _getTreeView;
-    public ICommand GetTreeView => _getTreeView ??= new LambdaCommand(ApiGetDepartments);
+    public ICommand GetTreeView => _getTreeView ??= new LambdaAsyncCommand(ApiGetDepartments);
 
     private ICommand? _getPersonsToDepartment;
-    public ICommand GetPersonsToDepartment => _getPersonsToDepartment ??= new LambdaCommand(ApiGetPersons, _ => SelectedItem is not null);
+    public ICommand GetPersonsToDepartment => _getPersonsToDepartment ??= new LambdaAsyncCommand(ApiGetPersons, _ => SelectedItem is not null);
 
     private ICommand? _openPersonCard;
     public ICommand OpenPersonCard => _openPersonCard ??= new LambdaCommand(OpenPersonCardView, _ => SelectedPerson is not null);
 
     private ICommand? _openAddPerson;
-    public ICommand OpenAddPerson => _openAddPerson ??= new LambdaCommand(AddPerson, _ => SelectedItem is not null);
+    public ICommand OpenAddPerson => _openAddPerson ??= new LambdaAsyncCommand(AddPerson, _ => SelectedItem is not null);
 
     private ICommand? _addPosition;
-    public ICommand AddPosition => _addPosition ??= new LambdaCommand(AddPositionToDepartmentAsync , _ => SelectedItem is not null);
+    public ICommand AddPosition => _addPosition ??= new LambdaAsyncCommand(AddPositionToDepartmentAsync , _ => SelectedItem is not null);
 
     private ICommand? _savePosition;
-    public ICommand SavePosition => _savePosition ??= new LambdaCommand(UpdatePosition, _ => SelectedPosition is not null);
+    public ICommand SavePosition => _savePosition ??= new LambdaAsyncCommand(UpdatePosition, _ => SelectedPosition is not null);
 
     private ICommand? _deletePosition;
-    public ICommand DeletePosition => _deletePosition ??= new LambdaCommand(DeletePositionApi, _ => SelectedPosition is not null);
+    public ICommand DeletePosition => _deletePosition ??= new LambdaAsyncCommand(DeletePositionApi, _ => SelectedPosition is not null);
 
     private ICommand? _openDeletePerson;
-    public ICommand OpenDeletePerson => _openDeletePerson ??= new LambdaCommand(DeletePerson, _ => SelectedItem is not null && SelectedPerson != null);
+    public ICommand OpenDeletePerson => _openDeletePerson ??= new LambdaAsyncCommand(DeletePerson, _ => SelectedItem is not null && SelectedPerson != null);
 
     private ICommand? _renameDepartment;
-    public ICommand RenameDepartment => _renameDepartment ??= new LambdaCommand(UpdateDataDepartment, _ => SelectedItem is not null);
+    public ICommand RenameDepartment => _renameDepartment ??= new LambdaAsyncCommand(UpdateDataDepartment, _ => SelectedItem is not null);
     #endregion
 
     #endregion
@@ -368,7 +368,7 @@ internal class HomeViewModel : BaseViewModel
     #region Логика
 
     #region Methods Menu Items
-    private async void Exit(object p)
+    private async Task Exit(object p)
     {
         try
         {
@@ -544,28 +544,28 @@ internal class HomeViewModel : BaseViewModel
 
     #region Основная Логика
     // Открыть модальное окно на созадние человека
-    private void AddPerson(object p)
+    private async Task AddPerson(object p)
     {
         AddPersonVeiwModel viewModel = new(_user, _selectedItem!.Id);
         AddPersonView view = new() { DataContext = viewModel };
         view.ShowDialog();
         // Обновить данные
-        ApiGetPersons(p);
+        await ApiGetPersons(p);
     }
     // Открыть модальное окно на удаление человека
-    private void DeletePerson(object p)
+    private async Task DeletePerson(object p)
     {
         DeletePersonViewModel viewModel = new($"С должности:'{_selectedPerson!.PersonPosition}'", _user, _selectedPerson!, SelectedItem!);
         DeleteView view = new() { DataContext = viewModel };
         view.ShowDialog();
         // Обновить данные
-        ApiGetPersons(p);
+        await ApiGetPersons(p);
     }
     private void OpenPersonCardView(object p)
     {
         _navigationStore.CurrentViewModel = new PersonCardViewModel(_user, _navigationStore, SelectedPerson!, SelectedItem!.Id);
     }
-    private async void ApiGetPersons(object p)
+    private async Task ApiGetPersons(object p)
     {
         try
         {
@@ -581,10 +581,6 @@ internal class HomeViewModel : BaseViewModel
             }
             // Вывести сотрудников данного отдела
             Persons = await QueryService.JsonDeserializeWithToken<Persons>(token: _user.Token, "/pers/person/get/department/" + SelectedItem.Id, "GET");
-            if (Persons.Count > 0)
-            {
-                SelectedPerson = Persons[0];
-            }
             // Завершить progress bar
             IsLoading = false;
         }
@@ -614,18 +610,15 @@ internal class HomeViewModel : BaseViewModel
 
     }
     // Вернуть api всех отделов 
-    private async void ApiGetDepartments(object p)
+    private async Task ApiGetDepartments(object p)
     {
         try
         {
             Departments = await QueryService.JsonDeserializeWithToken<Departments>(_user.Token, "/pers/tree/get", "GET");
             if (SelectedItem != null)
             {
-                ApiGetPersons(p);
+                await ApiGetPersons(p);
             }
-
-            //Departments = new ObservableCollection<Departments>(Departments.OrderBy(x => x.ParentId));
-
         }
         // Проверка токена
         catch (WebException ex) when ((int)(ex.Response as HttpWebResponse)!.StatusCode == 419)
@@ -656,7 +649,7 @@ internal class HomeViewModel : BaseViewModel
         }
     }
     // Создать должность на Отделе
-    private async void AddPositionToDepartmentAsync(object p)
+    private async Task AddPositionToDepartmentAsync(object p)
     {
         try
         {
@@ -711,7 +704,7 @@ internal class HomeViewModel : BaseViewModel
         }
 
     }
-    private async void UpdateDataDepartment(object p)
+    private async Task UpdateDataDepartment(object p)
     {
         try
         {
@@ -740,17 +733,17 @@ internal class HomeViewModel : BaseViewModel
             }
         }
     }
-    private async void UpdatePosition(object p)
+    private async Task UpdatePosition(object p)
     {
         try
         {
             var newSelectedPosition = SelectedPosition!;
 
-            if(SelectedPosition.HolidayLimit == 0 || SelectedPosition.HolidayLimit is null)
+            if(SelectedPosition is { HolidayLimit: 0 or null })
             {
                 SelectedPosition.HolidayLimit = 28;
             }
-            if (SelectedPosition.DepartmentName.Length == 0)
+            if (SelectedPosition != null && SelectedPosition.DepartmentName.Length == 0)
             {
                 SelectedPosition.DepartmentName = SelectedItem!.Name;
 
@@ -791,7 +784,7 @@ internal class HomeViewModel : BaseViewModel
             }
         }
     }
-    private async void DeletePositionApi(object p)
+    private async Task DeletePositionApi(object p)
     {
         try
         {

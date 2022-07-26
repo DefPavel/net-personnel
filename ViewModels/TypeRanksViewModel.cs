@@ -69,28 +69,25 @@ internal class TypeRanksViewModel : BaseViewModel
     public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack);
 
     private ICommand? _loadedType;
-    public ICommand LoadedType => _loadedType ??= new LambdaCommand(ApiGetType);
+    public ICommand LoadedType => _loadedType ??= new LambdaAsyncCommand(ApiGetType);
 
     private ICommand? _saveType;
-    public ICommand SaveType => _saveType ??= new LambdaCommand(SaveRank, _ => SelectedRank is not null);
+    public ICommand SaveType => _saveType ??= new LambdaAsyncCommand(SaveRank, _ => SelectedRank is not null);
 
     private ICommand? _add;
     public ICommand Add => _add ??= new LambdaCommand(AddTypeOrderAsync);
 
     private ICommand? _delete;
-    public ICommand Delete => _delete ??= new LambdaCommand(DeleteTypeRank);
+    public ICommand Delete => _delete ??= new LambdaAsyncCommand(DeleteTypeRank);
 
     #endregion
 
     #region Логика
-
     private void GetBack(object p)
     {
 
         _navigationStore.CurrentViewModel = new HomeViewModel(_user, _navigationStore);
     }
-
-
     private void AddTypeOrderAsync(object p)
     {
 
@@ -107,8 +104,7 @@ internal class TypeRanksViewModel : BaseViewModel
         _typeRank!.Insert(0, type);
         SelectedRank = type;
     }
-
-    private async void DeleteTypeRank(object p)
+    private async Task DeleteTypeRank(object p)
     {
         try
         {
@@ -142,7 +138,7 @@ internal class TypeRanksViewModel : BaseViewModel
             }
         }
     }
-    private async void SaveRank(object p)
+    private async Task SaveRank(object p)
     {
         try
         {
@@ -185,8 +181,7 @@ internal class TypeRanksViewModel : BaseViewModel
         }
 
     }
-
-    private async void ApiGetType(object p)
+    private async Task ApiGetType(object p)
     {
         try
         {

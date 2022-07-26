@@ -72,27 +72,25 @@ internal class OrderViewModel : BaseViewModel
     public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack);
 
     private ICommand? _loadedOrder;
-    public ICommand LoadedOrder => _loadedOrder ??= new LambdaCommand(ApiGetOrders);
+    public ICommand LoadedOrder => _loadedOrder ??= new LambdaAsyncCommand(ApiGetOrders);
 
     private ICommand? _addNew;
     public ICommand AddNew => _addNew ??= new LambdaCommand(AddOrderAsync);
 
     private ICommand? _delete;
-    public ICommand Delete => _delete ??= new LambdaCommand(DeleteOrder, _ => SelectedOrder is not null && Orders!.Count > 0);
+    public ICommand Delete => _delete ??= new LambdaAsyncCommand(DeleteOrder, _ => SelectedOrder is not null && Orders!.Count > 0);
 
     private ICommand? _save;
-    public ICommand Save => _save ??= new LambdaCommand(UpdateOrder, _ => SelectedOrder is not null );
+    public ICommand Save => _save ??= new LambdaAsyncCommand(UpdateOrder, _ => SelectedOrder is not null );
 
     #endregion
 
     #region Логика
-
     private void GetBack(object p)
     {
         _navigationStore.CurrentViewModel = new HomeViewModel(_user, _navigationStore);
     }
-
-    private async void ApiGetOrders(object p)
+    private async Task ApiGetOrders(object p)
     {
         try
         {
@@ -130,8 +128,7 @@ internal class OrderViewModel : BaseViewModel
         }
 
     }
-
-    private async void UpdateOrder(object p)
+    private async Task UpdateOrder(object p)
     {
         try
         {
@@ -174,7 +171,6 @@ internal class OrderViewModel : BaseViewModel
             }
         }
     }
-
     private void AddOrderAsync(object p)
     {
         var count = Orders!.Where(x => x.Id == 0).ToList().Count;
@@ -196,8 +192,7 @@ internal class OrderViewModel : BaseViewModel
 
       
     }
-
-    private async void DeleteOrder(object p)
+    private async Task DeleteOrder(object p)
     {
         try
         {
@@ -231,7 +226,6 @@ internal class OrderViewModel : BaseViewModel
             }
         }
     }
-
 
     #endregion
 }

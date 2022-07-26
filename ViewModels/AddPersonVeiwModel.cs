@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
 namespace AlphaPersonel.ViewModels;
 
 internal class AddPersonVeiwModel : BaseViewModel
@@ -181,7 +180,7 @@ internal class AddPersonVeiwModel : BaseViewModel
     #region Команды
 
     private ICommand? _getData;
-    public ICommand GetData => _getData ??= new LambdaCommand(LoadedApi);
+    public ICommand GetData => _getData ??= new LambdaAsyncCommand(LoadedApi);
 
     private ICommand? _closeWin;
     public ICommand CloseWin => _closeWin ??= new LambdaCommand(CloseWindow, _ => SelectedPositions != null && SelectedOrders != null && SelectedContract!= null && !string.IsNullOrEmpty(FirstName));
@@ -251,7 +250,7 @@ internal class AddPersonVeiwModel : BaseViewModel
     }
 
     // Загрузить все справочники
-    private async void LoadedApi(object p)
+    private async Task LoadedApi(object p)
     {
         try
         {

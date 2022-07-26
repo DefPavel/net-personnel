@@ -93,19 +93,19 @@ internal class TypePositionViewModel : BaseViewModel
     public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack);
 
     private ICommand? _loadedType;
-    public ICommand LoadedType => _loadedType ??= new LambdaCommand(ApiGetTypeAsync);
+    public ICommand LoadedType => _loadedType ??= new LambdaAsyncCommand(ApiGetTypeAsync);
 
     private ICommand? _add;
     public ICommand Add => _add ??= new LambdaCommand(AddPosition);
 
     private ICommand? _save;
-    public ICommand Save => _save ??= new LambdaCommand(SaveTypePosition , _ => SelectedPosition is not null && !string.IsNullOrEmpty(SelectedPosition.Name));
+    public ICommand Save => _save ??= new LambdaAsyncCommand(SaveTypePosition , _ => SelectedPosition is not null && !string.IsNullOrEmpty(SelectedPosition.Name));
 
     private ICommand? _delete;
-    public ICommand Delete => _delete ??= new LambdaCommand(DeleteTypePosition , _ => SelectedPosition is not null && TypePosition!.Count > 0);
+    public ICommand Delete => _delete ??= new LambdaAsyncCommand(DeleteTypePosition , _ => SelectedPosition is not null && TypePosition!.Count > 0);
     #endregion
 
-    private async void ApiGetTypeAsync(object obj)
+    private async Task ApiGetTypeAsync(object p)
     {
         try
         {
@@ -139,13 +139,11 @@ internal class TypePositionViewModel : BaseViewModel
             }
         }
     }
-
     private void GetBack(object obj)
     {
         _navigationStore.CurrentViewModel = new HomeViewModel(_user, _navigationStore);
     }
-
-    private async void SaveTypePosition(object p)
+    private async Task SaveTypePosition(object p)
     {
         var newSlectedItem = SelectedPosition!;
         try
@@ -211,8 +209,7 @@ internal class TypePositionViewModel : BaseViewModel
         SelectedPosition = type;
 
     }
-
-    private async void DeleteTypePosition(object p)
+    private async Task DeleteTypePosition(object p)
     {
         try
         {

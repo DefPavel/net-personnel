@@ -10,18 +10,15 @@ internal class LoginViewModel : BaseViewModel
     {
         _navigationStore = navigationStore;
 
-        if (!File.Exists(Path.Combine(appData, "settings.json")))
-        {
-            var settings = new Settings { Login = "" };
-            using FileStream createStream = File.Create(Path.Combine(appData, "settings.json"));
-            JsonSerializer.Serialize(createStream, settings);
-        }
-       _userName = JsonSerializer.Deserialize<Settings>(File.ReadAllText(Path.Combine(appData, "settings.json")))?.Login;
+        if (File.Exists(Path.Combine(AppData, "settings.json"))) return;
+        var settings = new Settings { Login = "" };
+        using var createStream = File.Create(Path.Combine(AppData, "settings.json"));
+        JsonSerializer.Serialize(createStream, settings);
     }
 
     #region Свойства
 
-    private static readonly string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+    private static readonly string AppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
     private bool _isLoading;
     public bool IsLoading
@@ -29,7 +26,7 @@ internal class LoginViewModel : BaseViewModel
         get => _isLoading;
         private set => Set(ref _isLoading, value);
     }
-    private string? _userName;
+    private string? _userName = JsonSerializer.Deserialize<Settings>(File.ReadAllText(Path.Combine(AppData, "settings.json")))?.Login;
     public string? UserName
     {
         get => _userName;
@@ -78,12 +75,12 @@ internal class LoginViewModel : BaseViewModel
     // Команда Авторизации
     private ICommand? _auth;
     // Лямбда Команда 
-    public ICommand Auth => _auth ??= new LambdaCommand(OnSignInAsync, CanSignIn);
+    public ICommand Auth => _auth ??= new LambdaAsyncCommand(OnSignInAsync, CanSignIn);
     #endregion
 
     #region Логика
 
-    private async void OnSignInAsync(object p)
+    private async Task OnSignInAsync(object p)
     {
         Users account;
         try
@@ -91,9 +88,9 @@ internal class LoginViewModel : BaseViewModel
             if(IsRememberMe == true)
             {
                 var settings = new Settings { Login = UserName!, Checked = true };
-                string settingsText = JsonSerializer.Serialize(settings);
+                var settingsText = JsonSerializer.Serialize(settings);
                 
-                File.WriteAllText(Path.Combine(appData, "settings.json"), settingsText);
+                await File.WriteAllTextAsync(Path.Combine(AppData, "settings.json"), settingsText);
 
             }
 

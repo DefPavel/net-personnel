@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AlphaPersonel.ViewModels
 {
@@ -48,7 +45,7 @@ namespace AlphaPersonel.ViewModels
         }
 
         private ICommand? _getData;
-        public ICommand GetData => _getData ??= new LambdaCommand(LoadedApiAsync);
+        public ICommand GetData => _getData ??= new LambdaAsyncCommand(LoadedApiAsync);
 
         private ICommand? _closeWin;
         public ICommand CloseWin => _closeWin ??= new LambdaCommand(CloseWindow, _ =>
@@ -68,9 +65,9 @@ namespace AlphaPersonel.ViewModels
                     {
                         id = _selectedPositions.Id,
                         id_person = _person.Id,
-                        id_selectedPositions = _selectedPositions!.Id,
+                        id_selectedPositions = _selectedPositions.Id,
                         id_order = SelectedOrders!.Id,
-                        id_contract = _selectedPositions!.IdContract,
+                        id_contract = _selectedPositions.IdContract,
                         count_budget = _selectedPositions.Count_B,
                         count_nobudget = _selectedPositions.Count_NB,
                         date_start_contract = _selectedPositions.DateStartContract!,
@@ -111,15 +108,14 @@ namespace AlphaPersonel.ViewModels
             }
         }
 
-        private async void LoadedApiAsync(object obj)
+        private async Task LoadedApiAsync(object p)
         {
             try
             {
-                if (_user == null) return;
                 var currentYear = DateTime.Today.Year;
                 var prevYear = DateTime.Today.AddYears(-1);
-                var idTypeOrder = await QueryService.JsonDeserializeWithObjectAndParam(_user!.Token, "/pers/order/type/name", "POST", new TypeOrder { Name = "Перевод" });
-                var orders = await QueryService.JsonDeserializeWithToken<Order>(_user!.Token, "/pers/order/get/" + idTypeOrder.Id, "GET");
+                var idTypeOrder = await QueryService.JsonDeserializeWithObjectAndParam(_user.Token, "/pers/order/type/name", "POST", new TypeOrder { Name = "Перевод" });
+                var orders = await QueryService.JsonDeserializeWithToken<Order>(_user.Token, "/pers/order/get/" + idTypeOrder.Id, "GET");
 
                 Orders = orders.Where(x => x.DateOrder.Date.Year == currentYear || x.DateOrder.Date.Year == prevYear.Year);
             }

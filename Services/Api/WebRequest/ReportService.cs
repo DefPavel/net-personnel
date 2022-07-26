@@ -12,7 +12,7 @@ internal static class ReportService
     private static void SaveReport(Stream inputStream, string reportName)
     {
         // Получить путь рабочего стола
-        string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        var path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
 
         /*SaveFileDialog sf = new()

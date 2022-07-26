@@ -9,7 +9,7 @@ internal class TypeRewardingViewModel : BaseViewModel
 
     public TypeRewardingViewModel(NavigationStore navigationStore, Users user)
     {
-        this._navigationStore = navigationStore;
+        _navigationStore = navigationStore;
         _user = user;
     }
 
@@ -62,32 +62,29 @@ internal class TypeRewardingViewModel : BaseViewModel
     }
 
     #region Команды
-
-
+    
     private ICommand? _getToMain;
     public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack);
 
     private ICommand? _loadedType;
-    public ICommand LoadedType => _loadedType ??= new LambdaCommand(ApiGetTypeRewarding);
+    public ICommand LoadedType => _loadedType ??= new LambdaAsyncCommand(ApiGetTypeRewarding);
 
     private ICommand? _add;
     public ICommand Add => _add ??= new LambdaCommand(AddTypeRewardingAsync);
 
     private ICommand? _save;
-    public ICommand Save => _save ??= new LambdaCommand(SaveTypeRewarding);
+    public ICommand Save => _save ??= new LambdaAsyncCommand(SaveTypeRewarding);
 
     private ICommand? _delete;
-    public ICommand Delete => _delete ??= new LambdaCommand(DeleteTypeRewarding);
+    public ICommand Delete => _delete ??= new LambdaAsyncCommand(DeleteTypeRewarding);
 
     #endregion
 
     #region Логика
-
     private void GetBack(object p)
     {
         _navigationStore.CurrentViewModel = new HomeViewModel(_user, _navigationStore);
     }
-
     private void AddTypeRewardingAsync(object p)
     {
         var count = TypeRewardings!.Where(x => x.Id == 0).ToList().Count;
@@ -103,8 +100,7 @@ internal class TypeRewardingViewModel : BaseViewModel
         _typeRewardings!.Insert(0, type);
         SelectedType = type;
     }
-
-    private async void SaveTypeRewarding(object p)
+    private async Task SaveTypeRewarding(object p)
     {
         try
         {
@@ -147,8 +143,7 @@ internal class TypeRewardingViewModel : BaseViewModel
         }
 
     }
-
-    private async void DeleteTypeRewarding(object p)
+    private async Task DeleteTypeRewarding(object p)
     {
         try
         {
@@ -182,9 +177,7 @@ internal class TypeRewardingViewModel : BaseViewModel
             }
         }
     }
-
-
-    private async void ApiGetTypeRewarding(object p)
+    private async Task ApiGetTypeRewarding(object p)
     {
         try
         {

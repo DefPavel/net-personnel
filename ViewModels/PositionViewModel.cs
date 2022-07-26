@@ -2,7 +2,6 @@
 using System.Linq;
 
 namespace AlphaPersonel.ViewModels;
-
 internal class PositionViewModel : BaseViewModel
 {
     private readonly NavigationStore _navigationStore;
@@ -107,22 +106,21 @@ internal class PositionViewModel : BaseViewModel
     #endregion
 
     #region Команды
-
     private ICommand? _getToMain;
     public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack);
 
     private ICommand? _loadedPosition;
-    public ICommand LoadedPosition => _loadedPosition ??= new LambdaCommand(ApiGetPosition);
+    public ICommand LoadedPosition => _loadedPosition ??= new LambdaAsyncCommand(ApiGetPosition);
 
     private ICommand? _addNew;
     public ICommand AddNew => _addNew ??= new LambdaCommand(AddPosition);
 
     private ICommand? _delete;
-    public ICommand Delete => _delete ??= new LambdaCommand(DeletePosition, CanUpdate);
+    public ICommand Delete => _delete ??= new LambdaAsyncCommand(DeletePosition, CanUpdate);
 
     private ICommand? _save;
 
-    public ICommand Save => _save ??= new LambdaCommand(UpdatePosition, CanUpdate);
+    public ICommand Save => _save ??= new LambdaAsyncCommand(UpdatePosition, CanUpdate);
 
 
     #endregion
@@ -133,8 +131,7 @@ internal class PositionViewModel : BaseViewModel
         _navigationStore.CurrentViewModel = new HomeViewModel(_user, _navigationStore);
     }
     private bool CanUpdate(object p) => SelectedPosition != null;
-
-    private async void ApiGetPosition(object p)
+    private async Task ApiGetPosition(object p)
     {
         try
         {
@@ -165,8 +162,6 @@ internal class PositionViewModel : BaseViewModel
         }
        
     }
-
-
     private void AddPosition(object p)
     {
         var count = Positions!.Where(x => x.Id == 0).ToList().Count;
@@ -187,8 +182,7 @@ internal class PositionViewModel : BaseViewModel
         SelectedPosition = position;
 
     }
-
-    private async void UpdatePosition(object p)
+    private async Task UpdatePosition(object p)
     {
         try
         {
@@ -223,8 +217,7 @@ internal class PositionViewModel : BaseViewModel
             }
         }
     }
-
-    private async void DeletePosition(object p)
+    private async Task DeletePosition(object p)
     {
         try
         {

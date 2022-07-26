@@ -78,16 +78,16 @@ internal class DepartmentViewModel : BaseViewModel
     public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack);
 
     private ICommand? _loadedDepartment;
-    public ICommand LoadedDepartment => _loadedDepartment ??= new LambdaCommand(ApiGetDepartments);
+    public ICommand LoadedDepartment => _loadedDepartment ??= new LambdaAsyncCommand(ApiGetDepartments);
 
     private ICommand? _addNewDepartment;
     public ICommand AddNewDepartment => _addNewDepartment ??= new LambdaCommand(AddDepartmentAsync);
 
     private ICommand? _deleteDepartment;
-    public ICommand DeleteDepartment => _deleteDepartment ??= new LambdaCommand(DeleteDepartments, _ => SelectedDepartment is not null);
+    public ICommand DeleteDepartment => _deleteDepartment ??= new LambdaAsyncCommand(DeleteDepartments, _ => SelectedDepartment is not null);
 
     private ICommand? _saveDepartment;
-    public ICommand SaveDepartment => _saveDepartment ??= new LambdaCommand(UpdateDepartment, _ => SelectedDepartment is not null && Departments!.Count > 0 && !string.IsNullOrWhiteSpace(SelectedDepartment.Name));
+    public ICommand SaveDepartment => _saveDepartment ??= new LambdaAsyncCommand(UpdateDepartment, _ => SelectedDepartment is not null && Departments!.Count > 0 && !string.IsNullOrWhiteSpace(SelectedDepartment.Name));
     #endregion
 
     #region Логика
@@ -99,7 +99,7 @@ internal class DepartmentViewModel : BaseViewModel
     }
 
     // Выгрузить данные отделов ввиде списка
-    private async void ApiGetDepartments(object p)
+    private async Task ApiGetDepartments(object p)
     {
         try
         {
@@ -154,7 +154,7 @@ internal class DepartmentViewModel : BaseViewModel
 
     }
     // Изменить или сохранить новые данные
-    private async void UpdateDepartment(object p)
+    private async Task UpdateDepartment(object p)
     {
         try
         {
@@ -195,7 +195,7 @@ internal class DepartmentViewModel : BaseViewModel
         }
     }
     // Удалить текущую запись 
-    private async void DeleteDepartments(object p)
+    private async Task DeleteDepartments(object p)
     {
         try
         {

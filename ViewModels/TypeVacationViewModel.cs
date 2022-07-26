@@ -13,7 +13,6 @@ internal class TypeVacationViewModel : BaseViewModel
         _user = user;
     }
 
-
     private ObservableCollection<Models.TypeVacation>? _typeVacation;
 
     private ObservableCollection<Models.TypeVacation>? TypeVacations
@@ -34,8 +33,7 @@ internal class TypeVacationViewModel : BaseViewModel
         get => _selectedTypeVacation;
         set => Set(ref _selectedTypeVacation, value);
     }
-
-
+    
     // Поисковая строка для поиска по ФИО сотрудника
     private string? _filter;
     public string? Filter
@@ -69,27 +67,24 @@ internal class TypeVacationViewModel : BaseViewModel
     public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack);
 
     private ICommand? _loadedType;
-    public ICommand LoadedType => _loadedType ??= new LambdaCommand(ApiGetType);
+    public ICommand LoadedType => _loadedType ??= new LambdaAsyncCommand(ApiGetType);
 
     private ICommand? _add;
     public ICommand Add => _add ??= new LambdaCommand(AddTypeVacationAsync);
 
     private ICommand? _save;
-    public ICommand Save => _save ??= new LambdaCommand(SaveTypeVacation, _ => SelectedTypeVacation != null);
+    public ICommand Save => _save ??= new LambdaAsyncCommand(SaveTypeVacation, _ => SelectedTypeVacation != null);
 
     private ICommand? _delete;
-    public ICommand Delete => _delete ??= new LambdaCommand(DeleteTypeVacation, _ => SelectedTypeVacation != null);
+    public ICommand Delete => _delete ??= new LambdaAsyncCommand(DeleteTypeVacation, _ => SelectedTypeVacation != null);
 
     #endregion
 
     #region Логика
-
     private void GetBack(object p)
     {
         _navigationStore.CurrentViewModel = new HomeViewModel(_user, _navigationStore);
     }
-
-
     private void AddTypeVacationAsync(object p)
     {
         var count = TypeVacations!.Where(x => x.Id == 0).ToList().Count;
@@ -106,8 +101,7 @@ internal class TypeVacationViewModel : BaseViewModel
         _typeVacation!.Insert(0, type);
         SelectedTypeVacation = type;
     }
-
-    private async void SaveTypeVacation(object p)
+    private async Task SaveTypeVacation(object p)
     {
         try
         {
@@ -152,8 +146,7 @@ internal class TypeVacationViewModel : BaseViewModel
         }
 
     }
-
-    private async void DeleteTypeVacation(object p)
+    private async Task DeleteTypeVacation(object p)
     {
         try
         {
@@ -187,8 +180,7 @@ internal class TypeVacationViewModel : BaseViewModel
             }
         }
     }
-
-    private async void ApiGetType(object p)
+    private async Task ApiGetType(object p)
     {
         try
         {
@@ -199,8 +191,6 @@ internal class TypeVacationViewModel : BaseViewModel
             {
                 SelectedTypeVacation = TypeVacations[0];
             }
-
-
         }
         // Проверка токена
         catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == (HttpStatusCode)403)
@@ -224,11 +214,7 @@ internal class TypeVacationViewModel : BaseViewModel
                 _ = MessageBox.Show("Не удалось получить данные с API!", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
     }
-
-
-
     #endregion
 }
 

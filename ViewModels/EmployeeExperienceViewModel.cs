@@ -2,9 +2,8 @@
 
 internal class EmployeeExperienceViewModel : BaseViewModel
 {
-
     #region Свойства 
-    private readonly Persons persons;
+    private readonly Persons _persons;
 
     private DateTime _dateSelect = DateTime.Now;
     public DateTime DateSelected
@@ -77,10 +76,8 @@ internal class EmployeeExperienceViewModel : BaseViewModel
     #endregion
 
     #region Команды
-
     private ICommand? _getInfo;
-    public ICommand GetInfo => _getInfo ??= new LambdaCommand(GetInformationToPerson , _ => persons != null && DateSelected != null);
-
+    public ICommand GetInfo => _getInfo ??= new LambdaCommand(GetInformationToPerson , _ => DateSelected != null);
     #endregion
 
     #region Логика
@@ -88,38 +85,36 @@ internal class EmployeeExperienceViewModel : BaseViewModel
     {
         try
         {
-            if (persons!.HistoryEmployment?.Count > 0)
+            if (!(_persons!.HistoryEmployment?.Count > 0)) return;
+            TextWrapResul = string.Empty;
+            TextWrapResul = $"ФИО: {_persons.FirstName} {_persons.MidlleName} {_persons.LastName};\r\nДолжность: {_persons.ArrayPosition?[0].Name}; \r\n";
+            if (StageIsOver)
             {
-                TextWrapResul = string.Empty;
-                TextWrapResul = $"ФИО: {persons.FirstName} {persons.MidlleName} {persons.LastName};\r\nДолжность: {persons.ArrayPosition?[0].Name}; \r\n";
-                if (StageIsOver == true)
-                {
-                    TextWrapResul += $"Общий стаж: {ServiceWorkingExperience.GetStageIsOver(persons.HistoryEmployment, DateSelected)}; \r\n";
-                }
-                if (StageIsUniver == true)
-                {
-                    TextWrapResul += $"Стаж в ЛГПУ: {ServiceWorkingExperience.GetStageIsUniver(persons.HistoryEmployment, DateSelected)}; \r\n";
-                }
-                if (StageIsPedagogical == true)
-                {
-                    TextWrapResul += $"Науч-пед стаж: {ServiceWorkingExperience.GetStageIsPedagogical(persons.HistoryEmployment , DateSelected)}; \r\n";
-                }
-                if (StageIsScience == true)
-                {
-                    TextWrapResul += $"Научый стаж: {ServiceWorkingExperience.GetStageIsScience(persons.HistoryEmployment, DateSelected)}; \r\n";
-                }
-                if (StageIsMedical == true)
-                {
-                    TextWrapResul += $"Медицинский стаж: {ServiceWorkingExperience.GetStageIsMedical(persons.HistoryEmployment, DateSelected)}; \r\n";
-                }
-                if (StageIsMuseum == true)
-                {
-                    TextWrapResul += $"Стаж в музеи: {ServiceWorkingExperience.GetStageIsMuseum(persons.HistoryEmployment, DateSelected)}; \r\n";
-                }
-                if (StageIsLibrary == true)
-                {
-                    TextWrapResul += $"Библиотечный стаж: {ServiceWorkingExperience.GetStageIsLibrary(persons.HistoryEmployment, DateSelected)}; \r\n";
-                }
+                TextWrapResul += $"Общий стаж: {ServiceWorkingExperience.GetStageIsOver(_persons.HistoryEmployment, DateSelected)}; \r\n";
+            }
+            if (StageIsUniver)
+            {
+                TextWrapResul += $"Стаж в ЛГПУ: {ServiceWorkingExperience.GetStageIsUniver(_persons.HistoryEmployment, DateSelected)}; \r\n";
+            }
+            if (StageIsPedagogical)
+            {
+                TextWrapResul += $"Науч-пед стаж: {ServiceWorkingExperience.GetStageIsPedagogical(_persons.HistoryEmployment , DateSelected)}; \r\n";
+            }
+            if (StageIsScience)
+            {
+                TextWrapResul += $"Научый стаж: {ServiceWorkingExperience.GetStageIsScience(_persons.HistoryEmployment, DateSelected)}; \r\n";
+            }
+            if (StageIsMedical)
+            {
+                TextWrapResul += $"Медицинский стаж: {ServiceWorkingExperience.GetStageIsMedical(_persons.HistoryEmployment, DateSelected)}; \r\n";
+            }
+            if (StageIsMuseum)
+            {
+                TextWrapResul += $"Стаж в музеи: {ServiceWorkingExperience.GetStageIsMuseum(_persons.HistoryEmployment, DateSelected)}; \r\n";
+            }
+            if (StageIsLibrary)
+            {
+                TextWrapResul += $"Библиотечный стаж: {ServiceWorkingExperience.GetStageIsLibrary(_persons.HistoryEmployment, DateSelected)}; \r\n";
             }
         }
         catch (Exception ex)
@@ -131,7 +126,7 @@ internal class EmployeeExperienceViewModel : BaseViewModel
 
     public EmployeeExperienceViewModel(Persons persons)
     {
-        this.persons = persons;
+        this._persons = persons;
     }
 
 }

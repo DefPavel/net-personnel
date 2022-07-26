@@ -45,7 +45,7 @@ internal class MasterDropViewModel : BaseViewModel
     public ObservableCollection<Persons>? Persons
     {
         get => _persons;
-        set
+        private set
         {
             _ = Set(ref _persons, value);
             // Для фильтрации полей 
@@ -170,7 +170,7 @@ internal class MasterDropViewModel : BaseViewModel
 
 
     private ICommand? _getData;
-    public ICommand GetData => _getData ??= new LambdaCommand(LoadedApi);
+    public ICommand GetData => _getData ??= new LambdaAsyncCommand(LoadedApi);
 
     private ICommand? _loadedPerson;
     public ICommand LoadedPerson => _loadedPerson ??= new LambdaCommand(LoadedPersons ,_ => SelectedTypePerson != null);
@@ -221,11 +221,9 @@ internal class MasterDropViewModel : BaseViewModel
     {
         try
         {
-            if (SelectedPerson != null)
-            {
-                DroPersons.Add(SelectedPerson!);
-                Persons.Remove(SelectedPerson!);
-            }
+            if (SelectedPerson == null) return;
+            DroPersons.Add(SelectedPerson!);
+            Persons?.Remove(SelectedPerson!);
         }
         catch (Exception ex)
         {
@@ -237,10 +235,8 @@ internal class MasterDropViewModel : BaseViewModel
     {
         try
         {
-            if (DroPersons != null)
+            if (DaleteWorking != null)
             {
-
-
                 object person = new
                 {
                     id_order = SelectedOrders.Id,
@@ -250,9 +246,9 @@ internal class MasterDropViewModel : BaseViewModel
                     persons = DroPersons,
                 };
                 await QueryService.JsonSerializeWithToken(_user.Token, "/pers/person/droplist", "POST", person);
-                DroPersons.Clear();
-
             }
+
+            DroPersons.Clear();
         }
         catch (WebException ex)
         {
@@ -276,11 +272,9 @@ internal class MasterDropViewModel : BaseViewModel
     {
         try
         {
-            if (SelectedDropPerson != null)
-            {
-                Persons.Insert(0,SelectedDropPerson!);
-                DroPersons.Remove(SelectedDropPerson!);
-            }
+            if (SelectedDropPerson == null) return;
+            Persons?.Insert(0,SelectedDropPerson!);
+            DroPersons.Remove(SelectedDropPerson!);
         }
         catch (Exception ex)
         {
@@ -289,7 +283,7 @@ internal class MasterDropViewModel : BaseViewModel
       
     }
 
-    private async void LoadedApi(object p)
+    private async Task LoadedApi(object p)
     {
 
         try

@@ -50,14 +50,14 @@ internal class ChangeSurnameViewModel : BaseViewModel
     #region Команды
 
     private ICommand? _getData;
-    public ICommand GetData => _getData ??= new LambdaCommand(LoadedApi);
+    public ICommand GetData => _getData ??= new LambdaAsyncCommand(LoadedApi);
 
     private ICommand? _closeWin;
-    public ICommand CloseWin => _closeWin ??= new LambdaCommand(CloseWindow , _ => NewSurname != null);
+    public ICommand CloseWin => _closeWin ??= new LambdaAsyncCommand(CloseWindow , _ => NewSurname != null);
     #endregion
 
     #region Логика
-    private async void CloseWindow(object win)
+    private async Task CloseWindow(object win)
     {
         if (win is not Window w) return;
         if(DateChange == null)
@@ -99,7 +99,7 @@ internal class ChangeSurnameViewModel : BaseViewModel
         }
     }
 
-    private async void LoadedApi(object p)
+    private async Task LoadedApi(object p)
     {
         try
         {

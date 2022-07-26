@@ -21,13 +21,13 @@ namespace AlphaPersonel.ViewModels
         public string? TextOrder
         {
             get => _textOrder;
-            set => Set(ref _textOrder, value);
+            private set => Set(ref _textOrder, value);
         }
         private string? _title;
         public string? Title
         {
             get => _title;
-            set => Set(ref _title, value);
+            private set => Set(ref _title, value);
         }
 
         private bool _isMain;
@@ -143,13 +143,13 @@ namespace AlphaPersonel.ViewModels
 
 
         private ICommand? _getData;
-        public ICommand GetData => _getData ??= new LambdaCommand(LoadedApi);
+        public ICommand GetData => _getData ??= new LambdaAsyncCommand(LoadedApi);
 
         private ICommand? _getPosition;
-        public ICommand GetPosition => _getPosition ??= new LambdaCommand(LoadedPositions);
+        public ICommand GetPosition => _getPosition ??= new LambdaAsyncCommand(LoadedPositions);
 
         private ICommand? _closeWin;
-        public ICommand CloseWin => _closeWin ??= new LambdaCommand(CloseWindow, _ =>
+        public ICommand CloseWin => _closeWin ??= new LambdaAsyncCommand(CloseWindow, _ =>
         SelectedOrders != null
         && SelectedDepartments != null
         && SelectedContract != null
@@ -157,7 +157,7 @@ namespace AlphaPersonel.ViewModels
         );
 
 
-        private async void LoadedPositions(object p)
+        private async Task LoadedPositions(object p)
         {
             try
             {
@@ -187,7 +187,7 @@ namespace AlphaPersonel.ViewModels
             }
         }
 
-        private async void CloseWindow(object win)
+        private async Task CloseWindow(object win)
         {
             if (win is not Window w) return;
             try
@@ -195,7 +195,7 @@ namespace AlphaPersonel.ViewModels
                 if (DateContract != null)
                 {
                     //2201
-                    _ = MessageBox.Show(_position.Id.ToString());
+                   // _ = MessageBox.Show(_position.Id.ToString());
                     object person = new
                     {
                         id = _position.Id,
@@ -245,7 +245,7 @@ namespace AlphaPersonel.ViewModels
         }
 
         // Загрузить все справочники
-        private async void LoadedApi(object p)
+        private async Task LoadedApi(object p)
         {
             try
             {
