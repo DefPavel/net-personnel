@@ -64,9 +64,9 @@ internal class ReportViewModelJubilee : BaseViewModel
     }
 
     private ICommand? _getReport;
-    public ICommand GetReport => _getReport ??= new LambdaCommand(Reports, _ => IsLoading != true);
+    public ICommand GetReport => _getReport ??= new LambdaAsyncCommand(Reports, _ => IsLoading != true);
 
-    private async void Reports(object obj)
+    private async Task Reports(object obj)
     {
         if (obj is not Window w) return;
         try

@@ -185,16 +185,16 @@ internal class MasterReportViewModel : BaseViewModel
     #region Команды
 
     private ICommand? _getData;
-    public ICommand GetData => _getData ??= new LambdaCommand(LoadedContract);
+    public ICommand GetData => _getData ??= new LambdaAsyncCommand(LoadedContract);
 
     private ICommand? _getToMain;
     public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack , _ => IsLoading != true);
 
     private ICommand? _getPosition;
-    public ICommand GetPosition => _getPosition ??= new LambdaCommand(LoadedPositions , _ => SelectedIsPed != null);
+    public ICommand GetPosition => _getPosition ??= new LambdaAsyncCommand(LoadedPositions , _ => SelectedIsPed != null);
 
     private ICommand? _getReport;
-    public ICommand GetReport => _getReport ??= new LambdaCommand(Reports , _ => IsLoading != true);
+    public ICommand GetReport => _getReport ??= new LambdaAsyncCommand(Reports , _ => IsLoading != true);
 
     #endregion
 
@@ -205,7 +205,7 @@ internal class MasterReportViewModel : BaseViewModel
         _navigationStore.CurrentViewModel = new HomeViewModel(_user, _navigationStore);
     }
 
-    private async void Reports(object win)
+    private async Task Reports(object win)
     {
         try
         {
@@ -278,7 +278,7 @@ internal class MasterReportViewModel : BaseViewModel
         }
     }
 
-    private async void LoadedContract(object p)
+    private async Task LoadedContract(object p)
     {
         try
         {
@@ -305,7 +305,7 @@ internal class MasterReportViewModel : BaseViewModel
         }
     }
 
-    private async void LoadedPositions(object p)
+    private async Task LoadedPositions(object p)
     {
         try
         {

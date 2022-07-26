@@ -183,13 +183,13 @@ internal class ReportsViewModel : BaseViewModel
     #region Команды
 
     private ICommand? _openReport;
-    public ICommand OpenReport => _openReport ??= new LambdaCommand(ApiGetReport, CanCommandExecute);
+    public ICommand OpenReport => _openReport ??= new LambdaAsyncCommand(ApiGetReport, CanCommandExecute);
 
     private ICommand? _openReportPluralist;
-    public ICommand OpenReportPluralist => _openReportPluralist ??= new LambdaCommand(ApiGetReportPluralist, CanCommandExecute);
+    public ICommand OpenReportPluralist => _openReportPluralist ??= new LambdaAsyncCommand(ApiGetReportPluralist, CanCommandExecute);
 
     private ICommand? _loadedReports;
-    public ICommand LoadedReports => _loadedReports ??= new LambdaCommand(LoadedData);
+    public ICommand LoadedReports => _loadedReports ??= new LambdaAsyncCommand(LoadedData);
 
     private ICommand? _getToMain;
     public ICommand GetToMain => _getToMain ??= new LambdaCommand(GetBack , _ => IsLoading != true);
@@ -203,7 +203,7 @@ internal class ReportsViewModel : BaseViewModel
         _navigationStore.CurrentViewModel = new HomeViewModel(_user, _navigationStore);
     }
 
-    private async void LoadedData(object obj)
+    private async Task LoadedData(object obj)
     {
         try
         {
@@ -236,7 +236,7 @@ internal class ReportsViewModel : BaseViewModel
         }
     }
 
-    private async void ApiGetReportPluralist(object obj)
+    private async Task ApiGetReportPluralist(object obj)
     {
         try
         {
@@ -302,7 +302,7 @@ internal class ReportsViewModel : BaseViewModel
         }
     }
 
-    private async void ApiGetReport(object obj)
+    private async Task ApiGetReport(object obj)
     {
         try
         {

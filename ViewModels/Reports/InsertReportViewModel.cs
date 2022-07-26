@@ -33,7 +33,7 @@ internal class InsertReportViewModel : BaseViewModel
         get => _dateBegin;
         set => Set(ref _dateBegin, value);
     }
-    private DateTime? _dateEnd = DateTime.Now.AddDays(1);
+    private DateTime? _dateEnd = DateTime.Now.AddMonths(1);
     public DateTime? DateEnd
     {
         get => _dateEnd;

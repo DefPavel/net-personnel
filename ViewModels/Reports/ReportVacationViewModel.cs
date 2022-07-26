@@ -76,13 +76,13 @@ internal class ReportVacationViewModel : BaseViewModel
     }
 
     private ICommand? _getData;
-    public ICommand GetData => _getData ??= new LambdaCommand(LoadedApi);
+    public ICommand GetData => _getData ??= new LambdaAsyncCommand(LoadedApi);
     
     private ICommand? _getReport;
-    public ICommand GetReport => _getReport ??= new LambdaCommand(Reports);
+    public ICommand GetReport => _getReport ??= new LambdaAsyncCommand(Reports);
     
     
-    private async void Reports(object obj)
+    private async Task Reports(object obj)
     {
         if (obj is not Window w) return;
         try
@@ -130,7 +130,7 @@ internal class ReportVacationViewModel : BaseViewModel
         }
     }
     
-    private async void LoadedApi(object p)
+    private async Task LoadedApi(object p)
     {
         try
         {
