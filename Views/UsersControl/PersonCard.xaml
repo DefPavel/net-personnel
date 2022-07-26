@@ -306,8 +306,11 @@
             <TextBlock 
                 Grid.Row="0"
                 HorizontalAlignment="Center"
-                Text="{Binding SelectedPerson.ArrayPosition[0].DepartmentName}"
-                Style="{StaticResource Header20}"/>
+                Style="{StaticResource Header20}">
+                <TextBlock.Text>
+                    <Binding Path="SelectedPerson.ArrayPosition[0].DepartmentName" />
+                </TextBlock.Text>
+            </TextBlock>
             <Separator
                 VerticalAlignment="Bottom"
                 Grid.Row="0"/>
@@ -373,9 +376,8 @@
                                                 </i:Interaction.Triggers>
                                             </Image>
                                         </Border>
-                                        <Label 
-                                        Grid.Row="6"
-                                        HorizontalAlignment="Center"
+                                        <Label
+                                            HorizontalAlignment="Center"
                                         Content="Дата приёма:"/>
                                         <DatePicker
                                         Padding="4 1"
@@ -386,9 +388,7 @@
                                             Command="{Binding SaveMainInfo}"
                                             VerticalAlignment="Bottom"
                                             Content="Сохранить"
-                                            Width="110"
-                                            Grid.Row="8"
-                                            />
+                                            Width="110" />
                                     </StackPanel>
                                     <Grid 
                                         Grid.Column="1" 
@@ -1067,7 +1067,6 @@
                                         </Style>
                                         <CollectionViewSource x:Key="ItemsTypeVacations" Source="{Binding TypeVacation}" />
                                         <CollectionViewSource x:Key="ItemsPeriodVacations" Source="{Binding PeriodVacation}" />
-                                        <CollectionViewSource x:Key="ItemsOrderVacations" Source="{Binding OrderVacations}" />
                                     </DataGrid.Resources>
                                     <DataGrid.Columns>
                                         <DataGridComboBoxColumn 
@@ -1507,8 +1506,8 @@
                                     Grid.Row="4"
                                     Content="Кем выдан паспорт"/>
                                         <TextBox
-                                     Grid.ColumnSpan="2"
-                                    Grid.Row="5"
+                                     Grid.ColumnSpan="2" Grid.Column="0"
+                                     Grid.Row="5"
                                     Text="{Binding SelectedPerson.OrganizationPassport , UpdateSourceTrigger=PropertyChanged}"
                                     />
                                         <Label 
@@ -2367,19 +2366,19 @@
                                                 </StackPanel>
                                                 <StackPanel 
                                                     Grid.Row="2"
-                                                    Grid.ColumnSpan="2">
+                                                    Grid.ColumnSpan="2" Grid.Column="0">
                                                     <Label Content="Область науки, по которой присуждена научная степень"/>
                                                     <TextBox Text="{Binding SeletedDegree.ScientificBranch}"/>
                                                 </StackPanel>
                                                 <StackPanel 
                                                     Grid.Row="3"
-                                                    Grid.ColumnSpan="2">
+                                                    Grid.ColumnSpan="2" Grid.Column="0">
                                                     <Label Content="Специальность, по которой подготовлена диссертация"/>
                                                     <TextBox Text="{Binding SeletedDegree.ScientificSpecialty}"/>
                                                 </StackPanel>
                                                 <StackPanel 
                                                     Grid.Row="4"
-                                                    Grid.ColumnSpan="2">
+                                                    Grid.ColumnSpan="2" Grid.Column="0">
                                                     <Label Content="Тема диссертации"/>
                                                     <TextBox Text="{Binding SeletedDegree.Dissertation}"/>
                                                 </StackPanel>
@@ -2397,7 +2396,7 @@
                                                 </StackPanel>
                                                 <StackPanel 
                                                     Grid.Row="6"
-                                                    Grid.ColumnSpan="2">
+                                                    Grid.ColumnSpan="2" Grid.Column="0">
                                                     <Label Content="Должность и предприятие где работал после получения диплома"/>
                                                     <TextBox Text="{Binding SeletedDegree.JobAfter}"/>
                                                 </StackPanel>
@@ -2524,13 +2523,13 @@
                                             </StackPanel>
                                             <StackPanel 
                                                 Grid.Row="2"
-                                                Grid.ColumnSpan="2">
+                                                Grid.ColumnSpan="2" Grid.Column="0">
                                                 <Label Content="Кафедра"/>
                                                 <TextBox Text="{Binding SelectedTitle.Department , UpdateSourceTrigger=PropertyChanged}"/>
                                             </StackPanel>
                                             <StackPanel 
                                                 Grid.Row="3"
-                                                Grid.ColumnSpan="2">
+                                                Grid.ColumnSpan="2" Grid.Column="0">
                                                 <Label Content="Место присвоения"/>
                                                 <TextBox Text="{Binding SelectedTitle.Place , UpdateSourceTrigger=PropertyChanged}"/>
                                             </StackPanel>
