@@ -1168,10 +1168,27 @@ internal class PersonCardViewModel : BaseViewModel
             {
                 SelectedQualification = SelectedPerson.ArrayQualification[0];
             }
-            // Научные степени
+            // Семейное положение
+            if (SelectedPerson!.ArrayFamily?.Count > 0)
+            {
+                SelectedFamily = SelectedPerson.ArrayFamily[0];
+            }
+
+            // История смены фамилии
+            if (SelectedPerson!.ArrayChangeSurname?.Count > 0)
+            {
+                SelectedOldSurname = SelectedPerson.ArrayChangeSurname[0];
+            }
+
             if (SelectedPerson!.ArrayScientificDegree?.Count > 0)
             {
                 SeletedDegree = SelectedPerson.ArrayScientificDegree[0];
+            }
+
+            // Удостоверение
+            if (SelectedPerson!.ArrayPensioner?.Count > 0)
+            {
+                SelectedPens = SelectedPerson.ArrayPensioner[0];
             }
 
             // Документы
