@@ -209,14 +209,20 @@ internal class PersonCardViewModel : BaseViewModel
             debounceTopicsFilter.Debounce(400 , e => Set(ref _filterPerson, value));
             if (PersonsList == null) return;
             CollectionPerson!.Refresh();
-            
             var enumerator = CollectionPerson.GetEnumerator();
             enumerator.MoveNext();
-            var firstElement = (Persons)enumerator.Current;
-            SelectedPerson = firstElement;
             
-            //debounceTopicsFilter.Debounce(500 , e => Set(ref _filterPerson, value));
-
+            try
+            {
+                if (enumerator.Current == null) return;
+                var firstElement = (Persons)enumerator.Current; //?? throw new InvalidOperationException();
+                SelectedPerson = firstElement;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+               // throw;
+            }
         }
     }
     // Специальная колекция для фильтров
@@ -239,15 +245,6 @@ internal class PersonCardViewModel : BaseViewModel
 
             if (CollectionPerson == null) return;
             CollectionPerson.Filter = FilterToPerson;
-            //SelectedPerson = Extensions.First(PersonsList);
-            // Маленький костыль чтобы становиться на первый элемент
-            /*
-                 * var enumerator = CollectionPerson.GetEnumerator();
-                    enumerator.MoveNext();
-                    var firstElement = enumerator.Current;
-
-                    SelectedPerson = (Persons)firstElement;
-                */
         }
     }
     private IEnumerable<Departments>? _departments;
@@ -1467,6 +1464,7 @@ internal class PersonCardViewModel : BaseViewModel
             var array = await QueryService.JsonDeserializeWithToken<Persons>(token: _user!.Token, "/pers/person/get/all", "GET");
             // TODO: Если что-то сломается (Убери!)
             PersonsList = array.DistinctBy(x => x.FullName);
+            SelectedPerson = PersonsList.FirstOrDefault();
             IsLoading = false;
 
 
