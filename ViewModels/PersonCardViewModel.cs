@@ -1,5 +1,4 @@
-﻿
-using AlphaPersonel.Models.Home;
+﻿using AlphaPersonel.Models.Home;
 using AlphaPersonel.ViewModels.Reports;
 using AlphaPersonel.Views.Models;
 using System.Collections.Generic;
@@ -17,8 +16,8 @@ internal class PersonCardViewModel : BaseViewModel
         _selectedPerson = person;
         _idDepartment = idDepartment;
         _user = users;
-    }
-
+    } 
+    private readonly DebounceDispatcher debounceTopicsFilter = new();
     #region Стаж
 
     // Стаж общий
@@ -178,14 +177,7 @@ internal class PersonCardViewModel : BaseViewModel
         set
         {
             Set(ref _selectedDocument, value);
-            if (_selectedDocument != null)
-            {
-                UrlDocument = _selectedDocument.Url; 
-            }
-            else
-            {
-                UrlDocument = string.Empty;
-            }
+            UrlDocument = _selectedDocument != null ? _selectedDocument.Url : string.Empty;
         }
     }
 
@@ -214,10 +206,17 @@ internal class PersonCardViewModel : BaseViewModel
         set
         {
             _ = Set(ref _filterPerson, value);
-            if (PersonsList != null)
-            {
-                CollectionPerson!.Refresh();
-            }
+            debounceTopicsFilter.Debounce(400 , e => Set(ref _filterPerson, value));
+            if (PersonsList == null) return;
+            CollectionPerson!.Refresh();
+            
+            var enumerator = CollectionPerson.GetEnumerator();
+            enumerator.MoveNext();
+            var firstElement = (Persons)enumerator.Current;
+            SelectedPerson = firstElement;
+            
+            //debounceTopicsFilter.Debounce(500 , e => Set(ref _filterPerson, value));
+
         }
     }
     // Специальная колекция для фильтров
@@ -238,12 +237,17 @@ internal class PersonCardViewModel : BaseViewModel
             // Для фильтрации полей 
             if (PersonsList != null) CollectionPerson = CollectionViewSource.GetDefaultView(PersonsList);
 
-            if (CollectionPerson != null)
-            { 
-                CollectionPerson.Filter = FilterToPerson;
-               // CollectionPerson.MoveCurrentToFirst();
-                //SelectedPerson = CollectionPerson.SourceCollection;
-            }
+            if (CollectionPerson == null) return;
+            CollectionPerson.Filter = FilterToPerson;
+            //SelectedPerson = Extensions.First(PersonsList);
+            // Маленький костыль чтобы становиться на первый элемент
+            /*
+                 * var enumerator = CollectionPerson.GetEnumerator();
+                    enumerator.MoveNext();
+                    var firstElement = enumerator.Current;
+
+                    SelectedPerson = (Persons)firstElement;
+                */
         }
     }
     private IEnumerable<Departments>? _departments;

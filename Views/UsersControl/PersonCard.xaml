@@ -233,7 +233,11 @@
                 Grid.Row="2">
                 <Separator/>
                 <TextBox
-                    Text="{Binding FilterPerson , UpdateSourceTrigger=PropertyChanged}"/>
+                    Text="{Binding 
+                    FilterPerson , 
+                    UpdateSourceTrigger=PropertyChanged,
+                    Delay=400
+                    }"/>
             </StackPanel>
             <!-- Пока что поставил Index Потому что не в какую не передаётся значение selectedItem из предыдущего VM -->
             <!-- По хорошему можно просто передать данный список и всё!Но пока не выходит,так что делаю через API -->
