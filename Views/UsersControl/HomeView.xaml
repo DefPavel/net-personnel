@@ -424,11 +424,22 @@
                         <TabItem 
                              Header="Штатные должности">
                             <Grid Margin="5">
+                                
                                 <Grid.InputBindings>
                                     <KeyBinding
                                         Modifiers="Ctrl"
                                         Key="S"
                                         Command="{Binding SavePosition}" 
+                                        />
+                                    <KeyBinding
+                                        Modifiers="Ctrl"
+                                        Key="I"
+                                        Command="{Binding AddPosition}" 
+                                        />
+                                    <KeyBinding
+                                        Modifiers="Ctrl"
+                                        Key="Delete"
+                                        Command="{Binding DeletePosition}" 
                                         />
                                 </Grid.InputBindings>
                                 <Grid.ColumnDefinitions>
@@ -494,7 +505,7 @@
                                     <TextBlock 
                                         Grid.Column="0"
                                         Grid.Row="0"
-                                        Text="{Binding SelectedPosition.Id}"/>
+                                        Text="Должность:"/>
                                     <!-- <ComboBox
                                         Grid.Row="0"
                                         Grid.Column="1"
@@ -768,7 +779,7 @@
                                                 </Trigger>
                                             </Style.Triggers>
                                         </Style>
-                                        <CollectionViewSource x:Key="ItemsPosition" Source="{Binding Positions}" />
+                                        <!--<CollectionViewSource x:Key="ItemsPosition" Source="{Binding Positions}" />-->
                                     </DataGrid.Resources>
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="MouseDoubleClick">
@@ -838,13 +849,20 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellEditingTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridComboBoxColumn 
+                                        
+                                        <DataGridTextColumn 
+                                             Width="80"
+                                            Header="Должность"
+                                            Binding="{Binding PersonPosition}"/>
+                                        
+                                        <!--<DataGridComboBoxColumn 
                                             Width="80"
                                             Header="Должность"
                                             SelectedValueBinding="{Binding PersonPosition}"
                                             SelectedValuePath="Name"
                                             DisplayMemberPath="Name"
                                             ItemsSource="{Binding Source={StaticResource ItemsPosition}}"/>
+                                        -->
                                         <DataGridTextColumn 
                                              Width="50"
                                             Header="Бюджет"

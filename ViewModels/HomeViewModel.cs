@@ -762,9 +762,11 @@ internal class HomeViewModel : BaseViewModel
 
             }
             // Обновить данные
+            //TypePosition = await QueryService.JsonDeserializeWithToken<TypePosition>(token: _user.Token, "/pers/position/type/position/", "GET");
+            // Вывести список штатных должностей данного отдела
             Positions = await QueryService.JsonDeserializeWithToken<Position>(token: _user.Token, "/pers/position/get/" + SelectedItem!.Id, "GET");
             // Вывести сотрудников данного отдела
-            //Persons = await QueryService.JsonDeserializeWithToken<Persons>(token: _user!.Token, "/pers/person/get/department/" + SelectedItem.Id, "GET");
+            Persons = await QueryService.JsonDeserializeWithToken<Persons>(token: _user!.Token, "/pers/person/get/department/" + SelectedItem.Id, "GET");
 
             SelectedPosition = Positions.FirstOrDefault(x => x.Name == newSelectedPosition.Name);
             _ = MessageBox.Show("Данные успешно сохраненны");
